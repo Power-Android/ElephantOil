@@ -1,0 +1,131 @@
+plugins {
+    id 'com.android.application'
+}
+
+apply {
+    apply plugin: "com.blankj.bus"
+}
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    defaultConfig {
+        applicationId rootProject.ext.android["applicationId"]
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        //使用asXxx方法时必须，告知RxHttp你依赖的rxjava版本，可传入rxjava2、rxjava3
+                        rxhttp_rxjava: 'rxjava3',
+                        rxhttp_package: 'rxhttp'   //非必须，指定RxHttp类包名
+                ]
+            }
+        }
+
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('../power.jks')
+            storePassword STORE_PASSWORD
+            keyAlias ALIAS
+            keyPassword ALIAS_PASSWORD
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    viewBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    //support
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation rootProject.ext.support["appcompat"]
+    implementation rootProject.ext.support["material"]
+    implementation rootProject.ext.support["design"]
+    implementation rootProject.ext.support["constraint-layout"]
+    androidTestImplementation rootProject.ext.support["junit"]
+    androidTestImplementation rootProject.ext.support["espresso"]
+    //jetpack
+    implementation rootProject.ext.support["lifecycle"]
+    implementation rootProject.ext.support["lifecycle-common"]
+    implementation rootProject.ext.support["room"]
+    annotationProcessor rootProject.ext.support["room-compiler"]
+    //other
+    implementation rootProject.ext.dependencies["multidex"]
+    implementation rootProject.ext.dependencies["gson"]
+    implementation rootProject.ext.dependencies["glide"]
+    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+    implementation rootProject.ext.dependencies["okhttp"]
+    implementation rootProject.ext.dependencies["okhttpLogging"]
+    implementation rootProject.ext.dependencies["rxhttp"]
+    annotationProcessor rootProject.ext.dependencies["rxhttp-compiler"]
+    implementation rootProject.ext.dependencies["rxjava"]
+    implementation rootProject.ext.dependencies["rxandroid"]
+    implementation rootProject.ext.dependencies["rxlife"]
+    implementation rootProject.ext.dependencies["PersistentCookieJar"]
+    implementation rootProject.ext.dependencies["refresh-layout"]
+    implementation rootProject.ext.dependencies["refresh-header-classics"]
+    implementation rootProject.ext.dependencies["refresh-footer-classics"]
+    implementation rootProject.ext.dependencies["roundedImageview"]
+    implementation rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
+    implementation rootProject.ext.dependencies["PictureSelector"]
+    implementation rootProject.ext.dependencies["PickerView"]
+    implementation rootProject.ext.dependencies["banner"]
+    implementation rootProject.ext.dependencies["anyLayer"]
+    implementation rootProject.ext.dependencies["utilCode"]
+    implementation rootProject.ext.dependencies["loadingView"]
+    implementation rootProject.ext.dependencies["flexbox"]
+    implementation rootProject.ext.dependencies["viewpager2"]
+    implementation rootProject.ext.dependencies["magicIndicator"]
+    implementation rootProject.ext.dependencies["txx5"]
+    implementation rootProject.ext.dependencies["transformations"]
+    implementation rootProject.ext.dependencies["activity"]
+    implementation rootProject.ext.dependencies["fragment"]
+    implementation rootProject.ext.dependencies["wechat"]
+
+    //umeng分享 核心jar包, 分享面板 , 微信分享渠道
+    implementation 'com.umeng.umsdk:common:9.3.0' // (必选)
+    implementation 'com.umeng.umsdk:asms:1.1.3' // asms包依赖(必选)
+    implementation 'com.umeng.umsdk:crash:0.0.5' // native crash包依赖(必选)
+    implementation 'com.umeng.umsdk:oaid_mi:1.0.0' // (可选)
+    implementation fileTree(include: ['*.jar'], dir: 'libs/umeng')
+
+    //极光推送依赖jar包
+    implementation fileTree(include: ['*.jar'], dir: 'libs/jpush')
+    //支付宝依赖
+    implementation(name: 'alipaySdk-15.7.9-20200727142846', ext: 'aar')
+    //闪验
+    implementation(name: 'libs/shanyan_sdk_v2.3.2.2', ext: 'aar')
+}

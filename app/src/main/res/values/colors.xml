@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_99">#99FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_8">#88000000</color>
+    <color name="transparent_6">#66000000</color>
+
+    <color name="background">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#77000000</color>
+    <color name="colorPrimaryDark21">#77000000</color>
+
+    <!--app内容的主色调-->
+    <color name="colorAccent">#1676FF</color>
+    <!--app内容主色调按压色-->
+    <color name="colorAccentDark">#1636FF</color>
+
+    <color name="color_6B">#6B6B6B</color>
+    <color name="color_34">#323334</color>
+    <color name="color_F5">#F5F5F5</color>
+    <color name="color_E4">#E4E4E4</color>
+    <color name="color_80">#808080</color>
+    <color name="color_27">#EB1E27</color>
+    <color name="color_60">#606060</color>
+    <color name="color_9A">#98999A</color>
+    <color name="color_30">#FE1530</color>
+    <color name="color_D8">#D8D8D8</color>
+    <color name="color_3D">#3D3D3D</color>
+    <color name="color_D4">#D4D4D4</color>
+    <color name="color_52">#525252</color>
+    <color name="color_70">#707070</color>
+    <color name="color_F3FF">#EBF3FF</color>
+    <color name="color_74">#747474</color>
+    <color name="color_E5">#e5e5e5</color>
+    <color name="color_12">#121212</color>
+    <color name="color_57">#575759</color>
+    <color name="color_99">#999999</color>
+    <color name="color_82">#828282</color>
+    <color name="color_3C">#3C3C3C</color>
+
+
+</resources>

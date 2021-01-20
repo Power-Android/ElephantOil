@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/color_F5</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="SplashActivityTheme" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:windowFullscreen">true</item>
+        <!--        <item name="android:windowBackground">@drawable/ic_splash</item>-->
+    </style>
+    <!--自定义switch的按钮和轨迹颜色theme-->
+    <style name="mySwitch" parent="Theme.AppCompat.Light">
+        <!--  switch打开时的按钮的颜色 打开时的轨迹的颜色  30%这个颜色-->
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <!--  switch关闭时的按钮的颜色 -->
+        <item name="colorSwitchThumbNormal">@color/color_F5</item>
+        <!--  switch关闭时的轨迹的颜色 -->
+        <item name="android:colorForeground">@color/color_F5</item>
+
+    </style>
+</resources>
