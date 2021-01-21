@@ -1,4 +1,5 @@
 ext {
+    def qmui_arch_version = '2.0.0-alpha10'
     //android开发版本配置
     android = [
             compileSdkVersion: 30,
@@ -60,5 +61,8 @@ ext {
             "activity"                     : "androidx.activity:activity:1.2.0-beta01",
             "fragment"                     : "androidx.fragment:fragment:1.3.0-beta01",
             "wechat"                       : "com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.6.5",
+            "qmui"                         : "com.qmuiteam:qmui:$qmui_arch_version",
+            "qmui_arch"                    : "com.qmuiteam:arch:$qmui_arch_version",
+            "qmui_arch_compiler"           : "com.qmuiteam:arch-compiler:$qmui_arch_version"
     ]
 }

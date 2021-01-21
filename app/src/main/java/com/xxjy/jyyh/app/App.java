@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -35,6 +36,7 @@ public class App extends Application {
             //指定为经典Footer，默认是 BallPulseFooter
             return new ClassicsFooter(context).setFinishDuration(0); //.setDrawableSize(20);
         });
+
     }
 
     @Override
@@ -45,6 +47,7 @@ public class App extends Application {
     }
 
     private void init() {
+        QMUISwipeBackActivityManager.init(this);
         //TODO 上线前记得注释
         CrashUtils.init(crashInfo -> ToastUtils.showLong("崩溃日志已存储至目录！"));
         HttpManager.init(this);

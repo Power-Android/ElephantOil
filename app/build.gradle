@@ -114,6 +114,9 @@ dependencies {
     implementation rootProject.ext.dependencies["activity"]
     implementation rootProject.ext.dependencies["fragment"]
     implementation rootProject.ext.dependencies["wechat"]
+    implementation rootProject.ext.dependencies["qmui"]
+    implementation rootProject.ext.dependencies["qmui_arch"]
+    annotationProcessor rootProject.ext.dependencies["qmui_arch_compiler"]
 
     //umeng分享 核心jar包, 分享面板 , 微信分享渠道
     implementation 'com.umeng.umsdk:common:9.3.0' // (必选)
