@@ -70,7 +70,7 @@ android {
 
 dependencies {
     //support
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     implementation rootProject.ext.support["appcompat"]
     implementation rootProject.ext.support["material"]
     implementation rootProject.ext.support["design"]
@@ -128,7 +128,7 @@ dependencies {
     //极光推送依赖jar包
     implementation fileTree(include: ['*.jar'], dir: 'libs/jpush')
     //支付宝依赖
-    implementation(name: 'alipaySdk-15.7.9-20200727142846', ext: 'aar')
+    api files('libs/alipaySdk-15.7.9-20200727142846.aar')
     //闪验
-    implementation(name: 'libs/shanyan_sdk_v2.3.2.2', ext: 'aar')
+    api files('libs/shanyan_sdk_v2.3.2.2.aar')
 }
