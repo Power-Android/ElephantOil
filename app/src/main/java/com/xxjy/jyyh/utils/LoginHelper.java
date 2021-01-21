@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.xxjy.jyyh.MainActivity;
+import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.constants.SPConstants;
 
 /**

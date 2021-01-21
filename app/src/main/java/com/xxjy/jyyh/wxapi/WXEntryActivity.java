@@ -1,4 +1,4 @@
-package wxapi;
+package com.xxjy.jyyh.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
