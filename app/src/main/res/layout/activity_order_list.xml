@@ -21,7 +21,8 @@
     <com.qmuiteam.qmui.widget.tab.QMUITabSegment
         android:id="@+id/tab_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"/>
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,11 +31,12 @@
 
             android:orientation="horizontal">
             <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/oil_bt"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_37"
                 android:layout_weight="1"
                 app:qmui_borderColor="@color/colorAccent"
-                app:qmui_borderWidth="@dimen/dp_0"
+                app:qmui_borderWidth="@dimen/dp_1"
                 app:qmui_backgroundColor="@color/colorAccent"
                 app:qmui_radius="@dimen/dp_20"
                 android:layout_margin="@dimen/dp_6"
@@ -45,6 +47,7 @@
 
                 />
             <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/interests_bt"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_37"
                 android:layout_weight="1"
@@ -57,7 +60,6 @@
                 android:textColor="@color/colorAccent"
                 android:gravity="center"
                 android:textSize="@dimen/sp_14"
-
                 />
         </LinearLayout>
     <com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout

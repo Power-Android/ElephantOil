@@ -80,12 +80,7 @@ public class OilAmountDialog {
 
         mBinding.cancelIv.setOnClickListener(view -> mOilAmountDialog.cancel());
         mBinding.backIv.setOnClickListener(view -> mOilAmountDialog.cancel());
-        mBinding.amountEt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                KeyboardUtils.showSoftInput(mBinding.getRoot());
-            }
-        });
+
     }
 
     public void show() {

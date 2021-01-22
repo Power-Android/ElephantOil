@@ -1,41 +1,105 @@
 package com.xxjy.jyyh.ui.order;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout;
 import com.qmuiteam.qmui.widget.tab.QMUITabBuilder;
 import com.qmuiteam.qmui.widget.tab.QMUITabIndicator;
 import com.qmuiteam.qmui.widget.tab.QMUITabSegment;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.adapter.OrderListAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityOrderListBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderListActivity extends BindingActivity<ActivityOrderListBinding, OrderListViewModel> {
 
 
+    private OrderListAdapter adapter;
+    private List<String> data;
+    private boolean isOilOrder = true;
+    private QMUIPullLayout.PullAction mPullAction;
+
     @Override
     protected void initView() {
-        mBinding.topLayout.setTitle("测试");
-        mBinding.topLayout.addLeftImageButton( R.drawable.arrow_back_black,
+        mBinding.topLayout.setTitle("我的订单");
+        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
                 R.id.qmui_topbar_item_left_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
         initTab();
+
+        data = new ArrayList<>();
+        data.add("aaaa");
+        data.add("aaaa");
+        data.add("aaaa");
+        data.add("aaaa");
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new OrderListAdapter(R.layout.adapter_order_layout, data);
+        mBinding.recyclerView.setAdapter(adapter);
+
+        mBinding.pullLayout.setActionListener(new QMUIPullLayout.ActionListener() {
+            @Override
+            public void onActionTriggered(@NonNull QMUIPullLayout.PullAction pullAction) {
+                mPullAction = pullAction;
+                if (pullAction.getPullEdge() == QMUIPullLayout.PULL_EDGE_TOP) {
+                    data.clear();
+                    data.add("aaaa");
+                    data.add("aaaa");
+                    data.add("aaaa");
+                    data.add("aaaa");
+                    adapter.notifyDataSetChanged();
+                } else if (pullAction.getPullEdge() == QMUIPullLayout.PULL_EDGE_BOTTOM) {
+                    data.add("aaaa");
+                    data.add("aaaa");
+                    data.add("aaaa");
+                    data.add("aaaa");
+                    adapter.notifyDataSetChanged();
+
+                }
+            }
+        });
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                startActivity(new Intent(OrderListActivity.this,OrderDetailsActivity.class));
+            }
+        });
     }
 
     @Override
     protected void initListener() {
-
+        mBinding.interestsBt.setOnClickListener(this::onViewClicked);
+        mBinding.oilBt.setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.oil_bt:
+                isOilOrder = true;
+                changeBt();
+                break;
+            case R.id.interests_bt:
+                isOilOrder = false;
+                changeBt();
+                break;
+        }
 
     }
 
@@ -57,5 +121,19 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
         mBinding.tabView.setMode(QMUITabSegment.MODE_FIXED);
         mBinding.tabView.selectTab(0);
         mBinding.tabView.notifyDataChanged();
+    }
+
+    private void changeBt() {
+        if (isOilOrder) {
+            mBinding.oilBt.setBackgroundColor(Color.parseColor("#1676FF"));
+            mBinding.oilBt.setTextColor(Color.parseColor("#FFFFFF"));
+            mBinding.interestsBt.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            mBinding.interestsBt.setTextColor(Color.parseColor("#1676FF"));
+        } else {
+            mBinding.oilBt.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            mBinding.oilBt.setTextColor(Color.parseColor("#1676FF"));
+            mBinding.interestsBt.setBackgroundColor(Color.parseColor("#1676FF"));
+            mBinding.interestsBt.setTextColor(Color.parseColor("#FFFFFF"));
+        }
     }
 }
