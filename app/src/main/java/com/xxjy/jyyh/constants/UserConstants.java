@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
+import com.bigkoo.pickerview.listener.ISelectTimeCallback;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
@@ -20,7 +21,6 @@ public class UserConstants {
     public static void setH5Links(String links) {
         SPUtils.getInstance().put(SPConstants.WEB_LINKS, links);
     }
-
 
     public static String getToken() {
         return SPUtils.getInstance().getString(SPConstants.APP_TOKEN, "");
@@ -78,37 +78,23 @@ public class UserConstants {
     public static void setLatitude(String latitude) {
         SPUtils.getInstance().put(SPConstants.LATITUDE, latitude);
     }
-
-    /**
-     * 获取 app 中的 渠道 channel 值
-     *
-     * @return
-     */
-    public static String getAppMetaChannel() {
-        return getAppMetaData(App.getContext(), "UMENG_CHANNEL");
+    public static void setFirstOpen(boolean firstOpen){
+        SPUtils.getInstance().put(SPConstants.FIRST_OPEN, firstOpen);
+    }
+    public static boolean getFirstOpen(){
+       return SPUtils.getInstance().getBoolean(SPConstants.FIRST_OPEN);
+    }
+    public static void setAgreePrivacy(boolean isAgree){
+        SPUtils.getInstance().put(SPConstants.AGREE_PRIVACY, isAgree);
+    }
+    public static boolean getAgreePrivacy(){
+       return SPUtils.getInstance().getBoolean(SPConstants.AGREE_PRIVACY);
+    }
+    public static void setAppChannel(String appChannel){
+        SPUtils.getInstance().put(SPConstants.APP_CHANNEL_KEY, appChannel);
+    }
+    public static String getAppChannel(){
+       return SPUtils.getInstance().getString(SPConstants.APP_CHANNEL_KEY);
     }
 
-    /**
-     * 获取application中指定的meta-data
-     *
-     * @return 如果没有获取成功(没有对应值 ， 或者异常)，则返回值为空
-     */
-    public static String getAppMetaData(Context ctx, String metaName) {
-        String resultData = null;
-        try {
-            PackageManager packageManager = ctx.getPackageManager();
-            if (packageManager != null) {
-                ApplicationInfo applicationInfo = packageManager.getApplicationInfo(ctx.getPackageName(), PackageManager.GET_META_DATA);
-                if (applicationInfo != null) {
-                    if (applicationInfo.metaData != null) {
-                        resultData = applicationInfo.metaData.getString(metaName);
-                    }
-                }
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return resultData;
-    }
 }

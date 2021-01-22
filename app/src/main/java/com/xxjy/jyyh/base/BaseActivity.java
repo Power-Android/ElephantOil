@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
@@ -24,7 +25,7 @@ import per.goweii.anylayer.utils.AnimatorHelper;
  * @project RunElephant
  * @description:
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends QMUIFragmentActivity {
 
     private DialogLayer mLoadingDialog;
 

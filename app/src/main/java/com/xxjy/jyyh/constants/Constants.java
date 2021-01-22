@@ -8,6 +8,10 @@ package com.xxjy.jyyh.constants;
  */
 public class Constants {
 
+
+    public static final String USER_XIE_YI = "https://m.qqgyhk.com/account/messageDetail/400221";
+    public static final String YINSI_ZHENG_CE = "https://m.qqgyhk.com/account/messageDetail/400222";
+
     /**
      * release服务器
      */
@@ -22,6 +26,7 @@ public class Constants {
 
     //微信配置
     public static final String WX_APP_ID = "wx0984c939611e6f3d";
+    public static final String WX_APP_SCRIPT = "787d5dcefab80f6bca272800e9bad139";//ab730ab00dd73986593da2ce6514ffe8     6b4edd26960e017c050f940210a99723
 
 
     //fragment

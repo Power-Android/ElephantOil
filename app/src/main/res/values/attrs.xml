@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+
+    <!--自动处理格式的手机号-->
+    <declare-styleable name="ContentWithSpaceEditText">
+        <attr name="input_type" format="enum">
+            <enum name="phone" value="0" />
+            <enum name="bank_card_no" value="1" />
+            <enum name="identify_card_no" value="2" />
+        </attr>
+    </declare-styleable>
+
+
+</resources>

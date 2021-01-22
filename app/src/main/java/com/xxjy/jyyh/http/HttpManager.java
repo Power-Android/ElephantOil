@@ -113,7 +113,7 @@ public class HttpManager {
 
         }
 
-        String app_store = UserConstants.getAppMetaChannel();
+        String app_store = UserConstants.getAppChannel();
 
         finalParams.put("t", t);//时间戳
         finalParams.put("did", did);
