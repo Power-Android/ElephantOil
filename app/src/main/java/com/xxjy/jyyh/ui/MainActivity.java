@@ -18,11 +18,17 @@ import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.databinding.ActivityMainBinding;
 import com.xxjy.jyyh.ui.home.HomeFragment;
+import com.xxjy.jyyh.ui.integral.IntegralFragment;
+import com.xxjy.jyyh.ui.mine.MineFragment;
+import com.xxjy.jyyh.ui.oil.OilFragment;
 
 public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewModel> {
     private int mLastFgIndex = -1;
     private long clickTime;
-    private HomeFragment mCounterFragment;
+    private HomeFragment mHomeFragment;
+    private OilFragment mOilFragment;
+    private IntegralFragment mIntergralFragment;
+    private MineFragment mMineFragment;
     private FragmentTransaction mTransaction;
 
     @Override
@@ -36,13 +42,13 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         mBinding.navView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.navigation_home:
-                    showFragment(Constants.TYPE_COUNTER);
-                    break;
-                case R.id.navigation_order:
-                    showFragment(Constants.TYPE_ORDER);
+                    showFragment(Constants.TYPE_HOME);
                     break;
                 case R.id.navigation_oil:
                     showFragment(Constants.TYPE_OIL);
+                    break;
+                case R.id.navigation_integral:
+                    showFragment(Constants.TYPE_INTEGRAL);
                     break;
                 case R.id.navigation_mine:
                     showFragment(Constants.TYPE_MINE);
@@ -69,62 +75,62 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         mTransaction = getSupportFragmentManager().beginTransaction();
         hideFragment(mTransaction);
         mLastFgIndex = index;
-//        switch (index) {
-//            case Constants.TYPE_COUNTER:
-//                if (mCounterFragment == null) {
-//                    mCounterFragment = CounterFragment.getInstance();
-//                    mTransaction.add(R.id.fragment_group, mCounterFragment);
-//                }
-//                mTransaction.show(mCounterFragment);
-//                break;
-//            case Constants.TYPE_ORDER:
-//                if (mOrderFragment == null) {
-//                    mOrderFragment = OrderFragment.getInstance();
-//                    mTransaction.add(R.id.fragment_group, mOrderFragment);
-//                }
-//                mTransaction.show(mOrderFragment);
-//                break;
-//            case Constants.TYPE_OIL:
-//                if (mOilFragment == null) {
-//                    mOilFragment = OilFragment.getInstance();
-//                    mTransaction.add(R.id.fragment_group, mOilFragment);
-//                }
-//                mTransaction.show(mOilFragment);
-//                break;
-//            case Constants.TYPE_MINE:
-//                if (mMineFragment == null) {
-//                    mMineFragment = MineFragment.getInstance();
-//                    mTransaction.add(R.id.fragment_group, mMineFragment);
-//                }
-//                mTransaction.show(mMineFragment);
-//                break;
-//        }
+        switch (index) {
+            case Constants.TYPE_HOME:
+                if (mHomeFragment == null) {
+                    mHomeFragment = HomeFragment.getInstance();
+                    mTransaction.add(R.id.fragment_group, mHomeFragment);
+                }
+                mTransaction.show(mHomeFragment);
+                break;
+            case Constants.TYPE_OIL:
+                if (mOilFragment == null) {
+                    mOilFragment = OilFragment.getInstance();
+                    mTransaction.add(R.id.fragment_group, mOilFragment);
+                }
+                mTransaction.show(mOilFragment);
+                break;
+            case Constants.TYPE_INTEGRAL:
+                if (mIntergralFragment == null) {
+                    mIntergralFragment = IntegralFragment.getInstance();
+                    mTransaction.add(R.id.fragment_group, mIntergralFragment);
+                }
+                mTransaction.show(mIntergralFragment);
+                break;
+            case Constants.TYPE_MINE:
+                if (mMineFragment == null) {
+                    mMineFragment = MineFragment.getInstance();
+                    mTransaction.add(R.id.fragment_group, mMineFragment);
+                }
+                mTransaction.show(mMineFragment);
+                break;
+        }
         mTransaction.commit();
 
     }
 
     private void hideFragment(FragmentTransaction transaction) {
-//        switch (mLastFgIndex) {
-//            case Constants.TYPE_COUNTER:
-//                if (mCounterFragment != null) {
-//                    transaction.hide(mCounterFragment);
-//                }
-//            case Constants.TYPE_ORDER:
-//                if (mOrderFragment != null) {
-//                    transaction.hide(mOrderFragment);
-//                }
-//                break;
-//            case Constants.TYPE_OIL:
-//                if (mOilFragment != null) {
-//                    transaction.hide(mOilFragment);
-//                }
-//                break;
-//            case Constants.TYPE_MINE:
-//                if (mMineFragment != null) {
-//                    transaction.hide(mMineFragment);
-//                }
-//                break;
-//        }
+        switch (mLastFgIndex) {
+            case Constants.TYPE_HOME:
+                if (mHomeFragment != null) {
+                    transaction.hide(mHomeFragment);
+                }
+            case Constants.TYPE_OIL:
+                if (mOilFragment != null) {
+                    transaction.hide(mOilFragment);
+                }
+                break;
+            case Constants.TYPE_INTEGRAL:
+                if (mIntergralFragment != null) {
+                    transaction.hide(mIntergralFragment);
+                }
+                break;
+            case Constants.TYPE_MINE:
+                if (mMineFragment != null) {
+                    transaction.hide(mMineFragment);
+                }
+                break;
+        }
     }
 
     @SuppressLint("MissingSuperCall")

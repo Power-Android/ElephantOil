@@ -83,7 +83,7 @@ public class GlideUtils extends AppGlideModule {
 //                .skipMemoryCache(true)
 //                .diskCacheStrategy(DiskCacheStrategy.NONE)
 //                .signature(new ObjectKey(System.currentTimeMillis()))
-                .apply(new RequestOptions().error(R.drawable.default_face_icon))
+                .apply(new RequestOptions().error(R.drawable.default_img_bg))
                 .circleCrop().into(imageView);
     }
     /**

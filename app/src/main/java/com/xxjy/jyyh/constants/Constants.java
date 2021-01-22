@@ -26,9 +26,9 @@ public class Constants {
 
     //fragment
     public static final String CURRENT_FRAGMENT_KEY = "current_fragment";
-    public static final int TYPE_COUNTER = 0;
-    public static final int TYPE_ORDER = 1;
-    public static final int TYPE_OIL = 2;
+    public static final int TYPE_HOME = 0;
+    public static final int TYPE_OIL = 1;
+    public static final int TYPE_INTEGRAL = 2;
     public static final int TYPE_MINE = 3;
 
     //回退事件
