@@ -7,6 +7,17 @@
     android:background="@color/color_F5"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
+        android:id="@+id/back_iv"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_46"
+        android:paddingTop="@dimen/dp_15"
+        android:paddingBottom="@dimen/dp_15"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        android:src="@drawable/arrow_back_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
         android:id="@+id/cancel_iv"
         android:layout_width="@dimen/dp_56"
         android:layout_height="@dimen/dp_38"
@@ -44,7 +55,7 @@
         android:id="@+id/tv3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="选择油号"
+        android:text="选择油枪"
         android:textSize="@dimen/sp_13"
         android:textColor="@color/color_34"
         android:textStyle="bold"

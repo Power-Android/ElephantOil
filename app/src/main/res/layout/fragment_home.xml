@@ -8,7 +8,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_44"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp_60"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -17,11 +18,12 @@
             android:layout_height="@dimen/dp_13"
             android:layout_marginStart="@dimen/common_margin"
             android:src="@drawable/icon_location"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
+            android:id="@+id/address_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_5"
@@ -29,21 +31,37 @@
             android:textColor="@color/color_34"
             android:textSize="@dimen/sp_13"
             android:textStyle="bold"
+            android:includeFontPadding="false"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/location_iv"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/location_iv" />
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
+            android:id="@+id/search_iv"
             android:layout_width="@dimen/dp_17"
             android:layout_height="@dimen/dp_18"
             android:layout_marginEnd="@dimen/common_margin"
             android:src="@drawable/icon_search"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:srlEnableLoadMore="false"
@@ -54,6 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never">
@@ -91,7 +110,7 @@
                             android:id="@+id/oil_img_iv"
                             android:layout_width="@dimen/dp_73"
                             android:layout_height="@dimen/dp_73"
-                            android:layout_marginStart="@dimen/dp_27"
+                            android:layout_marginStart="@dimen/dp_32"
                             android:layout_marginTop="@dimen/dp_7"
                             android:src="@drawable/default_img_bg"
                             app:riv_oval="true"
@@ -108,6 +127,7 @@
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:text="品牌优品"
+                            android:textStyle="bold"
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp_16"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -397,7 +417,7 @@
                     android:layout_below="@+id/exchange_rl"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/dp_22"
-                    android:layout_marginBottom="@dimen/dp_22"
+                    android:layout_marginBottom="@dimen/dp_220"
                     android:text="4亿车主都爱用的加油省钱神器"
                     android:textColor="@color/color_99"
                     android:textSize="@dimen/sp_11" />

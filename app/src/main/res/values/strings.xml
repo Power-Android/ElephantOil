@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ElephantOil</string>
+    <string name="app_name">小象加油</string>
 
     <string name="errcode_success">发送成功</string>
     <string name="errcode_cancel">发送取消</string>
