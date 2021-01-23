@@ -75,20 +75,20 @@ public class SelectOilNumDialog {
     private void initData() {
         for (int i = 0; i < 7; i++) {
             OilNumCheckEntity entity= new OilNumCheckEntity();
-            entity.setType("1");
+            entity.setKey(1);
             mList.add(entity);
         }
         mBinding.noRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-//        mOilNumAdapter = new SelectOilNoAdapter( mList,"");
-//        mBinding.noRecyclerView.setAdapter(mOilNumAdapter);
-//        mOilNumAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                if (mOnItemClickedListener != null){
-//                    mOnItemClickedListener.onOilNumClick(adapter, view, position);
-//                }
-//            }
-//        });
+        mOilNumAdapter = new SelectOilNoAdapter( mList,"");
+        mBinding.noRecyclerView.setAdapter(mOilNumAdapter);
+        mOilNumAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (mOnItemClickedListener != null){
+                    mOnItemClickedListener.onOilNumClick(adapter, view, position);
+                }
+            }
+        });
 
     }
 

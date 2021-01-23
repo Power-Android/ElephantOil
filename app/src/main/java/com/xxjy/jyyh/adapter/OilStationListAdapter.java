@@ -40,7 +40,6 @@ public class OilStationListAdapter extends BaseQuickAdapter<String, BaseViewHold
             ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
             addTagView(mContext, 2, "标签标签标签标签标签标签", (QMUIFloatLayout) helper.getView(R.id.float_layout));
         } else {
-
             helper.setTextColor(R.id.item_name_tv, Color.parseColor("#1676FF"))
                     .setTextColor(R.id.item_address_tv, Color.parseColor("#5478AC"))
                     .setTextColor(R.id.item_navigation_tv, Color.parseColor("#323334"))
@@ -53,24 +52,10 @@ public class OilStationListAdapter extends BaseQuickAdapter<String, BaseViewHold
             ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
 
             addTagView(mContext, 1, "标签标签标签标签标签标签", (QMUIFloatLayout) helper.getView(R.id.float_layout));
-
         }
     }
 
-//    private fun addTypeView(context: Context, content: String, floatLayout: QMUIFloatLayout) {
-//        val textView = TextView(context)
-//        val textViewPadding = QMUIDisplayHelper.dp2px(context, 4)
-//        val textViewPadding2 = QMUIDisplayHelper.dp2px(context, 2)
-//        textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2)
-//        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
-//        textView.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
-//        textView.text = content
-//        textView.setBackgroundResource(R.drawable.level_text_bg)
-//        floatLayout.addView(textView)
-//    }
-
     private void addTagView(Context context, int type, String content, QMUIFloatLayout floatLayout) {
-
         TextView textView = new TextView(context);
         int textViewPadding = QMUIDisplayHelper.dp2px(context, 4);
         int textViewPadding2 = QMUIDisplayHelper.dp2px(context, 2);
@@ -86,6 +71,5 @@ public class OilStationListAdapter extends BaseQuickAdapter<String, BaseViewHold
 
         textView.setText(content);
         floatLayout.addView(textView);
-
     }
 }

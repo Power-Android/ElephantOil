@@ -90,9 +90,9 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     protected void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.oil_sort_layout:
-                if(selectOilNumDialog==null){
-                    selectOilNumDialog = new SelectOilNumDialog(getContext(),view);
-            }
+                if (selectOilNumDialog == null) {
+                    selectOilNumDialog = new SelectOilNumDialog(getContext(), view);
+                }
                 selectOilNumDialog.show();
 
 

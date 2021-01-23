@@ -29,6 +29,7 @@ import com.xxjy.jyyh.dialog.OilNumDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
+import com.xxjy.jyyh.ui.search.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -202,6 +203,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 });
         mBinding.quickOilTv.setOnClickListener(this::onViewClicked);
         mBinding.homeQuickOilRl.setOnClickListener(this::onViewClicked);
+        mBinding.searchIv.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -214,6 +216,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 break;
             case R.id.home_quick_oil_rl:
                 startActivity(new Intent(mContext, OilDetailActivity.class));
+                break;
+            case R.id.search_iv:
+                startActivity(new Intent(mContext, SearchActivity.class));
                 break;
         }
     }

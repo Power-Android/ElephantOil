@@ -10,16 +10,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.oil.OilDetailActivity"/>
+        <activity android:name=".ui.search.SearchResultActivity"></activity>
+        <activity android:name=".ui.search.SearchActivity" />
+        <activity android:name=".ui.oil.OilDetailActivity" />
         <activity
             android:name=".ui.pay.PayResultActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.order.OrderDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.order.OrderListActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.login.MobileLoginActivity"
             android:screenOrientation="portrait" />
