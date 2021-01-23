@@ -76,6 +76,10 @@ public class OilNumDialog {
         mOilNumDialog.show();
     }
 
+    public void dismiss(){
+        mOilNumDialog.dismiss();
+    }
+
     public interface OnItemClickedListener{
         void onOilNumClick(BaseQuickAdapter adapter, View view, int position);
     }

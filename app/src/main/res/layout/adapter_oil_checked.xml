@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/dp_30"
+    android:minWidth="@dimen/dp_72"
+    android:layout_marginEnd="@dimen/dp_4"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/shape_pay_6radius">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="92#汽油"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp_14"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

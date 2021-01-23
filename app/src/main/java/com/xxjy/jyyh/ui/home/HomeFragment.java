@@ -1,21 +1,16 @@
 package com.xxjy.jyyh.ui.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.flexbox.AlignItems;
@@ -31,6 +26,9 @@ import com.xxjy.jyyh.databinding.FragmentHomeBinding;
 import com.xxjy.jyyh.dialog.OilAmountDialog;
 import com.xxjy.jyyh.dialog.OilGunDialog;
 import com.xxjy.jyyh.dialog.OilNumDialog;
+import com.xxjy.jyyh.dialog.OilPayDialog;
+import com.xxjy.jyyh.dialog.OilTipsDialog;
+import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +46,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private OilNumDialog mOilNumDialog;
     private OilGunDialog mOilGunDialog;
     private OilAmountDialog mOilAmountDialog;
+    private OilTipsDialog mOilTipsDialog;
+    private OilPayDialog mOilPayDialog;
 
     public static HomeFragment getInstance() {
         return new HomeFragment();
@@ -137,7 +137,48 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
 
-        mOilAmountDialog = new OilAmountDialog(mContext, getActivity());
+        mOilAmountDialog = new OilAmountDialog(mContext);
+        mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
+            @Override
+            public void onOilAmountClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+
+            @Override
+            public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+
+            @Override
+            public void onCreateOrder(View view) {
+                if (mOilTipsDialog != null){
+                    mOilTipsDialog.show(view);
+                }
+            }
+        });
+
+        mOilTipsDialog = new OilTipsDialog(mContext);
+        mOilTipsDialog.setOnItemClickedListener(view -> {
+            mOilTipsDialog.dismiss();
+            if (mOilPayDialog != null){
+                mOilPayDialog.show();
+            }
+        });
+
+        mOilPayDialog = new OilPayDialog(mContext);
+        mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
+            @Override
+            public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+
+            @Override
+            public void onCloseAllClick() {
+                mOilAmountDialog.dismiss();
+                mOilGunDialog.dismiss();
+                mOilNumDialog.dismiss();
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -160,6 +201,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     }
                 });
         mBinding.quickOilTv.setOnClickListener(this::onViewClicked);
+        mBinding.homeQuickOilRl.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -169,6 +211,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 if (mOilNumDialog != null) {
                     mOilNumDialog.show();
                 }
+                break;
+            case R.id.home_quick_oil_rl:
+                startActivity(new Intent(mContext, OilDetailActivity.class));
                 break;
         }
     }

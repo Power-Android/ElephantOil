@@ -10,19 +10,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.oil.OilDetailActivity"/>
         <activity
             android:name=".ui.pay.PayResultActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.order.OrderDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.order.OrderListActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.login.MobileLoginActivity"
             android:screenOrientation="portrait" />
@@ -31,9 +28,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MainActivity"
-            android:screenOrientation="portrait"
-            >
-
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

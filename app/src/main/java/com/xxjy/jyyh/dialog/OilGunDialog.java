@@ -74,6 +74,10 @@ public class OilGunDialog {
         mOilGunDialog.show();
     }
 
+    public void dismiss(){
+        mOilGunDialog.dismiss();
+    }
+
     public interface OnItemClickedListener{
         void onOilGunClick(BaseQuickAdapter adapter, View view, int position);
     }

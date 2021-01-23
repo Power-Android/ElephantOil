@@ -1,161 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:minHeight="@dimen/dp_400"
     android:layout_gravity="bottom"
-    android:background="@color/color_F5">
+    android:background="@color/color_F0"
+    android:minHeight="@dimen/dp_500">
+
     <ImageView
         android:id="@+id/back_iv"
         android:layout_width="@dimen/dp_48"
         android:layout_height="@dimen/dp_46"
-        android:paddingTop="@dimen/dp_15"
-        android:paddingBottom="@dimen/dp_15"
         android:paddingStart="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_15"
         android:paddingEnd="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_15"
         android:src="@drawable/arrow_back_black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/cancel_iv"
         android:layout_width="@dimen/dp_56"
         android:layout_height="@dimen/dp_38"
-        android:paddingTop="@dimen/dp_15"
-        android:paddingBottom="@dimen/dp_15"
         android:paddingStart="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_15"
         android:paddingEnd="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_15"
         android:src="@drawable/arrow_down_gray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_22"
         android:text="输入金额"
-        android:textStyle="bold"
         android:textColor="@color/color_76FF"
         android:textSize="@dimen/sp_16"
-        android:layout_marginTop="@dimen/dp_22"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/amount_input_cl"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_44"
         android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginEnd="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_20"
         android:background="@drawable/shape_stroke_blue_4radius"
         app:layout_constraintTop_toBottomOf="@+id/tv1">
+
         <TextView
             android:id="@+id/money_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="￥"
-            android:textStyle="bold"
-            android:textSize="@dimen/sp_16"
-            android:textColor="@color/color_34"
             android:layout_marginStart="@dimen/dp_12"
+            android:text="￥"
+            android:textColor="@color/color_34"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <EditText
             android:id="@+id/amount_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_3"
+            android:layout_marginEnd="@dimen/dp_12"
             android:background="@null"
             android:hint="请输入消费金额"
-            android:textSize="@dimen/sp_20"
-            android:textColor="@color/color_34"
-            android:textColorHint="@color/color_B1"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal|number"
             android:maxLength="5"
             android:paddingLeft="@dimen/dp_1"
             android:singleLine="true"
             android:text=""
-            android:layout_marginEnd="@dimen/dp_12"
-            android:layout_marginStart="@dimen/dp_3"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/color_34"
+            android:textColorHint="@color/color_B1"
+            android:textSize="@dimen/sp_20"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/liter_tv"
             app:layout_constraintStart_toEndOf="@+id/money_tag"
-            app:layout_constraintEnd_toStartOf="@+id/liter_tv"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/liter_tv"
             android:layout_width="@dimen/dp_80"
             android:layout_height="match_parent"
-            android:text="约0.00L"
-            android:gravity="center"
             android:layout_margin="@dimen/dp_1"
             android:background="@drawable/shape_gray_right_4radius"
-            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:text="约0.00L"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/amount_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_18"
-        android:layout_marginEnd="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_5"
-        app:layout_constraintTop_toBottomOf="@+id/amount_input_cl"/>
+        android:layout_marginEnd="@dimen/dp_18"
+        app:layout_constraintTop_toBottomOf="@+id/amount_input_cl" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/discount_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginEnd="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_20"
         android:background="@drawable/shape_white_4raduis"
         app:layout_constraintTop_toBottomOf="@+id/amount_recycler_view" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_30"
-        app:layout_constraintTop_toBottomOf="@+id/discount_recycler_view">
+        app:layout_constraintBottom_toBottomOf="parent">
+
         <TextView
             android:id="@+id/current_price_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="实付：￥0.00"
-            android:textSize="@dimen/sp_18"
-            android:textColor="@color/color_34"
-            android:textStyle="bold"
-            app:layout_constraintVertical_chainStyle="packed"
             android:layout_marginStart="@dimen/dp_20"
+            android:text="实付：￥0.00"
+            android:textColor="@color/color_34"
+            android:textSize="@dimen/sp_18"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/discount_price_tv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/discount_price_tv"/>
+            app:layout_constraintVertical_chainStyle="packed" />
+
         <TextView
             android:id="@+id/discount_price_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="优惠合计：￥0.00"
-            android:textSize="@dimen/sp_12"
-            android:textColor="@color/color_070D"
-            android:includeFontPadding="false"
             android:layout_marginTop="@dimen/dp_5"
+            android:includeFontPadding="false"
+            android:text="优惠合计：￥0.00"
+            android:textColor="@color/color_070D"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/current_price_tv"
-            app:layout_constraintTop_toBottomOf="@+id/current_price_tv"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/current_price_tv" />
+
         <TextView
+            android:id="@+id/create_order_tv"
             android:layout_width="@dimen/dp_135"
             android:layout_height="@dimen/dp_44"
-            android:text="确认支付"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:background="@drawable/selector_query_check_bg"
             android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="确认支付"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_16"
-            android:includeFontPadding="false"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_10"
-            android:background="@drawable/shape_pay_6radius"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

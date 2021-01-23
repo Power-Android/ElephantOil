@@ -7,16 +7,14 @@ import android.view.View;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.KeyboardUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilAmountAdapter;
 import com.xxjy.jyyh.adapter.OilDiscountAdapter;
 import com.xxjy.jyyh.databinding.DialogOilAmountLayoutBinding;
-import com.xxjy.jyyh.databinding.DialogOilNumLayoutBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +27,14 @@ import java.util.List;
  */
 public class OilAmountDialog {
     private Context mContext;
-    private Activity mActivity;
     private BottomSheetDialog mOilAmountDialog;
     private BottomSheetBehavior mBehavior;
     private DialogOilAmountLayoutBinding mBinding;
     private List<String> mAmountList = new ArrayList<>();
     private List<String> mDiscountList = new ArrayList<>();
 
-    public OilAmountDialog(Context context, Activity activity) {
+    public OilAmountDialog(Context context) {
         this.mContext = context;
-        this.mActivity = activity;
         mBinding = DialogOilAmountLayoutBinding.bind(
                 LayoutInflater.from(mContext).inflate(R.layout.dialog_oil_amount_layout, null));
         init();
@@ -68,6 +64,11 @@ public class OilAmountDialog {
                 new GridLayoutManager(mContext, 3));
         OilAmountAdapter oilAmountAdapter = new OilAmountAdapter(R.layout.adapter_oil_amount, mAmountList);
         mBinding.amountRecyclerView.setAdapter(oilAmountAdapter);
+        oilAmountAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (mOnItemClickedListener != null){
+                mOnItemClickedListener.onOilAmountClick(adapter, view, position);
+            }
+        });
 
         //优惠列表
         for (int i = 0; i < 4; i++) {
@@ -80,10 +81,39 @@ public class OilAmountDialog {
 
         mBinding.cancelIv.setOnClickListener(view -> mOilAmountDialog.cancel());
         mBinding.backIv.setOnClickListener(view -> mOilAmountDialog.cancel());
+        discountAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (mOnItemClickedListener != null){
+                mOnItemClickedListener.onOilDiscountClick(adapter, view, position);
+            }
+        });
+
+        mBinding.cancelIv.setOnClickListener(view -> mOilAmountDialog.cancel());
+        mBinding.backIv.setOnClickListener(view -> mOilAmountDialog.cancel());
+        mBinding.createOrderTv.setOnClickListener(view -> {
+            if (mOnItemClickedListener != null){
+                mOnItemClickedListener.onCreateOrder(view);
+            }
+        });
 
     }
 
     public void show() {
         mOilAmountDialog.show();
+    }
+
+    public void dismiss(){
+        mOilAmountDialog.dismiss();
+    }
+
+    public interface OnItemClickedListener{
+        void onOilAmountClick(BaseQuickAdapter adapter, View view, int position);
+        void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position);
+        void onCreateOrder(View view);
+    }
+
+    private OnItemClickedListener mOnItemClickedListener;
+
+    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener){
+        this.mOnItemClickedListener = onItemClickedListener;
     }
 }
