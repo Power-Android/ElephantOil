@@ -8,5 +8,5 @@
     <string name="errcode_unknown">发送返回</string>
 
     <string name="double_click_exit_toast">再按一次退出</string>
-
+    <string name="fix_bounce_Behaviors">com.xxjy.jyyh.wight.FixAppBarLayoutBehavior</string>
 </resources>

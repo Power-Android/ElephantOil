@@ -1,4 +1,4 @@
-package com.xxjy.jyyh.wight.dialog;
+package com.xxjy.jyyh.dialog;
 
 import android.text.TextUtils;
 import android.view.Gravity;

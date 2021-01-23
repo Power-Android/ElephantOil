@@ -10,7 +10,7 @@ import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.entity.SharedInfoBean;
-import com.xxjy.jyyh.wight.dialog.SharedBoardDialog;
+import com.xxjy.jyyh.dialog.SharedBoardDialog;
 
 /**
  * 车主邦
