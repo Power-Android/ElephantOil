@@ -40,7 +40,7 @@ public class OilTipsDialog {
     public OilTipsDialog(Context context) {
         this.mContext = context;
         mBinding = DialogOilTipsLayoutBinding.bind(
-               View.inflate(context, R.layout.dialog_oil_tips_layout, null));
+               LayoutInflater.from(context).inflate( R.layout.dialog_oil_tips_layout, null));
         init();
     }
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
+     android:layout_width="@dimen/dp_300"
+     android:layout_height="wrap_content"
+     android:orientation="vertical"
+     android:gravity="center_horizontal"
+     app:qmui_radius="@dimen/dp_13"
+     app:qmui_borderWidth="0dp"
+     app:qmui_backgroundColor="@color/white"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+     >
+<ImageView
+    android:layout_width="@dimen/dp_109"
+    android:layout_height="@dimen/dp_71"
+    android:layout_marginTop="@dimen/dp_40"
+    android:src="@drawable/ic_no_location"/>
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textColor="@color/color_34"
+         android:textSize="@dimen/sp_12"
+         android:layout_marginTop="@dimen/dp_15"
+         android:text="当前未能获取您的位置信息，是否查看全部油站？"/>
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="@dimen/dp_21"
+         android:layout_marginBottom="@dimen/dp_27"
+         android:gravity="center"
+         android:orientation="horizontal">
+         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
+             android:layout_width="@dimen/dp_123"
+             android:layout_height="@dimen/dp_38"
+             app:qmui_borderWidth="@dimen/dp_0"
+             app:qmui_radius="@dimen/dp_6"
+             app:qmui_backgroundColor="@color/colorAccent"
+           >
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:textSize="@dimen/sp_16"
+                 android:textColor="@color/white"
+                 android:layout_centerInParent="true"
+                 android:text="重新授权"
+                 />
+         </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
+         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
+             android:layout_width="@dimen/dp_123"
+             android:layout_height="@dimen/dp_38"
+             android:layout_marginLeft="@dimen/dp_10"
+             app:qmui_borderWidth="@dimen/dp_0"
+             app:qmui_radius="@dimen/dp_6"
+             app:qmui_borderColor="@color/colorAccent"
+             app:qmui_backgroundColor="@color/color_D0"
+            >
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:textSize="@dimen/sp_16"
+                 android:textColor="@color/white"
+                 android:layout_centerInParent="true"
+                 android:text="查看全部油站"
+                 />
+         </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
+
+
+     </LinearLayout>
+ </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

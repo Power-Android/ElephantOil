@@ -1,6 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:id="@+id/parent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<com.qmuiteam.qmui.widget.QMUITopBarLayout
+    android:id="@+id/top_bar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FD6431"
+    android:fitsSystemWindows="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_44"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp_17"
+        android:paddingRight="@dimen/dp_17"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="@dimen/dp_97"
+            android:layout_height="@dimen/dp_19"
+            android:src="@drawable/ic_top_logo"/>
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_30"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/dp_11"
+            android:layout_marginRight="@dimen/dp_11"
+            android:paddingLeft="@dimen/dp_11"
+            android:paddingRight="@dimen/dp_11"
+            android:gravity="center_vertical"
+            app:qmui_backgroundColor="@color/white"
+            app:qmui_borderWidth="@dimen/dp_0"
+            app:qmui_radius="@dimen/dp_15"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_13"
+                android:src="@drawable/ic_search_gray"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_6"
+                android:text="搜索加油站名称"
+                android:textSize="@dimen/sp_13"
+                android:textColor="@color/color_A0"/>
+        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
+        <ImageView
+            android:layout_width="@dimen/dp_19"
+            android:layout_height="@dimen/dp_17"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:src="@drawable/ic_customer_service"/>
+        <ImageView
+            android:layout_width="@dimen/dp_19"
+            android:layout_height="@dimen/dp_17"
+            android:layout_marginLeft="@dimen/dp_19"
+            android:src="@drawable/ic_message"/>
+    </LinearLayout>
+</com.qmuiteam.qmui.widget.QMUITopBarLayout>
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tool_bar"
+            app:srlEnableLoadMore="false">
+
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FD6431"
+                app:srlAccentColor="@color/white" />
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:qmui_is_target="true"
+                android:orientation="vertical">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/app_bar_layout"
+                    android:background="#FD6431"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_0"
+                    app:elevation="0dp"
+                    app:layout_behavior="@string/fix_bounce_Behaviors"
+                    >
+
+                    <!--必须在layout_scrollFlags中添加scroll属性
+                    代表着这个布局是可以被收纳的
+                    -->
+
+
+                    <LinearLayout
+                        android:id="@+id/top_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:orientation="vertical"
+                        app:layout_scrollFlags="scroll">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/dp_20"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_15"
+        android:layout_marginLeft="4dp"
+        android:textColor="@color/white"
+        android:text="我的积分"/>
+    <ImageView
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="@dimen/dp_12"
+        android:layout_marginBottom="3dp"
+        android:src="@drawable/ic_help"/>
+</LinearLayout>
+                        <TextView
+                            android:id="@+id/integral_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/sp_15"
+                            android:layout_marginLeft="4dp"
+                            android:textColor="@color/white"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:gravity="center"
+                            android:text="0"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_35"
+                            android:paddingTop="@dimen/dp_10"
+                            android:paddingLeft="@dimen/dp_12"
+                            android:paddingRight="@dimen/dp_12"
+                            android:background="@color/color_F5"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/dp_107"
+                                    android:layout_marginRight="@dimen/dp_5"
+                                    android:layout_weight="1"
+                                    app:qmui_corner_radius="8dp"
+                                    app:qmui_border_width="@dimen/dp_0"
+                                    android:src="@drawable/default_img_bg"/>
+                                <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/dp_107"
+                                    android:layout_weight="1"
+                                    app:qmui_corner_radius="8dp"
+                                    app:qmui_border_width="@dimen/dp_0"
+                                    android:src="@drawable/default_img_bg"/>
+                            </LinearLayout>
+                            <!--轮播图-->
+                            <com.youth.banner.Banner
+                                android:id="@+id/banner"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dp_107"
+                                android:background="@color/color_9A"
+                                android:layout_marginTop="@dimen/dp_5"
+                                app:banner_loop_time="5000"
+                                app:banner_auto_loop="true"
+                                app:banner_indicator_margin="@dimen/dp_3"
+                                app:banner_indicator_height="@dimen/dp_3"
+                                app:banner_indicator_normal_width="@dimen/dp_6"
+                                app:banner_indicator_selected_width="@dimen/dp_6"
+                                app:banner_radius="@dimen/dp_8"
+                                app:banner_indicator_selected_color="@color/white"
+                                app:banner_indicator_normal_color="@color/color_9A"
+                                />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/popup_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_F5"
+                        android:orientation="vertical"
+                        app:layout_collapseMode="pin"
+                        app:layout_scrollFlags="snap|exitUntilCollapsed">
+
+                        <com.qmuiteam.qmui.widget.tab.QMUITabSegment
+                            android:id="@+id/tab_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_45"
+                            />
+
+                    </LinearLayout>
+
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_F5"
+                    android:paddingRight="@dimen/dp_8"
+                    android:paddingLeft="@dimen/dp_8"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    />
+
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

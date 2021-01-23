@@ -23,6 +23,7 @@ import com.xxjy.jyyh.adapter.HomeOftenAdapter;
 import com.xxjy.jyyh.adapter.OilStationFlexAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.databinding.FragmentHomeBinding;
+import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
 import com.xxjy.jyyh.dialog.OilAmountDialog;
 import com.xxjy.jyyh.dialog.OilGunDialog;
 import com.xxjy.jyyh.dialog.OilNumDialog;
@@ -170,7 +171,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
             @Override
             public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
-
+                GasStationLocationTipsDialog gasStationLocationTipsDialog = new GasStationLocationTipsDialog(getContext(),mBinding.getRoot(),"成都加油站");
+                gasStationLocationTipsDialog.show();
             }
 
             @Override

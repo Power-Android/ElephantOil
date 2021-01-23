@@ -111,9 +111,10 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
     private void initTab() {
         QMUITabBuilder tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
         tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 16), QMUIDisplayHelper.sp2px(this, 17));
+        tabBuilder.setColor(Color.parseColor("#403636"), Color.parseColor("#1676FF"));
         mBinding.tabView.addTab(tabBuilder.setText("全部").build(this));
         mBinding.tabView.addTab(tabBuilder.setText("待支付").build(this));
-        tabBuilder.setColor(Color.parseColor("#403636"), Color.parseColor("#1676FF"));
+
         int space = QMUIDisplayHelper.dp2px(this, 10);
         mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
         mBinding.tabView.setItemSpaceInScrollMode(space);

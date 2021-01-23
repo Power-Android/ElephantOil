@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/dp_300"
+        android:layout_height="@dimen/dp_204"
+        android:background="@drawable/shape_white_13radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/close_iv"
+            android:layout_width="@dimen/dp_43"
+            android:layout_height="@dimen/dp_43"
+            android:padding="@dimen/common_margin"
+            android:src="@drawable/icon_tb_close_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tip_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="温馨提示"
+            android:textColor="@color/color_34"
+            android:textSize="@dimen/sp_18"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tip_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="余额账户的金额可直接用于您加油消费哦，\n您确定要提现吗？"
+            android:layout_marginStart="@dimen/common_margin"
+            android:layout_marginTop="@dimen/common_margin"
+            android:layout_marginEnd="@dimen/common_margin"
+            app:layout_constraintTop_toBottomOf="@+id/tip_title" />
+        <TextView
+            android:id="@+id/no_tv"
+            android:layout_width="@dimen/dp_146"
+            android:layout_height="@dimen/dp_38"
+            android:text="暂不提现"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            android:gravity="center"
+            android:background="@drawable/selector_query_check_bg"
+            android:enabled="true"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintTop_toBottomOf="@+id/tip_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:id="@+id/continue_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="继续提现"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/sp_16"
+            android:gravity="center"
+            android:enabled="true"
+            app:layout_constraintTop_toBottomOf="@+id/no_tv"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
