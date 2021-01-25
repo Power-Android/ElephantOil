@@ -7,6 +7,7 @@ import android.content.Intent;
 import com.blankj.utilcode.util.SPUtils;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.constants.SPConstants;
+import com.xxjy.jyyh.ui.login.LoginActivity;
 
 /**
  * @author power
@@ -20,7 +21,7 @@ public class LoginHelper {
     public static void login(Context context, CallBack loginCallBack) {
         if (!SPUtils.getInstance().getBoolean(SPConstants.LOGIN_STATUS)) {
             callBack = loginCallBack;
-            Intent intent = new Intent(context, MainActivity.class);
+            Intent intent = new Intent(context, LoginActivity.class);
             context.startActivity(intent);
         } else {
             if (loginCallBack != null) {

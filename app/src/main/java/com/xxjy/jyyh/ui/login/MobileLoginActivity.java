@@ -10,7 +10,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
 
     @Override
     protected void initView() {
-
+        setTransparentStatusBar(mBinding.topLayout);
     }
 
     @Override

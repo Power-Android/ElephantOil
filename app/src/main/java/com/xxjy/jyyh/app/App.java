@@ -14,7 +14,11 @@ import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.http.HttpManager;
 import com.xxjy.jyyh.utils.AppManager;
+import com.xxjy.jyyh.utils.JPushManager;
 import com.xxjy.jyyh.utils.X5WebManager;
+import com.xxjy.jyyh.utils.symanager.ShanYanManager;
+import com.xxjy.jyyh.utils.umengmanager.UMengManager;
+import com.xxjy.jyyh.utils.umengmanager.UMengOnEvent;
 
 /**
  * @author power
@@ -65,18 +69,35 @@ public class App extends Application {
     }
 
     private void init() {
+        //QMUI
         QMUISwipeBackActivityManager.init(this);
+
         //TODO 上线前记得注释
         CrashUtils.init(crashInfo -> ToastUtils.showLong("崩溃日志已存储至目录！"));
+
+        //网络请求Rxhttp
         HttpManager.init(this);
+
         // webview 在调用TBS初始化、创建WebView之前进行如下配置
         X5WebManager.initX5Web(this);
+
+        //初始化闪验sdk
+        ShanYanManager.initShanYnaSdk(this);
 
         appChannel =  UserConstants.getAppChannel();
         if (TextUtils.isEmpty(appChannel)) {
             appChannel = AppManager.getAppMetaChannel();
             UserConstants.setAppChannel(appChannel);
         }
+
+        //标记首次进入app埋点
+        UMengOnEvent.onFirstStartEvent();
+
+        //极光推送配置
+        JPushManager.initJPush(this);
+
+        //友盟统计
+        UMengManager.init(this);
     }
 
     public static String getAppChannel() {

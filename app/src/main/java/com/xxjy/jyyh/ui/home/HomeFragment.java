@@ -22,6 +22,7 @@ import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.HomeOftenAdapter;
 import com.xxjy.jyyh.adapter.OilStationFlexAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentHomeBinding;
 import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
 import com.xxjy.jyyh.dialog.OilAmountDialog;
@@ -32,6 +33,8 @@ import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
+import com.xxjy.jyyh.utils.LoginHelper;
+import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,7 +237,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 }
                 break;
             case R.id.home_quick_oil_rl:
-                startActivity(new Intent(mContext, OilDetailActivity.class));
+                LoginHelper.login(mContext, new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        startActivity(new Intent(mContext, OilDetailActivity.class));
+                    }
+                });
                 break;
             case R.id.search_iv:
                 startActivity(new Intent(mContext, SearchActivity.class));
