@@ -10,9 +10,12 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.blankj.utilcode.util.SizeUtils;
 import com.chuanglan.shanyan_sdk.listener.ShanYanCustomInterface;
@@ -22,6 +25,9 @@ import com.xxjy.jyyh.constants.Constants;
 
 
 public class SYConfigUtils {
+
+    private static ConstraintLayout invitationLayout;
+    private static boolean isDown = false;
 
     //沉浸式竖屏样式
     public static ShanYanUIConfig getCJSConfig(final Context context, ShanYanCustomInterface relativeLayoutClick,
@@ -54,6 +60,30 @@ public class SYConfigUtils {
 //        numberParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 //        numberLayout.setLayoutParams(numberParams);
 
+        invitationLayout = (ConstraintLayout) LayoutInflater.from(context)
+                .inflate(R.layout.invitation_layout, null);
+        ConstraintLayout.LayoutParams invitationPrarms =
+                new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT,
+                        ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        invitationPrarms.setMargins(0, SizeUtils.dp2px(290), 0, 0);
+        invitationLayout.setLayoutParams(invitationPrarms);
+
+        ImageView iv = invitationLayout.findViewById(R.id.iv1);
+        View iv2 = invitationLayout.findViewById(R.id.iv2);
+        EditText et = invitationLayout.findViewById(R.id.invitation_et);
+        invitationLayout.findViewById(R.id.tv1).setOnClickListener(view -> {
+            if (isDown){
+                iv.animate().setDuration(200).rotation(90).start();
+                et.setVisibility(View.VISIBLE);
+                iv2.setVisibility(View.VISIBLE);
+            }else {
+                iv.animate().setDuration(200).rotation(0).start();
+                et.setVisibility(View.GONE);
+                iv2.setVisibility(View.GONE);
+            }
+            isDown = !isDown;
+        });
+
         //其他方式登录
         LayoutInflater otherLoginInflater1 = LayoutInflater.from(context);
         FrameLayout otherLoginLayout = (FrameLayout)
@@ -61,8 +91,9 @@ public class SYConfigUtils {
         RelativeLayout.LayoutParams otherParamsOther =
                 new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         otherParamsOther.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        otherParamsOther.setMargins(0, SizeUtils.dp2px(262), 0, 0);
+        otherParamsOther.setMargins(0, SizeUtils.dp2px(400), 0, 0);
         otherLoginLayout.setLayoutParams(otherParamsOther);
+
 //        otherLoginLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -120,33 +151,33 @@ public class SYConfigUtils {
 
                 //授权页logo：
                 .setLogoImgPath(logoBg)
-                .setLogoWidth(51)
-                .setLogoHeight(60)
-                .setLogoOffsetY(35)
+                .setLogoWidth(70)
+                .setLogoHeight(70)
+                .setLogoOffsetY(40)
                 .setLogoHidden(false)   //是否隐藏logo
 
                 //授权页号码栏：
                 .setNumberColor(Color.parseColor("#282828"))  //设置手机号码字体颜色
-                .setNumberSize(25)
+                .setNumberSize(27)
 //                .setNumberBold(true)
-                .setNumFieldOffsetY(146)    //设置号码栏相对于标题栏下边缘y偏移
+                .setNumFieldOffsetY(170)    //设置号码栏相对于标题栏下边缘y偏移
 
                 //授权页登录按钮：
                 .setLogBtnText("本机号码一键登录")  //设置登录按钮文字
                 .setLogBtnTextColor(Color.parseColor("#ffffff"))   //设置登录按钮文字颜色
                 .setLogBtnImgPath(logBtnBg)   //设置登录按钮图片
-                .setLogBtnOffsetY(208)
-                .setLogBtnTextSize(13)
-                .setLogBtnHeight(35)
+                .setLogBtnOffsetY(230)
+                .setLogBtnTextSize(15)
+                .setLogBtnHeight(45)
                 .setLogBtnWidth(getScreenWidth(context, true) - 56)
 
                 //授权页隐私栏：
                 .setAppPrivacyOne("服务协议", Constants.USER_XIE_YI)  //设置开发者隐私条款1名称和URL(名称，url)
-                .setAppPrivacyTwo("隐私政策",  Constants.YINSI_ZHENG_CE)  //设置开发者隐私条款2名称和URL(名称，url)
+                .setAppPrivacyTwo("隐私政策", Constants.YINSI_ZHENG_CE)  //设置开发者隐私条款2名称和URL(名称，url)
                 .setPrivacySmhHidden(false)
-                .setPrivacyTextSize(10)
+                .setPrivacyTextSize(12)
                 .setAppPrivacyColor(Color.parseColor("#999999"), Color.parseColor("#414141"))    //	设置隐私条款名称颜色(基础文字颜色，协议文字颜色)
-                .setPrivacyOffsetY(308)
+                .setPrivacyOffsetY(500)
 //                .setPrivacyOffsetBottomY(260)
                 .setPrivacyOffsetGravityLeft(false)
                 .setPrivacyState(true)
@@ -166,8 +197,8 @@ public class SYConfigUtils {
                 //授权页slogan
                 .setSloganHidden(false)
                 .setSloganTextColor(Color.parseColor("#A6A6A6"))
-                .setSloganTextSize(11)
-                .setSloganOffsetY(119)
+                .setSloganTextSize(13)
+                .setSloganOffsetY(130)
 
                 //授权页创蓝slogan
                 .setShanYanSloganHidden(true)
@@ -191,6 +222,7 @@ public class SYConfigUtils {
 //                .addCustomView(numberLayout, false, false, null)
                 .addCustomView(thirdLogin, false, false, null)
                 .addCustomView(otherLoginLayout, false, false, relativeLayoutClick)
+                .addCustomView(invitationLayout, false, false, null)
 
                 .build();
         return uiConfig;

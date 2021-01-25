@@ -17,7 +17,7 @@ import com.xxjy.jyyh.ui.login.LoginActivity;
  * https://flash.253.com/document/details?cid=93&lid=519&pc=28&pn=%25E9%2597%25AA%25E9%25AA%258CSDK#43f0e755
  */
 public class ShanYanManager {
-    private static final String APP_ID = "okWJjwEH";
+    private static final String APP_ID = "KlRtGJtQ";//okWJjwEH
     private static final int INIT_SUCCESS_CODE = 1022;      //初始化成功的code
     public static final int DEFAULT_SUCCESS_CODE = 1022;    //默认的流程成功code
     private static int initCode = 0;

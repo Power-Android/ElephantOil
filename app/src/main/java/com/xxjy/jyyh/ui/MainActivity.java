@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -16,11 +17,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMainBinding;
 import com.xxjy.jyyh.ui.home.HomeFragment;
 import com.xxjy.jyyh.ui.integral.IntegralFragment;
 import com.xxjy.jyyh.ui.mine.MineFragment;
 import com.xxjy.jyyh.ui.oil.OilFragment;
+import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 
 public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewModel> {
     private int mLastFgIndex = -1;
@@ -31,9 +34,23 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     private MineFragment mMineFragment;
     private FragmentTransaction mTransaction;
 
+    //极光intent
+    public static final String TAG_FLAG_INTENT_VALUE_INFO = "intentInfo";
+
+
     @Override
     protected void initView() {
         initNavigationView();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //未登录的时候尝试检查闪验是否支持
+                if (!UserConstants.getIsLogin()) {
+                    ShanYanManager.checkShanYanSupportState();
+                }
+            }
+        }, 3000);
     }
 
     private void initNavigationView() {
