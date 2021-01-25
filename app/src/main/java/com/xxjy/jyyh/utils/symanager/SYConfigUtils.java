@@ -93,6 +93,7 @@ public class SYConfigUtils {
         otherParamsOther.addRule(RelativeLayout.CENTER_HORIZONTAL);
         otherParamsOther.setMargins(0, SizeUtils.dp2px(400), 0, 0);
         otherLoginLayout.setLayoutParams(otherParamsOther);
+
 //        otherLoginLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
