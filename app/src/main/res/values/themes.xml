@@ -10,7 +10,7 @@
     </style>
 
     <style name="QDTopBar" parent="QMUI.TopBar">
-        <item name="qmui_topbar_height">30dp</item>
+        <item name="qmui_topbar_height">48dp</item>
         <item name="qmui_topbar_image_btn_height">30dp</item>
         <item name="qmui_topbar_title_text_size">18sp</item>
         <item name="qmui_topbar_title_color">@color/black</item>

@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.base;
 
 import android.animation.Animator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -33,6 +34,7 @@ public abstract class BaseActivity extends QMUIFragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initLoadingDialog();
+        BarUtils.setStatusBarLightMode(this, true);
     }
 
     /**

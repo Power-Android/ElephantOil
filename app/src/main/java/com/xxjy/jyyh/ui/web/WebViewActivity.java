@@ -46,9 +46,6 @@ import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.umengmanager.SharedInfoManager;
 
-/**
- * Created by czb365 on 2017/5/9.
- */
 
 public class WebViewActivity extends BindingActivity<ActivityWebviewBinding,WebViewViewModel>
         implements View.OnClickListener, OnJsCallListener {
@@ -91,7 +88,6 @@ public class WebViewActivity extends BindingActivity<ActivityWebviewBinding,WebV
 
     protected void initData() {
         INSTENCE = this;
-        initView();
         StatusBarUtil.setHeightAndPadding(this, mToolbar);
         url = getIntent().getStringExtra("url");
         initListener();

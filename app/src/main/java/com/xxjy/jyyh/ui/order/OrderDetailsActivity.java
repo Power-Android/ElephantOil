@@ -29,12 +29,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
     protected void initView() {
         mBinding.topLayout.setTitle("订单详情");
         mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
-                R.id.qmui_topbar_item_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
 
         mBinding.useMethodView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mBinding.useMethodView.getPaint().setAntiAlias(true);
@@ -60,12 +55,9 @@ mBinding.continuePayView.setOnClickListener(this::onViewClicked);
 
                 Collections.addAll(data, listItems);
                 ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.adapter_order_manage_layout, data);
-                AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (mNormalPopup != null) {
-                            mNormalPopup.dismiss();
-                        }
+                AdapterView.OnItemClickListener onItemClickListener = (adapterView, view1, i, l) -> {
+                    if (mNormalPopup != null) {
+                        mNormalPopup.dismiss();
                     }
                 };
                 mNormalPopup = QMUIPopups.listPopup(this,

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.xxjy.jyyh.base.BaseActivity;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
 
 import java.io.File;
 
@@ -154,7 +155,7 @@ public class NaviActivityInfo {
 //        }
 //        //默认的
 //        else {
-//            WebViewActivity.openRealUrlWebActivity(activity, urlInfo);
+            WebViewActivity.openRealUrlWebActivity(activity, urlInfo);
 //        }
     }
 

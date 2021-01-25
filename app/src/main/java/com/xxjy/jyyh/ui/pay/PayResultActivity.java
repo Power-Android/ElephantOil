@@ -3,6 +3,7 @@ package com.xxjy.jyyh.ui.pay;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.view.View;
@@ -19,14 +20,17 @@ public class PayResultActivity extends BindingActivity<ActivityPayResultBinding,
 
     @Override
     protected void initView() {
-        mBinding.topLayout.setTitle("支付结果");
-        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
-                R.id.qmui_topbar_item_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        mBinding.topLayout.setTitle("支付结果");
+//        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
+//                R.id.qmui_topbar_item_left_back).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+        mBinding.topLayout.setTitle("支付结果").setTextColor(Color.parseColor("#FFFFFF"));
+        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_white,
+                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
         mBinding.goHomeView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mBinding.goHomeView.getPaint().setAntiAlias(true);
 

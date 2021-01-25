@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.blankj.utilcode.util.BarUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout;
 import com.qmuiteam.qmui.widget.tab.QMUITabBuilder;
 import com.qmuiteam.qmui.widget.tab.QMUITabIndicator;
@@ -20,6 +21,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OrderListAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityOrderListBinding;
+import com.xxjy.jyyh.utils.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +36,9 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
 
     @Override
     protected void initView() {
-        mBinding.topLayout.setTitle("我的订单");
-        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
-                R.id.qmui_topbar_item_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        mBinding.topLayout.setTitle("我的订单").setTextColor(Color.parseColor("#FFFFFF"));
+        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_white,
+                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
 
         initTab();
 
@@ -54,25 +51,22 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
         adapter = new OrderListAdapter(R.layout.adapter_order_layout, data);
         mBinding.recyclerView.setAdapter(adapter);
 
-        mBinding.pullLayout.setActionListener(new QMUIPullLayout.ActionListener() {
-            @Override
-            public void onActionTriggered(@NonNull QMUIPullLayout.PullAction pullAction) {
-                mPullAction = pullAction;
-                if (pullAction.getPullEdge() == QMUIPullLayout.PULL_EDGE_TOP) {
-                    data.clear();
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    adapter.notifyDataSetChanged();
-                } else if (pullAction.getPullEdge() == QMUIPullLayout.PULL_EDGE_BOTTOM) {
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    adapter.notifyDataSetChanged();
+        mBinding.pullLayout.setActionListener(pullAction -> {
+            mPullAction = pullAction;
+            if (pullAction.getPullEdge() == QMUIPullLayout.PULL_EDGE_TOP) {
+                data.clear();
+                data.add("aaaa");
+                data.add("aaaa");
+                data.add("aaaa");
+                data.add("aaaa");
+                adapter.notifyDataSetChanged();
+            } else if (pullAction.getPullEdge() == QMUIPullLayout.PULL_EDGE_BOTTOM) {
+                data.add("aaaa");
+                data.add("aaaa");
+                data.add("aaaa");
+                data.add("aaaa");
+                adapter.notifyDataSetChanged();
 
-                }
             }
         });
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
