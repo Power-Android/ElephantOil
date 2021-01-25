@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.ui.order;
 
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityOrderDetailsBinding;
+import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,12 +39,13 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
         mBinding.useMethodView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mBinding.useMethodView.getPaint().setAntiAlias(true);
 
-        mBinding.orderManageLayout.setOnClickListener(this::onViewClicked);
+
     }
 
     @Override
     protected void initListener() {
-
+mBinding.continuePayView.setOnClickListener(this::onViewClicked);
+        mBinding.orderManageLayout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -83,6 +86,9 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                         })
                         .show(view);
 
+                break;
+            case R.id.continue_pay_view:
+                startActivity(new Intent(this, RefuelingPayResultActivity.class));
                 break;
         }
     }
