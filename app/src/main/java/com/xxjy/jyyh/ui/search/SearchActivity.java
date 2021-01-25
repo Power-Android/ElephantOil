@@ -179,7 +179,9 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                 finish();
                 break;
             case R.id.search_tv:
-                startActivity(new Intent(this, SearchResultActivity.class));
+                Intent intent = new Intent(this, SearchResultActivity.class);
+                intent.putExtra("type", "2");
+                startActivity(intent);
                 break;
             case R.id.oil_history_delete_iv://油站的历史记录删除
                 break;

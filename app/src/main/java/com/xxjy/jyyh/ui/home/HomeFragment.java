@@ -25,6 +25,7 @@ import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.databinding.FragmentHomeBinding;
 import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
 import com.xxjy.jyyh.dialog.OilAmountDialog;
+import com.xxjy.jyyh.dialog.OilCouponDialog;
 import com.xxjy.jyyh.dialog.OilGunDialog;
 import com.xxjy.jyyh.dialog.OilNumDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
@@ -50,6 +51,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private OilAmountDialog mOilAmountDialog;
     private OilTipsDialog mOilTipsDialog;
     private OilPayDialog mOilPayDialog;
+    private OilCouponDialog mOilCouponDialog;
 
     public static HomeFragment getInstance() {
         return new HomeFragment();
@@ -148,7 +150,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
             @Override
             public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position) {
-
+                if (mOilCouponDialog != null){
+                    mOilCouponDialog.show();
+                }
             }
 
             @Override
@@ -156,6 +160,19 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 if (mOilTipsDialog != null){
                     mOilTipsDialog.show(view);
                 }
+            }
+        });
+
+        mOilCouponDialog = new OilCouponDialog(mContext);
+        mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
+            @Override
+            public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+
+            @Override
+            public void onNoCouponClick() {
+
             }
         });
 

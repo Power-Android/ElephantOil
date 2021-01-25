@@ -37,12 +37,12 @@ public class OilDiscountAdapter extends BaseQuickAdapter<String, BaseViewHolder>
                 break;
             case 1://会员红包
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_vip_package)
-                        .setText(R.id.item_title_tv, "会员红包");
+                        .setText(R.id.item_title_tv, "平台优惠券");
                 setDrawable(discountTv, R.drawable.arrow_right_icon);
                 break;
             case 2://小象优惠券
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_elephant_coupon)
-                        .setText(R.id.item_title_tv, "小象优惠券");
+                        .setText(R.id.item_title_tv, "商家优惠券");
                 setDrawable(discountTv, R.drawable.arrow_right_icon);
                 break;
             case 3://余额
