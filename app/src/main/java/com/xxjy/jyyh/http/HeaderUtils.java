@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.EncodeUtils;
+import com.blankj.utilcode.util.LogUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

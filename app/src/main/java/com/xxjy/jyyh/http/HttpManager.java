@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.DeviceUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.UserConstants;
@@ -30,7 +31,7 @@ import rxhttp.wrapper.ssl.HttpsUtils;
  * @description:
  */
 public class HttpManager {
-    public static void init(Application context){
+    public static void init(Application context) {
         File file = new File(context.getExternalCacheDir(), "RxHttpCookie");
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
         OkHttpClient client = new OkHttpClient.Builder()
@@ -87,9 +88,8 @@ public class HttpManager {
 
     /**
      * 生成最终的请求体的参数,主要用来添加默认的 参数
-     *
-     * @return 最终参数
      * @param p
+     * @return 最终参数
      */
     public static Map<String, String> getCommonParams(Param p) {
         Map<String, String> finalParams = new HashMap<>();
@@ -109,25 +109,21 @@ public class HttpManager {
         try {
 //            cityCode = UserConstants.getCityCode();
 //            adCode = UserConstants.getAdCode();
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
 
         String app_store = UserConstants.getAppChannel();
         String openId = UserConstants.getOpenId();
 
-
         finalParams.put("t", t);//时间戳
         finalParams.put("os", "1");//操作系统
         finalParams.put("cv", cv);//客户端版本号
 
-        if (p != null || !p.getSimpleUrl().startsWith("http")) {
-            finalParams.put("method", "/" + p.getSimpleUrl());
-        } else {
-            finalParams.put("method", p.getSimpleUrl().substring(App.URL_IS_DEBUG ?
-                    ApiService.DEBUG_URL.length() - 1 :
-                    ApiService.RELEASE_URL.length() - 1));
-        }
+        finalParams.put("method", p.getSimpleUrl().substring(App.URL_IS_DEBUG ?
+                ApiService.DEBUG_URL.length() - 1 :
+                ApiService.RELEASE_URL.length() - 1));
+
         String sign = HeaderUtils.getSign(HeaderUtils.sortMapByKey(finalParams));
         finalParams.put("sign", sign);
         finalParams.remove("method");
