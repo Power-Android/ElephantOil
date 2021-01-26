@@ -42,7 +42,7 @@ public class JsOperation implements JsOperationMethods {
     @Override
     @JavascriptInterface
     public String getAppInfo() {
-        Map<String, String> finalParams = HttpManager.getCommonParams();
+        Map<String, String> finalParams = HttpManager.getCommonParams(null);
         finalParams.put(SPConstants.APP_TOKEN, UserConstants.getToken());
         AMapLocation mapLocation = MapLocationHelper.getMapLocation();
         if (mapLocation != null) {

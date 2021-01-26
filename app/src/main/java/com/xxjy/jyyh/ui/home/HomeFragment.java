@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.ui.home;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -7,11 +8,17 @@ import android.os.Build;
 import android.view.View;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amap.api.location.CoordinateConverter;
+import com.amap.api.location.DPoint;
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SpanUtils;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
@@ -32,6 +39,7 @@ import com.xxjy.jyyh.dialog.OilNumDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.dialog.ReceiveRewardDialog;
+import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
@@ -56,6 +64,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private OilTipsDialog mOilTipsDialog;
     private OilPayDialog mOilPayDialog;
     private OilCouponDialog mOilCouponDialog;
+    private double mLng, mLat;
 
     public static HomeFragment getInstance() {
         return new HomeFragment();
@@ -74,6 +83,16 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     protected void initView() {
         getBaseActivity().setTransparentStatusBar();
         mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
+
+        if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
+            mLat = Double.parseDouble(UserConstants.getLatitude());
+            mLng = Double.parseDouble(UserConstants.getLongitude());
+
+            mViewModel.getHomeOil(mLat, mLng);
+        }
+        //请求定位权限
+        requestPermission();
+
         //智能优选title
         SpanUtils.with(mBinding.descTv)
                 .append("小象加油")
@@ -81,6 +100,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 .append("根据您当前的位置智能优选")
                 .setForegroundColor(getResources().getColor(R.color.color_6A))
                 .create();
+
         //优选油站
         for (int i = 0; i < 3; i++) {
             mOilTagList.add("新客满20L享10L国标价半价");
@@ -100,6 +120,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         }
         mBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+
         //常去油站
         mOftenList.add("• 我最近常去：");
         mOftenList.add("光华路加油站、");
@@ -128,6 +149,27 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.exchangeRecyclerView.setAdapter(exchangeAdapter);
 
         initOilDialog();
+    }
+
+    private void requestPermission() {
+        PermissionUtils.permission(
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                .callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
+                        mViewModel.getLocation();
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
+                    }
+                })
+                .request();
     }
 
     private void initOilDialog() {
@@ -258,6 +300,23 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     @Override
     protected void dataObservable() {
+        mViewModel.locationLiveData.observe(this, locationEntity -> {
+            DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
+            DPoint p2 = new DPoint(mLat, mLng);
+            mBinding.addressTv.setText(locationEntity.getAddress());
+            float distance = CoordinateConverter.calculateLineDistance(p, p2);
+            if (distance > 100) {
+                mLng = locationEntity.getLng();
+                mLat = locationEntity.getLat();
+                LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
+                mViewModel.getHomeOil(mLat, mLng);
+            }
+        });
 
+        mViewModel.homeOilLiveData.observe(this, oilEntity -> {
+            OilEntity.StationsBean stationsBean = oilEntity.getStations().get(0);
+            Glide.with(mContext).load(stationsBean.getGasTypeImg()).into(mBinding.oilImgIv);
+            mBinding.oilNameTv.setText(stationsBean.getGasName());
+        });
     }
 }

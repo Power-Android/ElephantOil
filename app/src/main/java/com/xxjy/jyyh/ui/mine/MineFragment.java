@@ -13,6 +13,7 @@ import com.xxjy.jyyh.databinding.FragmentMineBinding;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
 import com.xxjy.jyyh.ui.setting.SettingActivity;
+import com.xxjy.jyyh.utils.LoginHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,8 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.refuelingOrderLayout.setOnClickListener(this::onViewClicked);
         mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
         mBinding.settingView.setOnClickListener(this::onViewClicked);
+        mBinding.nameView.setOnClickListener(this::onViewClicked);
+        mBinding.photoView.setOnClickListener(this::onViewClicked);
 
     }
 
@@ -59,6 +62,15 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                 break;
             case R.id.setting_view:
                 getActivity().startActivity(new Intent(getContext(), SettingActivity.class));
+                break;
+            case R.id.name_view:
+            case R.id.photo_view:
+                LoginHelper.login(mContext, new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+
+                    }
+                });
                 break;
         }
 

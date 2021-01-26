@@ -5,22 +5,22 @@ import android.text.TextUtils;
 
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.DeviceUtils;
+import com.xxjy.jyyh.app.App;
+import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.UserConstants;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import rxhttp.RxHttp;
 import rxhttp.RxHttpPlugins;
 import rxhttp.wrapper.cahce.CacheMode;
 import rxhttp.wrapper.cookie.CookieStore;
 import rxhttp.wrapper.param.Method;
+import rxhttp.wrapper.param.Param;
 import rxhttp.wrapper.ssl.HttpsUtils;
 
 /**
@@ -80,7 +80,7 @@ public class HttpManager {
                 p.addHeader("Authorization", "Bearer " + token);
             }
             //添加公共参数
-            p.addAll(getCommonParams());
+            p.addAll(getCommonParams(p));
             return p;
         });
     }
@@ -89,8 +89,9 @@ public class HttpManager {
      * 生成最终的请求体的参数,主要用来添加默认的 参数
      *
      * @return 最终参数
+     * @param p
      */
-    public static Map<String, String> getCommonParams() {
+    public static Map<String, String> getCommonParams(Param p) {
         Map<String, String> finalParams = new HashMap<>();
         String t = System.currentTimeMillis() + "";     //时间戳
         String did = UserConstants.getUuid();              //设备标识
@@ -114,17 +115,37 @@ public class HttpManager {
         }
 
         String app_store = UserConstants.getAppChannel();
+        String openId = UserConstants.getOpenId();
+
 
         finalParams.put("t", t);//时间戳
         finalParams.put("did", did);
         finalParams.put("os", "1");//操作系统
         finalParams.put("osv", osv);//手机系统版本
         finalParams.put("cv", cv);//客户端版本号
+
+        if (p != null || !p.getSimpleUrl().startsWith("http")) {
+            finalParams.put("method", "/" + p.getSimpleUrl());
+        } else {
+            finalParams.put("method", p.getSimpleUrl().substring(App.URL_IS_DEBUG ?
+                    ApiService.DEBUG_URL.length() - 1 :
+                    ApiService.RELEASE_URL.length() - 1));
+        }
+        String sign = HeaderUtils.getSign(HeaderUtils.sortMapByKey(finalParams));
+        finalParams.put("sign", sign);
+        finalParams.remove("method");
+        if (TextUtils.isEmpty(openId)) {
+            finalParams.put("openId", "");
+        } else {
+            finalParams.put("openId", openId);
+        }
         finalParams.put("location", location);  //位置信息
         finalParams.put("cityCode", cityCode);//城市编码
         finalParams.put("region", cityCode);//banner用的城市编码
         finalParams.put("adCode", adCode);//区域编码
-//        finalParams.put("appStore", app_store); //下载渠道
+        finalParams.put("appStore", app_store); //下载渠道
+        finalParams.put("appId", "Orvay1rVsoU9nlpY");
+
         return finalParams;
     }
 

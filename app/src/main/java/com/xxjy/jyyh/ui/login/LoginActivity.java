@@ -12,6 +12,7 @@ import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.chuanglan.shanyan_sdk.listener.OneKeyLoginListener;
 import com.chuanglan.shanyan_sdk.listener.OpenLoginAuthListener;
 import com.chuanglan.shanyan_sdk.listener.ShanYanCustomInterface;
+import com.chuanglan.shanyan_sdk.tool.ShanYanUIConfig;
 import com.google.gson.Gson;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
@@ -24,6 +25,8 @@ import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
 
 import java.util.Map;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginViewModel> {
 
@@ -67,8 +70,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
                                 loginForWx();
                             }
                         }
-                    })
-                    , null);
+                    }), null);
             openLoginActivity();
         } else {
             toLoginForOtherActivity();
@@ -111,7 +113,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
                     try {
                         SYConfigUtils.ShanYanResultBean shanYanResultBean =
                                 GsonTool.parseJson(result, SYConfigUtils.ShanYanResultBean.class);
-//                        loginNormal(shanYanResultBean.getToken());
+                        verifyNormal(shanYanResultBean.getToken());
                     } catch (Exception e) {
                         showToast("登录失败,请重试或者选择其他登录方式");
                     }
@@ -125,6 +127,11 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
 //                startResultActivity(code, result, startTime);
             }
         });
+    }
+
+    private void verifyNormal(String token) {
+        mViewModel.verifyLogin(token, JPushInterface.getRegistrationID(this),
+                SYConfigUtils.inviteCode);
     }
 
     private void toLoginForOtherActivity() {

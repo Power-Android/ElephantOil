@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ public class SYConfigUtils {
 
     private static ConstraintLayout invitationLayout;
     private static boolean isDown = false;
+    public static String inviteCode = "";
 
     //沉浸式竖屏样式
     public static ShanYanUIConfig getCJSConfig(final Context context, ShanYanCustomInterface relativeLayoutClick,
@@ -82,6 +85,23 @@ public class SYConfigUtils {
                 iv2.setVisibility(View.GONE);
             }
             isDown = !isDown;
+        });
+
+        et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                inviteCode = editable.toString();
+            }
         });
 
         //其他方式登录

@@ -2,7 +2,7 @@ package com.xxjy.jyyh.wight;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.appcompat.widget.AppCompatEditText;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -10,17 +10,21 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.xxjy.jyyh.R;
 
-
 /**
- * 自动添加空格的输入框，例如手机号输入会在中间加入两个空格 输入18812341234 会自动变成 188 1234 1234
+ * @author power
+ * @date 12/2/20 2:18 PM
+ * @project RunElephant
+ * @description:
  */
-
 public class ContentWithSpaceEditText extends AppCompatEditText {
-
     public static final int TYPE_PHONE = 0;
     public static final int TYPE_BANK_CARD = 1;
     public static final int TYPE_ID_CARD = 2;
@@ -28,6 +32,11 @@ public class ContentWithSpaceEditText extends AppCompatEditText {
     private int contentType;
     private int maxLength = 50;
     private String digits;
+
+    /**
+     * 删除按钮的引用
+     */
+    private Drawable mClearDrawable;
 
     public ContentWithSpaceEditText(Context context) {
         this(context, null);
@@ -54,6 +63,19 @@ public class ContentWithSpaceEditText extends AppCompatEditText {
     }
 
     private void initType(){
+        //获取EditText的DrawableRight,假如没有设置我们就使用默认的图片
+        mClearDrawable = getCompoundDrawables()[2];
+        if (mClearDrawable == null) {
+//        	throw new NullPointerException("You can add drawableRight attribute in XML");
+            mClearDrawable = getResources().getDrawable(R.drawable.edit_clear_icon);
+        }
+        mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight());
+//        mClearDrawable.setBounds(0, 0, SizeUtils.dp2px(getResources().getDimension(R.dimen.dp_12)), SizeUtils.dp2px(getResources().getDimension(R.dimen.dp_12)));
+        //默认设置隐藏图标
+        setClearIconVisible(false);
+        //设置焦点改变的监听
+//        setOnFocusChangeListener(this);
+
         if (contentType == TYPE_PHONE) {
             maxLength = 13;
             digits = "0123456789 ";
@@ -93,6 +115,42 @@ public class ContentWithSpaceEditText extends AppCompatEditText {
         initType();
     }
 
+    /**
+     * 因为我们不能直接给EditText设置点击事件，所以我们用记住我们按下的位置来模拟点击事件
+     * 当我们按下的位置 在  EditText的宽度 - 图标到控件右边的间距 - 图标的宽度  和
+     * EditText的宽度 - 图标到控件右边的间距之间我们就算点击了图标，竖直方向就没有考虑
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            setFocusable(true);
+            requestFocus();
+            if (getCompoundDrawables()[2] != null) {
+
+                boolean touchable = event.getX() > (getWidth() - getTotalPaddingRight())
+                        && (event.getX() < ((getWidth() - getPaddingRight())));
+
+                if (touchable) {
+                    this.setText("");
+                }
+            }
+            KeyboardUtils.showSoftInput(this);
+        }
+
+        return super.onTouchEvent(event);
+    }
+
+    /**
+     * 设置清除图标的显示与隐藏，调用setCompoundDrawables为EditText绘制上去
+     *
+     * @param visible
+     */
+    protected void setClearIconVisible(boolean visible) {
+        Drawable right = visible ? mClearDrawable : null;
+        setCompoundDrawables(getCompoundDrawables()[0],
+                getCompoundDrawables()[1], right, getCompoundDrawables()[3]);
+    }
+
     private TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -103,6 +161,7 @@ public class ContentWithSpaceEditText extends AppCompatEditText {
             ContentWithSpaceEditText.this.start = start;
             ContentWithSpaceEditText.this.before = before;
             ContentWithSpaceEditText.this.count = count;
+            setClearIconVisible(s.length() > 0);
         }
 
         @Override
@@ -194,7 +253,7 @@ public class ContentWithSpaceEditText extends AppCompatEditText {
         return false;
     }
 
-    private void showShort(Context context,String msg){
+    private void showShort(Context context, String msg){
         Toast.makeText(context.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 

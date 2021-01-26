@@ -55,6 +55,14 @@ public class UserConstants {
         return uniqueDeviceId;
     }
 
+    public static void setOpenId(String openId){
+        SPUtils.getInstance().put(SPConstants.OPEN_ID, "");
+    }
+
+    public static String getOpenId(){
+        return SPUtils.getInstance().getString(SPConstants.OPEN_ID);
+    }
+
     public static Boolean getIsLogin() {
         return SPUtils.getInstance().getBoolean(SPConstants.LOGIN_STATUS);
     }

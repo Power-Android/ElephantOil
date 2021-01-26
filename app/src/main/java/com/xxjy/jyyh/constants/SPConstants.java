@@ -54,9 +54,5 @@ public class SPConstants {
     public static final String LATITUDE = "latitude";
 
 
-
-
-
-
-
+    public static final String OPEN_ID = "openId";
 }
