@@ -118,7 +118,7 @@
                             android:layout_marginTop="@dimen/dp_7"
                             android:src="@drawable/default_img_bg"
                             app:riv_oval="true"
-                            android:scaleType="fitCenter"
+                            android:scaleType="centerCrop"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 

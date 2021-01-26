@@ -18,6 +18,8 @@ import com.xxjy.jyyh.entity.OilEntity;
 public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<LocationEntity> locationLiveData = new MutableLiveData<>();
     public MutableLiveData<OilEntity> homeOilLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> oftenOilLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> refuelOilLiveData = new MutableLiveData<>();
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -29,5 +31,13 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getHomeOil(double lat, double lng) {
         mRespository.getHomeOil(lat, lng, homeOilLiveData);
+    }
+
+    public void getOftenOils() {
+        mRespository.getOftenOils(oftenOilLiveData);
+    }
+
+    public void getRefuelJob(String gasId) {
+        mRespository.getRefuelJob(gasId, refuelOilLiveData);
     }
 }

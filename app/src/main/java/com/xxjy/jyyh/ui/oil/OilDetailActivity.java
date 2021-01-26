@@ -1,11 +1,9 @@
 package com.xxjy.jyyh.ui.oil;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -23,13 +21,14 @@ import com.xxjy.jyyh.dialog.OilAmountDialog;
 import com.xxjy.jyyh.dialog.OilGunDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
+import com.xxjy.jyyh.entity.OilEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding, OilViewModel> {
-    private List<String> mTagList = new ArrayList<>();
-    private List<String> mOilNumList = new ArrayList<>();
+    private List<OilEntity.StationsBean.CzbLabelsBean> mTagList = new ArrayList<>();
+    private List<OilEntity.StationsBean.OilPriceListBean> mOilNumList = new ArrayList<>();
     private List<String> mOilCheckedList = new ArrayList<>();
     private OilNumAdapter mOilNumAdapter;
     private OilGunDialog mOilGunDialog;
@@ -42,9 +41,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         setTransparentStatusBar(mBinding.backIv, false);
 
         //标签列表
-        for (int i = 0; i < 2; i++) {
-            mTagList.add("加油免费洗车");
-        }
+
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
@@ -64,15 +61,13 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mBinding.oilCheckRecyclerView.setAdapter(oilCheckedAdapter);
 
         //油号列表
-        for (int i = 0; i < 7; i++) {
-            mOilNumList.add("");
-        }
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         mOilNumAdapter = new OilNumAdapter(R.layout.adapter_oil_num_layout, mOilNumList);
         mBinding.recyclerView.setAdapter(mOilNumAdapter);
         mOilNumAdapter.setOnItemClickListener((adapter, view, position) -> {
+            List<OilEntity.StationsBean.OilPriceListBean> data = adapter.getData();
             if (mOilGunDialog != null){
-                mOilGunDialog.show();
+                mOilGunDialog.show(data.get(position).getGunNos());
             }
         });
 

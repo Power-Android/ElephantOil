@@ -28,4 +28,13 @@ public class ApiService {
     //获取首页油站
     public static final String HOME_OIL = "gasPublic/getHomeOilStations";
 
+    //最近常去的油站
+    public static final String OFTEN_OIL = "gasPublic/getPreferentialStations";
+
+    //首页累计加油任务
+    public static final String REFUEL_JOB = "gasPublic/getRefuelJob";
+
+    //获取油号列表-筛选用
+    public static final String GET_OIL_NUM = "gasPublic/getOilNums";
+
 }

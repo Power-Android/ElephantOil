@@ -11,9 +11,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilGunAdapter;
-import com.xxjy.jyyh.adapter.OilNumAdapter;
 import com.xxjy.jyyh.databinding.DialogOilGunLayoutBinding;
-import com.xxjy.jyyh.databinding.DialogOilNumLayoutBinding;
+import com.xxjy.jyyh.entity.OilEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class OilGunDialog {
     private BottomSheetDialog mOilGunDialog;
     private BottomSheetBehavior mBehavior;
     private DialogOilGunLayoutBinding mBinding;
-    private List<String> mList = new ArrayList<>();
+    private List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> mList = new ArrayList<>();
     private OilGunAdapter mOilGunAdapter;
 
     public OilGunDialog(Context context) {
@@ -55,9 +54,6 @@ public class OilGunDialog {
     }
 
     private void initData() {
-        for (int i = 0; i < 7; i++) {
-            mList.add("1");
-        }
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
         mOilGunAdapter = new OilGunAdapter(R.layout.adapter_oil_num_layout, mList);
         mBinding.recyclerView.setAdapter(mOilGunAdapter);
@@ -70,8 +66,10 @@ public class OilGunDialog {
         mBinding.backIv.setOnClickListener(view -> mOilGunDialog.cancel());
     }
 
-    public void show(){
+    public void show(List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> gunNos){
         mOilGunDialog.show();
+        mList = gunNos;
+        mOilGunAdapter.setNewData(mList);
     }
 
     public void dismiss(){

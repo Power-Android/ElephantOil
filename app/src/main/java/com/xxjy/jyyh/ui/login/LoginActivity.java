@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import androidx.lifecycle.Observer;
+
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
@@ -17,12 +20,14 @@ import com.google.gson.Gson;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityLoginBinding;
 import com.xxjy.jyyh.utils.GsonTool;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
+import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 
 import java.util.Map;
 
@@ -52,7 +57,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
 
     @Override
     protected void dataObservable() {
-
+        mViewModel.mVerifyLoginLiveData.observe(this, s -> mViewModel.setLoginSuccess(s, ""));
     }
 
     private void tryOpenLoginActivity() {

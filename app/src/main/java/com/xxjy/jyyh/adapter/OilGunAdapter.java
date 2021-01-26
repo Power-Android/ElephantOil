@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.entity.OilEntity;
 
 import java.util.List;
 
@@ -15,15 +16,15 @@ import java.util.List;
  * @project ElephantOil
  * @description:
  */
-public class OilGunAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class OilGunAdapter extends BaseQuickAdapter<OilEntity.StationsBean.OilPriceListBean.GunNosBean, BaseViewHolder> {
 
-    public OilGunAdapter(int layoutResId, @Nullable List<String> data) {
+    public OilGunAdapter(int layoutResId, @Nullable List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, String item) {
+    protected void convert(@NonNull BaseViewHolder helper, OilEntity.StationsBean.OilPriceListBean.GunNosBean item) {
         helper.setGone(R.id.item_oil_type_tv, false)
-                .setText(R.id.item_oil_num_tv, item);
+                .setText(R.id.item_oil_num_tv, String.valueOf(item.getGunNo()));
     }
 }

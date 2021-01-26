@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +25,8 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.HomeOftenAdapter;
@@ -54,8 +57,8 @@ import java.util.List;
  * @project ElephantOil
  * @description:
  */
-public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> {
-    private List<String> mOilTagList = new ArrayList<>();
+public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> implements OnRefreshLoadMoreListener {
+    private List<OilEntity.StationsBean.CzbLabelsBean> mOilTagList = new ArrayList<>();
     private List<String> mOftenList = new ArrayList<>();
     private List<String> mExchangeList = new ArrayList<>();
     private OilNumDialog mOilNumDialog;
@@ -87,7 +90,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
             mLat = Double.parseDouble(UserConstants.getLatitude());
             mLng = Double.parseDouble(UserConstants.getLongitude());
-
+            //首页油站
             mViewModel.getHomeOil(mLat, mLng);
         }
         //请求定位权限
@@ -101,44 +104,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 .setForegroundColor(getResources().getColor(R.color.color_6A))
                 .create();
 
-        //优选油站
-        for (int i = 0; i < 3; i++) {
-            mOilTagList.add("新客满20L享10L国标价半价");
-        }
-        if (mOilTagList.size() > 0) {
-            FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
-            flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
-            flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
-            flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
-            mBinding.tagRecyclerView.setLayoutManager(flexboxLayoutManager);
-            OilStationFlexAdapter flexAdapter =
-                    new OilStationFlexAdapter(R.layout.adapter_oil_station_tag, mOilTagList);
-            mBinding.tagRecyclerView.setAdapter(flexAdapter);
-            mBinding.tagRecyclerView.setVisibility(View.VISIBLE);
-        } else {
-            mBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
-        }
-        mBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-
-        //常去油站
-        mOftenList.add("• 我最近常去：");
-        mOftenList.add("光华路加油站、");
-        mOftenList.add("成都石油花园加油站、");
-        mOftenList.add("光华路加油站");
-        if (mOftenList.size() > 0) {
-            FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
-            flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
-            flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
-            flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
-            mBinding.oftenOilRecyclerView.setLayoutManager(flexboxLayoutManager);
-            HomeOftenAdapter oftenAdapter =
-                    new HomeOftenAdapter(R.layout.adapter_often_layout, mOftenList);
-            mBinding.oftenOilRecyclerView.setAdapter(oftenAdapter);
-            mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
-        } else {
-            mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
-        }
         //积分豪礼
         for (int i = 0; i < 6; i++) {
             mExchangeList.add("");
@@ -148,7 +113,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         HomeExchangeAdapter exchangeAdapter = new HomeExchangeAdapter(R.layout.adapter_home_exchange, mExchangeList);
         mBinding.exchangeRecyclerView.setAdapter(exchangeAdapter);
 
-        initOilDialog();
     }
 
     private void requestPermission() {
@@ -170,81 +134,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     }
                 })
                 .request();
-    }
-
-    private void initOilDialog() {
-        mOilNumDialog = new OilNumDialog(mContext);
-        mOilNumDialog.setOnItemClickedListener((adapter, view, position) -> {
-            if (mOilGunDialog != null){
-                mOilGunDialog.show();
-            }
-        });
-
-        mOilGunDialog = new OilGunDialog(mContext);
-        mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
-            if (mOilAmountDialog != null){
-                mOilAmountDialog.show();
-            }
-        });
-
-        mOilAmountDialog = new OilAmountDialog(mContext);
-        mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
-            @Override
-            public void onOilAmountClick(BaseQuickAdapter adapter, View view, int position) {
-
-            }
-
-            @Override
-            public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position) {
-                if (mOilCouponDialog != null){
-                    mOilCouponDialog.show();
-                }
-            }
-
-            @Override
-            public void onCreateOrder(View view) {
-                if (mOilTipsDialog != null){
-                    mOilTipsDialog.show(view);
-                }
-            }
-        });
-
-        mOilCouponDialog = new OilCouponDialog(mContext);
-        mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
-            @Override
-            public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position) {
-
-            }
-
-            @Override
-            public void onNoCouponClick() {
-
-            }
-        });
-
-        mOilTipsDialog = new OilTipsDialog(mContext);
-        mOilTipsDialog.setOnItemClickedListener(view -> {
-            mOilTipsDialog.dismiss();
-            if (mOilPayDialog != null){
-                mOilPayDialog.show();
-            }
-        });
-
-        mOilPayDialog = new OilPayDialog(mContext);
-        mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
-            @Override
-            public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
-                GasStationLocationTipsDialog gasStationLocationTipsDialog = new GasStationLocationTipsDialog(getContext(),mBinding.getRoot(),"成都加油站");
-                gasStationLocationTipsDialog.show();
-            }
-
-            @Override
-            public void onCloseAllClick() {
-                mOilAmountDialog.dismiss();
-                mOilGunDialog.dismiss();
-                mOilNumDialog.dismiss();
-            }
-        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -270,6 +159,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.homeQuickOilRl.setOnClickListener(this::onViewClicked);
         mBinding.searchIv.setOnClickListener(this::onViewClicked);
         mBinding.awardTv.setOnClickListener(this::onViewClicked);
+
+        mBinding.refreshView.setOnRefreshLoadMoreListener(this);
     }
 
     @Override
@@ -309,14 +200,166 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mLng = locationEntity.getLng();
                 mLat = locationEntity.getLat();
                 LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
+                //首页油站
                 mViewModel.getHomeOil(mLat, mLng);
             }
         });
 
+        //优选油站
         mViewModel.homeOilLiveData.observe(this, oilEntity -> {
             OilEntity.StationsBean stationsBean = oilEntity.getStations().get(0);
             Glide.with(mContext).load(stationsBean.getGasTypeImg()).into(mBinding.oilImgIv);
             mBinding.oilNameTv.setText(stationsBean.getGasName());
+            mBinding.oilAddressTv.setText(stationsBean.getGasAddress());
+            mBinding.oilCurrentPriceTv.setText(stationsBean.getPriceYfq());
+            mBinding.oilOriginalPriceTv.setText("油站价￥"+stationsBean.getPriceOfficial());
+            mBinding.oilNumTv.setText(stationsBean.getOilName());
+            mBinding.oilNavigationTv.setText(stationsBean.getDistance()+"km");
+            mBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+            mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+            if (stationsBean.getCzbLabels() != null){
+                mOilTagList = stationsBean.getCzbLabels();
+                if (mOilTagList.size() > 0) {
+                    FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
+                    flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+                    flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
+                    flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
+                    mBinding.tagRecyclerView.setLayoutManager(flexboxLayoutManager);
+                    OilStationFlexAdapter flexAdapter =
+                            new OilStationFlexAdapter(R.layout.adapter_oil_station_tag, mOilTagList);
+                    mBinding.tagRecyclerView.setAdapter(flexAdapter);
+                    mBinding.tagRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            //初始化加油弹框
+            initOilDialog(stationsBean);
+            //常去油站
+            if (UserConstants.getIsLogin()){
+                mViewModel.getOftenOils();
+            }
+            //加油任务
+            mViewModel.getRefuelJob(stationsBean.getGasId());
         });
+
+        //常去油站
+        mViewModel.oftenOilLiveData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                mOftenList.add("• 我最近常去：");
+                mOftenList.add("光华路加油站、");
+                mOftenList.add("成都石油花园加油站、");
+                mOftenList.add("光华路加油站");
+                if (mOftenList.size() > 0) {
+                    FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
+                    flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+                    flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
+                    flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
+                    mBinding.oftenOilRecyclerView.setLayoutManager(flexboxLayoutManager);
+                    HomeOftenAdapter oftenAdapter =
+                            new HomeOftenAdapter(R.layout.adapter_often_layout, mOftenList);
+                    mBinding.oftenOilRecyclerView.setAdapter(oftenAdapter);
+                    mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    private void initOilDialog(OilEntity.StationsBean stationsBean) {
+        //油号dialog
+        mOilNumDialog = new OilNumDialog(mContext, stationsBean);
+        mOilNumDialog.setOnItemClickedListener((adapter, view, position) -> {
+            List<OilEntity.StationsBean.OilPriceListBean> data = adapter.getData();
+            if (mOilGunDialog != null){
+                data.get(position).setSelected(true);
+                mOilGunDialog.show(data.get(position).getGunNos());
+            }
+        });
+
+        //枪号dialog
+        mOilGunDialog = new OilGunDialog(mContext);
+        mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
+            if (mOilAmountDialog != null){
+                mOilAmountDialog.show();
+            }
+        });
+
+        //快捷金额dialog
+        mOilAmountDialog = new OilAmountDialog(mContext);
+        mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
+            @Override
+            public void onOilAmountClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+
+            @Override
+            public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position) {
+                if (mOilCouponDialog != null){
+                    mOilCouponDialog.show();
+                }
+            }
+
+            @Override
+            public void onCreateOrder(View view) {
+                if (mOilTipsDialog != null){
+                    mOilTipsDialog.show(view);
+                }
+            }
+        });
+
+        //优惠券dialog
+        mOilCouponDialog = new OilCouponDialog(mContext);
+        mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
+            @Override
+            public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+
+            @Override
+            public void onNoCouponClick() {
+
+            }
+        });
+
+        //温馨提示dialog
+        mOilTipsDialog = new OilTipsDialog(mContext);
+        mOilTipsDialog.setOnItemClickedListener(view -> {
+            mOilTipsDialog.dismiss();
+            if (mOilPayDialog != null){
+                mOilPayDialog.show();
+            }
+        });
+
+        //支付dialog
+        mOilPayDialog = new OilPayDialog(mContext);
+        mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
+            @Override
+            public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
+                GasStationLocationTipsDialog gasStationLocationTipsDialog = new GasStationLocationTipsDialog(getContext(),mBinding.getRoot(),"成都加油站");
+                gasStationLocationTipsDialog.show();
+            }
+
+            @Override
+            public void onCloseAllClick() {
+                mOilAmountDialog.dismiss();
+                mOilGunDialog.dismiss();
+                mOilNumDialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+
     }
 }

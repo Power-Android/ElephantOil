@@ -19,11 +19,12 @@ import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
+import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 import com.xxjy.jyyh.wight.MyCountDownTime;
 
 import cn.jpush.android.api.JPushInterface;
 
-public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBinding,MobileLoginViewModel> {
+public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBinding,LoginViewModel> {
 
 
     private MyCountDownTime mCountDownTime;
@@ -217,18 +218,11 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
         });
 
         mViewModel.mLoginLiveData.observe(this, s -> {
-            UserConstants.setToken(s);
-            UserConstants.setMobile(mPhoneNumber);
-            UserConstants.setIsLogin(true);
-            showToastSuccess("登录成功");
-
             mCountDownTime.stopCountDown();
             mCountDownTime.cancel();
             mCountDownTime = null;
 
-            ActivityUtils.finishActivity(LoginActivity.class);
-            ShanYanManager.finishAuthActivity();
-            ActivityUtils.finishActivity(MobileLoginActivity.class);
+            mViewModel.setLoginSuccess(s, mPhoneNumber);
         });
     }
 }

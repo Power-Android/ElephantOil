@@ -31,6 +31,7 @@ public class SYConfigUtils {
     private static ConstraintLayout invitationLayout;
     private static boolean isDown = false;
     public static String inviteCode = "";
+    public static String phoneNum = "";
 
     //沉浸式竖屏样式
     public static ShanYanUIConfig getCJSConfig(final Context context, ShanYanCustomInterface relativeLayoutClick,

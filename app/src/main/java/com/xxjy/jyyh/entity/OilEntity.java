@@ -44,7 +44,8 @@ public class OilEntity implements Serializable {
         private Double stationLatitude;
         private Double stationLongitude;
         private List<CzbLabelsBean> czbLabels;
-        private List<OilPricesBean> oilPrices;
+        private List<GunNosBean> gunNos;
+        private List<OilPriceListBean> oilPriceList;
 
         public String getCityName() {
             return cityName;
@@ -222,12 +223,20 @@ public class OilEntity implements Serializable {
             this.czbLabels = czbLabels;
         }
 
-        public List<OilPricesBean> getOilPrices() {
-            return oilPrices;
+        public List<GunNosBean> getGunNos() {
+            return gunNos;
         }
 
-        public void setOilPrices(List<OilPricesBean> oilPrices) {
-            this.oilPrices = oilPrices;
+        public void setGunNos(List<GunNosBean> gunNos) {
+            this.gunNos = gunNos;
+        }
+
+        public List<OilPriceListBean> getOilPriceList() {
+            return oilPriceList;
+        }
+
+        public void setOilPriceList(List<OilPriceListBean> oilPriceList) {
+            this.oilPriceList = oilPriceList;
         }
 
         public static class CzbLabelsBean {
@@ -278,71 +287,34 @@ public class OilEntity implements Serializable {
             }
         }
 
-        public static class OilPricesBean {
-            private String gasId;
-            private String id;
-            private String oilName;
-            private Integer oilNo;
-            private Integer oilType;
-            private String priceGun;
-            private String priceOfficial;
+        public static class GunNosBean {
+            private Integer gunNo;
+
+            public Integer getGunNo() {
+                return gunNo;
+            }
+
+            public void setGunNo(Integer gunNo) {
+                this.gunNo = gunNo;
+            }
+        }
+
+        public static class OilPriceListBean {
             private String priceYfq;
-            private String updateTime;
+            private Integer oilType;
+            private String oilName;
+            private String priceOfficial;
+            private Integer oilNo;
+            private String priceGun;
+            private List<GunNosBean> gunNos;
+            private boolean isSelected;
 
-            public String getGasId() {
-                return gasId;
+            public boolean isSelected() {
+                return isSelected;
             }
 
-            public void setGasId(String gasId) {
-                this.gasId = gasId;
-            }
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
-
-            public String getOilName() {
-                return oilName;
-            }
-
-            public void setOilName(String oilName) {
-                this.oilName = oilName;
-            }
-
-            public Integer getOilNo() {
-                return oilNo;
-            }
-
-            public void setOilNo(Integer oilNo) {
-                this.oilNo = oilNo;
-            }
-
-            public Integer getOilType() {
-                return oilType;
-            }
-
-            public void setOilType(Integer oilType) {
-                this.oilType = oilType;
-            }
-
-            public String getPriceGun() {
-                return priceGun;
-            }
-
-            public void setPriceGun(String priceGun) {
-                this.priceGun = priceGun;
-            }
-
-            public String getPriceOfficial() {
-                return priceOfficial;
-            }
-
-            public void setPriceOfficial(String priceOfficial) {
-                this.priceOfficial = priceOfficial;
+            public void setSelected(boolean selected) {
+                isSelected = selected;
             }
 
             public String getPriceYfq() {
@@ -353,12 +325,64 @@ public class OilEntity implements Serializable {
                 this.priceYfq = priceYfq;
             }
 
-            public String getUpdateTime() {
-                return updateTime;
+            public Integer getOilType() {
+                return oilType;
             }
 
-            public void setUpdateTime(String updateTime) {
-                this.updateTime = updateTime;
+            public void setOilType(Integer oilType) {
+                this.oilType = oilType;
+            }
+
+            public String getOilName() {
+                return oilName;
+            }
+
+            public void setOilName(String oilName) {
+                this.oilName = oilName;
+            }
+
+            public String getPriceOfficial() {
+                return priceOfficial;
+            }
+
+            public void setPriceOfficial(String priceOfficial) {
+                this.priceOfficial = priceOfficial;
+            }
+
+            public Integer getOilNo() {
+                return oilNo;
+            }
+
+            public void setOilNo(Integer oilNo) {
+                this.oilNo = oilNo;
+            }
+
+            public String getPriceGun() {
+                return priceGun;
+            }
+
+            public void setPriceGun(String priceGun) {
+                this.priceGun = priceGun;
+            }
+
+            public List<GunNosBean> getGunNos() {
+                return gunNos;
+            }
+
+            public void setGunNos(List<GunNosBean> gunNos) {
+                this.gunNos = gunNos;
+            }
+
+            public static class GunNosBean {
+                private Integer gunNo;
+
+                public Integer getGunNo() {
+                    return gunNo;
+                }
+
+                public void setGunNo(Integer gunNo) {
+                    this.gunNo = gunNo;
+                }
             }
         }
     }

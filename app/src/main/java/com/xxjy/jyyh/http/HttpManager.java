@@ -94,7 +94,6 @@ public class HttpManager {
     public static Map<String, String> getCommonParams(Param p) {
         Map<String, String> finalParams = new HashMap<>();
         String t = System.currentTimeMillis() + "";     //时间戳
-        String did = UserConstants.getUuid();              //设备标识
         // XIAOMI MI5 8.0
         String osv = DeviceUtils.getManufacturer() + " " + DeviceUtils.getModel() + " " +
                 DeviceUtils.getSDKVersionName();        //操作系统版本号
@@ -119,9 +118,7 @@ public class HttpManager {
 
 
         finalParams.put("t", t);//时间戳
-        finalParams.put("did", did);
         finalParams.put("os", "1");//操作系统
-        finalParams.put("osv", osv);//手机系统版本
         finalParams.put("cv", cv);//客户端版本号
 
         if (p != null || !p.getSimpleUrl().startsWith("http")) {
@@ -139,6 +136,7 @@ public class HttpManager {
         } else {
             finalParams.put("openId", openId);
         }
+        finalParams.put("osv", osv);//手机系统版本
         finalParams.put("location", location);  //位置信息
         finalParams.put("cityCode", cityCode);//城市编码
         finalParams.put("region", cityCode);//banner用的城市编码

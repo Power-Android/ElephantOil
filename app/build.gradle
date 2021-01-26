@@ -36,7 +36,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('../power.jks')
+            storeFile file('../yfq.jks')
             storePassword STORE_PASSWORD
             keyAlias ALIAS
             keyPassword ALIAS_PASSWORD

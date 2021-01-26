@@ -6,8 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.xxjy.jyyh.base.BaseViewModel;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.ui.MainRepository;
+import com.xxjy.jyyh.utils.symanager.ShanYanManager;
+import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 
 /**
  * @author power
@@ -17,7 +21,8 @@ import com.xxjy.jyyh.ui.MainRepository;
  */
 public class LoginViewModel extends BaseViewModel<LoginRepository> {
     public MutableLiveData<String> mVerifyLoginLiveData = new MutableLiveData<>();
-
+    public MutableLiveData<Boolean> mCodeLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> mLoginLiveData = new MutableLiveData<>();
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -25,5 +30,28 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
 
     public void verifyLogin(String twinklyToken, String jpushId, String inviteCode){
         mRespository.verifyLogin(twinklyToken, jpushId, inviteCode,  mVerifyLoginLiveData);
+    }
+
+    public LiveData<Boolean> sendCode(String scene, String phoneNumber) {
+
+        return mRespository.sendCode(scene, phoneNumber, mCodeLiveData);
+    }
+
+    public void loginByCode(String codeNumber, String phoneNumber, String wxOpenId,
+                            String wxUnionId, String uuid, String registrationID, String invitationCode) {
+        mRespository.loginByCode(codeNumber, phoneNumber, wxOpenId, wxUnionId, uuid,
+                registrationID, invitationCode, mLoginLiveData);
+    }
+
+    public void setLoginSuccess(String token, String mobile){
+        UserConstants.setToken(token);
+        UserConstants.setMobile(mobile);
+        UserConstants.setIsLogin(true);
+
+        UMengManager.onProfileSignIn("userID");
+
+        ActivityUtils.finishActivity(LoginActivity.class);
+        ShanYanManager.finishAuthActivity();
+        ActivityUtils.finishActivity(MobileLoginActivity.class);
     }
 }

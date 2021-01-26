@@ -46,7 +46,6 @@ public class UMengManager {
         UMConfigure.setLogEnabled(isDebug);
         if (isDebug) {
             String testDeviceInfo = UmengDebugConfig.getTestDeviceInfo(context);
-            LogUtils.w(testDeviceInfo);
         }
     }
 

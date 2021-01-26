@@ -14,6 +14,8 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilNumAdapter;
 import com.xxjy.jyyh.databinding.DialogOilNumLayoutBinding;
+import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +28,16 @@ import java.util.List;
  */
 public class OilNumDialog {
     private Context mContext;
+    private OilEntity.StationsBean mStationsBean;
     private BottomSheetDialog mOilNumDialog;
     private BottomSheetBehavior mBehavior;
     private DialogOilNumLayoutBinding mBinding;
-    private List<String> mList = new ArrayList<>();
     private OilNumAdapter mOilNumAdapter;
+    private List<OilEntity.StationsBean.OilPriceListBean> mList = new ArrayList<>();
 
-    public OilNumDialog(Context context) {
+    public OilNumDialog(Context context, OilEntity.StationsBean stationsBean) {
         this.mContext = context;
+        this.mStationsBean = stationsBean;
         mBinding = DialogOilNumLayoutBinding.bind(
                 LayoutInflater.from(mContext).inflate(R.layout.dialog_oil_num_layout, null));
         init();
@@ -55,38 +59,37 @@ public class OilNumDialog {
     }
 
     private void initData() {
-        for (int i = 0; i < 7; i++) {
-            mList.add("");
+        if (mStationsBean.getOilPriceList() == null || mStationsBean.getOilPriceList().size() <= 0) {
+            MyToast.showError(mContext, "暂无该油站数据");
+            return;
         }
+        mList = mStationsBean.getOilPriceList();
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
         mOilNumAdapter = new OilNumAdapter(R.layout.adapter_oil_num_layout, mList);
         mBinding.recyclerView.setAdapter(mOilNumAdapter);
-        mOilNumAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (mOnItemClickedListener != null){
-                    mOnItemClickedListener.onOilNumClick(adapter, view, position);
-                }
+        mOilNumAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (mOnItemClickedListener != null) {
+                mOnItemClickedListener.onOilNumClick(adapter, view, position);
             }
         });
         mBinding.cancelIv.setOnClickListener(view -> mOilNumDialog.cancel());
     }
 
-    public void show(){
+    public void show() {
         mOilNumDialog.show();
     }
 
-    public void dismiss(){
+    public void dismiss() {
         mOilNumDialog.dismiss();
     }
 
-    public interface OnItemClickedListener{
+    public interface OnItemClickedListener {
         void onOilNumClick(BaseQuickAdapter adapter, View view, int position);
     }
 
     private OnItemClickedListener mOnItemClickedListener;
 
-    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener){
+    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener) {
         this.mOnItemClickedListener = onItemClickedListener;
     }
 }

@@ -6,6 +6,7 @@ import com.amap.api.location.AMapLocation;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
@@ -62,12 +63,49 @@ public class HomeRepository extends BaseRepository {
      * @param homeOilLiveData
      * 首页油站
      */
-    public void getHomeOil(double lat, double lng, MutableLiveData<OilEntity> homeOilLiveData) {
+    public void getHomeOil(double lat, double lng,
+                           MutableLiveData<OilEntity> homeOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.HOME_OIL)
-                .add("appLatitude", lat)
-                .add("appLongitude", lng)
+                .add(Constants.LATITUDE, lat)
+                .add(Constants.LONGTIDUE, lng)
                 .asResponse(OilEntity.class)
                 .subscribe(oilEntity -> homeOilLiveData.postValue(oilEntity))
         );
     }
+
+    /**
+     * @param oftenOilLiveData
+     * 常去油站
+     */
+    public void getOftenOils(MutableLiveData<String> oftenOilLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.OFTEN_OIL)
+                .asResponse(String.class)
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Throwable {
+                        oftenOilLiveData.postValue(s);
+                    }
+                })
+        );
+    }
+
+    /**
+     * @param gasId
+     * @param refuelOilLiveData
+     * 加油任务
+     */
+    public void getRefuelJob(String gasId,
+                             MutableLiveData<String> refuelOilLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.REFUEL_JOB)
+                .add(Constants.GAS_STATION_ID, gasId)
+                .asResponse(String.class)
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Throwable {
+                        refuelOilLiveData.postValue(s);
+                    }
+                })
+        );
+    }
+
 }
