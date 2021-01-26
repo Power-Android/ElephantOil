@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_F5">
 
 
 
@@ -300,98 +301,103 @@
                         android:textColor="@color/color_34"
                         android:textSize="@dimen/sp_14"
                         android:textStyle="bold" />
-
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_14"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="@dimen/dp_10"/>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="@dimen/dp_14"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:orientation="horizontal">-->
 
-                            <ImageView
-                                android:layout_width="@dimen/dp_46"
-                                android:layout_height="@dimen/dp_46"
-                                android:src="@drawable/ic_mine_tab_1" />
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical">-->
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dp_5"
-                                android:text="邀请有礼"
-                                android:textColor="@color/color_34"
-                                android:textSize="@dimen/sp_12" />
-                        </LinearLayout>
+<!--                            <ImageView-->
+<!--                                android:layout_width="@dimen/dp_46"-->
+<!--                                android:layout_height="@dimen/dp_46"-->
+<!--                                android:src="@drawable/ic_mine_tab_1" />-->
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginTop="@dimen/dp_5"-->
+<!--                                android:text="邀请有礼"-->
+<!--                                android:textColor="@color/color_34"-->
+<!--                                android:textSize="@dimen/sp_12" />-->
+<!--                        </LinearLayout>-->
 
-                            <ImageView
-                                android:layout_width="@dimen/dp_46"
-                                android:layout_height="@dimen/dp_46"
-                                android:src="@drawable/ic_mine_tab_2" />
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical">-->
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dp_5"
-                                android:text="我的奖励"
-                                android:textColor="@color/color_34"
-                                android:textSize="@dimen/sp_12" />
-                        </LinearLayout>
+<!--                            <ImageView-->
+<!--                                android:layout_width="@dimen/dp_46"-->
+<!--                                android:layout_height="@dimen/dp_46"-->
+<!--                                android:src="@drawable/ic_mine_tab_2" />-->
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginTop="@dimen/dp_5"-->
+<!--                                android:text="我的奖励"-->
+<!--                                android:textColor="@color/color_34"-->
+<!--                                android:textSize="@dimen/sp_12" />-->
+<!--                        </LinearLayout>-->
 
-                            <ImageView
-                                android:layout_width="@dimen/dp_46"
-                                android:layout_height="@dimen/dp_46"
-                                android:src="@drawable/ic_mine_tab_3" />
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical">-->
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dp_5"
-                                android:text="抽奖有礼"
-                                android:textColor="@color/color_34"
-                                android:textSize="@dimen/sp_12" />
-                        </LinearLayout>
+<!--                            <ImageView-->
+<!--                                android:layout_width="@dimen/dp_46"-->
+<!--                                android:layout_height="@dimen/dp_46"-->
+<!--                                android:src="@drawable/ic_mine_tab_3" />-->
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginTop="@dimen/dp_5"-->
+<!--                                android:text="抽奖有礼"-->
+<!--                                android:textColor="@color/color_34"-->
+<!--                                android:textSize="@dimen/sp_12" />-->
+<!--                        </LinearLayout>-->
 
-                            <ImageView
-                                android:layout_width="@dimen/dp_46"
-                                android:layout_height="@dimen/dp_46"
-                                android:src="@drawable/ic_mine_tab_4" />
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:gravity="center"-->
+<!--                            android:orientation="vertical">-->
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dp_5"
-                                android:text="积分收支"
-                                android:textColor="@color/color_34"
-                                android:textSize="@dimen/sp_12" />
-                        </LinearLayout>
-                    </LinearLayout>
+<!--                            <ImageView-->
+<!--                                android:layout_width="@dimen/dp_46"-->
+<!--                                android:layout_height="@dimen/dp_46"-->
+<!--                                android:src="@drawable/ic_mine_tab_4" />-->
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginTop="@dimen/dp_5"-->
+<!--                                android:text="积分收支"-->
+<!--                                android:textColor="@color/color_34"-->
+<!--                                android:textSize="@dimen/sp_12" />-->
+<!--                        </LinearLayout>-->
+<!--                    </LinearLayout>-->
 
                 </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
             </LinearLayout>

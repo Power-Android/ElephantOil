@@ -3,28 +3,37 @@ package com.xxjy.jyyh.ui.mine;
 import android.content.Intent;
 import android.view.View;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+
 import com.blankj.utilcode.util.BarUtils;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.adapter.MineTabAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.databinding.FragmentMineBinding;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
 import com.xxjy.jyyh.ui.setting.SettingActivity;
 
-/**
- * @author power
- * @date 1/21/21 11:53 AM
- * @project ElephantOil
- * @description:
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewModel> {
     public static MineFragment getInstance() {
         return new MineFragment();
     }
 
+
+    private List<String> tabs=new ArrayList<>();
     @Override
     protected void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.topLayout);
+        tabs.add("11111");
+        tabs.add("11111");
+        tabs.add("11111");
+        tabs.add("11111");
+        mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
+        MineTabAdapter mineTabAdapter = new MineTabAdapter(R.layout.adapter_mine_tab,tabs);
+        mBinding.recyclerView.setAdapter(mineTabAdapter);
     }
 
     @Override
