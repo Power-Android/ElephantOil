@@ -31,6 +31,7 @@ import com.xxjy.jyyh.dialog.OilGunDialog;
 import com.xxjy.jyyh.dialog.OilNumDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
+import com.xxjy.jyyh.dialog.ReceiveRewardDialog;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
@@ -226,6 +227,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.quickOilTv.setOnClickListener(this::onViewClicked);
         mBinding.homeQuickOilRl.setOnClickListener(this::onViewClicked);
         mBinding.searchIv.setOnClickListener(this::onViewClicked);
+        mBinding.awardTv.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -246,6 +248,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 break;
             case R.id.search_iv:
                 startActivity(new Intent(mContext, SearchActivity.class));
+                break;
+            case R.id.award_tv:
+                ReceiveRewardDialog receiveRewardDialog = new ReceiveRewardDialog(getContext());
+                receiveRewardDialog.show(view);
                 break;
         }
     }

@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.qmuiteam.qmui.util.QMUIDeviceHelper;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
@@ -82,8 +84,10 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             final View iconView = menuView.getChildAt(i).findViewById(R.id.icon);
             final ViewGroup.LayoutParams layoutParams = iconView.getLayoutParams();
             final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, displayMetrics);
-            layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, displayMetrics);
+//            layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, displayMetrics);
+//            layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, displayMetrics);
+            layoutParams.height = QMUIDisplayHelper.dp2px(this,18);
+            layoutParams.width = QMUIDisplayHelper.dp2px(this,18);
             iconView.setLayoutParams(layoutParams);
         }
     }
