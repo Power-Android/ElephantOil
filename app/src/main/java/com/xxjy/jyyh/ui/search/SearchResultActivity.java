@@ -36,8 +36,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 mOilList.add("");
             }
             mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            OilStationListAdapter oilListAdapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, mOilList);
-            mBinding.recyclerView.setAdapter(oilListAdapter);
+//            OilStationListAdapter oilListAdapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, mOilList);
+//            mBinding.recyclerView.setAdapter(oilListAdapter);
         }else {
             mBinding.tab1Tv.setText("综合");
             mBinding.tab2Tv.setText("价格");

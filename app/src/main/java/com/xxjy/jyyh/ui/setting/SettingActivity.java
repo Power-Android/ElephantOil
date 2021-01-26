@@ -4,6 +4,7 @@ package com.xxjy.jyyh.ui.setting;
 import android.content.Intent;
 import android.view.View;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CleanUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
@@ -23,9 +24,13 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
     private Disposable observableDisposable;
     @Override
     protected void initView() {
-        mBinding.topLayout.setTitle("设置");
-        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
-                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
+//        mBinding.topLayout.setTitle("设置");
+//        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
+//                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
+        mBinding.titleLayout.tvTitle.setText("关于我们");
+        mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
+        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
+
 
         try {
             mBinding.cacheDataView.setText(DataCleanManager.getTotalCacheSize(this));

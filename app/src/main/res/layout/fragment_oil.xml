@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tool_bar"
-            app:srlEnableLoadMore="false">
+            app:srlEnableLoadMore="true">
 
             <com.scwang.smart.refresh.header.ClassicsHeader
                 android:layout_width="match_parent"
@@ -110,6 +110,7 @@
                             </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/news_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -122,12 +123,15 @@
                         android:layout_marginLeft="@dimen/dp_13"
                         android:layout_marginRight="@dimen/dp_5"
                         android:src="@drawable/ic_notic"/>
-                    <com.xxjy.jyyh.wight.RxTextViewVerticalMore
-                        android:id="@+id/marqueen"
+                    <com.youth.banner.Banner
+                        android:id="@+id/msg_banner"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_30"
-                        android:layout_marginLeft="@dimen/dp_17"
-                        android:layout_marginRight="@dimen/dp_17" />
+                        android:layout_height="@dimen/dp_25"
+                        android:layout_marginStart="@dimen/dp_4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/view4"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
                 <!--轮播图-->
                 <com.youth.banner.Banner
@@ -175,7 +179,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/sp_13"
-                            android:text="30km内"
+                            android:text="50km内"
                             android:textColor="@color/color_34" />
 
                         <ImageView
@@ -210,7 +214,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/oil_type_layout"
+                        android:id="@+id/oil_distance_price_layout"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"

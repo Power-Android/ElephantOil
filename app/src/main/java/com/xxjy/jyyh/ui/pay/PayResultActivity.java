@@ -10,6 +10,7 @@ import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityPayResultBinding;
@@ -20,17 +21,10 @@ public class PayResultActivity extends BindingActivity<ActivityPayResultBinding,
 
     @Override
     protected void initView() {
-//        mBinding.topLayout.setTitle("支付结果");
-//        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
-//                R.id.qmui_topbar_item_left_back).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-        mBinding.topLayout.setTitle("支付结果").setTextColor(Color.parseColor("#FFFFFF"));
-        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_white,
-                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
+        mBinding.titleLayout.tvTitle.setText("支付结果");
+        mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
+        BarUtils.setStatusBarColor(this,Color.parseColor("#1676FF"));
+        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
         mBinding.goHomeView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mBinding.goHomeView.getPaint().setAntiAlias(true);
 

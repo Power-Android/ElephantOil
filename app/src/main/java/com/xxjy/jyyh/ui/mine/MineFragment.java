@@ -18,6 +18,8 @@ import com.xxjy.jyyh.utils.LoginHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.jvm.internal.PropertyReference0Impl;
+
 public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewModel> {
     public static MineFragment getInstance() {
         return new MineFragment();
@@ -35,6 +37,10 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
         MineTabAdapter mineTabAdapter = new MineTabAdapter(R.layout.adapter_mine_tab,tabs);
         mBinding.recyclerView.setAdapter(mineTabAdapter);
+
+
+        queryUserInfo();
+
     }
 
     @Override
@@ -45,6 +51,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.settingView.setOnClickListener(this::onViewClicked);
         mBinding.nameView.setOnClickListener(this::onViewClicked);
         mBinding.photoView.setOnClickListener(this::onViewClicked);
+        mBinding.myCouponLayout.setOnClickListener(this::onViewClicked);
 
     }
 
@@ -63,6 +70,9 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             case R.id.setting_view:
                 getActivity().startActivity(new Intent(getContext(), SettingActivity.class));
                 break;
+            case R.id.my_coupon_layout:
+                getActivity().startActivity(new Intent(getContext(), MyCouponActivity.class));
+                break;
             case R.id.name_view:
             case R.id.photo_view:
                 LoginHelper.login(mContext, new LoginHelper.CallBack() {
@@ -79,5 +89,13 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     @Override
     protected void dataObservable() {
 
+        mViewModel.userLiveData.observe(this,data ->{
+
+        });
+    }
+
+
+    private void queryUserInfo(){
+        mViewModel.queryUserInfo();
     }
 }

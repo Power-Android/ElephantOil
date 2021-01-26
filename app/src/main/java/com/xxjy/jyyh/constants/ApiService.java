@@ -20,21 +20,29 @@ public class ApiService {
 
 
     //获取验证码
-    public static final String GET_CODE = "v1/wx/sendSmsCode";
+    public static final String GET_CODE = "api/v1/wx/sendSmsCode";
 
     //闪验、验证码登录
-    public static final String VERIFY_LOGIN = "v1/user/flash/login";
+    public static final String VERIFY_LOGIN = "api/v1/user/flash/login";
 
     //获取首页油站
-    public static final String HOME_OIL = "gasPublic/getHomeOilStations";
+    public static final String HOME_OIL = "api/gasPublic/getHomeOilStations";
+    //加油订单滚动消息
+    public static final String ORDER_NEWS = "api/gasPublic/getOrderNews";
+    //获取油号列表
+    public static final String OIL_NUMS = "api/gasPublic/getOilNums";
+    //油站筛选
+    public static final String OIL_STATIONS = "api/gasPublic/getOilStations";
+    //查询个人账户信息
+    public static final String USER_INFO = "api/user/queryUserInfo";
 
     //最近常去的油站
-    public static final String OFTEN_OIL = "gasPublic/getPreferentialStations";
+    public static final String OFTEN_OIL = "api/gasPublic/getPreferentialStations";
 
     //首页累计加油任务
-    public static final String REFUEL_JOB = "gasPublic/getRefuelJob";
+    public static final String REFUEL_JOB = "api/gasPublic/getRefuelJob";
 
     //获取油号列表-筛选用
-    public static final String GET_OIL_NUM = "gasPublic/getOilNums";
+    public static final String GET_OIL_NUM = "api/gasPublic/getOilNums";
 
 }

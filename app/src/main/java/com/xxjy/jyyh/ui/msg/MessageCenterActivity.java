@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout;
@@ -33,15 +34,17 @@ public class MessageCenterActivity extends BindingActivity<ActivityMessageCenter
 
     @Override
     protected void initView() {
-        mBinding.topLayout.setTitle("消息中心");
-        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
-                R.id.qmui_topbar_item_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
+//        mBinding.topLayout.setTitle("消息中心");
+//        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
+//                R.id.qmui_topbar_item_left_back).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+        mBinding.titleLayout.tvTitle.setText("消息中心");
+        mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
+        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
         initTab();
 
         data = new ArrayList<>();

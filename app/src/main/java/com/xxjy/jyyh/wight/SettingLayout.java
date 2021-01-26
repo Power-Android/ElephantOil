@@ -13,12 +13,15 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
  * create dd
  * date 2019-11-19
  * email dd@163.com
+ *
  * @author sunxiaokun
  */
 public class SettingLayout extends AppCompatTextView implements IPagerTitleView {
 
     private int mSelectedColor;
     private int mNormalColor;
+    private int mTextSize = 17;
+    private int mSelectTextSize = 20;
 
     public SettingLayout(Context context) {
         this(context, null);
@@ -41,19 +44,25 @@ public class SettingLayout extends AppCompatTextView implements IPagerTitleView 
         this.mNormalColor = mNormalColor;
     }
 
+    public void setTextViewSize(int normalSize, int selectSize) {
+        this.mTextSize = normalSize;
+        this.mSelectTextSize = selectSize;
+    }
+
     @Override
     public void onSelected(int index, int totalCount) {
         this.setTextColor(mSelectedColor);
-        setTextSize(20);
-        this.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        setTextSize(mSelectTextSize);
+        this.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
     }
 
     @Override
     public void onDeselected(int index, int totalCount) {
         this.setTextColor(mNormalColor);
-        setTextSize(17);
+        setTextSize(mTextSize);
         this.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
     }
+
 
     @Override
     public void onLeave(int index, int totalCount, float leavePercent, boolean leftToRight) {

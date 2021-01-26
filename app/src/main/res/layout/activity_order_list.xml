@@ -6,17 +6,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/color_F5"
+    android:fitsSystemWindows="true"
     tools:context=".ui.order.OrderListActivity">
-<!--    <include-->
-<!--        android:id="@+id/title_layout"-->
-<!--        layout="@layout/top_title_layout"/>-->
-        <com.qmuiteam.qmui.widget.QMUITopBarLayout
-            android:id="@+id/top_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            android:fitsSystemWindows="true"
-            />
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/top_title_blue_layout"/>
 
 
 

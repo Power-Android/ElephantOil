@@ -1,6 +1,18 @@
 package com.xxjy.jyyh.ui.oil;
 
+import android.text.TextUtils;
+
+import androidx.lifecycle.MutableLiveData;
+
 import com.xxjy.jyyh.base.BaseRepository;
+import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.entity.OilNumBean;
+import com.xxjy.jyyh.entity.OrderNewsEntity;
+
+import java.util.List;
+
+import rxhttp.RxHttp;
 
 /**
  * @author power
@@ -9,4 +21,33 @@ import com.xxjy.jyyh.base.BaseRepository;
  * @description:
  */
 public class OilRepository extends BaseRepository {
+
+    public void getOrderNews(MutableLiveData<List<OrderNewsEntity>> newLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.ORDER_NEWS)
+                .asResponseList(OrderNewsEntity.class)
+                .subscribe(data -> newLiveData.postValue(data))
+        );
+    }
+
+    public void getOilNums(MutableLiveData<List<OilNumBean>> oilNumLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.OIL_NUMS)
+                .asResponseList(OilNumBean.class)
+                .subscribe(data -> oilNumLiveData.postValue(data))
+        );
+    }
+
+    public void getOilStations(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
+                               String appLongitude, String oilNo, String orderBy, String distance,String pageNum,String pageSize) {
+        addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS)
+                .add("appLatitude", TextUtils.equals(appLatitude,"0")?null:appLatitude)
+                .add("appLongitude", TextUtils.equals(appLongitude,"0")?null:appLongitude)
+                .add("oilNo", oilNo)
+                .add("orderBy", orderBy)
+                .add("distance", distance)
+                .add("pageNum", pageNum)
+                .add("pageSize", pageSize)
+                .asResponse(OilEntity.class)
+                .subscribe(data -> oilStationLiveData.postValue(data))
+        );
+    }
 }

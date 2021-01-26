@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
@@ -19,9 +20,12 @@ public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, Abo
     private CustomerServiceDialog customerServiceDialog;
     @Override
     protected void initView() {
-        mBinding.topLayout.setTitle("关于我们");
-        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
-                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
+//        mBinding.topLayout.setTitle("关于我们");
+//        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
+//                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
+        mBinding.titleLayout.tvTitle.setText("关于我们");
+        mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
+        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
     }
 
     @Override

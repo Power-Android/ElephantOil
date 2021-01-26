@@ -11,6 +11,7 @@
         android:layout_gravity="center"
         android:layout_width="@dimen/dp_75"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:background="@drawable/selector_gas_station_check_oil_info"
         android:text=""
         android:textColor="@color/selector_red_black_color" />

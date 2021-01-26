@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.IntegralExchangeAdapter;
 import com.xxjy.jyyh.adapter.PayResultBannerAdapter;
@@ -27,15 +28,10 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
     private IntegralExchangeAdapter integralExchangeAdapter;
     @Override
     protected void initView() {
-        mBinding.topLayout.setTitle("支付结果").setTextColor(Color.parseColor("#FFFFFF"));
-        mBinding.topLayout.updateBottomDivider(0,0,0,0);
-        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_white,
-                R.id.qmui_topbar_item_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        mBinding.titleLayout.tvTitle.setText("支付结果");
+        mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
+        BarUtils.setStatusBarColor(this,Color.parseColor("#1676FF"));
+        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
         data.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1765232562,2313752077&fm=26&gp=0.jpg");
         data.add("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1292020288,3194758620&fm=26&gp=0.jpg");
         payResultBannerAdapter = new PayResultBannerAdapter(R.layout.item_pay_result_banner,data);

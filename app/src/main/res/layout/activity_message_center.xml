@@ -10,15 +10,18 @@
     <!--    <include-->
     <!--        android:id="@+id/title_layout"-->
     <!--        layout="@layout/top_title_layout"/>-->
-    <com.qmuiteam.qmui.widget.QMUITopBarLayout
-        android:id="@+id/top_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:fitsSystemWindows="true"
-        />
+<!--    <com.qmuiteam.qmui.widget.QMUITopBarLayout-->
+<!--        android:id="@+id/top_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/white"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        />-->
 
 
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/top_title_layout"/>
     <com.qmuiteam.qmui.widget.tab.QMUITabSegment
         android:id="@+id/tab_view"
         android:layout_width="match_parent"

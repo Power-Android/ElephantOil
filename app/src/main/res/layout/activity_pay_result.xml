@@ -5,14 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/color_F5"
     tools:context=".ui.pay.PayResultActivity">
 
-    <com.qmuiteam.qmui.widget.QMUITopBarLayout
-        android:id="@+id/top_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:fitsSystemWindows="true" />
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/top_title_blue_layout"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

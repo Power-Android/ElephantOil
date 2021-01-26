@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.BarUtils;
+import com.ihsanbal.logging.I;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
@@ -16,6 +18,7 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityOrderDetailsBinding;
+import com.xxjy.jyyh.ui.pay.PayResultActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 
 import java.util.ArrayList;
@@ -27,20 +30,18 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
     private QMUIPopup mNormalPopup;
     @Override
     protected void initView() {
-        mBinding.topLayout.setTitle("订单详情");
-        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
-                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
-
+        mBinding.titleLayout.tvTitle.setText("订单详情");
+        mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
+        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
         mBinding.useMethodView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mBinding.useMethodView.getPaint().setAntiAlias(true);
-
-
     }
 
     @Override
     protected void initListener() {
 mBinding.continuePayView.setOnClickListener(this::onViewClicked);
         mBinding.orderManageLayout.setOnClickListener(this::onViewClicked);
+        mBinding.cancelView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -81,6 +82,10 @@ mBinding.continuePayView.setOnClickListener(this::onViewClicked);
                 break;
             case R.id.continue_pay_view:
                 startActivity(new Intent(this, RefuelingPayResultActivity.class));
+                break;
+            case R.id.cancel_view:
+
+                startActivity(new Intent(this, PayResultActivity.class));
                 break;
         }
     }

@@ -7,14 +7,17 @@
     android:background="@color/white"
     android:orientation="vertical"
   >
-    <com.qmuiteam.qmui.widget.QMUITopBarLayout
-        android:id="@+id/top_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_F5"
-        android:fitsSystemWindows="true"
-        />
+<!--    <com.qmuiteam.qmui.widget.QMUITopBarLayout-->
+<!--        android:id="@+id/top_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/color_F5"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        />-->
 
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/top_title_layout"/>
     <ImageView
         android:layout_width="@dimen/dp_77"
         android:layout_height="@dimen/dp_77"

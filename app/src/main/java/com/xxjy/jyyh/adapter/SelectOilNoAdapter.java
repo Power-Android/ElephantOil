@@ -43,11 +43,11 @@ public class SelectOilNoAdapter extends BaseMultiItemQuickAdapter<OilNumCheckEnt
         }
         switch (item.getItemType()){
             case TYPETIELE:
-//                helper.setText(R.id.title, item.getType());
+                helper.setText(R.id.title, item.getType());
                 break;
             case TYPECONTENT:
-//                helper.setText(R.id.oilNumber, item.getOilListBeen().getOilNum());
-//                helper.getView(R.id.oilNumber).setSelected(index == helper.getAdapterPosition());
+                helper.setText(R.id.oilNumber, item.getOilListBeen().getOilNum());
+                helper.getView(R.id.oilNumber).setSelected(index == helper.getAdapterPosition());
                 break;
         }
     }

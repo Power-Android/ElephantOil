@@ -5,8 +5,9 @@
         android:id="@+id/tb_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_44"
+        android:background="@color/colorAccent"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:navigationIcon="@drawable/arrow_back_black">
+        app:navigationIcon="@drawable/arrow_back_white">
 
         <TextView
             android:id="@+id/tv_title"
@@ -15,14 +16,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textStyle="bold"
-            android:textColor="@color/color_12"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp_18" />
         <TextView
             android:id="@+id/sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:textColor="@color/color_12"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp_16"
             android:layout_marginRight="15dp"
             android:visibility="invisible"

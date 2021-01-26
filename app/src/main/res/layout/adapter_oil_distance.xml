@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+ >
+    <TextView
+        android:id="@+id/item_name"
+        android:textSize="@dimen/sp_12"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/dp_75"
+        android:layout_height="@dimen/dp_30"
+        android:layout_margin="@dimen/dp_5"
+        android:gravity="center"
+        android:background="@drawable/selector_gas_station_check_oil_info"
+        android:text=""
+        android:textColor="@color/selector_red_black_color"
+      />
+</LinearLayout>

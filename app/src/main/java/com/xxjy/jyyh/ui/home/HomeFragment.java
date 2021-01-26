@@ -18,6 +18,7 @@ import com.amap.api.location.DPoint;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -192,6 +193,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     @Override
     protected void dataObservable() {
         mViewModel.locationLiveData.observe(this, locationEntity -> {
+            UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
+            UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
             DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
             DPoint p2 = new DPoint(mLat, mLng);
             mBinding.addressTv.setText(locationEntity.getAddress());
@@ -202,6 +205,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
                 //首页油站
                 mViewModel.getHomeOil(mLat, mLng);
+
             }
         });
 

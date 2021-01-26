@@ -36,10 +36,9 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
 
     @Override
     protected void initView() {
-        mBinding.topLayout.setTitle("我的订单").setTextColor(Color.parseColor("#FFFFFF"));
-        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_white,
-                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
-
+        mBinding.titleLayout.tvTitle.setText("订单列表");
+        mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
+        BarUtils.setStatusBarColor(this,Color.parseColor("#1676FF"));
         initTab();
 
         data = new ArrayList<>();
@@ -72,7 +71,7 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(OrderListActivity.this,OrderDetailsActivity.class));
+                startActivity(new Intent(OrderListActivity.this, OrderDetailsActivity.class));
             }
         });
     }
