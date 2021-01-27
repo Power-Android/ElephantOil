@@ -42,6 +42,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.xxjy.jyyh.wight.ClearEditText
+                android:id="@+id/search_et"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:background="@null"

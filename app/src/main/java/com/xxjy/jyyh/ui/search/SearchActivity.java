@@ -44,6 +44,7 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
     private List<String> mOilHistoryList = new ArrayList<>();
     private List<String> mInterestRecommendList = new ArrayList<>();
     private List<String> mInterestHistoryList = new ArrayList<>();
+    private String content = "油";
 
     @Override
     protected void initView() {
@@ -180,7 +181,8 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                 break;
             case R.id.search_tv:
                 Intent intent = new Intent(this, SearchResultActivity.class);
-                intent.putExtra("type", "2");
+                intent.putExtra("type", "1");
+                intent.putExtra("content",content);
                 startActivity(intent);
                 break;
             case R.id.oil_history_delete_iv://油站的历史记录删除

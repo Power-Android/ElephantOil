@@ -48,6 +48,7 @@ public class OilDiscountAdapter extends BaseQuickAdapter<String, BaseViewHolder>
             case 3://余额
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_balance)
                         .setText(R.id.item_title_tv, "余额")
+                        .setText(R.id.item_discount_tv, "暂无余额")
                         .setGone(R.id.item_switch_tv, true);
                 discountTv.setCompoundDrawables(null, null, null, null);
                 break;

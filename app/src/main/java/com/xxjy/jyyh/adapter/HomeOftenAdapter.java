@@ -1,11 +1,16 @@
 package com.xxjy.jyyh.adapter;
 
+import android.graphics.Color;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.SpanUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.entity.OfentEntity;
 
 import java.util.List;
 
@@ -15,17 +20,27 @@ import java.util.List;
  * @project ElephantOil
  * @description:
  */
-public class HomeOftenAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class HomeOftenAdapter extends BaseQuickAdapter<OfentEntity, BaseViewHolder> {
 
-    public HomeOftenAdapter(int layoutResId, @Nullable List<String> data) {
+    public HomeOftenAdapter(int layoutResId, @Nullable List<OfentEntity> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, String item) {
+    protected void convert(@NonNull BaseViewHolder helper, OfentEntity item) {
         helper.setTextColor(R.id.item_title_tv, helper.getAdapterPosition() == 0 ?
                 mContext.getResources().getColor(R.color.color_34) :
                 mContext.getResources().getColor(R.color.color_76FF));
-        helper.setText(R.id.item_title_tv, item);
+        TextView titleTv = helper.getView(R.id.item_title_tv);
+        if (helper.getAdapterPosition() == 0 || helper.getAdapterPosition() == getItemCount() - 1){
+            titleTv.setText(item.getGasName());
+        }else {
+            SpanUtils.with(titleTv)
+                    .setForegroundColor(mContext.getResources().getColor(R.color.color_76FF))
+                    .append(item.getGasName())
+                    .setForegroundColor(mContext.getResources().getColor(R.color.color_34))
+                    .append("、")
+                    .create();
+        }
     }
 }

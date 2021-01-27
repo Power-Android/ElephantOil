@@ -16,8 +16,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.qmuiteam.qmui.util.QMUIDeviceHelper;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.rxjava.rxlife.RxLife;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMainBinding;
@@ -26,6 +28,9 @@ import com.xxjy.jyyh.ui.integral.IntegralFragment;
 import com.xxjy.jyyh.ui.mine.MineFragment;
 import com.xxjy.jyyh.ui.oil.OilFragment;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
+
+import io.reactivex.rxjava3.functions.Consumer;
+import rxhttp.RxHttp;
 
 public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewModel> {
     private int mLastFgIndex = -1;
@@ -43,7 +48,6 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     @Override
     protected void initView() {
         initNavigationView();
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -30,6 +30,7 @@ public class OilGunDialog {
     private DialogOilGunLayoutBinding mBinding;
     private List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> mList = new ArrayList<>();
     private OilGunAdapter mOilGunAdapter;
+    private int oilNoPosition;
 
     public OilGunDialog(Context context) {
         this.mContext = context;
@@ -66,14 +67,19 @@ public class OilGunDialog {
         mBinding.backIv.setOnClickListener(view -> mOilGunDialog.cancel());
     }
 
-    public void show(List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> gunNos){
+    public void show(int oilNoPosition, List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> gunNos){
         mOilGunDialog.show();
+        this.oilNoPosition = oilNoPosition;
         mList = gunNos;
         mOilGunAdapter.setNewData(mList);
     }
 
     public void dismiss(){
         mOilGunDialog.dismiss();
+    }
+
+    public int getOilNoPosition(){
+        return oilNoPosition;
     }
 
     public interface OnItemClickedListener{

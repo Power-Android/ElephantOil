@@ -27,12 +27,16 @@ public class ApiService {
 
     //获取首页油站
     public static final String HOME_OIL = "api/gasPublic/getHomeOilStations";
+
     //加油订单滚动消息
     public static final String ORDER_NEWS = "api/gasPublic/getOrderNews";
+
     //获取油号列表
     public static final String OIL_NUMS = "api/gasPublic/getOilNums";
+
     //油站筛选
     public static final String OIL_STATIONS = "api/gasPublic/getOilStations";
+
     //加油首页签约油站列表
     public static final String SIGN_OIL_STATIONS = "api/gasPublic/getSignOilStations";
     //加油首页banner
@@ -46,5 +50,20 @@ public class ApiService {
 
     //首页累计加油任务
     public static final String REFUEL_JOB = "api/gasPublic/getRefuelJob";
+
+    //获取油号列表-筛选用
+    public static final String GET_OIL_NUM = "api/gasPublic/getOilNums";
+
+    //商户优惠券
+    public static final String BUSINESS_COUPON = "api/coupon/v1/getBusinessCoupons";
+
+    //平台优惠券
+    public static final String PLATFORM_COUPON = "api/coupon/v1/getPlatformCouponVOs";
+
+    //油站默认快捷价格
+    public static final String OIL_PRICE_DEFAULT = "api/gasPublic/buyPriceDefault";
+
+    //油站优惠券互斥
+    public static final String OIL_MULTIPLE_PRICE = "api/gasPublic/getMultiplePrices";
 
 }

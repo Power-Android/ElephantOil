@@ -7,7 +7,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.LocationEntity;
+import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
+
+import java.util.List;
 
 /**
  * @author power
@@ -18,7 +21,7 @@ import com.xxjy.jyyh.entity.OilEntity;
 public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<LocationEntity> locationLiveData = new MutableLiveData<>();
     public MutableLiveData<OilEntity> homeOilLiveData = new MutableLiveData<>();
-    public MutableLiveData<String> oftenOilLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<OfentEntity>> oftenOilLiveData = new MutableLiveData<>();
     public MutableLiveData<String> refuelOilLiveData = new MutableLiveData<>();
 
     public HomeViewModel(@NonNull Application application) {

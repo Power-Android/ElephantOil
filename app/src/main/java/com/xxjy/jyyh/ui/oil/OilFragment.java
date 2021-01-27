@@ -144,7 +144,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 }
                 selectDistanceDialog.show();
                 selectDistanceDialog.setOnItemClickedListener((adapter, view1, position, distanceEntity) -> {
-                    distance=distanceEntity.getDistance();
+                    distance = distanceEntity.getDistance();
                     mBinding.oilSelectDistanceTv.setText(distanceEntity.getTitle());
 
                     loadData(false);
@@ -188,7 +188,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 loadData(false);
             });
         });
-        mViewModel.bannersLiveData.observe(this,data->{
+        mViewModel.bannersLiveData.observe(this, data -> {
             //banner
             mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
                 @Override
@@ -207,8 +207,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 
         });
 
-        mViewModel.signOilStationLiveData.observe(this,signStations ->{
-            adapter.addData(0,signStations.getStations());
+        mViewModel.signOilStationLiveData.observe(this, signStations -> {
+            adapter.addData(0, signStations.getStations());
             mBinding.recyclerView.scrollToPosition(0);
         });
         mViewModel.oilStationLiveData.observe(this, dataStations -> {
@@ -219,7 +219,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 mBinding.refreshview.finishRefresh(true);
                 getSignOilStations();
             } else {
-                if (dataStations != null && dataStations.getStations()!=null&& dataStations.getStations().size() > 0) {
+                if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0) {
                     adapter.addData(dataStations.getStations());
                     mBinding.refreshview.finishLoadMore(true);
                 } else {
@@ -231,13 +231,13 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         });
     }
 
-    private void loadData(boolean isLoadMore){
-        if(isLoadMore){
+    private void loadData(boolean isLoadMore) {
+        if (isLoadMore) {
             pageNum++;
             getOilStations();
 
-        }else{
-            pageNum=1;
+        } else {
+            pageNum = 1;
             getOilStations();
 
         }
@@ -253,13 +253,17 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     }
 
     private void getOilStations() {
-        mViewModel.getOilStations(UserConstants.getLatitude(),UserConstants.getLongitude(),mCheckOilGasId, firstDistanceOrPrice ? "1" : "2", distance==-1?null:String.valueOf(distance*1000), String.valueOf(pageNum), String.valueOf(pageSize));
+        mViewModel.getOilStations(UserConstants.getLatitude(), UserConstants.getLongitude(),
+                mCheckOilGasId, firstDistanceOrPrice ? "1" : "2",
+                distance == -1 ? null : String.valueOf(distance * 1000),
+                String.valueOf(pageNum), String.valueOf(pageSize), null, null);
     }
+
     private void getSignOilStations() {
         mViewModel.getSignOilStations(UserConstants.getLatitude(), UserConstants.getLongitude());
     }
 
-    private void getBanners(){
+    private void getBanners() {
         mViewModel.getBanners();
     }
 }

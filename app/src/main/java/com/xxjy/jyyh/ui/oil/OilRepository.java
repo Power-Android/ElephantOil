@@ -38,7 +38,8 @@ public class OilRepository extends BaseRepository {
     }
 
     public void getOilStations(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
-                               String appLongitude, String oilNo, String orderBy, String distance,String pageNum,String pageSize) {
+                               String appLongitude, String oilNo, String orderBy, String distance,
+                               String pageNum,String pageSize, String gasName, String method) {
         addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS)
                 .add("appLatitude", TextUtils.equals(appLatitude,"0")?null:appLatitude)
                 .add("appLongitude", TextUtils.equals(appLongitude,"0")?null:appLongitude)
@@ -47,6 +48,8 @@ public class OilRepository extends BaseRepository {
                 .add("distance", distance)
                 .add("pageNum", pageNum)
                 .add("pageSize", pageSize)
+                .add("gasName", gasName, !TextUtils.isEmpty(gasName))
+                .add("method", method, !TextUtils.isEmpty(method))
                 .asResponse(OilEntity.class)
                 .subscribe(data -> oilStationLiveData.postValue(data))
         );

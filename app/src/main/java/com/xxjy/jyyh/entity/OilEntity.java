@@ -375,6 +375,15 @@ public class OilEntity implements Serializable {
 
             public static class GunNosBean {
                 private Integer gunNo;
+                private boolean isSelected;
+
+                public boolean isSelected() {
+                    return isSelected;
+                }
+
+                public void setSelected(boolean selected) {
+                    isSelected = selected;
+                }
 
                 public Integer getGunNo() {
                     return gunNo;

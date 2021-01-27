@@ -25,7 +25,7 @@ public class OilNumAdapter extends BaseQuickAdapter<OilEntity.StationsBean.OilPr
     @Override
     protected void convert(@NonNull BaseViewHolder helper, OilEntity.StationsBean.OilPriceListBean item) {
         helper.setText(R.id.item_oil_num_tv, item.getOilName());
-        helper.itemView.setSelected(item.isSelected());
+        helper.getView(R.id.rootView).setSelected(item.isSelected());
 
         //1汽油，2 柴油，3天然气
         switch (item.getOilType()){

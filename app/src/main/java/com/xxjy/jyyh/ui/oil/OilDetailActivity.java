@@ -67,7 +67,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mOilNumAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<OilEntity.StationsBean.OilPriceListBean> data = adapter.getData();
             if (mOilGunDialog != null){
-                mOilGunDialog.show(data.get(position).getGunNos());
+                mOilGunDialog.show(position, data.get(position).getGunNos());
             }
         });
 
@@ -79,11 +79,11 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mOilGunDialog = new OilGunDialog(this);
         mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
             if (mOilAmountDialog != null){
-                mOilAmountDialog.show();
+                mOilAmountDialog.show(0);
             }
         });
 
-        mOilAmountDialog = new OilAmountDialog(this);
+//        mOilAmountDialog = new OilAmountDialog(this, stationsBean);
         mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
             @Override
             public void onOilAmountClick(BaseQuickAdapter adapter, View view, int position) {

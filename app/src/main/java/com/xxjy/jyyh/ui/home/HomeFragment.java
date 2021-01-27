@@ -43,6 +43,7 @@ import com.xxjy.jyyh.dialog.OilNumDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.dialog.ReceiveRewardDialog;
+import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
@@ -60,7 +61,7 @@ import java.util.List;
  */
 public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> implements OnRefreshLoadMoreListener {
     private List<OilEntity.StationsBean.CzbLabelsBean> mOilTagList = new ArrayList<>();
-    private List<String> mOftenList = new ArrayList<>();
+    private List<OfentEntity> mOftenList = new ArrayList<>();
     private List<String> mExchangeList = new ArrayList<>();
     private OilNumDialog mOilNumDialog;
     private OilGunDialog mOilGunDialog;
@@ -246,30 +247,26 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mViewModel.getOftenOils();
             }
             //加油任务
-            mViewModel.getRefuelJob(stationsBean.getGasId());
+//            mViewModel.getRefuelJob(stationsBean.getGasId());
         });
 
         //常去油站
-        mViewModel.oftenOilLiveData.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                mOftenList.add("• 我最近常去：");
-                mOftenList.add("光华路加油站、");
-                mOftenList.add("成都石油花园加油站、");
-                mOftenList.add("光华路加油站");
-                if (mOftenList.size() > 0) {
-                    FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
-                    flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
-                    flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
-                    flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
-                    mBinding.oftenOilRecyclerView.setLayoutManager(flexboxLayoutManager);
-                    HomeOftenAdapter oftenAdapter =
-                            new HomeOftenAdapter(R.layout.adapter_often_layout, mOftenList);
-                    mBinding.oftenOilRecyclerView.setAdapter(oftenAdapter);
-                    mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
-                } else {
-                    mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
-                }
+        mViewModel.oftenOilLiveData.observe(this, enetities -> {
+            if (enetities.size() > 0) {
+                mOftenList.clear();
+                mOftenList = enetities;
+                mOftenList.add(0, new OfentEntity("• 我最近常去："));
+                FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
+                flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+                flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
+                flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
+                mBinding.oftenOilRecyclerView.setLayoutManager(flexboxLayoutManager);
+                HomeOftenAdapter oftenAdapter =
+                        new HomeOftenAdapter(R.layout.adapter_often_layout, mOftenList);
+                mBinding.oftenOilRecyclerView.setAdapter(oftenAdapter);
+                mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
+            } else {
+                mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
             }
         });
     }
@@ -280,21 +277,32 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilNumDialog.setOnItemClickedListener((adapter, view, position) -> {
             List<OilEntity.StationsBean.OilPriceListBean> data = adapter.getData();
             if (mOilGunDialog != null){
+                for (int i = 0; i < data.size(); i++) {
+                    data.get(i).setSelected(false);
+                }
                 data.get(position).setSelected(true);
-                mOilGunDialog.show(data.get(position).getGunNos());
+                adapter.notifyDataSetChanged();
+                mOilGunDialog.show(position, data.get(position).getGunNos());
             }
         });
 
         //枪号dialog
         mOilGunDialog = new OilGunDialog(mContext);
         mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
+            List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
             if (mOilAmountDialog != null){
-                mOilAmountDialog.show();
+                for (int i = 0; i < data.size(); i++) {
+                    data.get(i).setSelected(false);
+                }
+                data.get(position).setSelected(true);
+                adapter.notifyDataSetChanged();
+                int oilNoPosition = mOilGunDialog.getOilNoPosition();
+                mOilAmountDialog.show(oilNoPosition);
             }
         });
 
-        //快捷金额dialog
-        mOilAmountDialog = new OilAmountDialog(mContext);
+        //快捷金额dialog  请输入加油金额 请选择优惠券 暂无优惠券
+        mOilAmountDialog = new OilAmountDialog(mContext, getBaseActivity(), stationsBean);
         mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
             @Override
             public void onOilAmountClick(BaseQuickAdapter adapter, View view, int position) {

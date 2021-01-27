@@ -23,7 +23,8 @@ import java.lang.reflect.Type;
  * @project RunElephant
  * @description:
  */
-public abstract class BindingActivity<V extends ViewBinding, VM extends BaseViewModel> extends BaseActivity implements NetworkUtils.OnNetworkStatusChangedListener {
+public abstract class BindingActivity<V extends ViewBinding, VM extends BaseViewModel> extends
+        BaseActivity implements NetworkUtils.OnNetworkStatusChangedListener {
     protected V mBinding = null;
     protected VM mViewModel;
 

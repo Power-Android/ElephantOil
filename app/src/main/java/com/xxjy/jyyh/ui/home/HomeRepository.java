@@ -8,9 +8,12 @@ import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.entity.LocationEntity;
+import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
+
+import java.util.List;
 
 import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
@@ -77,15 +80,10 @@ public class HomeRepository extends BaseRepository {
      * @param oftenOilLiveData
      * 常去油站
      */
-    public void getOftenOils(MutableLiveData<String> oftenOilLiveData) {
+    public void getOftenOils(MutableLiveData<List<OfentEntity>> oftenOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.OFTEN_OIL)
-                .asResponse(String.class)
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Throwable {
-                        oftenOilLiveData.postValue(s);
-                    }
-                })
+                .asResponseList(OfentEntity.class)
+                .subscribe(ofentEntities -> oftenOilLiveData.postValue(ofentEntities))
         );
     }
 

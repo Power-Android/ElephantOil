@@ -127,6 +127,7 @@ public class HttpManager {
         String sign = HeaderUtils.getSign(HeaderUtils.sortMapByKey(finalParams));
         finalParams.put("sign", sign);
         finalParams.remove("method");
+        finalParams.remove("did");
         if (TextUtils.isEmpty(openId)) {
             finalParams.put("openId", "");
         } else {
