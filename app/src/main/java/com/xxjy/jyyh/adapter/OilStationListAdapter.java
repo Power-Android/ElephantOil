@@ -35,16 +35,14 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
     @Override
     protected void convert(@NonNull BaseViewHolder helper, OilEntity.StationsBean item) {
 
-        helper.setTextColor(R.id.item_name_tv, Color.parseColor("#323334"))
-                .setTextColor(R.id.item_address_tv, Color.parseColor("#A0A0A0"))
-                .setTextColor(R.id.item_navigation_tv, Color.parseColor("#555555"))
-                .setTextColor(R.id.item_address_tv, Color.parseColor("#A0A0A0"));
-        if (helper.getAdapterPosition() % 2 == 0) {
+
+        if (!item.isIsSign()) {
+            helper.setTextColor(R.id.item_name_tv, Color.parseColor("#323334"))
+                    .setTextColor(R.id.item_address_tv, Color.parseColor("#A0A0A0"))
+                    .setTextColor(R.id.item_navigation_tv, Color.parseColor("#555555"))
+                    .setTextColor(R.id.item_address_tv, Color.parseColor("#A0A0A0"));
             helper.getView(R.id.parent_layout).setBackground(null);
             helper.getView(R.id.type_view).setVisibility(View.GONE);
-
-            ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
-            addTagView(mContext, 2, "标签标签标签标签标签标签", (QMUIFloatLayout) helper.getView(R.id.float_layout));
         } else {
             helper.setTextColor(R.id.item_name_tv, Color.parseColor("#1676FF"))
                     .setTextColor(R.id.item_address_tv, Color.parseColor("#5478AC"))
@@ -54,9 +52,6 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
 
             helper.getView(R.id.parent_layout).setBackgroundResource(R.drawable.ic_oil_station_bg);
             helper.getView(R.id.type_view).setVisibility(View.VISIBLE);
-            helper.getView(R.id.float_layout);
-
-
 
         }
 
@@ -83,7 +78,7 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
         if(item.getCzbLabels()!=null){
             for (OilEntity.StationsBean.CzbLabelsBean lab:
                     item.getCzbLabels()) {
-                addTagView(mContext, 1, lab.getTagName(), (QMUIFloatLayout) helper.getView(R.id.float_layout));
+                addTagView(mContext, item.isIsSign(), lab.getTagName(), (QMUIFloatLayout) helper.getView(R.id.float_layout));
             }
         }
 
@@ -91,13 +86,13 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
 
     }
 
-    private void addTagView(Context context, int type, String content, QMUIFloatLayout floatLayout) {
+    private void addTagView(Context context, boolean isSign, String content, QMUIFloatLayout floatLayout) {
         TextView textView = new TextView(context);
         int textViewPadding = QMUIDisplayHelper.dp2px(context, 4);
         int textViewPadding2 = QMUIDisplayHelper.dp2px(context, 2);
         textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
-        if (type == 1) {
+        if (!isSign) {
             textView.setTextColor(ContextCompat.getColor(context, R.color.color_3E));
             textView.setBackgroundResource(R.drawable.shape_soild_station_tag_red);
         } else {

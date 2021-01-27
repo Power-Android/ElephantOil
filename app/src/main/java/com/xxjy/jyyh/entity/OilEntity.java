@@ -32,7 +32,7 @@ public class OilEntity implements Serializable {
         private String gasTypeImg;
         private String gasTypeName;
         private Integer isInvoice;
-        private Boolean isSign;
+        private boolean isSign;
         private String oilName;
         private String oilNo;
         private Integer polyOil;
@@ -127,11 +127,11 @@ public class OilEntity implements Serializable {
             this.isInvoice = isInvoice;
         }
 
-        public Boolean isIsSign() {
+        public boolean isIsSign() {
             return isSign;
         }
 
-        public void setIsSign(Boolean isSign) {
+        public void setIsSign(boolean isSign) {
             this.isSign = isSign;
         }
 

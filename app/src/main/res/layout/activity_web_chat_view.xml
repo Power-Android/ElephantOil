@@ -47,7 +47,7 @@
                     android:id="@+id/web_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/sp_16"
+                    android:textSize="@dimen/sp_18"
                     android:textColor="@color/color_23"
                     android:layout_gravity="center"
                     android:gravity="center"

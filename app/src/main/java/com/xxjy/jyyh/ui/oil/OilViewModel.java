@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
+import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
@@ -26,6 +27,8 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public MutableLiveData<List<OrderNewsEntity>> orderNewsLiveData = new MutableLiveData<>();
     public MutableLiveData<List<OilNumBean>> oilNumLiveData = new MutableLiveData<>();
     public MutableLiveData<OilEntity> oilStationLiveData = new MutableLiveData<>();
+    public MutableLiveData<OilEntity> signOilStationLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<BannerBean>> bannersLiveData = new MutableLiveData<>();
 
     public void getOrderNews() {
         mRespository.getOrderNews(orderNewsLiveData);
@@ -37,5 +40,12 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
                                String appLongitude, String oilNo, String orderBy, String distance,String pageNum,String pageSize) {
         mRespository.getOilStations(oilStationLiveData, appLatitude,
                  appLongitude,  oilNo,  orderBy,  distance, pageNum, pageSize);
+    }
+    public void getSignOilStations(String appLatitude,
+                               String appLongitude) {
+        mRespository.getSignOilStations(signOilStationLiveData, appLatitude,appLongitude);
+    }
+    public void getBanners() {
+        mRespository.getBanners(bannersLiveData);
     }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
@@ -48,6 +49,22 @@ public class OilRepository extends BaseRepository {
                 .add("pageSize", pageSize)
                 .asResponse(OilEntity.class)
                 .subscribe(data -> oilStationLiveData.postValue(data))
+        );
+    }
+
+    public void getSignOilStations(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
+                                   String appLongitude){
+        addDisposable(RxHttp.postForm(ApiService.SIGN_OIL_STATIONS)
+                .add("appLatitude", TextUtils.equals(appLatitude,"0")?null:appLatitude)
+                .add("appLongitude", TextUtils.equals(appLongitude,"0")?null:appLongitude)
+                .asResponse(OilEntity.class)
+                .subscribe(data -> oilStationLiveData.postValue(data))
+        );
+    }
+    public void getBanners(MutableLiveData<List<BannerBean>> bannersLiveData){
+        addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS_BANNERS)
+                .asResponseList(BannerBean.class)
+                .subscribe(data -> bannersLiveData.postValue(data))
         );
     }
 }

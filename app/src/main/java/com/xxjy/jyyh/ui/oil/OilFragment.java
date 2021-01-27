@@ -7,12 +7,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnMultiListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilStationListAdapter;
 import com.xxjy.jyyh.adapter.TopLineAdapter;
@@ -21,10 +24,16 @@ import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentOilBinding;
 import com.xxjy.jyyh.dialog.SelectDistanceDialog;
 import com.xxjy.jyyh.dialog.SelectOilNumDialog;
+import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.DistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.youth.banner.Banner;
+import com.youth.banner.adapter.BannerImageAdapter;
+import com.youth.banner.holder.BannerImageHolder;
+import com.youth.banner.indicator.RectangleIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,22 +64,23 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
 
 
-
+        mBinding.refreshview.setEnableLoadMore(false);
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, data);
         mBinding.recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-            }
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+
+
         });
 
         mBinding.msgBanner.setAdapter(new TopLineAdapter(new ArrayList<>(), true))
                 .setOrientation(Banner.VERTICAL)
                 .setUserInputEnabled(false);
         getOrderNews();
-loadData(false);
+        loadData(false);
+
+        getBanners();
     }
 
     @Override
@@ -100,17 +110,21 @@ loadData(false);
             }
         });
 
-        mBinding.refreshview.setOnLoadMoreListener(refreshLayout -> {
-//            mBinding.refreshview.setEnableLoadMore(false);
-            loadData(true);
+        mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                loadData(true);
 
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                getOrderNews();
+                getBanners();
+                loadData(false);
+
+            }
         });
-        mBinding.refreshview.setOnRefreshListener(refreshLayout -> {
-//            mBinding.refreshview.setEnableRefresh(false);
-            loadData(false);
-
-        });
-
         mBinding.oilSortLayout.setOnClickListener(this::onViewClicked);
         mBinding.oilSelectLayout.setOnClickListener(this::onViewClicked);
         mBinding.oilDistancePriceLayout.setOnClickListener(this::onViewClicked);
@@ -171,41 +185,60 @@ loadData(false);
                 mCheckOilGasId = checkOilGasId;
                 mBinding.oilSortOilNumTv.setText(oilNum);
                 selectOilNumDialog.setCheckData(mCheckOilGasId);
+                loadData(false);
             });
         });
+        mViewModel.bannersLiveData.observe(this,data->{
+            //banner
+            mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
+                @Override
+                public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
+                    Glide.with(holder.imageView)
+                            .load(data.getImgUrl())
+                            .apply(new RequestOptions()
+                                    .error(R.drawable.default_img_bg))
+                            .into(holder.imageView);
+                    holder.imageView.setOnClickListener(v -> {
+                        WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
+                    });
+                }
+            }).addBannerLifecycleObserver(this)
+                    .setIndicator(new RectangleIndicator(mContext));
 
+        });
+
+        mViewModel.signOilStationLiveData.observe(this,signStations ->{
+            adapter.addData(0,signStations.getStations());
+            mBinding.recyclerView.scrollToPosition(0);
+        });
         mViewModel.oilStationLiveData.observe(this, dataStations -> {
 
+            if (pageNum == 1) {
+                adapter.setNewData(dataStations.getStations());
+                mBinding.refreshview.setEnableLoadMore(true);
+                mBinding.refreshview.finishRefresh(true);
+                getSignOilStations();
+            } else {
+                if (dataStations != null && dataStations.getStations()!=null&& dataStations.getStations().size() > 0) {
+                    adapter.addData(dataStations.getStations());
+                    mBinding.refreshview.finishLoadMore(true);
+                } else {
+                    mBinding.refreshview.finishLoadMoreWithNoMoreData();
+                }
+            }
 
-           if(dataStations==null||dataStations.getStations()==null||dataStations.getStations().size()==0){
-             if(pageNum==1){
-                 mBinding.refreshview.finishRefreshWithNoMoreData();
-             }else{
-                 mBinding.refreshview.finishLoadMoreWithNoMoreData();
-             }
-           }else{
-               if(pageNum==1){
-                   data.clear();
-                   mBinding.refreshview.finishRefresh();
-//                   mBinding.refreshview.setEnableRefresh(true);
-               }else{
-                   mBinding.refreshview.finishLoadMore();
-//                   mBinding.refreshview.setEnableLoadMore(true);
-               }
-               data.addAll(dataStations.getStations());
-               pageNum++;
-           }
 
         });
     }
 
     private void loadData(boolean isLoadMore){
         if(isLoadMore){
-            getOilStations(UserConstants.getLatitude(), UserConstants.getLongitude(), mCheckOilGasId, firstDistanceOrPrice ? "1" : "2", distance==-1?null:String.valueOf(distance*1000), String.valueOf(pageNum), String.valueOf(pageSize));
+            pageNum++;
+            getOilStations();
 
         }else{
             pageNum=1;
-            getOilStations(UserConstants.getLatitude(), UserConstants.getLongitude(), mCheckOilGasId, firstDistanceOrPrice ? "1" : "2", distance==-1?null:String.valueOf(distance*1000), String.valueOf(pageNum), String.valueOf(pageSize));
+            getOilStations();
 
         }
 
@@ -219,8 +252,14 @@ loadData(false);
         mViewModel.getOilNums();
     }
 
-    private void getOilStations(String appLatitude, String appLongitude, String oilNo, String orderBy, String distance, String pageNum, String pageSize) {
-        mViewModel.getOilStations(appLatitude,
-                appLongitude, oilNo, orderBy, distance, pageNum, pageSize);
+    private void getOilStations() {
+        mViewModel.getOilStations(UserConstants.getLatitude(),UserConstants.getLongitude(),mCheckOilGasId, firstDistanceOrPrice ? "1" : "2", distance==-1?null:String.valueOf(distance*1000), String.valueOf(pageNum), String.valueOf(pageSize));
+    }
+    private void getSignOilStations() {
+        mViewModel.getSignOilStations(UserConstants.getLatitude(), UserConstants.getLongitude());
+    }
+
+    private void getBanners(){
+        mViewModel.getBanners();
     }
 }
