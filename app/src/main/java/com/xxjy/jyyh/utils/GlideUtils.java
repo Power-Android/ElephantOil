@@ -52,23 +52,23 @@ public class GlideUtils extends AppGlideModule {
      * @param imageView
      * @describe 与没有context的方法相比 不易导致 内存泄漏问题，原因 activity销毁的时候 imageView 的上下文对象自然不存在
      */
-    public static void loadImage(Context context, Object obj, ImageView imageView) {
-        if (obj instanceof String) {
-            Glide.with(context).load(obj).apply(initOptions())
-                    .skipMemoryCache(isSkipMemoryCache()).error(getErrorImage())
-                    .fallback(getErrorImage()).placeholder(getPlaceholder()).into(imageView);
-        }
-        if (obj instanceof Bitmap) {
-            Glide.with(context).load(obj).apply(initOptions())
-                    .skipMemoryCache(isSkipMemoryCache()).error(getErrorImage())
-                    .fallback(getErrorImage()).placeholder(getPlaceholder()).into(imageView);
-        }
-        if (obj instanceof Drawable) {
-            Glide.with(context).load(obj).apply(initOptions())
-                    .skipMemoryCache(isSkipMemoryCache()).error(getErrorImage())
-                    .fallback(getErrorImage()).placeholder(getPlaceholder()).into(imageView);
-        }
-    }
+//    public static void loadImage(Context context, Object obj, ImageView imageView) {
+//        if (obj instanceof String) {
+//            Glide.with(context).load(obj).apply(initOptions())
+//                    .skipMemoryCache(isSkipMemoryCache()).error(getErrorImage())
+//                    .fallback(getErrorImage()).placeholder(getPlaceholder()).into(imageView);
+//        }
+//        if (obj instanceof Bitmap) {
+//            Glide.with(context).load(obj).apply(initOptions())
+//                    .skipMemoryCache(isSkipMemoryCache()).error(getErrorImage())
+//                    .fallback(getErrorImage()).placeholder(getPlaceholder()).into(imageView);
+//        }
+//        if (obj instanceof Drawable) {
+//            Glide.with(context).load(obj).apply(initOptions())
+//                    .skipMemoryCache(isSkipMemoryCache()).error(getErrorImage())
+//                    .fallback(getErrorImage()).placeholder(getPlaceholder()).into(imageView);
+//        }
+//    }
 
     /**
      * @describe 加载圆形图
@@ -85,6 +85,17 @@ public class GlideUtils extends AppGlideModule {
 //                .signature(new ObjectKey(System.currentTimeMillis()))
                 .apply(new RequestOptions().error(R.drawable.default_img_bg))
                 .circleCrop().into(imageView);
+    }
+    /**
+     * @describe 加载图片
+     * @param context   当前Activity的上下文对象
+     * @param imageView
+     */
+    public static void loadImage(Context context, String url, ImageView imageView) {
+        Glide.with(context).load(url)
+                .error(R.drawable.default_img_bg)
+                .apply(new RequestOptions().error(R.drawable.default_img_bg))
+                .into(imageView);
     }
     /**
      * @describe 加载正方形图片
@@ -208,7 +219,7 @@ public class GlideUtils extends AppGlideModule {
      */
     private static @DrawableRes
     int getErrorImage(){
-        return R.drawable.picture_icon_data_error;
+        return R.drawable.default_img_bg;
     }
 
     /**
@@ -216,7 +227,7 @@ public class GlideUtils extends AppGlideModule {
      * @describe 当图片没有加载出来的时候显示
      */
     private static @DrawableRes int getPlaceholder(){
-        return  R.drawable.picture_image_placeholder;
+        return  R.drawable.default_img_bg;
     }
 
     /**

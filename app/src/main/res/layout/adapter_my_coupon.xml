@@ -68,6 +68,7 @@
             app:layout_constraintTop_toBottomOf="@+id/item_title_tv"
             app:layout_constraintStart_toStartOf="@+id/item_title_tv"/>
         <com.makeramen.roundedimageview.RoundedImageView
+           android:id="@+id/image_view"
             android:layout_width="@dimen/dp_52"
             android:layout_height="@dimen/dp_52"
             android:src="@drawable/default_img_bg"
@@ -83,6 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:qmui_backgroundColor="#B3FFFFFF"
+        android:visibility="gone"
         app:qmui_borderWidth="@dimen/dp_0"
         app:qmui_radius="@dimen/dp_5"/>
     <ImageView
@@ -91,6 +93,7 @@
         android:layout_height="@dimen/dp_45"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:visibility="gone"
         android:layout_marginRight="@dimen/dp_5"
         android:src="@drawable/ic_coupon_expired"/>
 </RelativeLayout>

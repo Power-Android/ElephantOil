@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.entity.UserBean;
 
 import rxhttp.RxHttp;
 
@@ -17,9 +18,9 @@ import rxhttp.RxHttp;
 public class MineRepository extends BaseRepository {
 
 
-    public void queryUserInfo( MutableLiveData<String> userLiveData){
+    public void queryUserInfo( MutableLiveData<UserBean> userLiveData){
         addDisposable(RxHttp.postForm(ApiService.USER_INFO)
-                .asResponse(String.class)
+                .asResponse(UserBean.class)
                 .subscribe(data -> userLiveData.postValue(data))
         );
     }

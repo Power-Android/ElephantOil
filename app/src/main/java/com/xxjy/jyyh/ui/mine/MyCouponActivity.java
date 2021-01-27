@@ -1,4 +1,5 @@
 package com.xxjy.jyyh.ui.mine;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -6,18 +7,26 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.util.QMUIKeyboardHelper;
+import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 import com.qmuiteam.qmui.widget.tab.QMUITabBuilder;
 import com.qmuiteam.qmui.widget.tab.QMUITabIndicator;
 import com.qmuiteam.qmui.widget.tab.QMUITabSegment;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MyCouponAdapter;
 import com.xxjy.jyyh.adapter.MyViewPagerAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityMyCouponBinding;
+import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.wight.SettingLayout;
 
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -31,33 +40,37 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding,MyCouponViewModel> {
+public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, MyCouponViewModel> {
 
 
-    private boolean isCanUse=true;
-    private final String[] titles = new String[]{"平台优惠券", "商家优惠券","兑换"};
+    private final String[] titles = new String[]{"平台优惠券", "商家优惠券", "兑换"};
     private final List<View> mList = new ArrayList<>(2);
-    private List<String> data=new ArrayList<>();
-    private MyCouponAdapter myCouponAdapter;
+    private List<CouponBean> data = new ArrayList<>();
+    private List<CouponBean> data2 = new ArrayList<>();
+    private MyCouponAdapter platformCouponAdapter;
+    private MyCouponAdapter businessCouponAdapter;
+
+    private RecyclerView mPlatformRecyclerView;
+    private RecyclerView mBusinessRecyclerView;
+    private QMUIRoundButton mPlatformCanUseBt;
+    private QMUIRoundButton mPlatformNoCanUseBt;
+    private QMUIRoundButton mBusinessCanUseBt;
+    private QMUIRoundButton mBusinessNoCanUseBt;
+    private SmartRefreshLayout mPlatformRefreshView;
+    private SmartRefreshLayout mBusinessRefreshView;
     private View mPlatformCoupon;
     private View mBusinessCoupon;
     private View mExchangeCoupon;
+
+    private int platformCanUse = 1;
+    private int businessCanUse = 1;
+
     @Override
     protected void initView() {
         mBinding.titleLayout.tvTitle.setText("我的优惠券");
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
-//        initTab();
-        data.add("1111111111");
-        data.add("1111111111");
-        data.add("1111111111");
-        data.add("1111111111");
-        data.add("1111111111");
-        data.add("1111111111");
-        data.add("1111111111");
-//        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        myCouponAdapter = new MyCouponAdapter(R.layout.adapter_my_coupon,data);
-//        mBinding.recyclerView.setAdapter(myCouponAdapter);
+
         mPlatformCoupon = View.inflate(this, R.layout.coupon_platform, null);
         mBusinessCoupon = View.inflate(this, R.layout.coupon_business, null);
         mExchangeCoupon = View.inflate(this, R.layout.coupon_exchange, null);
@@ -83,7 +96,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding,My
             public IPagerTitleView getTitleView(Context context, final int index) {
                 SettingLayout simplePagerTitleView = new SettingLayout(context);
                 simplePagerTitleView.setText(titles[index]);
-                simplePagerTitleView.setTextViewSize(15,15);
+                simplePagerTitleView.setTextViewSize(15, 15);
                 simplePagerTitleView.setmNormalColor(getResources().getColor(R.color.color_BAFF));
                 simplePagerTitleView.setmSelectedColor(getResources().getColor(R.color.white));
                 simplePagerTitleView.setOnClickListener(v -> mBinding.viewPager.setCurrentItem(index));
@@ -106,33 +119,73 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding,My
         });
         mBinding.indicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(mBinding.indicator, mBinding.viewPager);
+        commonNavigator.setOnClickListener(v -> QMUIKeyboardHelper.hideKeyboard(v));
+
+        mPlatformRecyclerView = mPlatformCoupon.findViewById(R.id.recycler_view);
+        mPlatformCanUseBt = mPlatformCoupon.findViewById(R.id.can_use_bt);
+        mPlatformNoCanUseBt = mPlatformCoupon.findViewById(R.id.no_can_use_bt);
+        mPlatformRefreshView = mPlatformCoupon.findViewById(R.id.refresh_view);
+        mPlatformRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        platformCouponAdapter = new MyCouponAdapter(R.layout.adapter_my_coupon, data);
+        platformCouponAdapter.setEmptyView(R.layout.empty_layout, mPlatformRecyclerView);
+        mPlatformRecyclerView.setAdapter(platformCouponAdapter);
+
+
+        mBusinessRecyclerView = mBusinessCoupon.findViewById(R.id.recycler_view);
+        mBusinessCanUseBt = mBusinessCoupon.findViewById(R.id.can_use_bt);
+        mBusinessNoCanUseBt = mBusinessCoupon.findViewById(R.id.no_can_use_bt);
+        mBusinessRefreshView = mBusinessCoupon.findViewById(R.id.refresh_view);
+        mBusinessRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        businessCouponAdapter = new MyCouponAdapter(R.layout.adapter_my_coupon, data2);
+        businessCouponAdapter.setEmptyView(R.layout.empty_layout, mBusinessRecyclerView);
+        mBusinessRecyclerView.setAdapter(businessCouponAdapter);
+
+        getPlatformCouponVOs();
+        getBusinessCoupons();
     }
 
     @Override
     protected void initListener() {
 //
-//        mBinding.canUseBt.setOnClickListener(this::onViewClicked);
-//        mBinding.noCanUseBt.setOnClickListener(this::onViewClicked);
+        mPlatformCanUseBt.setOnClickListener(v -> {
+            platformCanUse = 1;
+            changeBt(platformCanUse,mPlatformCanUseBt,mPlatformNoCanUseBt);
+            getPlatformCouponVOs();
+
+        });
+        mPlatformNoCanUseBt.setOnClickListener(v -> {
+            platformCanUse = 0;
+            changeBt(platformCanUse,mPlatformCanUseBt,mPlatformNoCanUseBt);
+            getPlatformCouponVOs();
+        });
+        mBusinessCanUseBt.setOnClickListener(v -> {
+            businessCanUse = 1;
+            changeBt(businessCanUse,mBusinessCanUseBt,mBusinessNoCanUseBt);
+            getBusinessCoupons();
+        });
+        mBusinessNoCanUseBt.setOnClickListener(v -> {
+            businessCanUse = 0;
+            changeBt(businessCanUse,mBusinessCanUseBt,mBusinessNoCanUseBt);
+            getBusinessCoupons();
+        });
+
+        mPlatformRefreshView.setOnRefreshListener(refreshLayout -> getPlatformCouponVOs());
+        mBusinessRefreshView.setOnRefreshListener(refreshLayout -> getBusinessCoupons());
     }
 
     @Override
     protected void onViewClicked(View view) {
-        switch (view.getId()){
-            case R.id.can_use_bt:
-                isCanUse =true;
-//                changeBt();
-                break;
-            case R.id.no_can_use_bt:
-                isCanUse =false;
-//                changeBt();
-                break;
-        }
 
     }
 
     @Override
     protected void dataObservable() {
-
+        mViewModel.platformCouponLiveData.observe(this, data -> {
+            platformCouponAdapter.setNewData(data);
+        });
+        mViewModel.businessCouponLiveData.observe(this, data -> {
+            businessCouponAdapter.setNewData(data);
+        });
     }
 
 //    private void initTab() {
@@ -151,17 +204,24 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding,My
 //        mBinding.tabView.selectTab(0);
 //        mBinding.tabView.notifyDataChanged();
 //    }
-//    private void changeBt() {
-//        if (isCanUse) {
-//            mBinding.canUseBt.setBackgroundResource(R.drawable.shape_stroke_blue_15radius);
-//            mBinding.canUseBt.setTextColor(Color.parseColor("#1676FF"));
-//            mBinding.noCanUseBt.setBackgroundResource(0);
-//            mBinding.noCanUseBt.setTextColor(Color.parseColor("#585858"));
-//        } else {
-//            mBinding.canUseBt.setBackgroundResource(0);
-//            mBinding.canUseBt.setTextColor(Color.parseColor("#585858"));
-//            mBinding.noCanUseBt.setBackgroundResource(R.drawable.shape_stroke_blue_15radius);
-//            mBinding.noCanUseBt.setTextColor(Color.parseColor("#1676FF"));
-//        }
-//    }
+    private void changeBt(int type,QMUIRoundButton canUseBt,QMUIRoundButton noCanUseBt) {
+        if (type==1) {
+            canUseBt.setBackgroundResource(R.drawable.shape_stroke_blue_15radius);
+            canUseBt.setTextColor(Color.parseColor("#1676FF"));
+            noCanUseBt.setBackgroundResource(0);
+           noCanUseBt.setTextColor(Color.parseColor("#585858"));
+        } else {
+            canUseBt.setBackgroundResource(0);
+            canUseBt.setTextColor(Color.parseColor("#585858"));
+            noCanUseBt.setBackgroundResource(R.drawable.shape_stroke_blue_15radius);
+            noCanUseBt.setTextColor(Color.parseColor("#1676FF"));
+        }
+    }
+
+    private void getPlatformCouponVOs() {
+        mViewModel.getPlatformCouponVOs(platformCanUse);
+    }
+    private void getBusinessCoupons() {
+        mViewModel.getBusinessCoupons(businessCanUse);
+    }
 }

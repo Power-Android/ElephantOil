@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.LocationEntity;
+import com.xxjy.jyyh.entity.UserBean;
 
 /**
  * @author power
@@ -21,7 +22,7 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
     }
 
 
-    public MutableLiveData<String> userLiveData = new MutableLiveData<>();
+    public MutableLiveData<UserBean> userLiveData = new MutableLiveData<>();
     public void queryUserInfo(){
         mRespository.queryUserInfo( userLiveData);
     }

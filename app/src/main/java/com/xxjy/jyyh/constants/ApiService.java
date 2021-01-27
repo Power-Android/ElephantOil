@@ -13,8 +13,8 @@ public class ApiService {
     //默认正式服务器url
     public static final String RELEASE_URL = "https://core.qqgyhk.com/server/";
     //默认测试服务器url
-//    public static final String DEBUG_URL = "https://tcore.qqgyhk.com/server/";
-    public static final String DEBUG_URL = "https://ccore.qqgyhk.com/server/";
+    public static final String DEBUG_URL = "https://tcore.qqgyhk.com/server/";
+//    public static final String DEBUG_URL = "https://ccore.qqgyhk.com/server/";
 
     @DefaultDomain //默认域名
     public static String BASE_URL = Constants.URL_IS_DEBUG ? DEBUG_URL : RELEASE_URL;

@@ -3,9 +3,13 @@ package com.xxjy.jyyh.ui.mine;
 import android.content.Intent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MineTabAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
@@ -14,6 +18,7 @@ import com.xxjy.jyyh.databinding.FragmentMineBinding;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
 import com.xxjy.jyyh.ui.setting.SettingActivity;
+import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
 
 import java.util.ArrayList;
@@ -51,7 +56,14 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         MineTabAdapter mineTabAdapter = new MineTabAdapter(R.layout.adapter_mine_tab,tabs);
         mBinding.recyclerView.setAdapter(mineTabAdapter);
 
-
+mBinding.refreshview.setOnRefreshListener(new OnRefreshListener() {
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        if (UserConstants.getIsLogin()){
+            queryUserInfo();
+        }
+    }
+});
 //        queryUserInfo();
 
     }
@@ -103,6 +115,14 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     protected void dataObservable() {
 
         mViewModel.userLiveData.observe(this,data ->{
+            mBinding.refreshview.finishRefresh();
+            GlideUtils.loadCircleImage(getContext(),data.getHeadImg(),mBinding.photoView);
+            mBinding.nameView.setText(data.getPhone());
+            mBinding.userPhoneView.setText(data.getPhone());
+            mBinding.couponView.setText(data.getCouponsSize());
+            mBinding.integralView.setText(data.getIntegralBalance());
+            mBinding.balanceView.setText(data.getBalance());
+            mBinding.userPhoneView.setVisibility(View.VISIBLE);
 
         });
     }

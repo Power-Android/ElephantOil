@@ -177,6 +177,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 
     private void initTab() {
         mBinding.tabView.reset();
+        mBinding.tabView.notifyDataChanged();
         QMUITabBuilder tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
         tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(getContext(), 15), QMUIDisplayHelper.sp2px(getContext(), 15));
         tabBuilder.setColor(Color.parseColor("#313233"), Color.parseColor("#1676FF"));
