@@ -26,34 +26,34 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_14"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_14"
+                    android:layout_marginLeft="@dimen/dp_22"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_22"
                     android:layout_marginBottom="@dimen/dp_11"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/sp_11"
+                        android:textSize="@dimen/sp_12"
                         android:gravity="left"
                         android:text="1、兑换码获取：参与小象加油活动有机会获得优惠券兑换码。"
-                        android:textColor="#8D8D8D" />
+                        android:textColor="#98999A" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/sp_11"
+                        android:textSize="@dimen/sp_12"
                         android:layout_marginTop="@dimen/dp_5"
                         android:gravity="left"
                         android:text="2、兑换码使用：在当前页面输入兑换码即可兑换相应优惠券。"
-                        android:textColor="#8D8D8D" />
+                        android:textColor="#98999A" />
                 </LinearLayout>
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white">
+                    android:background="@color/color_F5">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -66,7 +66,7 @@
                         <EditText
                             android:id="@+id/convert_edit"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_39"
+                            android:layout_height="@dimen/dp_41"
                             android:background="@color/transparent"
                             android:cursorVisible="true"
                             android:gravity="center_vertical"
@@ -77,10 +77,10 @@
                             android:paddingLeft="@dimen/dp_9"
                             android:singleLine="true"
                             android:text=""
-                            android:textColor="#3B3B3B"
-                            android:textColorHint="#CDCDCD"
-                            android:textSize="@dimen/sp_14"
-                            android:textStyle="bold" />
+                            android:textColor="@color/color_34"
+                            android:textColorHint="#BFBFBF"
+                            android:textSize="@dimen/sp_15"
+                            />
 
                         <ImageView
                             android:id="@+id/clear_edit_btn"
@@ -97,14 +97,14 @@
                     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
                         android:id="@+id/convert_btn"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_38"
+                        android:layout_height="@dimen/dp_40"
                         android:layout_marginLeft="@dimen/dp_44"
                         android:layout_marginTop="@dimen/dp_72"
                         android:layout_marginRight="@dimen/dp_44"
                         android:enabled="true"
                         android:text="立即兑换"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/sp_13"
+                        android:textSize="@dimen/sp_15"
                         app:qmui_borderWidth="@dimen/dp_0"
                         app:qmui_radius="@dimen/dp_5"
                         app:qmui_backgroundColor="@color/colorAccent"/>

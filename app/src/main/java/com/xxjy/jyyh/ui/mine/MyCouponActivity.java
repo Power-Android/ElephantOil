@@ -181,9 +181,11 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
     @Override
     protected void dataObservable() {
         mViewModel.platformCouponLiveData.observe(this, data -> {
+            mPlatformRefreshView.finishRefresh();
             platformCouponAdapter.setNewData(data);
         });
         mViewModel.businessCouponLiveData.observe(this, data -> {
+            mBusinessRefreshView.finishRefresh();
             businessCouponAdapter.setNewData(data);
         });
     }
