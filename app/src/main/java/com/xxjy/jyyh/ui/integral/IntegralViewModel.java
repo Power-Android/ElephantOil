@@ -3,8 +3,14 @@ package com.xxjy.jyyh.ui.integral;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
+import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.ProductBean;
+import com.xxjy.jyyh.entity.ProductClassBean;
+
+import java.util.List;
 
 /**
  * @author power
@@ -16,5 +22,19 @@ public class IntegralViewModel extends BaseViewModel<IntegralRepository> {
 
     public IntegralViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    public MutableLiveData<List<BannerBean>> bannersLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<ProductClassBean>> productCategorysLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<ProductBean>> productLiveData = new MutableLiveData<>();
+
+    public void getBannerOfPostion() {
+        mRespository.getBannerOfPostion(bannersLiveData);
+    }
+    public void queryProductCategorys() {
+        mRespository.queryProductCategorys(productCategorysLiveData);
+    }
+    public void queryProducts(int categoryId,int pageNum,int pageSize) {
+        mRespository.queryProducts(productLiveData, categoryId, pageNum, pageSize);
     }
 }

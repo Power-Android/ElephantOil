@@ -105,4 +105,5 @@ public class UserConstants {
        return SPUtils.getInstance().getString(SPConstants.APP_CHANNEL_KEY);
     }
 
+
 }

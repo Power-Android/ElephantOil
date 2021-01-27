@@ -8,8 +8,10 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CleanUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivitySettingBinding;
 import com.xxjy.jyyh.utils.DataCleanManager;
+import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -43,6 +45,7 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
     protected void initListener() {
         mBinding.aboutUsLayout.setOnClickListener(this::onViewClicked);
         mBinding.clearCacheLayout.setOnClickListener(this::onViewClicked);
+        mBinding.logoutView.setOnClickListener(this::onViewClicked);
 
     }
 
@@ -66,6 +69,11 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
                                     }
                                 }
                         );
+                break;
+
+            case R.id.logout_view:
+                LoginHelper.loginOut(this);
+                finish();
                 break;
         }
 

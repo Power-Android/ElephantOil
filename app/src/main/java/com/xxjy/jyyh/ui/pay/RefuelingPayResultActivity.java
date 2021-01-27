@@ -25,7 +25,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
     private List<String> data=new ArrayList<>();
     private PayResultBannerAdapter payResultBannerAdapter;
-    private IntegralExchangeAdapter integralExchangeAdapter;
+//    private IntegralExchangeAdapter integralExchangeAdapter;
     @Override
     protected void initView() {
         mBinding.titleLayout.tvTitle.setText("支付结果");
@@ -38,9 +38,9 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
         mBinding.bannerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.bannerRecyclerView.setAdapter(payResultBannerAdapter);
 
-        integralExchangeAdapter = new IntegralExchangeAdapter(R.layout.adapter_integral_exchange,data);
-        mBinding.recommendRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        mBinding.recommendRecyclerView.setAdapter(integralExchangeAdapter);
+//        integralExchangeAdapter = new IntegralExchangeAdapter(R.layout.adapter_integral_exchange,data);
+//        mBinding.recommendRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
+//        mBinding.recommendRecyclerView.setAdapter(integralExchangeAdapter);
 
 
     }

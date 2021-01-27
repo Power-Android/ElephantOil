@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.blankj.utilcode.util.DeviceUtils;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.UserConstants;
@@ -24,6 +25,7 @@ public class LoginRepository extends BaseRepository {
                             MutableLiveData<String> verifyLoginLiveData) {
         addDisposable(RxHttp.postForm(ApiService.VERIFY_LOGIN)
                 .add("twinklyToken", twinklyToken)
+                .add("did", DeviceUtils.getUniqueDeviceId())
                 .add("jpushId", jpushId)
                 .add("inviteCode", inviteCode, !TextUtils.isEmpty(inviteCode))
                 .asResponse(String.class)

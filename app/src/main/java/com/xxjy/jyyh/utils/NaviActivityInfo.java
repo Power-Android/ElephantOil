@@ -60,7 +60,7 @@ public class NaviActivityInfo {
      * @return
      */
     public static void disPathIntentFromUrl(BaseActivity activity, String urlInfo) {
-//        if (TextUtils.isEmpty(urlInfo)) return;
+        if (TextUtils.isEmpty(urlInfo)) return;
 //        if (urlInfo.contains(NATIVE_RECHARGE_ADD_OIL)) {        //一键加油
 ////            if (Tool.htmlDatas != null && !TextUtils.isEmpty(Tool.htmlDatas.getOneKeyRefuel())) {
 ////                urlInfo = Tool.htmlDatas.getOneKeyRefuel();

@@ -31,7 +31,11 @@ public class LoginHelper {
     }
 
     public static void loginOut(Activity activity) {
-        SPUtils.getInstance().getBoolean(SPConstants.LOGIN_STATUS,false);
+        SPUtils.getInstance().put(SPConstants.LOGIN_STATUS,false);
+        SPUtils.getInstance().put(SPConstants.MOBILE,"");
+        SPUtils.getInstance().put(SPConstants.APP_TOKEN,"");
+        SPUtils.getInstance().put(SPConstants.USER_TYPE,-1);
+        SPUtils.getInstance().put(SPConstants.OPEN_ID,"");
         activity.finish();
     }
 

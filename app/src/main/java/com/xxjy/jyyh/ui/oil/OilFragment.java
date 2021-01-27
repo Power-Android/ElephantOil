@@ -236,8 +236,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             pageNum++;
             getOilStations();
 
-        } else {
-            pageNum = 1;
+        }else{
+            pageNum=1;
             getOilStations();
 
         }

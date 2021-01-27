@@ -79,7 +79,7 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tool_bar"
-            app:srlEnableLoadMore="false">
+            app:srlEnableLoadMore="true">
 
             <com.scwang.smart.refresh.header.ClassicsHeader
                 android:layout_width="match_parent"
@@ -190,7 +190,7 @@
                                     android:layout_height="@dimen/dp_107"
                                     android:layout_marginRight="@dimen/dp_5"
                                     android:layout_weight="1"
-                                    android:src="@drawable/default_img_bg"
+                                    android:src="@drawable/ic_daily_lottery"
                                     app:qmui_border_width="@dimen/dp_0"
                                     app:qmui_corner_radius="8dp" />
 
@@ -198,7 +198,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="@dimen/dp_107"
                                     android:layout_weight="1"
-                                    android:src="@drawable/default_img_bg"
+                                    android:src="@drawable/ic_points_grabbing"
                                     app:qmui_border_width="@dimen/dp_0"
                                     app:qmui_corner_radius="8dp" />
                             </LinearLayout>
@@ -208,7 +208,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/dp_107"
                                 android:layout_marginTop="@dimen/dp_5"
-                                android:background="@color/color_9A"
                                 app:banner_auto_loop="true"
                                 app:banner_indicator_height="@dimen/dp_3"
                                 app:banner_indicator_margin="@dimen/dp_3"

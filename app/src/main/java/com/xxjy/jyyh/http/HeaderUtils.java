@@ -70,7 +70,7 @@ public class HeaderUtils {
             }
         }
         String subSign = sign.substring(1);
-//        LogUtils.e("加密前的字符串：" + subSign);
+        LogUtils.e("加密前的字符串：" + subSign);
         final String ALGORITHM = "HmacSHA1";
         final String ENCODING = "UTF-8";
         String apiKey = "Orvay1rVsoU9nlpY";

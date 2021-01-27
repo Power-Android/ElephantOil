@@ -123,7 +123,6 @@ public class HttpManager {
         finalParams.put("method", p.getSimpleUrl().substring(App.URL_IS_DEBUG ?
                 ApiService.DEBUG_URL.length() - 1 :
                 ApiService.RELEASE_URL.length() - 1));
-
         String sign = HeaderUtils.getSign(HeaderUtils.sortMapByKey(finalParams));
         finalParams.put("sign", sign);
         finalParams.remove("method");

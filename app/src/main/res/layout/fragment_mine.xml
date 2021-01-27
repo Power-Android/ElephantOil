@@ -6,7 +6,6 @@
     android:background="@color/color_F5">
 
 
-
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refreshview"
         android:layout_width="match_parent"
@@ -26,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_190"
@@ -33,6 +33,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <LinearLayout
                 android:id="@+id/top_layout"
                 android:layout_width="match_parent"
@@ -88,28 +89,38 @@
                         app:qmui_border_width="@dimen/dp_0"
                         app:qmui_is_circle="true" />
 
-                    <TextView
-                        android:id="@+id/name_view"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10"
-                        android:layout_marginTop="@dimen/dp_3"
-                        android:text="登录注册"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/sp_16"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
                         app:layout_constraintStart_toEndOf="@+id/photo_view"
-                        app:layout_constraintTop_toTopOf="@+id/photo_view" />
+                        app:layout_constraintTop_toTopOf="@+id/photo_view"
+                        app:layout_constraintBottom_toBottomOf="@id/photo_view"
+                        >
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10"
-                        android:layout_marginBottom="3dp"
-                        android:text="000****0000"
-                        android:textColor="@color/color_A9"
-                        android:textSize="@dimen/sp_13"
-                        app:layout_constraintBottom_toBottomOf="@+id/photo_view"
-                        app:layout_constraintStart_toEndOf="@+id/photo_view" />
+                        <TextView
+                            android:id="@+id/name_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:layout_marginTop="@dimen/dp_3"
+                            android:text="登录注册"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_16" />
+
+                        <TextView
+                            android:id="@+id/user_phone_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:layout_marginBottom="3dp"
+                            android:visibility="gone"
+                            android:text="000****0000"
+                            android:textColor="@color/color_A9"
+                            android:textSize="@dimen/sp_13" />
+                    </LinearLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
@@ -302,103 +313,104 @@
                         android:textColor="@color/color_34"
                         android:textSize="@dimen/sp_14"
                         android:textStyle="bold" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"/>
+                        android:layout_marginTop="@dimen/dp_10" />
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/dp_14"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:orientation="horizontal">-->
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginTop="@dimen/dp_14"-->
+                    <!--                        android:gravity="center_vertical"-->
+                    <!--                        android:orientation="horizontal">-->
 
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:gravity="center"-->
-<!--                            android:orientation="vertical">-->
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="wrap_content"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:layout_weight="1"-->
+                    <!--                            android:gravity="center"-->
+                    <!--                            android:orientation="vertical">-->
 
-<!--                            <ImageView-->
-<!--                                android:layout_width="@dimen/dp_46"-->
-<!--                                android:layout_height="@dimen/dp_46"-->
-<!--                                android:src="@drawable/ic_mine_tab_1" />-->
+                    <!--                            <ImageView-->
+                    <!--                                android:layout_width="@dimen/dp_46"-->
+                    <!--                                android:layout_height="@dimen/dp_46"-->
+                    <!--                                android:src="@drawable/ic_mine_tab_1" />-->
 
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginTop="@dimen/dp_5"-->
-<!--                                android:text="邀请有礼"-->
-<!--                                android:textColor="@color/color_34"-->
-<!--                                android:textSize="@dimen/sp_12" />-->
-<!--                        </LinearLayout>-->
+                    <!--                            <TextView-->
+                    <!--                                android:layout_width="wrap_content"-->
+                    <!--                                android:layout_height="wrap_content"-->
+                    <!--                                android:layout_marginTop="@dimen/dp_5"-->
+                    <!--                                android:text="邀请有礼"-->
+                    <!--                                android:textColor="@color/color_34"-->
+                    <!--                                android:textSize="@dimen/sp_12" />-->
+                    <!--                        </LinearLayout>-->
 
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:gravity="center"-->
-<!--                            android:orientation="vertical">-->
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="wrap_content"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:layout_weight="1"-->
+                    <!--                            android:gravity="center"-->
+                    <!--                            android:orientation="vertical">-->
 
-<!--                            <ImageView-->
-<!--                                android:layout_width="@dimen/dp_46"-->
-<!--                                android:layout_height="@dimen/dp_46"-->
-<!--                                android:src="@drawable/ic_mine_tab_2" />-->
+                    <!--                            <ImageView-->
+                    <!--                                android:layout_width="@dimen/dp_46"-->
+                    <!--                                android:layout_height="@dimen/dp_46"-->
+                    <!--                                android:src="@drawable/ic_mine_tab_2" />-->
 
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginTop="@dimen/dp_5"-->
-<!--                                android:text="我的奖励"-->
-<!--                                android:textColor="@color/color_34"-->
-<!--                                android:textSize="@dimen/sp_12" />-->
-<!--                        </LinearLayout>-->
+                    <!--                            <TextView-->
+                    <!--                                android:layout_width="wrap_content"-->
+                    <!--                                android:layout_height="wrap_content"-->
+                    <!--                                android:layout_marginTop="@dimen/dp_5"-->
+                    <!--                                android:text="我的奖励"-->
+                    <!--                                android:textColor="@color/color_34"-->
+                    <!--                                android:textSize="@dimen/sp_12" />-->
+                    <!--                        </LinearLayout>-->
 
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:gravity="center"-->
-<!--                            android:orientation="vertical">-->
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="wrap_content"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:layout_weight="1"-->
+                    <!--                            android:gravity="center"-->
+                    <!--                            android:orientation="vertical">-->
 
-<!--                            <ImageView-->
-<!--                                android:layout_width="@dimen/dp_46"-->
-<!--                                android:layout_height="@dimen/dp_46"-->
-<!--                                android:src="@drawable/ic_mine_tab_3" />-->
+                    <!--                            <ImageView-->
+                    <!--                                android:layout_width="@dimen/dp_46"-->
+                    <!--                                android:layout_height="@dimen/dp_46"-->
+                    <!--                                android:src="@drawable/ic_mine_tab_3" />-->
 
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginTop="@dimen/dp_5"-->
-<!--                                android:text="抽奖有礼"-->
-<!--                                android:textColor="@color/color_34"-->
-<!--                                android:textSize="@dimen/sp_12" />-->
-<!--                        </LinearLayout>-->
+                    <!--                            <TextView-->
+                    <!--                                android:layout_width="wrap_content"-->
+                    <!--                                android:layout_height="wrap_content"-->
+                    <!--                                android:layout_marginTop="@dimen/dp_5"-->
+                    <!--                                android:text="抽奖有礼"-->
+                    <!--                                android:textColor="@color/color_34"-->
+                    <!--                                android:textSize="@dimen/sp_12" />-->
+                    <!--                        </LinearLayout>-->
 
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:gravity="center"-->
-<!--                            android:orientation="vertical">-->
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="wrap_content"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:layout_weight="1"-->
+                    <!--                            android:gravity="center"-->
+                    <!--                            android:orientation="vertical">-->
 
-<!--                            <ImageView-->
-<!--                                android:layout_width="@dimen/dp_46"-->
-<!--                                android:layout_height="@dimen/dp_46"-->
-<!--                                android:src="@drawable/ic_mine_tab_4" />-->
+                    <!--                            <ImageView-->
+                    <!--                                android:layout_width="@dimen/dp_46"-->
+                    <!--                                android:layout_height="@dimen/dp_46"-->
+                    <!--                                android:src="@drawable/ic_mine_tab_4" />-->
 
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginTop="@dimen/dp_5"-->
-<!--                                android:text="积分收支"-->
-<!--                                android:textColor="@color/color_34"-->
-<!--                                android:textSize="@dimen/sp_12" />-->
-<!--                        </LinearLayout>-->
-<!--                    </LinearLayout>-->
+                    <!--                            <TextView-->
+                    <!--                                android:layout_width="wrap_content"-->
+                    <!--                                android:layout_height="wrap_content"-->
+                    <!--                                android:layout_marginTop="@dimen/dp_5"-->
+                    <!--                                android:text="积分收支"-->
+                    <!--                                android:textColor="@color/color_34"-->
+                    <!--                                android:textSize="@dimen/sp_12" />-->
+                    <!--                        </LinearLayout>-->
+                    <!--                    </LinearLayout>-->
 
                 </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
             </LinearLayout>

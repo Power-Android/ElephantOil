@@ -9,6 +9,7 @@ import com.blankj.utilcode.util.BarUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MineTabAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentMineBinding;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
@@ -27,6 +28,18 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 
 
     private List<String> tabs=new ArrayList<>();
+
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+        if (UserConstants.getIsLogin()){
+            queryUserInfo();
+        }else{
+
+        }
+    }
+
     @Override
     protected void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.topLayout);
@@ -39,7 +52,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.recyclerView.setAdapter(mineTabAdapter);
 
 
-        queryUserInfo();
+//        queryUserInfo();
 
     }
 

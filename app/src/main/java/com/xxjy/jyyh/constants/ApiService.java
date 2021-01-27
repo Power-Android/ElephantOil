@@ -13,7 +13,8 @@ public class ApiService {
     //默认正式服务器url
     public static final String RELEASE_URL = "https://core.qqgyhk.com/server/";
     //默认测试服务器url
-    public static final String DEBUG_URL = "https://tcore.qqgyhk.com/server/";
+//    public static final String DEBUG_URL = "https://tcore.qqgyhk.com/server/";
+    public static final String DEBUG_URL = "https://ccore.qqgyhk.com/server/";
 
     @DefaultDomain //默认域名
     public static String BASE_URL = Constants.URL_IS_DEBUG ? DEBUG_URL : RELEASE_URL;
@@ -41,6 +42,12 @@ public class ApiService {
     public static final String SIGN_OIL_STATIONS = "api/gasPublic/getSignOilStations";
     //加油首页banner
     public static final String OIL_STATIONS_BANNERS = "api/gasPublic/getBanners";
+    //获取某个位置的banner
+    public static final String BANNER_OF_POSITION = "api/product/v1/getBannerOfPostion";
+    //获取商品分类列表
+    public static final String PRODUCT_CATEGORYS = "api/product/v1/queryProductCategorys";
+    //根据商品分类获取商品列表
+    public static final String QUERY_PRODUCTS = "api/product/v1/queryProducts";
 
     //查询个人账户信息
     public static final String USER_INFO = "api/user/queryUserInfo";
