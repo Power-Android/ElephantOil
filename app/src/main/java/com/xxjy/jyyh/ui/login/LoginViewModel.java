@@ -23,6 +23,7 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
     public MutableLiveData<String> mVerifyLoginLiveData = new MutableLiveData<>();
     public MutableLiveData<Boolean> mCodeLiveData = new MutableLiveData<>();
     public MutableLiveData<String> mLoginLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> mWechatLoginLiveData = new MutableLiveData<>();
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -53,5 +54,9 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
         ActivityUtils.finishActivity(LoginActivity.class);
         ShanYanManager.finishAuthActivity();
         ActivityUtils.finishActivity(MobileLoginActivity.class);
+    }
+
+    public void openId2Login(String openId,String accessToken){
+        mRespository.openId2Login(mWechatLoginLiveData,openId,accessToken);
     }
 }

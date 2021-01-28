@@ -15,9 +15,12 @@ import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.socialize.UMAuthListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.entity.RespEntity;
+import com.xxjy.jyyh.utils.eventbusmanager.EventBusManager;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
@@ -78,6 +81,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 //                    Intent intent = new Intent(this, PaymentSuccessfulActivity.class);
 //                    intent.putExtra("orderId", respEntity.getOrderId());
 //                    startActivity(intent);
+
+                }else if(resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+//                    EventBusManager.post();
 
                 }
 

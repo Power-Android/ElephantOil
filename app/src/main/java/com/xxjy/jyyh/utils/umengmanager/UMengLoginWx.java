@@ -9,12 +9,6 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.base.BaseActivity;
 
-/**
- * 车主邦
- * ---------------------------
- * <p>
- * Created by zhaozh on 2020/4/10.
- */
 public class UMengLoginWx {
 
     public static void loginFormWx(BaseActivity activity, UMAuthAdapter umAuthAdapter) {

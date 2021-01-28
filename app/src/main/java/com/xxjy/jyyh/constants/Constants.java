@@ -25,7 +25,7 @@ public class Constants {
 //    public static final boolean IS_DEBUG = false;   //正式上线用这个
 
     //微信配置
-    public static final String WX_APP_ID = "wx0984c939611e6f3d";
+    public static final String WX_APP_ID = "wx3704434db8357ec1";
     public static final String WX_APP_SCRIPT = "787d5dcefab80f6bca272800e9bad139";//ab730ab00dd73986593da2ce6514ffe8     6b4edd26960e017c050f940210a99723
 
 

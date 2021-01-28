@@ -41,6 +41,13 @@ android {
             keyAlias ALIAS
             keyPassword ALIAS_PASSWORD
         }
+        debug {
+            storeFile file('../yfq.jks')
+            storePassword STORE_PASSWORD
+            keyAlias ALIAS
+            keyPassword ALIAS_PASSWORD
+//            v2SigningEnabled false
+        }
     }
 
     buildTypes {
@@ -113,6 +120,7 @@ dependencies {
     implementation rootProject.ext.dependencies["transformations"]
     implementation rootProject.ext.dependencies["activity"]
     implementation rootProject.ext.dependencies["fragment"]
+    implementation rootProject.ext.dependencies["eventbus"]
     implementation rootProject.ext.dependencies["wechat"]
     implementation rootProject.ext.dependencies["qmui"]
     implementation rootProject.ext.dependencies["qmui_arch"]

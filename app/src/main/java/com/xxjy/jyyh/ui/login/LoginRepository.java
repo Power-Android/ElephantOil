@@ -68,4 +68,14 @@ public class LoginRepository extends BaseRepository {
                 .subscribe(s -> loginLiveData.postValue(s))
         );
     }
+
+    public void openId2Login(MutableLiveData<String> mWechatLoginLiveData,String openId,String accessToken){
+        addDisposable(RxHttp.postForm(ApiService.WECHAT_LOGIN)
+                .add("openId", openId)
+                .add("did", DeviceUtils.getUniqueDeviceId())
+                .add("accessToken", accessToken)
+                .asResponse(String.class)
+                .subscribe(s -> mWechatLoginLiveData.postValue(s))
+        );
+    }
 }

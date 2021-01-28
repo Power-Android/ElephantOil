@@ -91,11 +91,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         adapter = new IntegralExchangeAdapter(R.layout.adapter_integral_exchange, productData);
         mBinding.recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-            }
-        });
+        adapter.setOnItemClickListener((adapter, view, position) -> WebViewActivity.openWebActivity((MainActivity) getActivity(),((ProductBean)(adapter.getData().get(position))).getLink()));
         adapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
 
         mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {

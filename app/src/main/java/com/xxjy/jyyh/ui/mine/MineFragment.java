@@ -122,7 +122,7 @@ mBinding.refreshview.setOnRefreshListener(new OnRefreshListener() {
             mBinding.couponView.setText(data.getCouponsSize());
             mBinding.integralView.setText(data.getIntegralBalance());
             mBinding.balanceView.setText(data.getBalance());
-            mBinding.userPhoneView.setVisibility(View.VISIBLE);
+//            mBinding.userPhoneView.setVisibility(View.VISIBLE);
 
         });
     }

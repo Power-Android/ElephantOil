@@ -9,7 +9,10 @@ import android.view.View;
 import androidx.lifecycle.Observer;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
+import com.google.gson.Gson;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.TextWatcherAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
@@ -19,12 +22,16 @@ import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
+import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
 import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 import com.xxjy.jyyh.wight.MyCountDownTime;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.jpush.android.api.JPushInterface;
 
-public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBinding,LoginViewModel> {
+public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBinding, LoginViewModel> {
 
 
     private MyCountDownTime mCountDownTime;
@@ -48,6 +55,9 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
     protected void initListener() {
         mBinding.loginGetCode.setOnClickListener(this::onViewClicked);
         mBinding.loginV3Login.setOnClickListener(this::onViewClicked);
+        mBinding.userInviteNumberLayout.setOnClickListener(this::onViewClicked);
+        mBinding.loginForWx.setOnClickListener(this::onViewClicked);
+        mBinding.close.setOnClickListener(this::onViewClicked);
 
         mCountDownTime.setOnTimeCountDownListener(new MyCountDownTime.OnTimeCountDownListener() {
             @Override
@@ -167,15 +177,18 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                 mBinding.userPhoneNumber.setText("");
                 break;
             case R.id.login_for_wx:        //微信登录
-//                loginForWx();
+                loginForWx();
                 break;
             case R.id.user_invite_number_layout:        //邀请人手机号
-                if (isDown){
+
+                if (isDown) {
                     mBinding.userInviteNumberImgState.animate().setDuration(200).rotation(90).start();
-                    mBinding.invitationLl.setVisibility(View.VISIBLE);
-                }else {
-                    mBinding.userInviteNumberImgState.animate().setDuration(200).rotation(0).start();
                     mBinding.invitationLl.setVisibility(View.GONE);
+                    isDown = false;
+                } else {
+                    mBinding.userInviteNumberImgState.animate().setDuration(200).rotation(0).start();
+                    mBinding.invitationLl.setVisibility(View.VISIBLE);
+                    isDown = true;
                 }
                 break;
             case R.id.layout_1:        //用户政策
@@ -192,9 +205,9 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
         mBinding.loginGetCode.setEnabled(false);
         mViewModel.sendCode("2", mPhoneNumber)
                 .observe(this, b -> {
-                    if (b){
+                    if (b) {
                         showToastSuccess("发送成功");
-                    }else {
+                    } else {
                         showToastError("发送失败，请重试");
                         mCountDownTime.onFinish();
                     }
@@ -207,6 +220,63 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                 mBinding.invitationEt.getText().toString());
     }
 
+    private void loginForWx() {
+        UMengLoginWx.loginFormWx(this, new UMengLoginWx.UMAuthAdapter() {
+            @Override
+            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                LogUtils.e(new Gson().toJson(map));
+                if (map != null && map.containsKey("openid") && map.containsKey("accessToken")) {
+                    String openId = map.get("openid");
+                    String accessToken = map.get("accessToken");
+                    openId2Login(openId,accessToken);
+                }
+            }
+        });
+    }
+
+    private void openId2Login(String openId,String accessToken){
+        mViewModel.openId2Login( openId, accessToken);
+    }
+
+    //    private void checkUserWxInfo(String openId, String accessToken) {
+//        HashMap<String, String> params = new HashMap<>();
+//        params.put("openId", openId);
+//        params.put("did", AppContext.getmCurrentDeviceId());
+//        params.put("accessToken", accessToken);
+//        HttpLoaderUtils.post(Constant.CHECK_WX_USER_INFO, params, LoginForWxResponse.class, this)
+//                .subscribe(new DefaultResponseObserver<LoginForWxResponse>() {
+//                    @Override
+//                    public void onNext(LoginForWxResponse loginForWxResponse) {
+//                        if (loginForWxResponse.getData() == null) {
+//                            showToastWarning("登录失败,请使用其他登录方式");
+//                            return;
+//                        }
+//                        String token = loginForWxResponse.getData().getToken();
+//                        String openId = loginForWxResponse.getData().getOpenId();
+//                        String unionId = loginForWxResponse.getData().getUnionId();
+//                        if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(openId)) {
+//                            if (!TextUtils.isEmpty(openId)) {
+//                                AppContext.setAppOpenId(openId);
+//                            }
+//                            loginToMain(token, "", openId);
+//                        } else if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(unionId)) {
+//                            showToast("关联微信成功,请您绑定手机号");
+//                            InputAutoCodeActivity.TAG_LOGIN_WXOPENID = openId;
+//                            InputAutoCodeActivity.TAG_LOGIN_UNIONID = unionId;
+//                            LoginBindingWxActivity.openBindingWxAct(LoginActivity.this);
+//                        } else {
+//                            showToastWarning("登录失败,请使用其他登录方式");
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+////                            super.onError(e);
+//                        showOnResponseErrorToast();
+//
+//                    }
+//                });
+//    }
     @Override
     protected void dataObservable() {
         mViewModel.loadingView().observe(this, aBoolean -> {
@@ -223,6 +293,9 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
             mCountDownTime = null;
 
             mViewModel.setLoginSuccess(s, mPhoneNumber);
+        });
+        mViewModel.mWechatLoginLiveData.observe(this,data ->{
+
         });
     }
 }

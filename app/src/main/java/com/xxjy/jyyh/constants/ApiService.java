@@ -25,6 +25,8 @@ public class ApiService {
 
     //闪验、验证码登录
     public static final String VERIFY_LOGIN = "api/v1/user/flash/login";
+    //移动端微信授权登录
+    public static final String WECHAT_LOGIN ="api/v1/user/openId2Login";
 
     //获取首页油站
     public static final String HOME_OIL = "api/gasPublic/getHomeOilStations";
