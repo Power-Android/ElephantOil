@@ -212,6 +212,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
         //优选油站
         mViewModel.homeOilLiveData.observe(this, oilEntity -> {
+            if(oilEntity==null||oilEntity.getStations()==null||oilEntity.getStations().size()<=0){
+                return;
+            }
+
             OilEntity.StationsBean stationsBean = oilEntity.getStations().get(0);
             Glide.with(mContext).load(stationsBean.getGasTypeImg()).into(mBinding.oilImgIv);
             mBinding.oilNameTv.setText(stationsBean.getGasName());

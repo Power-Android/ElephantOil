@@ -7,16 +7,16 @@
     android:paddingLeft="@dimen/dp_10"
     android:paddingRight="@dimen/dp_10">
 
-    <TextView
-        android:id="@+id/item_title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:text="2020年11月"
-        android:textColor="@color/color_4036"
-        android:textSize="@dimen/sp_13" />
+<!--    <TextView-->
+<!--        android:id="@+id/item_time_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:paddingTop="5dp"-->
+<!--        android:paddingBottom="5dp"-->
+<!--        android:text="2020年11月"-->
+<!--        android:textColor="@color/color_4036"-->
+<!--        android:textSize="@dimen/sp_13" />-->
 
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
         android:layout_width="match_parent"
@@ -37,14 +37,16 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/item_title_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="腾讯月卡"
+                android:text=""
                 android:textColor="@color/color_34"
                 android:textStyle="bold"
                 android:textSize="@dimen/sp_15" />
 
             <TextView
+                android:id="@+id/item_status_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -66,13 +68,15 @@
             android:paddingBottom="@dimen/dp_13">
 
             <TextView
+                android:id="@+id/item_price_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="¥200.00"
+                android:text="¥0.00"
                 android:textColor="@color/color_30"
                 android:textSize="@dimen/sp_15" />
 
             <TextView
+                android:id="@+id/item_time_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -82,8 +86,10 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/bt_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:gravity="right|center_vertical"
             android:orientation="horizontal">
 

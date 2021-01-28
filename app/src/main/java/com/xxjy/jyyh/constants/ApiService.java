@@ -78,6 +78,12 @@ public class ApiService {
     public static final String OIL_MULTIPLE_PRICE = "api/gasPublic/getMultiplePrices";
     //获取某个位置的banner
     public static final String GET_BANNER_OF_POSITION = "api/v1/banner/getBannerOfPostion";
+    //获取加油订单列表
+    public static final String REFUEL_ORDER_LIST = "api/gasPublic/refuelOrderList";
+    //获取订单列表
+    public static final String INTEGRAL_ORDER_LIST = "api/product/v1/queryOrders";
+    //获取加油订单详情
+    public static final String REFUEL_ORDER_DETAILS = "api/gasPublic/refuelOrderDetails";
 
 
 }

@@ -16,8 +16,10 @@ import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityOrderDetailsBinding;
+import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.pay.PayResultActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 
@@ -27,7 +29,12 @@ import java.util.List;
 
 public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBinding, OrderDetailsViewModel> {
 
+    private static final String ORDER_ID = "order_id";
+
     private QMUIPopup mNormalPopup;
+
+    private String orderId;
+
     @Override
     protected void initView() {
         mBinding.titleLayout.tvTitle.setText("订单详情");
@@ -35,11 +42,13 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
         mBinding.useMethodView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mBinding.useMethodView.getPaint().setAntiAlias(true);
+        orderId = getIntent().getStringExtra(ORDER_ID);
+        refuelOrderDetails();
     }
 
     @Override
     protected void initListener() {
-mBinding.continuePayView.setOnClickListener(this::onViewClicked);
+        mBinding.continuePayView.setOnClickListener(this::onViewClicked);
         mBinding.orderManageLayout.setOnClickListener(this::onViewClicked);
         mBinding.cancelView.setOnClickListener(this::onViewClicked);
     }
@@ -92,6 +101,28 @@ mBinding.continuePayView.setOnClickListener(this::onViewClicked);
 
     @Override
     protected void dataObservable() {
+        mViewModel.refuelOrderDetailsLiveData.observe(this, data -> {
+            mBinding.stationNameView.setText(data.getProductName());
+            mBinding.statusView.setText(data.getStatusName());
+            mBinding.numView.setText(data.getLitre() + "L");
+            mBinding.amountView.setText("¥" + data.getPayAmount());
+            mBinding.orderIdView.setText(data.getOrderId());
+            mBinding.orderIdView.setText(data.getPayTypeName());
+            mBinding.payAmountView.setText("¥" + data.getPayAmount());
 
+
+        });
     }
+
+
+    private void refuelOrderDetails() {
+        mViewModel.refuelOrderDetails(orderId);
+    }
+
+    public static void openPage(BaseActivity activity, String orderId) {
+        Intent intent = new Intent(activity, OrderDetailsActivity.class);
+        intent.putExtra(ORDER_ID, orderId);
+        activity.startActivity(intent);
+    }
+
 }

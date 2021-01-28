@@ -156,18 +156,19 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
             initTab();
         });
         mViewModel.productLiveData.observe(this, data -> {
-            if (pageNum == 1) {
-                adapter.setNewData(data);
-                mBinding.refreshview.setEnableLoadMore(true);
-                mBinding.refreshview.finishRefresh(true);
-            } else {
+
                 if (data != null && data.size() > 0) {
-                    adapter.addData(data);
-                    mBinding.refreshview.finishLoadMore(true);
+                    if (pageNum == 1) {
+                        adapter.setNewData(data);
+                        mBinding.refreshview.setEnableLoadMore(true);
+                        mBinding.refreshview.finishRefresh(true);
+                    } else {
+                        adapter.addData(data);
+                        mBinding.refreshview.finishLoadMore(true);
+                    }
                 } else {
                     mBinding.refreshview.finishLoadMoreWithNoMoreData();
                 }
-            }
         });
     }
 

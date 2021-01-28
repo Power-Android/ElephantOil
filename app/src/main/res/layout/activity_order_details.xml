@@ -37,6 +37,7 @@
             app:qmui_backgroundColor="@color/white"
             app:qmui_borderWidth="@dimen/dp_0">
             <TextView
+                android:id="@+id/station_name_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_15"
@@ -44,6 +45,7 @@
                 android:textStyle="bold"
                 android:text="加油站"/>
             <TextView
+                android:id="@+id/status_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_15"
@@ -131,6 +133,7 @@
                 android:textColor="@color/color_34"
                 android:text="数量"/>
             <TextView
+                android:id="@+id/num_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
@@ -154,12 +157,13 @@
                 android:textColor="@color/color_34"
                 android:text="订单金额"/>
             <TextView
+                android:id="@+id/amount_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
                 android:textColor="@color/color_9A"
                 android:layout_alignParentRight="true"
-                android:text="¥300"/>
+                android:text="¥0.00"/>
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"
@@ -200,6 +204,7 @@
                 android:textColor="@color/color_34"
                 android:text="订单号"/>
             <TextView
+                android:id="@+id/order_id_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
@@ -228,7 +233,7 @@
                 android:textSize="@dimen/sp_14"
                 android:textColor="@color/color_9A"
                 android:layout_alignParentRight="true"
-                android:text="手机号直充"/>
+                android:text=""/>
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"
@@ -315,6 +320,7 @@
                     android:textColor="@color/color_34"
                     android:text="支付方式"/>
                 <TextView
+                    android:id="@+id/pay_type_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_14"
@@ -338,12 +344,13 @@
                     android:textColor="@color/color_34"
                     android:text="实付金额"/>
                 <TextView
+                    android:id="@+id/pay_amount_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_14"
                     android:textColor="@color/color_30"
                     android:layout_alignParentRight="true"
-                    android:text="¥2"/>
+                    android:text="¥0.00"/>
             </RelativeLayout>
         </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 

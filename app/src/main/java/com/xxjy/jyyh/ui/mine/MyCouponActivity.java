@@ -44,7 +44,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 
 
     private final String[] titles = new String[]{"平台优惠券", "商家优惠券", "兑换"};
-    private final List<View> mList = new ArrayList<>(2);
+    private final List<View> mList = new ArrayList<>(3);
     private List<CouponBean> data = new ArrayList<>();
     private List<CouponBean> data2 = new ArrayList<>();
     private MyCouponAdapter platformCouponAdapter;

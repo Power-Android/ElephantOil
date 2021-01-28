@@ -1,6 +1,5 @@
 package com.xxjy.jyyh.ui.msg;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
@@ -17,11 +16,8 @@ import com.qmuiteam.qmui.widget.tab.QMUITabIndicator;
 import com.qmuiteam.qmui.widget.tab.QMUITabSegment;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MessageListAdapter;
-import com.xxjy.jyyh.adapter.OrderListAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityMessageCenterBinding;
-import com.xxjy.jyyh.ui.order.OrderDetailsActivity;
-import com.xxjy.jyyh.ui.order.OrderListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
