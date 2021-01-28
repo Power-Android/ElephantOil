@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.constants.UserConstants;
+import com.xxjy.jyyh.entity.WeChatLoginBean;
 import com.xxjy.jyyh.ui.MainRepository;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 import com.xxjy.jyyh.utils.umengmanager.UMengManager;
@@ -23,7 +24,8 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
     public MutableLiveData<String> mVerifyLoginLiveData = new MutableLiveData<>();
     public MutableLiveData<Boolean> mCodeLiveData = new MutableLiveData<>();
     public MutableLiveData<String> mLoginLiveData = new MutableLiveData<>();
-    public MutableLiveData<String> mWechatLoginLiveData = new MutableLiveData<>();
+    public MutableLiveData<WeChatLoginBean> mWechatLoginLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> mBindPhoneLiveData = new MutableLiveData<>();
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -58,5 +60,8 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
 
     public void openId2Login(String openId,String accessToken){
         mRespository.openId2Login(mWechatLoginLiveData,openId,accessToken);
+    }
+    public void appBindPhone(String phone,String validCode, String openId,String unionId,String jpushId){
+        mRespository.appBindPhone(mBindPhoneLiveData,phone,validCode,openId,unionId,jpushId);
     }
 }

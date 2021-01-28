@@ -13,8 +13,8 @@ public class ApiService {
     //默认正式服务器url
     public static final String RELEASE_URL = "https://core.qqgyhk.com/server/";
     //默认测试服务器url
-//    public static final String DEBUG_URL = "https://tcore.qqgyhk.com/server/";
-    public static final String DEBUG_URL = "https://ccore.qqgyhk.com/server/";
+    public static final String DEBUG_URL = "https://tcore.qqgyhk.com/server/";
+//    public static final String DEBUG_URL = "https://ccore.qqgyhk.com/server/";
 
     @DefaultDomain //默认域名
     public static String BASE_URL = Constants.URL_IS_DEBUG ? DEBUG_URL : RELEASE_URL;
@@ -27,6 +27,8 @@ public class ApiService {
     public static final String VERIFY_LOGIN = "api/v1/user/flash/login";
     //移动端微信授权登录
     public static final String WECHAT_LOGIN ="api/v1/user/openId2Login";
+    //app绑定手机号码
+    public static final String APP_BIND_PHONE ="api/v1/user/flash/appBindPhone";
 
     //获取首页油站
     public static final String HOME_OIL = "api/gasPublic/getHomeOilStations";
@@ -74,5 +76,8 @@ public class ApiService {
 
     //油站优惠券互斥
     public static final String OIL_MULTIPLE_PRICE = "api/gasPublic/getMultiplePrices";
+    //获取某个位置的banner
+    public static final String GET_BANNER_OF_POSITION = "api/v1/banner/getBannerOfPostion";
+
 
 }

@@ -6,8 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
+import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.UserBean;
+
+import java.util.List;
 
 /**
  * @author power
@@ -21,11 +24,13 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
         super(application);
     }
 
-
+    public MutableLiveData<List<BannerBean>> bannersLiveData = new MutableLiveData<>();
     public MutableLiveData<UserBean> userLiveData = new MutableLiveData<>();
     public void queryUserInfo(){
         mRespository.queryUserInfo( userLiveData);
     }
 
-
+    public void getBannerOfPostion() {
+        mRespository.getBannerOfPostion(bannersLiveData);
+    }
 }

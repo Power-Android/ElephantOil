@@ -238,45 +238,6 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
         mViewModel.openId2Login( openId, accessToken);
     }
 
-    //    private void checkUserWxInfo(String openId, String accessToken) {
-//        HashMap<String, String> params = new HashMap<>();
-//        params.put("openId", openId);
-//        params.put("did", AppContext.getmCurrentDeviceId());
-//        params.put("accessToken", accessToken);
-//        HttpLoaderUtils.post(Constant.CHECK_WX_USER_INFO, params, LoginForWxResponse.class, this)
-//                .subscribe(new DefaultResponseObserver<LoginForWxResponse>() {
-//                    @Override
-//                    public void onNext(LoginForWxResponse loginForWxResponse) {
-//                        if (loginForWxResponse.getData() == null) {
-//                            showToastWarning("登录失败,请使用其他登录方式");
-//                            return;
-//                        }
-//                        String token = loginForWxResponse.getData().getToken();
-//                        String openId = loginForWxResponse.getData().getOpenId();
-//                        String unionId = loginForWxResponse.getData().getUnionId();
-//                        if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(openId)) {
-//                            if (!TextUtils.isEmpty(openId)) {
-//                                AppContext.setAppOpenId(openId);
-//                            }
-//                            loginToMain(token, "", openId);
-//                        } else if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(unionId)) {
-//                            showToast("关联微信成功,请您绑定手机号");
-//                            InputAutoCodeActivity.TAG_LOGIN_WXOPENID = openId;
-//                            InputAutoCodeActivity.TAG_LOGIN_UNIONID = unionId;
-//                            LoginBindingWxActivity.openBindingWxAct(LoginActivity.this);
-//                        } else {
-//                            showToastWarning("登录失败,请使用其他登录方式");
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-////                            super.onError(e);
-//                        showOnResponseErrorToast();
-//
-//                    }
-//                });
-//    }
     @Override
     protected void dataObservable() {
         mViewModel.loadingView().observe(this, aBoolean -> {
@@ -295,6 +256,32 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
             mViewModel.setLoginSuccess(s, mPhoneNumber);
         });
         mViewModel.mWechatLoginLiveData.observe(this,data ->{
+            if (data == null) {
+                            showToastWarning("登录失败,请使用其他登录方式");
+                            return;
+                        }
+                        String token = data.getToken();
+                        String openId = data.getOpenId();
+                        String unionId = data.getUnionId();
+                        if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(openId)) {
+//                            loginToMain(token, "", openId);
+                            if (!TextUtils.isEmpty(openId)) {
+                                UserConstants.setOpenId(openId);
+                            }
+                            UserConstants.setToken(token);
+                            UserConstants.setIsLogin(true);
+                            UMengManager.onProfileSignIn("userID");
+//        Tool.postJPushdata();
+                            MainActivity.openMainActAndClearTask(MobileLoginActivity.this);
+
+                        } else if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(unionId)) {
+                            showToast("关联微信成功,请您绑定手机号");
+                            InputAutoActivity.TAG_LOGIN_WXOPENID = openId;
+                            InputAutoActivity.TAG_LOGIN_UNIONID = unionId;
+                            WeChatBindingPhoneActivity.openBindingWxAct(MobileLoginActivity.this);
+                        } else {
+                            showToastWarning("登录失败,请使用其他登录方式");
+                        }
 
         });
     }

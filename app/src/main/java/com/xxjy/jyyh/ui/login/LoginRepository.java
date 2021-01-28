@@ -9,6 +9,7 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.UserConstants;
+import com.xxjy.jyyh.entity.WeChatLoginBean;
 
 import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
@@ -69,13 +70,25 @@ public class LoginRepository extends BaseRepository {
         );
     }
 
-    public void openId2Login(MutableLiveData<String> mWechatLoginLiveData,String openId,String accessToken){
+    public void openId2Login(MutableLiveData<WeChatLoginBean> mWechatLoginLiveData, String openId, String accessToken){
         addDisposable(RxHttp.postForm(ApiService.WECHAT_LOGIN)
                 .add("openId", openId)
                 .add("did", DeviceUtils.getUniqueDeviceId())
                 .add("accessToken", accessToken)
-                .asResponse(String.class)
+                .asResponse(WeChatLoginBean.class)
                 .subscribe(s -> mWechatLoginLiveData.postValue(s))
+        );
+    }
+    public void appBindPhone(MutableLiveData<String> mBindPhoneLiveData, String phone, String validCode,String openId,String unionId,String jpushId){
+        addDisposable(RxHttp.postForm(ApiService.APP_BIND_PHONE)
+                .add("phone", phone)
+                .add("validCode", validCode)
+                .add("openId", TextUtils.isEmpty(openId)?null:openId)
+                .add("unionId", TextUtils.isEmpty(unionId)?null:unionId)
+                .add("did", DeviceUtils.getUniqueDeviceId())
+                .add("jpushId", jpushId)
+                .asResponse(String.class)
+                .subscribe(s -> mBindPhoneLiveData.postValue(s))
         );
     }
 }

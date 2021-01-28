@@ -199,7 +199,7 @@
                         <View
                             android:id="@+id/iv2"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_1"
+                            android:layout_height="@dimen/dp_0_5"
                             android:background="#EBEBEB"
                             android:visibility="visible"
                             android:layout_marginTop="@dimen/dp_5"

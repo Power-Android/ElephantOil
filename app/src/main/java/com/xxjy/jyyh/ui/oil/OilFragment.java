@@ -208,25 +208,25 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         });
 
         mViewModel.signOilStationLiveData.observe(this, signStations -> {
-            adapter.addData(0, signStations.getStations());
+            adapter.setNewData(signStations.getStations());
             mBinding.recyclerView.scrollToPosition(0);
+            getOilStations();
         });
         mViewModel.oilStationLiveData.observe(this, dataStations -> {
-
-            if (pageNum == 1) {
-                adapter.setNewData(dataStations.getStations());
-                mBinding.refreshview.setEnableLoadMore(true);
-                mBinding.refreshview.finishRefresh(true);
-                getSignOilStations();
-            } else {
-                if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0) {
+            if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0) {
+                if (pageNum == 1) {
+                    adapter.addData(dataStations.getStations());
+                    mBinding.refreshview.setEnableLoadMore(true);
+                    mBinding.refreshview.finishRefresh(true);
+                }else{
                     adapter.addData(dataStations.getStations());
                     mBinding.refreshview.finishLoadMore(true);
-                } else {
-                    mBinding.refreshview.finishLoadMoreWithNoMoreData();
                 }
-            }
 
+
+            } else {
+                mBinding.refreshview.finishLoadMoreWithNoMoreData();
+            }
 
         });
     }
@@ -236,9 +236,10 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             pageNum++;
             getOilStations();
 
+
         }else{
             pageNum=1;
-            getOilStations();
+            getSignOilStations();
 
         }
 

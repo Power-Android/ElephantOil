@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -18,6 +19,7 @@ import com.qmuiteam.qmui.util.QMUIDeviceHelper;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.rxjava.rxlife.RxLife;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
@@ -192,5 +194,16 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     @Override
     protected void dataObservable() {
 
+    }
+    /**
+     * 打开首页并清空栈
+     *
+     * @param activity
+     */
+    public static void openMainActAndClearTask(BaseActivity activity) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+//        ActivityUtils.startHomeActivity();
     }
 }

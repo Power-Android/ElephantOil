@@ -15,9 +15,12 @@ import com.xxjy.jyyh.adapter.MineTabAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentMineBinding;
+import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
 import com.xxjy.jyyh.ui.setting.SettingActivity;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
 
@@ -32,39 +35,43 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     }
 
 
-    private List<String> tabs=new ArrayList<>();
+    private List<BannerBean> tabs = new ArrayList<>();
 
+    private MineTabAdapter mineTabAdapter;
 
     @Override
     protected void onVisible() {
         super.onVisible();
-        if (UserConstants.getIsLogin()){
+        getBannerOfPostion();
+        if (UserConstants.getIsLogin()) {
             queryUserInfo();
-        }else{
-
+        } else {
+            mBinding.photoView.setImageResource(R.drawable.default_img_bg);
+            mBinding.nameView.setText("登录注册");
+            mBinding.userPhoneView.setText("");
+            mBinding.couponView.setText("0");
+            mBinding.integralView.setText("0");
+            mBinding.balanceView.setText("0");
         }
     }
 
     @Override
     protected void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.topLayout);
-        tabs.add("11111");
-        tabs.add("11111");
-        tabs.add("11111");
-        tabs.add("11111");
-        mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
-        MineTabAdapter mineTabAdapter = new MineTabAdapter(R.layout.adapter_mine_tab,tabs);
+        mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        mineTabAdapter = new MineTabAdapter(R.layout.adapter_mine_tab, tabs);
         mBinding.recyclerView.setAdapter(mineTabAdapter);
-
-mBinding.refreshview.setOnRefreshListener(new OnRefreshListener() {
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        if (UserConstants.getIsLogin()){
-            queryUserInfo();
-        }
-    }
-});
-//        queryUserInfo();
+        mineTabAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            WebViewActivity.openWebActivity((MainActivity) getActivity(), ((BannerBean) (adapter.getItem(position))).getLink());
+        });
+        mBinding.refreshview.setOnRefreshListener(refreshLayout -> {
+            getBannerOfPostion();
+            if (UserConstants.getIsLogin()) {
+                queryUserInfo();
+            } else {
+                mBinding.refreshview.finishRefresh();
+            }
+        });
 
     }
 
@@ -82,7 +89,7 @@ mBinding.refreshview.setOnRefreshListener(new OnRefreshListener() {
 
     @Override
     protected void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.equity_order_layout:
                 getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
                 break;
@@ -114,9 +121,9 @@ mBinding.refreshview.setOnRefreshListener(new OnRefreshListener() {
     @Override
     protected void dataObservable() {
 
-        mViewModel.userLiveData.observe(this,data ->{
+        mViewModel.userLiveData.observe(this, data -> {
             mBinding.refreshview.finishRefresh();
-            GlideUtils.loadCircleImage(getContext(),data.getHeadImg(),mBinding.photoView);
+            GlideUtils.loadCircleImage(getContext(), data.getHeadImg(), mBinding.photoView);
             mBinding.nameView.setText(data.getPhone());
             mBinding.userPhoneView.setText(data.getPhone());
             mBinding.couponView.setText(data.getCouponsSize());
@@ -125,10 +132,18 @@ mBinding.refreshview.setOnRefreshListener(new OnRefreshListener() {
 //            mBinding.userPhoneView.setVisibility(View.VISIBLE);
 
         });
+        mViewModel.bannersLiveData.observe(this, data -> {
+            mineTabAdapter.setNewData(data);
+            mBinding.refreshview.finishRefresh();
+        });
     }
 
 
-    private void queryUserInfo(){
+    private void getBannerOfPostion() {
+        mViewModel.getBannerOfPostion();
+    }
+
+    private void queryUserInfo() {
         mViewModel.queryUserInfo();
     }
 }
