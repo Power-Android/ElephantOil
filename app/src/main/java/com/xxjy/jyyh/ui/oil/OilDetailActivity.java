@@ -21,6 +21,7 @@ import com.xxjy.jyyh.dialog.OilAmountDialog;
 import com.xxjy.jyyh.dialog.OilGunDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
+import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.OilEntity;
 
 import java.util.ArrayList;
@@ -76,42 +77,39 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     }
 
     private void initDialog() {
-        mOilGunDialog = new OilGunDialog(this);
-        mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
-            if (mOilAmountDialog != null){
-                mOilAmountDialog.show(0);
-            }
-        });
+//        mOilGunDialog = new OilGunDialog(this);
+//        mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
+//            if (mOilAmountDialog != null){
+//                mOilAmountDialog.show(0);
+//            }
+//        });
 
 //        mOilAmountDialog = new OilAmountDialog(this, stationsBean);
-        mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
-            @Override
-            public void onOilAmountClick(BaseQuickAdapter adapter, View view, int position) {
+//        mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
+//            @Override
+//            public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
+//                                           List<CouponBean> platformCoupons,
+//                                           List<CouponBean> businessCoupons) {
+//
+//            }
+//
+//            @Override
+//            public void onCreateOrder(View view) {
+//                if (mOilTipsDialog != null){
+//                    mOilTipsDialog.show(view);
+//                }
+//            }
+//        });
 
-            }
+//        mOilTipsDialog = new OilTipsDialog(this, this);
+//        mOilTipsDialog.setOnItemClickedListener(view -> {
+//            mOilTipsDialog.dismiss();
+//            if (mOilPayDialog != null){
+//                mOilPayDialog.show();
+//            }
+//        });
 
-            @Override
-            public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position) {
-
-            }
-
-            @Override
-            public void onCreateOrder(View view) {
-                if (mOilTipsDialog != null){
-                    mOilTipsDialog.show(view);
-                }
-            }
-        });
-
-        mOilTipsDialog = new OilTipsDialog(this);
-        mOilTipsDialog.setOnItemClickedListener(view -> {
-            mOilTipsDialog.dismiss();
-            if (mOilPayDialog != null){
-                mOilPayDialog.show();
-            }
-        });
-
-        mOilPayDialog = new OilPayDialog(this);
+//        mOilPayDialog = new OilPayDialog(this);
         mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
             @Override
             public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {

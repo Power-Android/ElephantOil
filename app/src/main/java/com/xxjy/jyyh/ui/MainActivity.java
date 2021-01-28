@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,13 +24,17 @@ import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMainBinding;
+import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.ui.home.HomeFragment;
 import com.xxjy.jyyh.ui.integral.IntegralFragment;
 import com.xxjy.jyyh.ui.mine.MineFragment;
 import com.xxjy.jyyh.ui.oil.OilFragment;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
+
+import org.jetbrains.annotations.NotNull;
 
 import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
@@ -46,9 +51,14 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     //极光intent
     public static final String TAG_FLAG_INTENT_VALUE_INFO = "intentInfo";
 
+    @BusUtils.Bus(tag = EventConstants.EVENT_CHANGE_FRAGMENT)
+    public void onEvent(@NotNull EventEntity event) {
+        mBinding.navView.setSelectedItemId(R.id.navigation_oil);
+    }
 
     @Override
     protected void initView() {
+        BusUtils.register(this);
         initNavigationView();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -179,6 +189,12 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         } else {
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BusUtils.unregister(this);
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.functions.Consumer;
@@ -83,7 +84,8 @@ public class HomeRepository extends BaseRepository {
     public void getOftenOils(MutableLiveData<List<OfentEntity>> oftenOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.OFTEN_OIL)
                 .asResponseList(OfentEntity.class)
-                .subscribe(ofentEntities -> oftenOilLiveData.postValue(ofentEntities))
+                .subscribe(ofentEntities -> oftenOilLiveData.postValue(ofentEntities),
+                        throwable -> oftenOilLiveData.postValue(new ArrayList<OfentEntity>()))
         );
     }
 

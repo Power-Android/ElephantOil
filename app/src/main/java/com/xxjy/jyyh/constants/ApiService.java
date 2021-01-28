@@ -86,4 +86,13 @@ public class ApiService {
     public static final String REFUEL_ORDER_DETAILS = "api/gasPublic/refuelOrderDetails";
 
 
+    //查询余额
+    public static final String QUERY_BALANCE = "api/user/queryBalance";
+
+    //下单温馨提示
+    public static final String GET_ORDER_TIP = "api/gasPublic/getOrderTs";
+
+    //创建加油订单
+    public static final String CREATE_ORDER = "api/gasPublic/refuelCreateOrder";
+
 }

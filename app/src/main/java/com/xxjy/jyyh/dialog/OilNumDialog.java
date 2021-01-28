@@ -83,6 +83,16 @@ public class OilNumDialog {
         mOilNumDialog.dismiss();
     }
 
+    public void release(){
+        mContext = null;
+        mStationsBean = null;
+        mOilNumDialog = null;
+        mBehavior = null;
+        mBinding = null;
+        mOilNumAdapter = null;
+        mList = null;
+    }
+
     public interface OnItemClickedListener {
         void onOilNumClick(BaseQuickAdapter adapter, View view, int position);
     }

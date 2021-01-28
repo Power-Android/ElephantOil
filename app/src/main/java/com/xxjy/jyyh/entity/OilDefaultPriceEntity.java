@@ -25,6 +25,15 @@ public class OilDefaultPriceEntity {
         private String amount;
         private String depreciateAmount;
         private String liter;
+        private boolean isSelected;
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
+        }
 
         public String getActivityDisCountsAmount() {
             return activityDisCountsAmount;

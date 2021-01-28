@@ -35,16 +35,19 @@ public class ResponseParser<T> extends AbstractParser<T> {
         final Type type = ParameterizedTypeImpl.get(Response.class, mType); //获取泛型类型
         Response<T> data = convert(response, type);
         T t = data.getData(); //获取data字段
-        if (t == null && mType == String.class) {
+        if (t == null) {
             /*
              * 考虑到有些时候服务端会返回：{"errorCode":0,"errorMsg":"关注成功"}  类似没有data的数据
              * 此时code正确，但是data字段为空，直接返回data的话，会报空指针错误，
              * 所以，判断泛型为String类型时，重新赋值，并确保赋值不为null
              */
+            if (data.getCode() == 1){
+                data.setMsg("暂无数据");
+            }
             t = (T) data.getMsg();
         }
 
-        if (data.getCode() != 1 || t == null) {
+        if (data.getCode() != 1 ) {
             MyToast.showWarning(App.getContext(), data != null && data.getMsg() != null ? data.getMsg() : "网络请求错误");
             //code不等于 1，说明数据不正确，抛出异常
             throw new ParseException(String.valueOf(data.getCode()), data.getMsg(), response);

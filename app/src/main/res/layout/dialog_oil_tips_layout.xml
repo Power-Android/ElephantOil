@@ -35,15 +35,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <ScrollView
             android:id="@+id/tip_content"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_180"
-            android:background="@color/color_76FF"
             android:layout_marginStart="@dimen/common_margin"
             android:layout_marginTop="@dimen/common_margin"
             android:layout_marginEnd="@dimen/common_margin"
-            app:layout_constraintTop_toBottomOf="@+id/tip_title" />
+            app:layout_constraintTop_toBottomOf="@+id/tip_title">
+            <ImageView
+                android:id="@+id/tip_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="@dimen/dp_180"
+                android:src="@drawable/default_img_bg" />
+        </ScrollView>
+
         <LinearLayout
             android:id="@+id/check_ll"
             android:layout_width="wrap_content"
@@ -52,6 +59,7 @@
             android:padding="@dimen/common_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tip_content">
+
             <CheckBox
                 android:id="@+id/check_box"
                 android:layout_width="@dimen/dp_14"
@@ -69,19 +77,20 @@
                 android:textSize="@dimen/sp_12"
                 android:textStyle="bold" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/query_tv"
             android:layout_width="@dimen/dp_146"
             android:layout_height="@dimen/dp_38"
+            android:layout_marginBottom="@dimen/dp_15"
+            android:background="@drawable/selector_query_check_bg"
+            android:enabled="false"
+            android:gravity="center"
             android:text="确定"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_16"
-            android:gravity="center"
-            android:background="@drawable/selector_query_check_bg"
-            android:enabled="true"
-            android:layout_marginBottom="@dimen/dp_15"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

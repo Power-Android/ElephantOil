@@ -111,7 +111,7 @@ public abstract class BaseActivity extends QMUIFragmentActivity {
      * 展示读取的 dialog
      */
     public void showLoadingDialog() {
-        if (mLoadingDialog != null && !mLoadingDialog.isShown()){
+        if (mLoadingDialog != null){
             mLoadingDialog.show();
         }
     }

@@ -13,4 +13,6 @@ public class EventConstants {
     public static final String EVENT_REFRESH_HOME = "event_refresh_home";
 
     public static final String EVENT_TO_OIL_FRAGMENT = "event_to_oilFragment";
+
+    public static final String EVENT_CHANGE_FRAGMENT = "event_change_fragment";
 }

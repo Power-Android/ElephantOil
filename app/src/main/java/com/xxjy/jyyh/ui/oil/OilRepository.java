@@ -49,7 +49,7 @@ public class OilRepository extends BaseRepository {
                 .add("pageNum", pageNum)
                 .add("pageSize", pageSize)
                 .add("gasName", gasName, !TextUtils.isEmpty(gasName))
-                .add("method", method, !TextUtils.isEmpty(method))
+                .add("isShowSign", method, !TextUtils.isEmpty(method))
                 .asResponse(OilEntity.class)
                 .subscribe(data -> oilStationLiveData.postValue(data))
         );

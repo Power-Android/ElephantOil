@@ -25,7 +25,8 @@ public class OilAmountAdapter extends BaseQuickAdapter<OilDefaultPriceEntity.Def
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, OilDefaultPriceEntity.DefaultAmountBean item) {
+        helper.itemView.setSelected(item.isSelected());
         helper.setText(R.id.item_amount_tv, NumberUtils.format(Float.parseFloat(item.getAmount()), 0))
-                .setText(R.id.item_discount_tv, "优惠 ￥" + item.getDepreciateAmount());
+                .setText(R.id.item_discount_tv, "优惠￥" + item.getDepreciateAmount());
     }
 }

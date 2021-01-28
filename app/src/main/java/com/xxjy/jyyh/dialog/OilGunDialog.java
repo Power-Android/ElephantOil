@@ -78,6 +78,16 @@ public class OilGunDialog {
         mOilGunDialog.dismiss();
     }
 
+    public void release(){
+        mContext = null;
+        mOilGunDialog = null;
+        mBehavior = null;
+        mBinding = null;
+        mList = null;
+        mOilGunAdapter = null;
+        oilNoPosition = 0;
+    }
+
     public int getOilNoPosition(){
         return oilNoPosition;
     }

@@ -62,6 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/item_title_tv"
         app:layout_constraintStart_toStartOf="@+id/item_title_tv"/>
     <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/image_view"
         android:layout_width="@dimen/dp_52"
         android:layout_height="@dimen/dp_52"
         android:src="@drawable/default_img_bg"
@@ -70,4 +71,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageView
+        android:id="@+id/status_view"
+        android:layout_width="@dimen/dp_57"
+        android:layout_height="@dimen/dp_45"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_2"
+        android:src="@drawable/ic_coupon_expired"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

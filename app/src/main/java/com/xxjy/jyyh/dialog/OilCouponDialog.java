@@ -8,12 +8,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.rxjava.rxlife.RxLife;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilCouponAdapter;
+import com.xxjy.jyyh.base.BaseActivity;
+import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.databinding.DialogOilCouponBinding;
+import com.xxjy.jyyh.entity.CouponBean;
+import com.xxjy.jyyh.entity.OilEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rxhttp.RxHttp;
 
 /**
  * @author power
@@ -23,13 +31,20 @@ import java.util.List;
  */
 public class OilCouponDialog {
     private Context mContext;
+    private BaseActivity mActivity;
+    private OilEntity.StationsBean mStationsBean;
     private BottomSheetDialog mOilCouponDialog;
     private BottomSheetBehavior mBehavior;
     private final DialogOilCouponBinding mBinding;
-    private List<String> mList = new ArrayList<>();
+    private List<CouponBean> mList = new ArrayList<>();
+    private OilCouponAdapter mOilCouponAdapter;
+    private String amount, oilNo;
+    private boolean isPlat;
 
-    public OilCouponDialog(Context context) {
+    public OilCouponDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean) {
         this.mContext = context;
+        this.mActivity = activity;
+        this.mStationsBean = stationsBean;
         mBinding = DialogOilCouponBinding.bind(
                 View.inflate(context, R.layout.dialog_oil_coupon, null));
         init();
@@ -51,40 +66,76 @@ public class OilCouponDialog {
     }
 
     private void initData(){
-        for (int i = 0; i < 10; i++) {
-            mList.add("");
-        }
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        OilCouponAdapter oilCouponAdapter = new OilCouponAdapter(R.layout.adapter_oil_coupon, mList);
-        mBinding.recyclerView.setAdapter(oilCouponAdapter);
-        oilCouponAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (mOnItemClickedListener != null){
-                    mOnItemClickedListener.onOilCouponClick(adapter, view, position);
-                    dismiss();
-                }
+        mOilCouponAdapter = new OilCouponAdapter(R.layout.adapter_oil_coupon, mList);
+        mBinding.recyclerView.setAdapter(mOilCouponAdapter);
+        mOilCouponAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (mOnItemClickedListener != null){
+                mOnItemClickedListener.onOilCouponClick(adapter, view, position, isPlat);
+                dismiss();
             }
         });
         mBinding.noCouponTv.setOnClickListener(view -> {
             if (mOnItemClickedListener != null){
-                mOnItemClickedListener.onNoCouponClick();
+                mOnItemClickedListener.onNoCouponClick(isPlat);
             }
             dismiss();
         });
     }
 
-    public void show(){
+    public void show(String amount, String oilNo, boolean isPlat){
+        this.amount = amount;
+        this.oilNo = oilNo;
+        this.isPlat = isPlat;
         mOilCouponDialog.show();
+        if (isPlat){
+            getPlatformCoupon();
+        }else {
+            getBusinessCoupon();
+        }
     }
 
     public void dismiss(){
         mOilCouponDialog.dismiss();
     }
 
+    private void getPlatformCoupon() {
+        //0真正可用 1已用 2过期  3时间未到 4 金额未达到
+        RxHttp.postForm(ApiService.PLATFORM_COUPON)
+                .add("canUse", "1")
+                .add("rangeType", "2")
+                .add("amount", amount)
+                .add(Constants.GAS_STATION_ID, mStationsBean.getGasId())
+                .asResponseList(CouponBean.class)
+                .to(RxLife.toMain(mActivity))
+                .subscribe(couponBeans -> {
+                    dispatchData(couponBeans);
+                });
+    }
+
+    private void getBusinessCoupon() {
+        RxHttp.postForm(ApiService.BUSINESS_COUPON)
+                .add("canUse", "1")
+                .add("amount", amount)
+                .add(Constants.OIL_NUMBER_ID, oilNo)
+                .add(Constants.GAS_STATION_ID, mStationsBean.getGasId())
+                .asResponseList(CouponBean.class)
+                .to(RxLife.toMain(mActivity))
+                .subscribe(couponBeans -> {
+                    dispatchData(couponBeans);
+                });
+    }
+
+    private void dispatchData(List<CouponBean> couponBeans) {
+        if (couponBeans != null && couponBeans.size() > 0){
+            mList = couponBeans;
+            mOilCouponAdapter.setNewData(mList);
+        }
+    }
+
     public interface OnItemClickedListener{
-        void onOilCouponClick(BaseQuickAdapter adapter, View view, int position);
-        void onNoCouponClick();
+        void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat);
+        void onNoCouponClick(boolean isPlat);
     }
 
     private OnItemClickedListener mOnItemClickedListener;

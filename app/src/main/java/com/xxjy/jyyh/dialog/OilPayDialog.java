@@ -10,7 +10,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilPayTypeAdapter;
+import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.databinding.DialogOilPayLayoutBinding;
+import com.xxjy.jyyh.entity.PayOrderParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +25,16 @@ import java.util.List;
  */
 public class OilPayDialog {
     private Context mContext;
+    private BaseActivity mActivity;
+    private PayOrderParams params;
     private BottomSheetDialog mOilPayDialog;
     private BottomSheetBehavior mBehavior;
-    private final DialogOilPayLayoutBinding mBinding;
+    private DialogOilPayLayoutBinding mBinding;
     private List<String> mPayTypeList = new ArrayList<>();
 
-    public OilPayDialog(Context context) {
+    public OilPayDialog(Context context, BaseActivity activity) {
         this.mContext = context;
+        this.mActivity = activity;
         mBinding = DialogOilPayLayoutBinding.bind(
                 View.inflate(mContext, R.layout.dialog_oil_pay_layout, null));
         init();
@@ -48,6 +53,8 @@ public class OilPayDialog {
             mBehavior.setSkipCollapsed(true);
         }
         mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        mOilPayDialog.dismiss();
     }
 
     private void initData() {
@@ -63,18 +70,25 @@ public class OilPayDialog {
             }
         });
 
-        mBinding.cancelIv.setOnClickListener(new View.OnClickListener() {
+        mBinding.cancelIv.setOnClickListener(view -> {
+            if (mOnItemClickedListener != null){
+                mOnItemClickedListener.onCloseAllClick();
+            }
+        });
+
+        mBinding.oilPayTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOilPayDialog.dismiss();
-                if (mOnItemClickedListener != null){
-                    mOnItemClickedListener.onCloseAllClick();
-                }
+
             }
         });
     }
 
-    public void show(){
+    public void show(PayOrderParams params){
+        this.params = params;
+        if (params != null){
+            dispatchData();
+        }
         mOilPayDialog.show();
     }
 
@@ -82,9 +96,38 @@ public class OilPayDialog {
         mOilPayDialog.dismiss();
     }
 
+    private void dispatchData() {
+        mBinding.payAmountTv.setText(params.getPayAmount());
+        String oilType = "";
+        switch (params.getOilType()){
+            case "1":
+                oilType = "汽油";
+                break;
+            case "2":
+                oilType = "柴油";
+                break;
+            case "3":
+                oilType = "天然气";
+                break;
+        }
+        mBinding.payOilInfoTv.setText(params.getGasName() +
+                "-" + params.getOilName() + oilType + "-" +
+                params.getGunNo() + "号枪");
+
+    }
+
+    public void release(){
+        mContext = null;
+        mOilPayDialog = null;
+        mBehavior = null;
+        mBinding = null;
+        mPayTypeList = null;
+    }
+
     public interface OnItemClickedListener {
         void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position);
         void onCloseAllClick();
+//        void onCreateOrder();
     }
 
     private OnItemClickedListener mOnItemClickedListener;
