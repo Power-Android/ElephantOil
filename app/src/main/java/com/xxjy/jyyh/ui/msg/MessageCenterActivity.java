@@ -11,73 +11,71 @@ import com.blankj.utilcode.util.BarUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout;
+import com.qmuiteam.qmui.widget.tab.QMUIBasicTabSegment;
 import com.qmuiteam.qmui.widget.tab.QMUITabBuilder;
 import com.qmuiteam.qmui.widget.tab.QMUITabIndicator;
 import com.qmuiteam.qmui.widget.tab.QMUITabSegment;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MessageListAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityMessageCenterBinding;
+import com.xxjy.jyyh.entity.ArticleBean;
+import com.xxjy.jyyh.entity.ArticleListBean;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MessageCenterActivity extends BindingActivity<ActivityMessageCenterBinding, MessageCenterViewModel> {
 
-    private List<String> data = new ArrayList<>();
+    private List<ArticleBean> data = new ArrayList<>();
     private MessageListAdapter messageListAdapter;
-    private QMUIPullLayout.PullAction mPullAction;
+
+    private int pageNum = 1;
+    private int pageSize = 10;
+    private boolean isSystemNotice = true;
 
     @Override
     protected void initView() {
-//        mBinding.topLayout.setTitle("消息中心");
-//        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
-//                R.id.qmui_topbar_item_left_back).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
         mBinding.titleLayout.tvTitle.setText("消息中心");
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
         initTab();
 
-        data = new ArrayList<>();
-        data.add("aaaa");
-        data.add("aaaa");
-        data.add("aaaa");
-        data.add("aaaa");
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         messageListAdapter = new MessageListAdapter(R.layout.item_msg_artical_lists, data);
         mBinding.recyclerView.setAdapter(messageListAdapter);
-
-        mBinding.pullLayout.setActionListener(new QMUIPullLayout.ActionListener() {
+        messageListAdapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
+        messageListAdapter.setOnItemClickListener((adapter, view, position) -> WebViewActivity.openRealUrlWebActivity(MessageCenterActivity.this,((ArticleBean)adapter.getItem(position)).getUrl()));
+        mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
-            public void onActionTriggered(@NonNull QMUIPullLayout.PullAction pullAction) {
-                mPullAction = pullAction;
-                if (pullAction.getPullEdge() == QMUIPullLayout.PULL_EDGE_TOP) {
-                    data.clear();
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    messageListAdapter.notifyDataSetChanged();
-                } else if (pullAction.getPullEdge() == QMUIPullLayout.PULL_EDGE_BOTTOM) {
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    data.add("aaaa");
-                    messageListAdapter.notifyDataSetChanged();
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                pageNum++;
+                if (isSystemNotice) {
+                    getArticles();
+                } else {
+                    getNotices();
+                }
+            }
 
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                pageNum = 1;
+                if (isSystemNotice) {
+                    getArticles();
+                } else {
+                    getNotices();
                 }
             }
         });
-        messageListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-            }
-        });
+
+        if (isSystemNotice) {
+            getArticles();
+        } else {
+            getNotices();
+        }
     }
 
     @Override
@@ -92,7 +90,41 @@ public class MessageCenterActivity extends BindingActivity<ActivityMessageCenter
 
     @Override
     protected void dataObservable() {
+        mViewModel.articlesLiveData.observe(this, data -> {
+            if (data != null &&data.getList()!=null&& data.getList().size() > 0) {
+                if (pageNum == 1) {
+                    messageListAdapter.setNewData(data.getList());
+                    mBinding.refreshview.setEnableLoadMore(true);
+                    mBinding.refreshview.finishRefresh(true);
+                } else {
+                    messageListAdapter.addData(data.getList());
+                    mBinding.refreshview.finishLoadMore(true);
+                }
+            } else {
+                if(pageNum==1){
+                    messageListAdapter.setNewData(null);
+                }
+                mBinding.refreshview.finishLoadMoreWithNoMoreData();
+            }
+        });
+        mViewModel.noticesLiveData.observe(this, data -> {
+            if (data != null &&data.getList()!=null&& data.getList().size() > 0) {
+                if (pageNum == 1) {
+                    messageListAdapter.setNewData(data.getList());
+                    mBinding.refreshview.setEnableLoadMore(true);
+                    mBinding.refreshview.finishRefresh(true);
+                } else {
+                    messageListAdapter.addData(data.getList());
+                    mBinding.refreshview.finishLoadMore(true);
+                }
+            } else {
+                if(pageNum==1){
+                    messageListAdapter.setNewData(null);
+                }
 
+                mBinding.refreshview.finishLoadMoreWithNoMoreData();
+            }
+        });
     }
 
     private void initTab() {
@@ -109,5 +141,44 @@ public class MessageCenterActivity extends BindingActivity<ActivityMessageCenter
         mBinding.tabView.setMode(QMUITabSegment.MODE_FIXED);
         mBinding.tabView.selectTab(0);
         mBinding.tabView.notifyDataChanged();
+        mBinding.tabView.addOnTabSelectedListener(new QMUIBasicTabSegment.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int index) {
+                pageNum = 1;
+                mBinding.refreshview.setEnableRefresh(true);
+                mBinding.refreshview.setEnableLoadMore(false);
+                mBinding.refreshview.setNoMoreData(false);
+                if (index == 0) {
+                    isSystemNotice = true;
+                    getArticles();
+                } else {
+                    isSystemNotice = false;
+                    getNotices();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(int index) {
+
+            }
+
+            @Override
+            public void onTabReselected(int index) {
+
+            }
+
+            @Override
+            public void onDoubleTap(int index) {
+
+            }
+        });
+    }
+
+    private void getArticles() {
+        mViewModel.getArticles(pageNum, pageSize);
+    }
+
+    private void getNotices() {
+        mViewModel.getNotices(pageNum, pageSize);
     }
 }

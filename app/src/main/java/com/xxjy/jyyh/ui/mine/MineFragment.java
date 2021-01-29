@@ -66,7 +66,10 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
         mineTabAdapter = new MineTabAdapter(R.layout.adapter_mine_tab, tabs);
         mBinding.recyclerView.setAdapter(mineTabAdapter);
-        mineTabAdapter.setOnItemClickListener((adapter, view, position) -> WebViewActivity.openWebActivity((MainActivity) getActivity(), ((BannerBean) (adapter.getItem(position))).getLink()));
+        mineTabAdapter.setOnItemClickListener((adapter, view, position) -> {
+           LoginHelper.login(getActivity(), () -> WebViewActivity.openWebActivity((MainActivity) getActivity(), ((BannerBean) (adapter.getItem(position))).getLink()));
+
+        });
 
         mBinding.refreshview.setOnRefreshListener(refreshLayout -> {
             getBannerOfPostion();
@@ -96,51 +99,57 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 
     @Override
     protected void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.equity_order_layout:
-                getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
-                break;
-            case R.id.refueling_order_layout:
-                getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
-                break;
-            case R.id.customer_service_view:
-                if(customerServiceDialog==null){
-                    customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
-                }
-                customerServiceDialog.show(view);
-                break;
-            case R.id.message_center_view:
-                getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
-                break;
-            case R.id.setting_view:
-                getActivity().startActivity(new Intent(getContext(), SettingActivity.class));
-                break;
-            case R.id.my_coupon_layout:
-                getActivity().startActivity(new Intent(getContext(), MyCouponActivity.class));
-                break;
-            case R.id.name_view:
-            case R.id.photo_view:
-                LoginHelper.login(mContext, new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
+        LoginHelper.login(mContext, new LoginHelper.CallBack() {
+            @Override
+            public void onLogin() {
+                switch (view.getId()) {
+                    case R.id.equity_order_layout:
+                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
+                        break;
+                    case R.id.refueling_order_layout:
+                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
+                        break;
+                    case R.id.customer_service_view:
+                        if(customerServiceDialog==null){
+                            customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
+                        }
+                        customerServiceDialog.show(view);
+                        break;
+                    case R.id.message_center_view:
+                        getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
+                        break;
+                    case R.id.setting_view:
+                        getActivity().startActivity(new Intent(getContext(), SettingActivity.class));
+                        break;
+                    case R.id.my_coupon_layout:
+                        getActivity().startActivity(new Intent(getContext(), MyCouponActivity.class));
+                        break;
+                    case R.id.name_view:
+                    case R.id.photo_view:
+                        LoginHelper.login(mContext, new LoginHelper.CallBack() {
+                            @Override
+                            public void onLogin() {
 
-                    }
-                });
-                break;
-            case R.id.integral_layout:
-                if(userBean==null){
-                    return;
-                }
-                WebViewActivity.openRealUrlWebActivity(getBaseActivity(),userBean.getIntegralBillUrl());
-                break;
-            case R.id.balance_layout:
-                if(userBean==null){
-                    return;
-                }
-                WebViewActivity.openRealUrlWebActivity(getBaseActivity(),userBean.getWalletUrl());
+                            }
+                        });
+                        break;
+                    case R.id.integral_layout:
+                        if(userBean==null){
+                            return;
+                        }
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(),userBean.getIntegralBillUrl());
+                        break;
+                    case R.id.balance_layout:
+                        if(userBean==null){
+                            return;
+                        }
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(),userBean.getWalletUrl());
 
-                break;
-        }
+                        break;
+                }
+            }
+        });
+
 
     }
 

@@ -81,18 +81,6 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     private CustomerServiceDialog customerServiceDialog;
 
     @Override
-    protected void onVisible() {
-        super.onVisible();
-        getBannerOfPostion();
-        queryProductCategorys();
-        if (UserConstants.getIsLogin()) {
-            queryIntegralBalance();
-        }else{
-            mBinding.integralView.setText("0");
-        }
-    }
-
-    @Override
     protected void initView() {
         mBinding.topBarLayout.updateBottomDivider(0, 0, 0, 0);
         initTab();
@@ -122,7 +110,13 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 }
             }
         });
-
+            getBannerOfPostion();
+            queryProductCategorys();
+            if (UserConstants.getIsLogin()) {
+                queryIntegralBalance();
+            }else{
+                mBinding.integralView.setText("0");
+            }
     }
 
     @Override
@@ -138,10 +132,10 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 
         switch (view.getId()) {
             case R.id.integral_view:
-                if (withdrawalTipsDialog == null) {
-                    withdrawalTipsDialog = new WithdrawalTipsDialog(getContext(), mBinding.getRoot());
-                }
-                withdrawalTipsDialog.show();
+//                if (withdrawalTipsDialog == null) {
+//                    withdrawalTipsDialog = new WithdrawalTipsDialog(getContext(), mBinding.getRoot());
+//                }
+//                withdrawalTipsDialog.show();
                 break;
             case R.id.customer_service_view:
                 if(customerServiceDialog==null){

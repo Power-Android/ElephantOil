@@ -67,6 +67,8 @@ public class ApiService {
 
     //商户优惠券
     public static final String BUSINESS_COUPON = "api/coupon/v1/getBusinessCoupons";
+    //兑换优惠券
+    public static final String EXCHANGE_COUPON = "api/coupon/v1/exchangeCoupon";
 
     //平台优惠券
     public static final String PLATFORM_COUPON = "api/coupon/v1/getPlatformCouponVOs";
@@ -107,5 +109,9 @@ public static final String USER_LOGOUT ="api/v1/wx/logout";
     public static final String OIL_DETAIL = "api/gasPublic/getGasStationInfo";
 
     public static final String HOME_PRODUCT = "api/product/v1/queryProductsByModule";
+    //获取系统通知
+    public static final String GET_ARTICLES = "api/v1/common/getArticles";
+    //获取订单通知
+    public static final String GET_NOTICES = "api/user/getNotices";
 
 }

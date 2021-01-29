@@ -5,14 +5,20 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.widget.Toast;
+
 import com.amap.api.location.AMapLocation;
+import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.http.HttpManager;
 import com.xxjy.jyyh.jscalljava.jscallback.OnJsCallListener;
+import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.ImageUtils;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
@@ -171,7 +177,7 @@ public class JsOperation implements JsOperationMethods {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                WeChatWebNowPayActivity.openWebPayAct(mActivity, null, "", url);
+                WeChatWebPayActivity.openWebPayAct(mActivity, null, "", url);
             }
         });
     }
@@ -232,10 +238,10 @@ public class JsOperation implements JsOperationMethods {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                if (mActivity instanceof WebViewActivity) {
-//                    WebViewActivity webViewActivity = (WebViewActivity) mActivity;
-//                    webViewActivity.changeToolBarState(false, bgColor);
-//                }
+                if (mActivity instanceof WebViewActivity) {
+                    WebViewActivity webViewActivity = (WebViewActivity) mActivity;
+                    webViewActivity.changeToolBarState(false, bgColor);
+                }
             }
         });
     }
@@ -246,10 +252,10 @@ public class JsOperation implements JsOperationMethods {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                if (mActivity instanceof WebViewActivity) {
-//                    WebViewActivity webViewActivity = (WebViewActivity) mActivity;
-//                    webViewActivity.changeToolBarState(true, "");
-//                }
+                if (mActivity instanceof WebViewActivity) {
+                    WebViewActivity webViewActivity = (WebViewActivity) mActivity;
+                    webViewActivity.changeToolBarState(true, "");
+                }
             }
         });
     }
@@ -280,37 +286,37 @@ public class JsOperation implements JsOperationMethods {
     @JavascriptInterface
     public void saveImage(String data) {
         Log.e("saveImage","data==>"+data);
-//        ImageUtils.saveImage(mActivity,data);
-//        PermissionUtils.permissionGroup(
-//                PermissionConstants.STORAGE
-//                )
-//                .callback(new PermissionUtils.SimpleCallback() {
-//                    @Override
-//                    public void onGranted() {
-//                        ImageUtils.saveImage(mActivity,data);
-//                    }
-//
-//                    @Override
-//                    public void onDenied() {
-//                        Toast.makeText(mActivity,"权限被拒绝，无法保存",Toast.LENGTH_SHORT);
-//                    }
-//                })
-//                .request();
+        ImageUtils.saveImage(mActivity,data);
+        PermissionUtils.permissionGroup(
+                PermissionConstants.STORAGE
+                )
+                .callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
+                        ImageUtils.saveImage(mActivity,data);
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        Toast.makeText(mActivity,"权限被拒绝，无法保存",Toast.LENGTH_SHORT);
+                    }
+                })
+                .request();
 
     }
     @Override
     @JavascriptInterface
     public void shareImageToWeChat(String data) {
         Log.e("shareImageToWeChat","data==>"+data);
-//        if(mActivity instanceof WebViewActivity){
-//            mActivity.runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
+        if(mActivity instanceof WebViewActivity){
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
 //                    WXSdkManager.newInstance().shareWX(mActivity,data);
-//                }
-//            });
-//
-//        }
+                }
+            });
+
+        }
     }
     @Override
     @JavascriptInterface

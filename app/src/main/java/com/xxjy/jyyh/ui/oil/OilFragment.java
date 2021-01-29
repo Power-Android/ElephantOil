@@ -64,6 +64,15 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 
     private CustomerServiceDialog customerServiceDialog;
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+
+        }
+    }
+
     @Override
     protected void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);

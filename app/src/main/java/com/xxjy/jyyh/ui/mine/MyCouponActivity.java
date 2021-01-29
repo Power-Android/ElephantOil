@@ -2,10 +2,12 @@ package com.xxjy.jyyh.ui.mine;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,6 +52,10 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
     private MyCouponAdapter platformCouponAdapter;
     private MyCouponAdapter businessCouponAdapter;
 
+    private View mPlatformCoupon;
+    private View mBusinessCoupon;
+    private View mExchangeCoupon;
+
     private RecyclerView mPlatformRecyclerView;
     private RecyclerView mBusinessRecyclerView;
     private QMUIRoundButton mPlatformCanUseBt;
@@ -58,9 +64,9 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
     private QMUIRoundButton mBusinessNoCanUseBt;
     private SmartRefreshLayout mPlatformRefreshView;
     private SmartRefreshLayout mBusinessRefreshView;
-    private View mPlatformCoupon;
-    private View mBusinessCoupon;
-    private View mExchangeCoupon;
+
+    private QMUIRoundButton convertBtn;
+    private EditText convertEdit;
 
     private int platformCanUse = 1;
     private int businessCanUse = 1;
@@ -140,6 +146,8 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
         businessCouponAdapter.setEmptyView(R.layout.empty_layout, mBusinessRecyclerView);
         mBusinessRecyclerView.setAdapter(businessCouponAdapter);
 
+        convertBtn = mExchangeCoupon.findViewById(R.id.convert_btn);
+        convertEdit = mExchangeCoupon.findViewById(R.id.convert_edit);
         getPlatformCouponVOs();
         getBusinessCoupons();
     }
@@ -149,33 +157,42 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 //
         mPlatformCanUseBt.setOnClickListener(v -> {
             platformCanUse = 1;
-            changeBt(platformCanUse,mPlatformCanUseBt,mPlatformNoCanUseBt);
+            changeBt(platformCanUse, mPlatformCanUseBt, mPlatformNoCanUseBt);
             getPlatformCouponVOs();
 
         });
         mPlatformNoCanUseBt.setOnClickListener(v -> {
             platformCanUse = 0;
-            changeBt(platformCanUse,mPlatformCanUseBt,mPlatformNoCanUseBt);
+            changeBt(platformCanUse, mPlatformCanUseBt, mPlatformNoCanUseBt);
             getPlatformCouponVOs();
         });
         mBusinessCanUseBt.setOnClickListener(v -> {
             businessCanUse = 1;
-            changeBt(businessCanUse,mBusinessCanUseBt,mBusinessNoCanUseBt);
+            changeBt(businessCanUse, mBusinessCanUseBt, mBusinessNoCanUseBt);
             getBusinessCoupons();
         });
         mBusinessNoCanUseBt.setOnClickListener(v -> {
             businessCanUse = 0;
-            changeBt(businessCanUse,mBusinessCanUseBt,mBusinessNoCanUseBt);
+            changeBt(businessCanUse, mBusinessCanUseBt, mBusinessNoCanUseBt);
             getBusinessCoupons();
         });
 
         mPlatformRefreshView.setOnRefreshListener(refreshLayout -> getPlatformCouponVOs());
         mBusinessRefreshView.setOnRefreshListener(refreshLayout -> getBusinessCoupons());
+        convertBtn.setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void onViewClicked(View view) {
-
+        switch (view.getId()) {
+            case R.id.convert_btn:
+                if (TextUtils.isEmpty(convertEdit.getText().toString().trim())) {
+                    showToastInfo("请输入兑换码");
+                    return;
+                }
+                exchangeCoupon(convertEdit.getText().toString().trim());
+                break;
+        }
     }
 
     @Override
@@ -188,9 +205,16 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
             mBusinessRefreshView.finishRefresh();
             businessCouponAdapter.setNewData(data);
         });
+        mViewModel.exchangeCouponLiveData.observe(this, data -> {
+            if (data.getCode() == 1) {
+                showToastSuccess("兑换成功");
+            }else{
+                showToastError("兑换失败");
+            }
+        });
     }
 
-//    private void initTab() {
+    //    private void initTab() {
 //        QMUITabBuilder tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
 //        tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 16), QMUIDisplayHelper.sp2px(this, 17));
 //        tabBuilder.setColor(Color.parseColor("#8ABAFF"), Color.parseColor("#FFFFFF"));
@@ -206,12 +230,12 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 //        mBinding.tabView.selectTab(0);
 //        mBinding.tabView.notifyDataChanged();
 //    }
-    private void changeBt(int type,QMUIRoundButton canUseBt,QMUIRoundButton noCanUseBt) {
-        if (type==1) {
+    private void changeBt(int type, QMUIRoundButton canUseBt, QMUIRoundButton noCanUseBt) {
+        if (type == 1) {
             canUseBt.setBackgroundResource(R.drawable.shape_stroke_blue_15radius);
             canUseBt.setTextColor(Color.parseColor("#1676FF"));
             noCanUseBt.setBackgroundResource(0);
-           noCanUseBt.setTextColor(Color.parseColor("#585858"));
+            noCanUseBt.setTextColor(Color.parseColor("#585858"));
         } else {
             canUseBt.setBackgroundResource(0);
             canUseBt.setTextColor(Color.parseColor("#585858"));
@@ -223,7 +247,12 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
     private void getPlatformCouponVOs() {
         mViewModel.getPlatformCouponVOs(platformCanUse);
     }
+
     private void getBusinessCoupons() {
         mViewModel.getBusinessCoupons(businessCanUse);
+    }
+
+    private void exchangeCoupon(String couponCode) {
+        mViewModel.exchangeCoupon(couponCode);
     }
 }
