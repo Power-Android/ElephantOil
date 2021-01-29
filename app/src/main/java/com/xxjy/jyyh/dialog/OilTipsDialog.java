@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.popup.QMUIFullScreenPopup;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.rxjava.rxlife.RxLife;
 import com.xxjy.jyyh.R;
@@ -43,60 +44,60 @@ import rxhttp.RxHttp;
  * @project ElephantOil
  * @description:
  */
-public class OilTipsDialog {
+public class OilTipsDialog extends QMUIFullScreenPopup {
     private Context mContext;
     private BaseActivity mActivity;
-    private QMUIFullScreenPopup mPopup;
     private final DialogOilTipsLayoutBinding mBinding;
 
 
     public OilTipsDialog(Context context, BaseActivity activity) {
+        super(context);
         this.mContext = context;
         this.mActivity = activity;
         mBinding = DialogOilTipsLayoutBinding.bind(
-               LayoutInflater.from(context).inflate( R.layout.dialog_oil_tips_layout, null));
+                LayoutInflater.from(context).inflate(R.layout.dialog_oil_tips_layout, null));
         init();
         initData();
     }
 
     private void init() {
-        mPopup = QMUIPopups.fullScreenPopup(mContext)
-                .addView(mBinding.getRoot())
-                .closeBtn(false)
-                .skinManager(QMUISkinManager.defaultInstance(mContext));
+        addView(mBinding.getRoot());
+        closeBtn(false);
+        skinManager(QMUISkinManager.defaultInstance(mContext));
 
-        mPopup.onDismiss(() -> {
-            if (mOnItemClickedListener != null){
+        onDismiss(() -> {
+            if (mOnItemClickedListener != null) {
                 mOnItemClickedListener.onQueryClick();
             }
         });
+
         mBinding.queryTv.setOnClickListener(view -> {
-            if (mOnItemClickedListener != null){
+            if (mOnItemClickedListener != null) {
                 mOnItemClickedListener.onQueryClick();
             }
         });
 
         mBinding.closeIv.setOnClickListener(view -> {
-            if (mBinding.checkBox.isChecked()){
-                if (mOnItemClickedListener != null){
+            if (mBinding.checkBox.isChecked()) {
+                if (mOnItemClickedListener != null) {
                     mOnItemClickedListener.onQueryClick();
                 }
-            }else {
+            } else {
                 MyToast.showInfo(mContext, "请勾选并阅读使用规则");
             }
         });
 
         mBinding.checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b){
+            if (b) {
                 mBinding.queryTv.setEnabled(true);
-            }else {
+            } else {
                 mBinding.queryTv.setEnabled(false);
             }
         });
     }
 
-    private void initData(){
-
+    private void initData() {
+        getOrderTip();
     }
 
     private void getOrderTip() {
@@ -108,26 +109,13 @@ public class OilTipsDialog {
                         .into(mBinding.tipIv));
     }
 
-    public void show(View view) {
-        if (mPopup != null) {
-            mPopup.show(view);
-        }
-        getOrderTip();
-    }
-
-    public void dismiss(){
-        if (mPopup != null){
-            mPopup.dismiss();
-        }
-    }
-
-    public interface OnItemClickedListener{
+    public interface OnItemClickedListener {
         void onQueryClick();
     }
 
     private OnItemClickedListener mOnItemClickedListener;
 
-    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener){
+    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener) {
         this.mOnItemClickedListener = onItemClickedListener;
     }
 }

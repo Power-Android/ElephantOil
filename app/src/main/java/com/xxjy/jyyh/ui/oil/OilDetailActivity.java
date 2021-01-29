@@ -68,60 +68,10 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mOilNumAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<OilEntity.StationsBean.OilPriceListBean> data = adapter.getData();
             if (mOilGunDialog != null){
-                mOilGunDialog.show(position, data.get(position).getGunNos());
+                mOilGunDialog.show();
             }
         });
 
-        initDialog();
-
-    }
-
-    private void initDialog() {
-//        mOilGunDialog = new OilGunDialog(this);
-//        mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
-//            if (mOilAmountDialog != null){
-//                mOilAmountDialog.show(0);
-//            }
-//        });
-
-//        mOilAmountDialog = new OilAmountDialog(this, stationsBean);
-//        mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
-//            @Override
-//            public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
-//                                           List<CouponBean> platformCoupons,
-//                                           List<CouponBean> businessCoupons) {
-//
-//            }
-//
-//            @Override
-//            public void onCreateOrder(View view) {
-//                if (mOilTipsDialog != null){
-//                    mOilTipsDialog.show(view);
-//                }
-//            }
-//        });
-
-//        mOilTipsDialog = new OilTipsDialog(this, this);
-//        mOilTipsDialog.setOnItemClickedListener(view -> {
-//            mOilTipsDialog.dismiss();
-//            if (mOilPayDialog != null){
-//                mOilPayDialog.show();
-//            }
-//        });
-
-//        mOilPayDialog = new OilPayDialog(this);
-        mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
-            @Override
-            public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
-
-            }
-
-            @Override
-            public void onCloseAllClick() {
-                mOilAmountDialog.dismiss();
-                mOilGunDialog.dismiss();
-            }
-        });
     }
 
     @Override

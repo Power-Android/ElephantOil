@@ -177,24 +177,15 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     protected void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.quick_oil_tv:
-                if (mOilNumDialog != null) {
-                    mOilNumDialog.show();
+                if (mStationsBean != null && mStationsBean.getOilPriceList().size() > 0) {
+                    showNumDialog(mStationsBean);
                 } else {
-                    if (mStationsBean != null && mStationsBean.getOilPriceList().size() > 0) {
-                        mOilNumDialog = new OilNumDialog(mContext, mStationsBean);
-                        mOilNumDialog.show();
-                    } else {
-                        showToastWarning("暂无加油信息~");
-                    }
+                    showToastWarning("暂无加油信息~");
                 }
                 break;
             case R.id.home_quick_oil_rl:
-                LoginHelper.login(mContext, new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        startActivity(new Intent(mContext, OilDetailActivity.class));
-                    }
-                });
+                LoginHelper.login(mContext, () ->
+                        startActivity(new Intent(mContext, OilDetailActivity.class)));
                 break;
             case R.id.search_iv:
                 startActivity(new Intent(mContext, SearchActivity.class));
@@ -231,7 +222,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
         //优选油站
         mViewModel.homeOilLiveData.observe(this, oilEntity -> {
-            if(oilEntity==null||oilEntity.getStations()==null||oilEntity.getStations().size()<=0){
+            if (oilEntity == null || oilEntity.getStations() == null || oilEntity.getStations().size() <= 0) {
                 return;
             }
 
@@ -264,12 +255,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 }
             }
 
-            //初始化加油弹框
-            if (mStationsBean.getOilPriceList() != null && mStationsBean.getOilPriceList().size() > 0) {
-                initOilDialog(mStationsBean);
-            } else {
-                showToastWarning("暂无加油信息~");
-            }
             //常去油站
             if (UserConstants.getIsLogin()) {
                 mViewModel.getOftenOils();
@@ -299,64 +284,74 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         });
     }
 
-    private void initOilDialog(OilEntity.StationsBean stationsBean) {
+    private void showNumDialog(OilEntity.StationsBean stationsBean) {
         //油号dialog
-        mOilNumDialog = new OilNumDialog(mContext, stationsBean);
+        if (mOilNumDialog == null) {
+            mOilNumDialog = new OilNumDialog(mContext, stationsBean);
+        }
         mOilNumDialog.setOnItemClickedListener((adapter, view, position) -> {
             List<OilEntity.StationsBean.OilPriceListBean> data = adapter.getData();
-            if (mOilGunDialog != null) {
-                for (int i = 0; i < data.size(); i++) {
-                    data.get(i).setSelected(false);
-                }
-                data.get(position).setSelected(true);
-                adapter.notifyDataSetChanged();
-                mOilGunDialog.show(position, data.get(position).getGunNos());
+            for (int i = 0; i < data.size(); i++) {
+                data.get(i).setSelected(false);
             }
+            data.get(position).setSelected(true);
+            adapter.notifyDataSetChanged();
+
+            showGunDialog(mStationsBean, position);
         });
 
+        mOilNumDialog.show();
+    }
+
+    private void showGunDialog(OilEntity.StationsBean stationsBean, int oilNoPosition) {
         //枪号dialog
         if (mOilGunDialog == null) {
-            mOilGunDialog = new OilGunDialog(mContext);
+            mOilGunDialog = new OilGunDialog(mContext, stationsBean, oilNoPosition);
         }
         mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
             List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
-            if (mOilAmountDialog != null) {
-                for (int i = 0; i < data.size(); i++) {
-                    data.get(i).setSelected(false);
-                }
-                data.get(position).setSelected(true);
-                adapter.notifyDataSetChanged();
-                int oilNoPosition = mOilGunDialog.getOilNoPosition();
-                mOilAmountDialog.show(oilNoPosition, data.get(position).getGunNo());
+            for (int i = 0; i < data.size(); i++) {
+                data.get(i).setSelected(false);
             }
+            data.get(position).setSelected(true);
+            adapter.notifyDataSetChanged();
+
+            showAmountDialog(stationsBean, oilNoPosition, position);
         });
 
+        mOilGunDialog.show();
+    }
+
+    private void showAmountDialog(OilEntity.StationsBean stationsBean, int oilNoPosition, int gunNoPosition) {
         //快捷金额dialog  请输入加油金额 请选择优惠券 暂无优惠券
         if (mOilAmountDialog == null) {
-            mOilAmountDialog = new OilAmountDialog(mContext, getBaseActivity(), stationsBean);
+            mOilAmountDialog = new OilAmountDialog(mContext, getBaseActivity(), stationsBean,
+                    oilNoPosition, gunNoPosition);
         }
         mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
             @Override
             public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
                                            String amount, String oilNo) {
-                if (mOilCouponDialog != null) {
-                    if (position == 1 || position == 2) {
-                        mOilCouponDialog.show(amount, oilNo, position == 1);
-                    }
+                if (position == 1 || position == 2) {
+                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, position == 1);
                 }
             }
 
             @Override
-            public void onCreateOrder(View view) {
-                if (mOilTipsDialog != null) {
-                    mOilTipsDialog.show(view);
-                }
+            public void onCreateOrder(View view, String orderId) {
+                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, view);
             }
         });
 
+        mOilAmountDialog.show();
+    }
+
+    private void showCouponDialog(OilEntity.StationsBean stationsBean, String amount,
+                                  int oilNoPosition, int gunNoPosition, boolean isPlat) {
         //优惠券dialog
         if (mOilCouponDialog == null) {
-            mOilCouponDialog = new OilCouponDialog(mContext, getBaseActivity(), stationsBean);
+            mOilCouponDialog = new OilCouponDialog(mContext, getBaseActivity(), stationsBean,
+                    oilNoPosition, gunNoPosition, isPlat);
         }
         mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
             @Override
@@ -373,29 +368,36 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
 
+        mOilCouponDialog.show();
+    }
+
+    private void showTipsDialog(OilEntity.StationsBean stationsBean, int oilNoPosition,
+                                int gunNoPosition, String orderId, View view) {
         //温馨提示dialog
         if (mOilTipsDialog == null) {
             mOilTipsDialog = new OilTipsDialog(mContext, getBaseActivity());
         }
-        mOilTipsDialog.setOnItemClickedListener(new OilTipsDialog.OnItemClickedListener() {
-            @Override
-            public void onQueryClick() {
-                mOilTipsDialog.dismiss();
-                if (mOilPayDialog != null) {
-                    //show的时候把订单信息传过去
-                    mOilPayDialog.show(mOilAmountDialog != null ? mOilAmountDialog.getPayInfo() : null);
-                }
-            }
+        mOilTipsDialog.setOnItemClickedListener(() -> {
+            mOilTipsDialog.dismiss();
+            //show的时候把订单信息传过去
+            showPayDialog(stationsBean, oilNoPosition, gunNoPosition, orderId);
         });
 
+        mOilTipsDialog.show(view);
+    }
+
+    private void showPayDialog(OilEntity.StationsBean stationsBean, int oilNoPosition,
+                               int gunNoPosition, String orderId) {
         //支付dialog
         if (mOilPayDialog == null) {
-            mOilPayDialog = new OilPayDialog(mContext, getBaseActivity());
+            mOilPayDialog = new OilPayDialog(mContext, getBaseActivity(), stationsBean,
+                    oilNoPosition, gunNoPosition, orderId);
         }
         mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
             @Override
             public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
-                GasStationLocationTipsDialog gasStationLocationTipsDialog = new GasStationLocationTipsDialog(getContext(), mBinding.getRoot(), "成都加油站");
+                GasStationLocationTipsDialog gasStationLocationTipsDialog =
+                        new GasStationLocationTipsDialog(getContext(), mBinding.getRoot(), "成都加油站");
                 gasStationLocationTipsDialog.show();
             }
 
@@ -406,17 +408,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mOilAmountDialog.dismiss();
                 mOilPayDialog.dismiss();
 
-//                mOilNumDialog.release();
-//                mOilGunDialog.release();
-//                mOilAmountDialog.release();
-//                mOilPayDialog.release();
-
-//                mOilNumDialog = null;
-//                mOilGunDialog = null;
-//                mOilAmountDialog = null;
-//                mOilPayDialog = null;
+                mOilNumDialog = null;
+                mOilGunDialog = null;
+                mOilAmountDialog = null;
+                mOilPayDialog = null;
             }
         });
+
+        mOilPayDialog.show();
     }
 
     @Override

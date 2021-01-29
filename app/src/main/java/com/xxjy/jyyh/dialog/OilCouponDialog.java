@@ -29,74 +29,66 @@ import rxhttp.RxHttp;
  * @project ElephantOil
  * @description:
  */
-public class OilCouponDialog {
+public class OilCouponDialog extends BottomSheetDialog {
     private Context mContext;
     private BaseActivity mActivity;
     private OilEntity.StationsBean mStationsBean;
-    private BottomSheetDialog mOilCouponDialog;
+    private int oilNoPosition, gunNoPosition;
+    private boolean isPlat;
     private BottomSheetBehavior mBehavior;
     private final DialogOilCouponBinding mBinding;
     private List<CouponBean> mList = new ArrayList<>();
     private OilCouponAdapter mOilCouponAdapter;
     private String amount, oilNo;
-    private boolean isPlat;
 
-    public OilCouponDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean) {
+    public OilCouponDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
+                           int oilNoPosition, int gunNoPosition, boolean isPlat) {
+        super(context, R.style.bottom_sheet_dialog);
         this.mContext = context;
         this.mActivity = activity;
         this.mStationsBean = stationsBean;
+        this.oilNoPosition = oilNoPosition;
+        this.gunNoPosition = gunNoPosition;
+        this.isPlat = isPlat;
         mBinding = DialogOilCouponBinding.bind(
                 View.inflate(context, R.layout.dialog_oil_coupon, null));
         init();
         initData();
     }
 
-    private void init(){
-        if (mOilCouponDialog == null) {
-            mOilCouponDialog = new BottomSheetDialog(mContext, R.style.bottom_sheet_dialog);
-            mOilCouponDialog.getWindow().getAttributes().windowAnimations =
-                    R.style.bottom_sheet_dialog;
-            mOilCouponDialog.setCancelable(true);
-            mOilCouponDialog.setCanceledOnTouchOutside(false);
-            mOilCouponDialog.setContentView(mBinding.getRoot());
-            mBehavior = BottomSheetBehavior.from((View) mBinding.getRoot().getParent());
-            mBehavior.setSkipCollapsed(true);
-        }
+    private void init() {
+        getWindow().getAttributes().windowAnimations =
+                R.style.bottom_sheet_dialog;
+        setCancelable(true);
+        setCanceledOnTouchOutside(false);
+        setContentView(mBinding.getRoot());
+        mBehavior = BottomSheetBehavior.from((View) mBinding.getRoot().getParent());
+        mBehavior.setSkipCollapsed(true);
         mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
-    private void initData(){
+    private void initData() {
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mOilCouponAdapter = new OilCouponAdapter(R.layout.adapter_oil_coupon, mList);
         mBinding.recyclerView.setAdapter(mOilCouponAdapter);
         mOilCouponAdapter.setOnItemClickListener((adapter, view, position) -> {
-            if (mOnItemClickedListener != null){
+            if (mOnItemClickedListener != null) {
                 mOnItemClickedListener.onOilCouponClick(adapter, view, position, isPlat);
                 dismiss();
             }
         });
         mBinding.noCouponTv.setOnClickListener(view -> {
-            if (mOnItemClickedListener != null){
+            if (mOnItemClickedListener != null) {
                 mOnItemClickedListener.onNoCouponClick(isPlat);
             }
             dismiss();
         });
-    }
 
-    public void show(String amount, String oilNo, boolean isPlat){
-        this.amount = amount;
-        this.oilNo = oilNo;
-        this.isPlat = isPlat;
-        mOilCouponDialog.show();
-        if (isPlat){
+        if (isPlat) {
             getPlatformCoupon();
-        }else {
+        } else {
             getBusinessCoupon();
         }
-    }
-
-    public void dismiss(){
-        mOilCouponDialog.dismiss();
     }
 
     private void getPlatformCoupon() {
@@ -127,20 +119,21 @@ public class OilCouponDialog {
     }
 
     private void dispatchData(List<CouponBean> couponBeans) {
-        if (couponBeans != null && couponBeans.size() > 0){
+        if (couponBeans != null && couponBeans.size() > 0) {
             mList = couponBeans;
             mOilCouponAdapter.setNewData(mList);
         }
     }
 
-    public interface OnItemClickedListener{
+    public interface OnItemClickedListener {
         void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat);
+
         void onNoCouponClick(boolean isPlat);
     }
 
     private OnItemClickedListener mOnItemClickedListener;
 
-    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener){
+    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener) {
         this.mOnItemClickedListener = onItemClickedListener;
     }
 }

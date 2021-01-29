@@ -23,17 +23,20 @@ import java.util.List;
  * @project ElephantOil
  * @description:
  */
-public class OilGunDialog {
+public class OilGunDialog extends BottomSheetDialog {
     private Context mContext;
-    private BottomSheetDialog mOilGunDialog;
+    private OilEntity.StationsBean stationsBean;
+    private int oilNoPosition;
     private BottomSheetBehavior mBehavior;
     private DialogOilGunLayoutBinding mBinding;
     private List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> mList = new ArrayList<>();
     private OilGunAdapter mOilGunAdapter;
-    private int oilNoPosition;
 
-    public OilGunDialog(Context context) {
+    public OilGunDialog(Context context, OilEntity.StationsBean stationsBean, int oilNoPosition) {
+        super(context, R.style.bottom_sheet_dialog);
         this.mContext = context;
+        this.stationsBean = stationsBean;
+        this.oilNoPosition = oilNoPosition;
         mBinding = DialogOilGunLayoutBinding.bind(
                 LayoutInflater.from(mContext).inflate(R.layout.dialog_oil_gun_layout, null));
         init();
@@ -41,64 +44,37 @@ public class OilGunDialog {
     }
 
     private void init() {
-        if (mOilGunDialog == null) {
-            mOilGunDialog = new BottomSheetDialog(mContext, R.style.bottom_sheet_dialog);
-            mOilGunDialog.getWindow().getAttributes().windowAnimations =
-                    R.style.bottom_sheet_dialog;
-            mOilGunDialog.setCancelable(true);
-            mOilGunDialog.setCanceledOnTouchOutside(false);
-            mOilGunDialog.setContentView(mBinding.getRoot());
-            mBehavior = BottomSheetBehavior.from((View) mBinding.getRoot().getParent());
-            mBehavior.setSkipCollapsed(true);
-        }
+        getWindow().getAttributes().windowAnimations =
+                R.style.bottom_sheet_dialog;
+        setCancelable(true);
+        setCanceledOnTouchOutside(false);
+        setContentView(mBinding.getRoot());
+        mBehavior = BottomSheetBehavior.from((View) mBinding.getRoot().getParent());
+        mBehavior.setSkipCollapsed(true);
         mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     private void initData() {
+        mList = stationsBean.getOilPriceList().get(oilNoPosition).getGunNos();
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
         mOilGunAdapter = new OilGunAdapter(R.layout.adapter_oil_num_layout, mList);
         mBinding.recyclerView.setAdapter(mOilGunAdapter);
         mOilGunAdapter.setOnItemClickListener((adapter, view, position) -> {
-            if (mOnItemClickedListener != null){
+            if (mOnItemClickedListener != null) {
                 mOnItemClickedListener.onOilGunClick(adapter, view, position);
             }
         });
-        mBinding.cancelIv.setOnClickListener(view -> mOilGunDialog.cancel());
-        mBinding.backIv.setOnClickListener(view -> mOilGunDialog.cancel());
+        mBinding.cancelIv.setOnClickListener(view -> dismiss());
+        mBinding.backIv.setOnClickListener(view -> dismiss());
     }
 
-    public void show(int oilNoPosition, List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> gunNos){
-        mOilGunDialog.show();
-        this.oilNoPosition = oilNoPosition;
-        mList = gunNos;
-        mOilGunAdapter.setNewData(mList);
-    }
-
-    public void dismiss(){
-        mOilGunDialog.dismiss();
-    }
-
-    public void release(){
-        mContext = null;
-        mOilGunDialog = null;
-        mBehavior = null;
-        mBinding = null;
-        mList = null;
-        mOilGunAdapter = null;
-        oilNoPosition = 0;
-    }
-
-    public int getOilNoPosition(){
-        return oilNoPosition;
-    }
-
-    public interface OnItemClickedListener{
+    public interface OnItemClickedListener {
         void onOilGunClick(BaseQuickAdapter adapter, View view, int position);
     }
 
     private OnItemClickedListener mOnItemClickedListener;
 
-    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener){
+    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener) {
         this.mOnItemClickedListener = onItemClickedListener;
     }
 }

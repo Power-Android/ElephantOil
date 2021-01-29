@@ -12,6 +12,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilPayTypeAdapter;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.databinding.DialogOilPayLayoutBinding;
+import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderParams;
 
 import java.util.ArrayList;
@@ -23,16 +24,17 @@ import java.util.List;
  * @project ElephantOil
  * @description:
  */
-public class OilPayDialog {
+public class OilPayDialog extends BottomSheetDialog {
     private Context mContext;
     private BaseActivity mActivity;
     private PayOrderParams params;
-    private BottomSheetDialog mOilPayDialog;
     private BottomSheetBehavior mBehavior;
     private DialogOilPayLayoutBinding mBinding;
     private List<String> mPayTypeList = new ArrayList<>();
 
-    public OilPayDialog(Context context, BaseActivity activity) {
+    public OilPayDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
+                        int oilNoPosition, int gunNoPosition, String orderId) {
+        super(context, R.style.bottom_sheet_dialog);
         this.mContext = context;
         this.mActivity = activity;
         mBinding = DialogOilPayLayoutBinding.bind(
@@ -42,19 +44,14 @@ public class OilPayDialog {
     }
 
     private void init() {
-        if (mOilPayDialog == null) {
-            mOilPayDialog = new BottomSheetDialog(mContext, R.style.bottom_sheet_dialog);
-            mOilPayDialog.getWindow().getAttributes().windowAnimations =
-                    R.style.bottom_sheet_dialog;
-            mOilPayDialog.setCancelable(true);
-            mOilPayDialog.setCanceledOnTouchOutside(false);
-            mOilPayDialog.setContentView(mBinding.getRoot());
-            mBehavior = BottomSheetBehavior.from((View) mBinding.getRoot().getParent());
-            mBehavior.setSkipCollapsed(true);
-        }
+        getWindow().getAttributes().windowAnimations =
+                R.style.bottom_sheet_dialog;
+        setCancelable(true);
+        setCanceledOnTouchOutside(false);
+        setContentView(mBinding.getRoot());
+        mBehavior = BottomSheetBehavior.from((View) mBinding.getRoot().getParent());
+        mBehavior.setSkipCollapsed(true);
         mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
-        mOilPayDialog.dismiss();
     }
 
     private void initData() {
@@ -71,7 +68,7 @@ public class OilPayDialog {
         });
 
         mBinding.cancelIv.setOnClickListener(view -> {
-            if (mOnItemClickedListener != null){
+            if (mOnItemClickedListener != null) {
                 mOnItemClickedListener.onCloseAllClick();
             }
         });
@@ -84,22 +81,10 @@ public class OilPayDialog {
         });
     }
 
-    public void show(PayOrderParams params){
-        this.params = params;
-        if (params != null){
-            dispatchData();
-        }
-        mOilPayDialog.show();
-    }
-
-    public void dismiss(){
-        mOilPayDialog.dismiss();
-    }
-
     private void dispatchData() {
         mBinding.payAmountTv.setText(params.getPayAmount());
         String oilType = "";
-        switch (params.getOilType()){
+        switch (params.getOilType()) {
             case "1":
                 oilType = "汽油";
                 break;
@@ -116,18 +101,10 @@ public class OilPayDialog {
 
     }
 
-    public void release(){
-        mContext = null;
-        mOilPayDialog = null;
-        mBehavior = null;
-        mBinding = null;
-        mPayTypeList = null;
-    }
-
     public interface OnItemClickedListener {
         void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position);
+
         void onCloseAllClick();
-//        void onCreateOrder();
     }
 
     private OnItemClickedListener mOnItemClickedListener;

@@ -26,16 +26,16 @@ import java.util.List;
  * @project ElephantOil
  * @description:
  */
-public class OilNumDialog {
+public class OilNumDialog extends BottomSheetDialog {
     private Context mContext;
     private OilEntity.StationsBean mStationsBean;
-    private BottomSheetDialog mOilNumDialog;
     private BottomSheetBehavior mBehavior;
     private DialogOilNumLayoutBinding mBinding;
     private OilNumAdapter mOilNumAdapter;
     private List<OilEntity.StationsBean.OilPriceListBean> mList = new ArrayList<>();
 
     public OilNumDialog(Context context, OilEntity.StationsBean stationsBean) {
+        super(context, R.style.bottom_sheet_dialog);
         this.mContext = context;
         this.mStationsBean = stationsBean;
         mBinding = DialogOilNumLayoutBinding.bind(
@@ -45,16 +45,13 @@ public class OilNumDialog {
     }
 
     private void init() {
-        if (mOilNumDialog == null) {
-            mOilNumDialog = new BottomSheetDialog(mContext, R.style.bottom_sheet_dialog);
-            mOilNumDialog.getWindow().getAttributes().windowAnimations =
-                    R.style.bottom_sheet_dialog;
-            mOilNumDialog.setCancelable(true);
-            mOilNumDialog.setCanceledOnTouchOutside(false);
-            mOilNumDialog.setContentView(mBinding.getRoot());
-            mBehavior = BottomSheetBehavior.from((View) mBinding.getRoot().getParent());
-            mBehavior.setSkipCollapsed(true);
-        }
+        getWindow().getAttributes().windowAnimations =
+                R.style.bottom_sheet_dialog;
+        setCancelable(true);
+        setCanceledOnTouchOutside(false);
+        setContentView(mBinding.getRoot());
+        mBehavior = BottomSheetBehavior.from((View) mBinding.getRoot().getParent());
+        mBehavior.setSkipCollapsed(true);
         mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
@@ -72,25 +69,7 @@ public class OilNumDialog {
                 mOnItemClickedListener.onOilNumClick(adapter, view, position);
             }
         });
-        mBinding.cancelIv.setOnClickListener(view -> mOilNumDialog.cancel());
-    }
-
-    public void show() {
-        mOilNumDialog.show();
-    }
-
-    public void dismiss() {
-        mOilNumDialog.dismiss();
-    }
-
-    public void release(){
-        mContext = null;
-        mStationsBean = null;
-        mOilNumDialog = null;
-        mBehavior = null;
-        mBinding = null;
-        mOilNumAdapter = null;
-        mList = null;
+        mBinding.cancelIv.setOnClickListener(view -> dismiss());
     }
 
     public interface OnItemClickedListener {
