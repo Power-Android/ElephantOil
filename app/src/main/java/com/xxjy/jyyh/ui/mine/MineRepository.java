@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.UserBean;
@@ -30,7 +31,7 @@ public class MineRepository extends BaseRepository {
 
     public void getBannerOfPostion(MutableLiveData<List<BannerBean>> bannersLiveData){
         addDisposable(RxHttp.postForm(ApiService.GET_BANNER_OF_POSITION)
-                .add("position",14)
+                .add("position", BannerPositionConstants.MINE_BANNER)
                 .asResponseList(BannerBean.class)
                 .subscribe(data -> bannersLiveData.postValue(data))
         );

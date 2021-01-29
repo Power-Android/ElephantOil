@@ -46,7 +46,7 @@ public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, Abo
                 break;
             case R.id.customer_service_layout:
                 if(customerServiceDialog==null){
-                    customerServiceDialog = new CustomerServiceDialog(this,"0531-123456","https://www.baidu.com/");
+                    customerServiceDialog = new CustomerServiceDialog(this);
                 }
                 customerServiceDialog.show(view);
                 break;

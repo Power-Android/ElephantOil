@@ -9,22 +9,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="@dimen/dp_172"
-        android:layout_height="@dimen/dp_265"
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_6"
+        android:paddingLeft="@dimen/dp_6"
+        android:paddingBottom="@dimen/dp_10"
         android:background="@drawable/shape_white_6raduis">
 
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/item_img_iv"
-        android:layout_width="@dimen/dp_160"
-        android:layout_height="@dimen/dp_160"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="@dimen/dp_160"
+        android:minHeight="@dimen/dp_160"
         android:src="@drawable/default_img_bg"
-        android:layout_marginTop="@dimen/dp_6"
         app:riv_corner_radius="@dimen/dp_6"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

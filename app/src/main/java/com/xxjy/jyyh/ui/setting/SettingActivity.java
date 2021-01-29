@@ -29,7 +29,7 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
 //        mBinding.topLayout.setTitle("设置");
 //        mBinding.topLayout.addLeftImageButton(R.drawable.arrow_back_black,
 //                R.id.qmui_topbar_item_left_back).setOnClickListener(v -> finish());
-        mBinding.titleLayout.tvTitle.setText("关于我们");
+        mBinding.titleLayout.tvTitle.setText("设置");
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
 
@@ -73,6 +73,7 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
 
             case R.id.logout_view:
                 LoginHelper.loginOut(this);
+                mViewModel.logout();
                 finish();
                 break;
         }

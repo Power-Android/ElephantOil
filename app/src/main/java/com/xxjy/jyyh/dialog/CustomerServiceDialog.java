@@ -1,11 +1,15 @@
 package com.xxjy.jyyh.dialog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.popup.QMUIFullScreenPopup;
@@ -14,6 +18,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.databinding.DialogCallHelpBinding;
 import com.xxjy.jyyh.databinding.DialogOilTipsLayoutBinding;
+import com.xxjy.jyyh.ui.setting.AboutUsViewModel;
 import com.xxjy.jyyh.ui.web.WebChatActivity;
 
 public class CustomerServiceDialog {
@@ -22,12 +27,14 @@ public class CustomerServiceDialog {
     private final DialogCallHelpBinding mBinding;
     private String mPhone;
     private String mLink;
+    private String mTime;
+
+    private AboutUsViewModel aboutUsViewModel;
 
 
-    public CustomerServiceDialog(Context context,String phone,String link) {
+    public CustomerServiceDialog(Context context) {
         this.mContext = context;
-        this.mPhone = phone;
-        this.mLink = link;
+        aboutUsViewModel = new ViewModelProvider((BaseActivity)context).get(AboutUsViewModel.class);
         mBinding = DialogCallHelpBinding.bind(
                LayoutInflater.from(context).inflate( R.layout.dialog_call_help, null));
         init();
@@ -48,6 +55,14 @@ public class CustomerServiceDialog {
         mBinding.callHelpPhone.setOnClickListener(v -> {
             dismiss();
             toDialPhoneAct(mContext,mPhone);
+        });
+
+        aboutUsViewModel.getCallCenter();
+        aboutUsViewModel.callCenterLiveData.observe((BaseActivity)mContext,data->{
+this.mLink=data.getCallOnline();
+this.mPhone=data.getCallPhone();
+this.mTime=data.getCallNotice();
+mBinding.callHelpWorkTime.setText(this.mTime);
         });
 
     }

@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.ui.oil;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 
@@ -22,12 +23,14 @@ import com.xxjy.jyyh.adapter.TopLineAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentOilBinding;
+import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.dialog.SelectDistanceDialog;
 import com.xxjy.jyyh.dialog.SelectOilNumDialog;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.DistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.youth.banner.Banner;
@@ -58,6 +61,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     private boolean firstDistanceOrPrice = true;
     private int pageNum = 1;
     private int pageSize = 10;
+
+    private CustomerServiceDialog customerServiceDialog;
 
     @Override
     protected void initView() {
@@ -128,6 +133,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.oilSortLayout.setOnClickListener(this::onViewClicked);
         mBinding.oilSelectLayout.setOnClickListener(this::onViewClicked);
         mBinding.oilDistancePriceLayout.setOnClickListener(this::onViewClicked);
+        mBinding.customerServiceView.setOnClickListener(this::onViewClicked);
+        mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -161,6 +168,15 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 }
 
                 loadData(false);
+                break;
+            case R.id.customer_service_view:
+                if(customerServiceDialog==null){
+                    customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
+                }
+                customerServiceDialog.show(view);
+                break;
+            case R.id.message_center_view:
+                getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
                 break;
         }
     }

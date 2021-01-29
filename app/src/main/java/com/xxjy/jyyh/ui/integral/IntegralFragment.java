@@ -34,13 +34,16 @@ import com.xxjy.jyyh.adapter.IntegralExchangeAdapter;
 import com.xxjy.jyyh.adapter.OilStationListAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentIntegralBinding;
+import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.dialog.LocationTipsDialog;
 import com.xxjy.jyyh.dialog.WithdrawalTipsDialog;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.ProductClassBean;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.youth.banner.adapter.BannerImageAdapter;
@@ -66,6 +69,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     private List<ProductBean> productData = new ArrayList<>();
     private WithdrawalTipsDialog withdrawalTipsDialog;
     private List<ProductClassBean> classData = new ArrayList<>();
+    private QMUITabBuilder tabBuilder;
 
     private int categoryId;
     private int pageNum = 1;
@@ -74,11 +78,18 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     private BannerViewModel bannerViewModel1;
     private BannerViewModel bannerViewModel2;
 
+    private CustomerServiceDialog customerServiceDialog;
+
     @Override
     protected void onVisible() {
         super.onVisible();
         getBannerOfPostion();
         queryProductCategorys();
+        if (UserConstants.getIsLogin()) {
+            queryIntegralBalance();
+        }else{
+            mBinding.integralView.setText("0");
+        }
     }
 
     @Override
@@ -106,6 +117,9 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 pageNum = 1;
                 getBannerOfPostion();
                 queryProductCategorys();
+                if (UserConstants.getIsLogin()) {
+                    queryIntegralBalance();
+                }
             }
         });
 
@@ -114,6 +128,8 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     @Override
     protected void initListener() {
         mBinding.integralView.setOnClickListener(this::onViewClicked);
+        mBinding.customerServiceView.setOnClickListener(this::onViewClicked);
+        mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
 
     }
 
@@ -126,6 +142,15 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                     withdrawalTipsDialog = new WithdrawalTipsDialog(getContext(), mBinding.getRoot());
                 }
                 withdrawalTipsDialog.show();
+                break;
+            case R.id.customer_service_view:
+                if(customerServiceDialog==null){
+                    customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
+                }
+                customerServiceDialog.show(view);
+                break;
+            case R.id.message_center_view:
+                getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
                 break;
         }
     }
@@ -163,13 +188,19 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     private void initTab() {
         mBinding.tabView.reset();
         mBinding.tabView.notifyDataChanged();
-        QMUITabBuilder tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
+        if (tabBuilder != null) {
+            tabBuilder = null;
+        }
+        tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
         tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(getContext(), 15), QMUIDisplayHelper.sp2px(getContext(), 15));
         tabBuilder.setColor(Color.parseColor("#313233"), Color.parseColor("#1676FF"));
         tabBuilder.setTypeface(Typeface.DEFAULT_BOLD, Typeface.DEFAULT_BOLD);
+        tabBuilder.skinChangeWithTintColor(true);
+//        mBinding.tabView.getTabCount();
         for (ProductClassBean str : classData) {
             mBinding.tabView.addTab(tabBuilder.setText(str.getClassName()).build(getContext()));
         }
+
         int space = QMUIDisplayHelper.dp2px(getContext(), 15);
         mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(getContext(), 2), false, true));
         mBinding.tabView.setItemSpaceInScrollMode(space);
@@ -177,13 +208,16 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         mBinding.tabView.setMode(QMUITabSegment.MODE_SCROLLABLE);
         mBinding.tabView.setScrollContainer(true);
         mBinding.tabView.selectTab(0);
+//        mBinding.tabView.selectTab(0, false, false);
         mBinding.tabView.notifyDataChanged();
         mBinding.tabView.addOnTabSelectedListener(new QMUIBasicTabSegment.OnTabSelectedListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onTabSelected(int index) {
                 pageNum = 1;
                 categoryId = classData.get(index).getId();
+                mBinding.refreshview.setEnableRefresh(true);
+                mBinding.refreshview.setEnableLoadMore(false);
+                mBinding.refreshview.setNoMoreData(false);
                 queryProducts();
 
             }
@@ -230,30 +264,30 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
             mBinding.refreshview.finishRefresh(true);
             if (data != null) {
                 if (data.size() == 1) {
-                    GlideUtils.loadImage(getContext(),data.get(0).getImgUrl(),mBinding.bannerLeftView);
+                    GlideUtils.loadImage(getContext(), data.get(0).getImgUrl(), mBinding.bannerLeftView);
                     mBinding.bannerRightView.setVisibility(View.INVISIBLE);
                     mBinding.bannerLeftView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(),data.get(0).getLink());
+                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(0).getLink());
                         }
                     });
                 } else if (data.size() == 2) {
-                    GlideUtils.loadImage(getContext(),data.get(0).getImgUrl(),mBinding.bannerLeftView);
-                    GlideUtils.loadImage(getContext(),data.get(1).getImgUrl(),mBinding.bannerRightView);
+                    GlideUtils.loadImage(getContext(), data.get(0).getImgUrl(), mBinding.bannerLeftView);
+                    GlideUtils.loadImage(getContext(), data.get(1).getImgUrl(), mBinding.bannerRightView);
                     mBinding.bannerRightView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(),data.get(0).getLink());
+                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(0).getLink());
                         }
                     });
                     mBinding.bannerLeftView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(),data.get(0).getLink());
+                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(0).getLink());
                         }
                     });
-                }else{
+                } else {
                     mBinding.bannerLeftView.setVisibility(View.GONE);
                     mBinding.bannerRightView.setVisibility(View.GONE);
                 }
@@ -277,6 +311,10 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
             }).addBannerLifecycleObserver(this)
                     .setIndicator(new RectangleIndicator(mContext));
         });
+
+        mViewModel.integralBalanceLiveData.observe(this, data -> {
+            mBinding.integralView.setText(data);
+        });
     }
 
     private void queryProductCategorys() {
@@ -284,9 +322,12 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     }
 
     private void queryProducts() {
-        mBinding.refreshview.setEnableRefresh(true);
-        mBinding.refreshview.setEnableLoadMore(false);
-        mBinding.refreshview.setNoMoreData(false);
+
         mViewModel.queryProducts(categoryId, pageNum, pageSize);
     }
+
+    private void queryIntegralBalance() {
+        mViewModel.queryIntegralBalance();
+    }
+
 }

@@ -90,12 +90,18 @@ public class ApiService {
 
     //查询余额
     public static final String QUERY_BALANCE = "api/user/queryBalance";
+    //查询积分余额
+    public static final String QUERY_INTEGRAL_BALANCE = "api/user/queryIntegralBalance";
 
     //下单温馨提示
     public static final String GET_ORDER_TIP = "api/gasPublic/getOrderTs";
 
     //创建加油订单
     public static final String CREATE_ORDER = "api/gasPublic/refuelCreateOrder";
+//客服中心
+public static final String CALL_CENTER ="api/v1/store/getCallCenter";
+//退出登录
+public static final String USER_LOGOUT ="api/v1/wx/logout";
 
     //油站详情
     public static final String OIL_DETAIL = "api/gasPublic/getGasStationInfo";

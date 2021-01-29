@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.ui.integral;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseRepository;
@@ -21,6 +22,15 @@ import rxhttp.RxHttp;
  */
 public class IntegralRepository extends BaseRepository {
 
+    public void queryIntegralBalance(){
+
+    }
+    public void queryIntegralBalance(MutableLiveData<String> integralBalanceLiveData){
+        addDisposable(RxHttp.postForm(ApiService.QUERY_INTEGRAL_BALANCE)
+                .asResponse(String.class)
+                .subscribe(data -> integralBalanceLiveData.postValue(data))
+        );
+    }
     public void getBannerOfPostion(MutableLiveData<List<BannerBean>> bannersLiveData){
         addDisposable(RxHttp.postForm(ApiService.GET_BANNER_OF_POSITION)
                 .add("position",7)

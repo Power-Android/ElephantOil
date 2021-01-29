@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
@@ -15,7 +16,9 @@ import com.xxjy.jyyh.adapter.MineTabAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentMineBinding;
+import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.UserBean;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
@@ -38,6 +41,8 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     private List<BannerBean> tabs = new ArrayList<>();
 
     private MineTabAdapter mineTabAdapter;
+    private UserBean userBean;
+    private CustomerServiceDialog customerServiceDialog;
 
     @Override
     protected void onVisible() {
@@ -61,9 +66,8 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
         mineTabAdapter = new MineTabAdapter(R.layout.adapter_mine_tab, tabs);
         mBinding.recyclerView.setAdapter(mineTabAdapter);
-        mineTabAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            WebViewActivity.openWebActivity((MainActivity) getActivity(), ((BannerBean) (adapter.getItem(position))).getLink());
-        });
+        mineTabAdapter.setOnItemClickListener((adapter, view, position) -> WebViewActivity.openWebActivity((MainActivity) getActivity(), ((BannerBean) (adapter.getItem(position))).getLink()));
+
         mBinding.refreshview.setOnRefreshListener(refreshLayout -> {
             getBannerOfPostion();
             if (UserConstants.getIsLogin()) {
@@ -80,10 +84,13 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.equityOrderLayout.setOnClickListener(this::onViewClicked);
         mBinding.refuelingOrderLayout.setOnClickListener(this::onViewClicked);
         mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
+        mBinding.customerServiceView.setOnClickListener(this::onViewClicked);
         mBinding.settingView.setOnClickListener(this::onViewClicked);
         mBinding.nameView.setOnClickListener(this::onViewClicked);
         mBinding.photoView.setOnClickListener(this::onViewClicked);
         mBinding.myCouponLayout.setOnClickListener(this::onViewClicked);
+        mBinding.balanceLayout.setOnClickListener(this::onViewClicked);
+        mBinding.integralLayout.setOnClickListener(this::onViewClicked);
 
     }
 
@@ -95,6 +102,12 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                 break;
             case R.id.refueling_order_layout:
                 getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
+                break;
+            case R.id.customer_service_view:
+                if(customerServiceDialog==null){
+                    customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
+                }
+                customerServiceDialog.show(view);
                 break;
             case R.id.message_center_view:
                 getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
@@ -114,6 +127,19 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                     }
                 });
                 break;
+            case R.id.integral_layout:
+                if(userBean==null){
+                    return;
+                }
+                WebViewActivity.openRealUrlWebActivity(getBaseActivity(),userBean.getIntegralBillUrl());
+                break;
+            case R.id.balance_layout:
+                if(userBean==null){
+                    return;
+                }
+                WebViewActivity.openRealUrlWebActivity(getBaseActivity(),userBean.getWalletUrl());
+
+                break;
         }
 
     }
@@ -122,6 +148,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     protected void dataObservable() {
 
         mViewModel.userLiveData.observe(this, data -> {
+            userBean=data;
             mBinding.refreshview.finishRefresh();
             GlideUtils.loadCircleImage(getContext(), data.getHeadImg(), mBinding.photoView);
             mBinding.nameView.setText(data.getPhone());

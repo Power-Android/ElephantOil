@@ -8,6 +8,24 @@ public class UserBean {
     private String phone;
     private String couponsSize;
     private String integralBalance;
+    private String walletUrl;
+    private String integralBillUrl;
+
+    public String getWalletUrl() {
+        return walletUrl;
+    }
+
+    public void setWalletUrl(String walletUrl) {
+        this.walletUrl = walletUrl;
+    }
+
+    public String getIntegralBillUrl() {
+        return integralBillUrl;
+    }
+
+    public void setIntegralBillUrl(String integralBillUrl) {
+        this.integralBillUrl = integralBillUrl;
+    }
 
     public String getHeadImg() {
         return headImg;

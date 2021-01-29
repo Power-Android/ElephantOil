@@ -60,12 +60,14 @@
                 </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
                 <ImageView
+                    android:id="@+id/customer_service_view"
                     android:layout_width="@dimen/dp_19"
                     android:layout_height="@dimen/dp_17"
                     android:layout_marginLeft="@dimen/dp_5"
                     android:src="@drawable/ic_customer_service" />
 
                 <ImageView
+                    android:id="@+id/message_center_view"
                     android:layout_width="@dimen/dp_19"
                     android:layout_height="@dimen/dp_17"
                     android:layout_marginLeft="@dimen/dp_19"

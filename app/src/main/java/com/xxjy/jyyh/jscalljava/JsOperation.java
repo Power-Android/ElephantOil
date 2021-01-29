@@ -26,7 +26,7 @@ import java.util.Map;
  * 该类提供了 js 调用的 接口 , 可以增加方法的方式来进行跳转 , h5 调用端的代码为 :  window.benXiang.getAppInfo() 方法名字
  */
 public class JsOperation implements JsOperationMethods {
-    public static final String JS_USE_NAME = "benXiang";
+    public static final String JS_USE_NAME = "littleElephant";
     private BaseActivity mActivity;
     private OnJsCallListener mListener;
 

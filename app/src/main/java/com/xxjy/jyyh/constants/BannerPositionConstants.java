@@ -1,6 +1,5 @@
 package com.xxjy.jyyh.constants;
 
-import java.net.PortUnreachableException;
 
 public class BannerPositionConstants {
 //    1, "首页广告
@@ -31,5 +30,6 @@ public class BannerPositionConstants {
     public static final int REFUEL_HOME_BANNER=12;
     public static final int REFUEL_WARM_TIPS_BANNER=13;
     public static final int INTEGRAL_HOME_FUNCTION_BANNER=14;
+    public static final int MINE_BANNER=15;
 
 }

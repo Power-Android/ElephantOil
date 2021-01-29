@@ -54,6 +54,7 @@
                     android:src="@drawable/ic_message" />
 
                 <ImageView
+                    android:id="@+id/customer_service_view"
                     android:layout_width="@dimen/dp_19"
                     android:layout_height="@dimen/dp_17"
                     android:layout_marginLeft="@dimen/dp_19"
@@ -165,6 +166,7 @@
                         android:background="@color/color_EE" />
 
                     <LinearLayout
+                        android:id="@+id/integral_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -194,6 +196,7 @@
                         android:background="@color/color_EE" />
 
                     <LinearLayout
+                        android:id="@+id/balance_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -299,7 +302,7 @@
 
                 <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_124"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_12"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_12"
@@ -321,6 +324,7 @@
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         android:layout_marginTop="@dimen/dp_10" />
 
                     <!--                    <LinearLayout-->

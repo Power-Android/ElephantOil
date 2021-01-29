@@ -27,6 +27,7 @@ public class IntegralViewModel extends BaseViewModel<IntegralRepository> {
     public MutableLiveData<List<BannerBean>> bannersLiveData = new MutableLiveData<>();
     public MutableLiveData<List<ProductClassBean>> productCategorysLiveData = new MutableLiveData<>();
     public MutableLiveData<List<ProductBean>> productLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> integralBalanceLiveData = new MutableLiveData<>();
 
     public void getBannerOfPostion() {
         mRespository.getBannerOfPostion(bannersLiveData);
@@ -36,5 +37,8 @@ public class IntegralViewModel extends BaseViewModel<IntegralRepository> {
     }
     public void queryProducts(int categoryId,int pageNum,int pageSize) {
         mRespository.queryProducts(productLiveData, categoryId, pageNum, pageSize);
+    }
+    public void queryIntegralBalance() {
+        mRespository.queryIntegralBalance(integralBalanceLiveData);
     }
 }

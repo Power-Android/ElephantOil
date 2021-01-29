@@ -103,9 +103,12 @@ public class GlideUtils extends AppGlideModule {
      * @param imageView
      */
     public static void loadSquareImage(Context context, String url, ImageView imageView) {
-        Glide.with(context).load(url).apply(initOptions(new CropSquareTransformation()))
-                .skipMemoryCache(isSkipMemoryCache()).error(getErrorImage()).placeholder(getPlaceholder())
-                .fallback(getErrorImage()).circleCrop().into(imageView);
+        Glide.with(context).load(url)
+                .apply(new RequestOptions().transform(new CropSquareTransformation()).error(R.drawable.default_img_bg))
+//                .skipMemoryCache(isSkipMemoryCache())
+//                .error(getErrorImage())
+//                .placeholder(getPlaceholder())
+                .fallback(getErrorImage()).into(imageView);
     }
     /**
      * @describe 加载黑白图片
