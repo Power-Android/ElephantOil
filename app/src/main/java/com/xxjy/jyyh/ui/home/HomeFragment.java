@@ -48,6 +48,7 @@ import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.dialog.ReceiveRewardDialog;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.EventEntity;
+import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderParams;
@@ -68,7 +69,7 @@ import java.util.List;
 public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> implements OnRefreshLoadMoreListener {
     private List<OilEntity.StationsBean.CzbLabelsBean> mOilTagList = new ArrayList<>();
     private List<OfentEntity> mOftenList = new ArrayList<>();
-    private List<String> mExchangeList = new ArrayList<>();
+    private List<HomeProductEntity.FirmProductsVoBean> mExchangeList = new ArrayList<>();
     private OilNumDialog mOilNumDialog;
     private OilGunDialog mOilGunDialog;
     private OilAmountDialog mOilAmountDialog;
@@ -77,6 +78,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private OilCouponDialog mOilCouponDialog;
     private double mLng, mLat;
     private OilEntity.StationsBean mStationsBean;
+    private OilStationFlexAdapter mFlexAdapter;
+    private HomeExchangeAdapter mExchangeAdapter;
 
     public static HomeFragment getInstance() {
         return new HomeFragment();
@@ -105,6 +108,15 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         //请求定位权限
         requestPermission();
 
+        //油站标签
+        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
+        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
+        mBinding.tagRecyclerView.setLayoutManager(flexboxLayoutManager);
+        mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_station_tag, mOilTagList);
+        mBinding.tagRecyclerView.setAdapter(mFlexAdapter);
+
         //智能优选title
         SpanUtils.with(mBinding.descTv)
                 .append("小象加油")
@@ -114,14 +126,15 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 .create();
 
         //积分豪礼
-        for (int i = 0; i < 6; i++) {
-            mExchangeList.add("");
-        }
         mBinding.exchangeRecyclerView.setLayoutManager(
                 new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
-        HomeExchangeAdapter exchangeAdapter = new HomeExchangeAdapter(R.layout.adapter_home_exchange, mExchangeList);
-        mBinding.exchangeRecyclerView.setAdapter(exchangeAdapter);
+        mExchangeAdapter = new HomeExchangeAdapter(R.layout.adapter_home_exchange, mExchangeList);
+        mBinding.exchangeRecyclerView.setAdapter(mExchangeAdapter);
+        mExchangeAdapter.setOnItemClickListener((adapter, view, position) -> {
 
+        });
+
+        mViewModel.getHomeProduct();
     }
 
     private void requestPermission() {
@@ -184,8 +197,13 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 }
                 break;
             case R.id.home_quick_oil_rl:
-                LoginHelper.login(mContext, () ->
-                        startActivity(new Intent(mContext, OilDetailActivity.class)));
+                LoginHelper.login(mContext, () -> {
+                    if (mStationsBean != null) {
+                        Intent intent = new Intent(mContext, OilDetailActivity.class);
+                        intent.putExtra(Constants.GAS_STATION_ID, mStationsBean.getGasId());
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.search_iv:
                 startActivity(new Intent(mContext, SearchActivity.class));
@@ -225,34 +243,23 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             if (oilEntity == null || oilEntity.getStations() == null || oilEntity.getStations().size() <= 0) {
                 return;
             }
-
-            if (oilEntity.getStations().size() <= 0) return;
             mStationsBean = oilEntity.getStations().get(0);
             Glide.with(mContext).load(mStationsBean.getGasTypeImg()).into(mBinding.oilImgIv);
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
             mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
-            mBinding.oilCurrentPriceTv.setText(mStationsBean.getPriceYfq());
-            mBinding.oilOriginalPriceTv.setText("油站价￥" + mStationsBean.getPriceOfficial());
-            mBinding.oilNumTv.setText(mStationsBean.getOilName());
+            mBinding.oilCurrentPriceTv.setText(mStationsBean.getOilPriceList().get(0).getPriceYfq());
+            mBinding.oilOriginalPriceTv.setText("油站价￥" + mStationsBean.getOilPriceList().get(0).getPriceOfficial());
+            mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(0).getOilName());
             mBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
             mBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
             mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-            if (mStationsBean.getCzbLabels() != null) {
+            if (mStationsBean.getCzbLabels() != null && mStationsBean.getCzbLabels().size() > 0) {
                 mOilTagList = mStationsBean.getCzbLabels();
-                if (mOilTagList.size() > 0) {
-                    FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
-                    flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
-                    flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
-                    flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
-                    mBinding.tagRecyclerView.setLayoutManager(flexboxLayoutManager);
-                    OilStationFlexAdapter flexAdapter =
-                            new OilStationFlexAdapter(R.layout.adapter_oil_station_tag, mOilTagList);
-                    mBinding.tagRecyclerView.setAdapter(flexAdapter);
-                    mBinding.tagRecyclerView.setVisibility(View.VISIBLE);
-                } else {
-                    mBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
-                }
+                mFlexAdapter.setNewData(mOilTagList);
+                mBinding.tagRecyclerView.setVisibility(View.VISIBLE);
+            } else {
+                mBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
             }
 
             //常去油站
@@ -260,7 +267,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mViewModel.getOftenOils();
             }
             //加油任务
-//            mViewModel.getRefuelJob(stationsBean.getGasId());
+            mViewModel.getRefuelJob(mStationsBean.getGasId());
         });
 
         //常去油站
@@ -282,6 +289,13 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
             }
         });
+
+        //积分豪礼
+        mViewModel.productLiveData.observe(this, firmProductsVoBeans -> {
+            if (firmProductsVoBeans != null && firmProductsVoBeans.size() > 0){
+                mExchangeAdapter.setNewData(firmProductsVoBeans);
+            }
+        });
     }
 
     private void showNumDialog(OilEntity.StationsBean stationsBean) {
@@ -296,7 +310,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
             data.get(position).setSelected(true);
             adapter.notifyDataSetChanged();
-
+            mBinding.oilCurrentPriceTv.setText(data.get(position).getPriceYfq());
+            mBinding.oilOriginalPriceTv.setText("油站价￥" + data.get(position).getPriceOfficial());
+            mBinding.oilNumTv.setText(data.get(position).getOilName());
             showGunDialog(mStationsBean, position);
         });
 
@@ -412,6 +428,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mOilGunDialog = null;
                 mOilAmountDialog = null;
                 mOilPayDialog = null;
+
+                //关掉以后重新刷新数据,否则再次打开时上下选中不一致
+                mViewModel.getHomeOil(mLat, mLng);
             }
         });
 

@@ -38,9 +38,7 @@ public class ResponseCodeParser<T> extends AbstractParser<Response<T>> {
         Response<T> data = convert(response, type);
 
         if (data.getCode() != 1) {
-            Looper.prepare();
-            MyToast.showWarning(App.getContext(), data.getMsg());
-            Looper.loop();
+            MyToast.showWarning(App.getContext(), data != null && data.getMsg() != null ? data.getMsg() : "网络请求错误");
             //code不等于 1，说明数据不正确，抛出异常
             throw new ParseException(String.valueOf(data.getCode()), data.getMsg(), response);
         }

@@ -7,6 +7,8 @@ import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.ProductMapKeyConstants;
+import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
@@ -108,4 +110,19 @@ public class HomeRepository extends BaseRepository {
         );
     }
 
+    /**
+     * @param productLiveData
+     * 首页积分豪礼
+     */
+    public void getHomeProduct(MutableLiveData<List<HomeProductEntity.FirmProductsVoBean>> productLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.HOME_PRODUCT)
+                .add(Constants.PAGE, "1")
+                .add(Constants.PAGE_SIZE, "10")
+                .add("mapKey", ProductMapKeyConstants.INDEX)
+                .asResponseList(HomeProductEntity.class)
+                .subscribe(homeProductEntities ->
+                        productLiveData.postValue(homeProductEntities.get(0).getFirmProductsVo()))
+
+        );
+    }
 }

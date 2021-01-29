@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.xxjy.jyyh.R;
 
 import java.util.List;
 
@@ -22,6 +23,6 @@ public class OilCheckedAdapter extends BaseQuickAdapter<String, BaseViewHolder> 
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, String item) {
-
+        helper.setText(R.id.item_content_tv, item);
     }
 }

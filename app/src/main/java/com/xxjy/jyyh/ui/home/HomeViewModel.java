@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
+import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
@@ -23,6 +24,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<OilEntity> homeOilLiveData = new MutableLiveData<>();
     public MutableLiveData<List<OfentEntity>> oftenOilLiveData = new MutableLiveData<>();
     public MutableLiveData<String> refuelOilLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<HomeProductEntity.FirmProductsVoBean>> productLiveData = new MutableLiveData<>();
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -42,5 +44,9 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getRefuelJob(String gasId) {
         mRespository.getRefuelJob(gasId, refuelOilLiveData);
+    }
+
+    public void getHomeProduct() {
+        mRespository.getHomeProduct(productLiveData);
     }
 }

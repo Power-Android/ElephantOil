@@ -61,6 +61,8 @@ public class OilNumDialog extends BottomSheetDialog {
             return;
         }
         mList = mStationsBean.getOilPriceList();
+        //默认第一个选中
+        mList.get(0).setSelected(true);
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
         mOilNumAdapter = new OilNumAdapter(R.layout.adapter_oil_num_layout, mList);
         mBinding.recyclerView.setAdapter(mOilNumAdapter);

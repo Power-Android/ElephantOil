@@ -24,6 +24,7 @@
         android:textSize="@dimen/sp_11"
         android:textColor="@color/color_34"
         android:maxLines="2"
+        android:minLines="2"
         android:ellipsize="end"
         android:includeFontPadding="false"
         android:layout_marginTop="@dimen/dp_6"
@@ -45,21 +46,21 @@
         app:layout_constraintStart_toStartOf="@id/item_img_iv"
         app:layout_constraintEnd_toEndOf="@id/item_img_iv"/>
     <TextView
+        android:id="@+id/item_sale_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="已兑换738件"
         android:includeFontPadding="false"
         android:textColor="@color/color_9A"
         android:textSize="@dimen/sp_11"
-        android:layout_marginTop="@dimen/dp_3"
+        android:layout_marginBottom="@dimen/dp_8"
         app:layout_constraintStart_toStartOf="@id/item_integral_tv"
-        app:layout_constraintTop_toBottomOf="@+id/item_integral_tv"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
     <ImageView
         android:layout_width="@dimen/dp_16"
         android:layout_height="@dimen/dp_16"
         android:src="@drawable/icon_org_arrow"
         android:layout_marginEnd="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_integral_tv"/>
+        app:layout_constraintBottom_toBottomOf="@+id/item_sale_tv"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

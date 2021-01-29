@@ -8,13 +8,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/shape_pay_6radius">
     <TextView
+        android:id="@+id/item_content_tv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="92#汽油"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="@dimen/sp_14"
         android:gravity="center"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_5"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

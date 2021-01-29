@@ -97,4 +97,9 @@ public class ApiService {
     //创建加油订单
     public static final String CREATE_ORDER = "api/gasPublic/refuelCreateOrder";
 
+    //油站详情
+    public static final String OIL_DETAIL = "api/gasPublic/getGasStationInfo";
+
+    public static final String HOME_PRODUCT = "api/product/v1/queryProductsByModule";
+
 }
