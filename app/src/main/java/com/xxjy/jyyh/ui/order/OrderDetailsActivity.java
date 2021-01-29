@@ -10,7 +10,6 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.ihsanbal.logging.I;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
@@ -40,8 +39,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
         mBinding.titleLayout.tvTitle.setText("订单详情");
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
-        mBinding.useMethodView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        mBinding.useMethodView.getPaint().setAntiAlias(true);
+//        mBinding.useMethodView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+//        mBinding.useMethodView.getPaint().setAntiAlias(true);
         orderId = getIntent().getStringExtra(ORDER_ID);
         refuelOrderDetails();
     }
@@ -71,15 +70,18 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     }
                 };
                 mNormalPopup = QMUIPopups.listPopup(this,
-                        QMUIDisplayHelper.dp2px(this, 80),
+                        QMUIDisplayHelper.dp2px(this, 70),
                         QMUIDisplayHelper.dp2px(this, 300),
                         adapter,
                         onItemClickListener)
                         .animStyle(QMUIPopup.ANIM_GROW_FROM_CENTER)
-                        .preferredDirection(QMUIPopup.DIRECTION_TOP)
+                        .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
+                        .arrowSize(QMUIDisplayHelper.dp2px(this, 13),
+                                QMUIDisplayHelper.dp2px(this, 7))
                         .shadow(true)
                         .offsetYIfTop(QMUIDisplayHelper.dp2px(this, 5))
                         .skinManager(QMUISkinManager.defaultInstance(this))
+                        .radius(QMUIDisplayHelper.dp2px(this, 4))
                         .borderWidth(0)
                         .onDismiss(new PopupWindow.OnDismissListener() {
                             @Override
@@ -94,7 +96,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                 break;
             case R.id.cancel_view:
 
-                startActivity(new Intent(this, PayResultActivity.class));
+//                startActivity(new Intent(this, PayResultActivity.class));
+                cancelOrder();
                 break;
         }
     }
@@ -105,11 +108,69 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             mBinding.stationNameView.setText(data.getProductName());
             mBinding.statusView.setText(data.getStatusName());
             mBinding.numView.setText(data.getLitre() + "L");
-            mBinding.amountView.setText("¥" + data.getPayAmount());
+            mBinding.amountView.setText("¥" + data.getAmount());
+            mBinding.businessDirectDiscountView.setText("-¥" + data.getCzbDepreciateAmount());
+            mBinding.businessDiscountView.setText("-¥" + data.getCzbCouponAmount());
+            mBinding.balanceView.setText("-¥" + data.getUsedBalance());
+            mBinding.platformDiscountView.setText("-¥" + data.getAmountCoupon());
             mBinding.orderIdView.setText(data.getOrderId());
-            mBinding.orderIdView.setText(data.getPayTypeName());
+            mBinding.payTypeView.setText(data.getPayTypeName());
             mBinding.payAmountView.setText("¥" + data.getPayAmount());
 
+            switch (data.getStatus()) {
+                case 0:
+                    mBinding.orderManageLayout.setVisibility(View.GONE);
+                    mBinding.btLayout.setVisibility(View.VISIBLE);
+                    mBinding.businessDirectDiscountLayout.setVisibility(View.VISIBLE);
+                    mBinding.businessDiscountLayout.setVisibility(View.VISIBLE);
+                    mBinding.platformDiscountLayout.setVisibility(View.VISIBLE);
+                    mBinding.balanceLayout.setVisibility(View.VISIBLE);
+                    mBinding.payTypeLayout.setVisibility(View.GONE);
+                    mBinding.payAmountLayout.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    mBinding.orderManageLayout.setVisibility(View.VISIBLE);
+                    mBinding.btLayout.setVisibility(View.GONE);
+                    mBinding.businessDirectDiscountLayout.setVisibility(View.VISIBLE);
+                    mBinding.businessDiscountLayout.setVisibility(View.VISIBLE);
+                    mBinding.platformDiscountLayout.setVisibility(View.VISIBLE);
+                    mBinding.balanceLayout.setVisibility(View.VISIBLE);
+                    mBinding.payTypeLayout.setVisibility(View.VISIBLE);
+                    mBinding.payAmountLayout.setVisibility(View.VISIBLE);
+                    break;
+
+                case 2:
+                    mBinding.orderManageLayout.setVisibility(View.GONE);
+                    mBinding.btLayout.setVisibility(View.GONE);
+                    mBinding.businessDirectDiscountLayout.setVisibility(View.GONE);
+                    mBinding.businessDiscountLayout.setVisibility(View.GONE);
+                    mBinding.platformDiscountLayout.setVisibility(View.GONE);
+                    mBinding.balanceLayout.setVisibility(View.GONE);
+                    mBinding.payTypeLayout.setVisibility(View.GONE);
+                    mBinding.payAmountLayout.setVisibility(View.GONE);
+
+                    break;
+                default:
+                    mBinding.orderManageLayout.setVisibility(View.GONE);
+                    mBinding.btLayout.setVisibility(View.GONE);
+                    mBinding.businessDirectDiscountLayout.setVisibility(View.GONE);
+                    mBinding.businessDiscountLayout.setVisibility(View.GONE);
+                    mBinding.platformDiscountLayout.setVisibility(View.GONE);
+                    mBinding.balanceLayout.setVisibility(View.GONE);
+                    mBinding.payTypeLayout.setVisibility(View.GONE);
+                    mBinding.payAmountLayout.setVisibility(View.GONE);
+                    break;
+            }
+        });
+
+        mViewModel.cancelOrderDetailsLiveData.observe(this, data -> {
+
+            if (data.getCode() == 1) {
+                showToastSuccess("取消成功");
+                refuelOrderDetails();
+            } else {
+                showToastError("取消失败");
+            }
 
         });
     }
@@ -118,6 +179,11 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
     private void refuelOrderDetails() {
         mViewModel.refuelOrderDetails(orderId);
     }
+
+    private void cancelOrder() {
+        mViewModel.cancelOrder(orderId);
+    }
+
 
     public static void openPage(BaseActivity activity, String orderId) {
         Intent intent = new Intent(activity, OrderDetailsActivity.class);

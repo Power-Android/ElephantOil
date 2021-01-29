@@ -11,6 +11,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -31,6 +33,7 @@ import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.IntegralExchangeAdapter;
 import com.xxjy.jyyh.adapter.OilStationListAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
+import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.databinding.FragmentIntegralBinding;
 import com.xxjy.jyyh.dialog.LocationTipsDialog;
 import com.xxjy.jyyh.dialog.WithdrawalTipsDialog;
@@ -39,6 +42,7 @@ import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.ProductClassBean;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.GlideUtils;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.RectangleIndicator;
@@ -66,14 +70,9 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     private int categoryId;
     private int pageNum = 1;
     private int pageSize = 10;
-//    @Override
-//    public void onHiddenChanged(boolean hidden) {
-//        super.onHiddenChanged(hidden);
-//        if (!hidden) {
-//            requestPermission();
-//        }
-//    }
 
+    private BannerViewModel bannerViewModel1;
+    private BannerViewModel bannerViewModel2;
 
     @Override
     protected void onVisible() {
@@ -86,12 +85,13 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     protected void initView() {
         mBinding.topBarLayout.updateBottomDivider(0, 0, 0, 0);
         initTab();
-
+        bannerViewModel1 = new ViewModelProvider(getActivity()).get(BannerViewModel.class);
+        bannerViewModel2 = new ViewModelProvider(getActivity()).get(BannerViewModel.class);
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         adapter = new IntegralExchangeAdapter(R.layout.adapter_integral_exchange, productData);
         mBinding.recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener((adapter, view, position) -> WebViewActivity.openWebActivity((MainActivity) getActivity(),((ProductBean)(adapter.getData().get(position))).getLink()));
+        adapter.setOnItemClickListener((adapter, view, position) -> WebViewActivity.openWebActivity((MainActivity) getActivity(), ((ProductBean) (adapter.getData().get(position))).getLink()));
         adapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
 
         mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
@@ -132,23 +132,9 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 
     @Override
     protected void dataObservable() {
-        mViewModel.bannersLiveData.observe(this, data -> {
-            //banner
-            mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
-                @Override
-                public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
-                    Glide.with(holder.imageView)
-                            .load(data.getImgUrl())
-                            .apply(new RequestOptions()
-                                    .error(R.drawable.default_img_bg))
-                            .into(holder.imageView);
-                    holder.imageView.setOnClickListener(v -> {
-                        WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
-                    });
-                }
-            }).addBannerLifecycleObserver(this)
-                    .setIndicator(new RectangleIndicator(mContext));
-        });
+//        mViewModel.bannersLiveData.observe(this, data -> {
+//
+//        });
 
         mViewModel.productCategorysLiveData.observe(this, data -> {
             classData.clear();
@@ -157,19 +143,21 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         });
         mViewModel.productLiveData.observe(this, data -> {
 
-                if (data != null && data.size() > 0) {
-                    if (pageNum == 1) {
-                        adapter.setNewData(data);
-                        mBinding.refreshview.setEnableLoadMore(true);
-                        mBinding.refreshview.finishRefresh(true);
-                    } else {
-                        adapter.addData(data);
-                        mBinding.refreshview.finishLoadMore(true);
-                    }
+            if (data != null && data.size() > 0) {
+                if (pageNum == 1) {
+                    adapter.setNewData(data);
+                    mBinding.refreshview.setEnableLoadMore(true);
+                    mBinding.refreshview.finishRefresh(true);
                 } else {
-                    mBinding.refreshview.finishLoadMoreWithNoMoreData();
+                    adapter.addData(data);
+                    mBinding.refreshview.finishLoadMore(true);
                 }
+            } else {
+                mBinding.refreshview.finishLoadMoreWithNoMoreData();
+            }
         });
+
+
     }
 
     private void initTab() {
@@ -238,7 +226,57 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     }
 
     private void getBannerOfPostion() {
-        mViewModel.getBannerOfPostion();
+        bannerViewModel1.getBannerOfPostion(BannerPositionConstants.INTEGRAL_HOME_FUNCTION_BANNER).observe(this, data -> {
+            mBinding.refreshview.finishRefresh(true);
+            if (data != null) {
+                if (data.size() == 1) {
+                    GlideUtils.loadImage(getContext(),data.get(0).getImgUrl(),mBinding.bannerLeftView);
+                    mBinding.bannerRightView.setVisibility(View.INVISIBLE);
+                    mBinding.bannerLeftView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(),data.get(0).getLink());
+                        }
+                    });
+                } else if (data.size() == 2) {
+                    GlideUtils.loadImage(getContext(),data.get(0).getImgUrl(),mBinding.bannerLeftView);
+                    GlideUtils.loadImage(getContext(),data.get(1).getImgUrl(),mBinding.bannerRightView);
+                    mBinding.bannerRightView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(),data.get(0).getLink());
+                        }
+                    });
+                    mBinding.bannerLeftView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(),data.get(0).getLink());
+                        }
+                    });
+                }else{
+                    mBinding.bannerLeftView.setVisibility(View.GONE);
+                    mBinding.bannerRightView.setVisibility(View.GONE);
+                }
+            }
+        });
+        bannerViewModel2.getBannerOfPostion(BannerPositionConstants.INTEGRAL_HOME_BANNER).observe(this, data -> {
+            mBinding.refreshview.finishRefresh(true);
+            //banner
+            mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
+                @Override
+                public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
+                    Glide.with(holder.imageView)
+                            .load(data.getImgUrl())
+                            .apply(new RequestOptions()
+                                    .error(R.drawable.default_img_bg))
+                            .into(holder.imageView);
+                    holder.imageView.setOnClickListener(v -> {
+                        WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
+                    });
+                }
+            }).addBannerLifecycleObserver(this)
+                    .setIndicator(new RectangleIndicator(mContext));
+        });
     }
 
     private void queryProductCategorys() {

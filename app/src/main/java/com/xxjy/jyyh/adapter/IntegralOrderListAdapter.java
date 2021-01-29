@@ -24,7 +24,7 @@ public class IntegralOrderListAdapter extends BaseQuickAdapter<IntegralOrderBean
 
         helper.setText(R.id.item_time_view, item.getCreateTime())
                 .setText(R.id.item_status_view, item.getStatusName())
-                .setText(R.id.item_price_view, "¥" + item.getFinalPayment()+"+"+item.getFinalIntegral()+"积分")
+                .setText(R.id.item_price_view, item.getFinalIntegral()+"积分+" + item.getFinalPayment()+"元")
                 .setText(R.id.item_title_view, item.getProductName());
 
         switch (item.getStatus()) {

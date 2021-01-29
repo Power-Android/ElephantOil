@@ -54,6 +54,37 @@
                 android:text="状态"/>
         </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
 
+<!--        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="@dimen/dp_10"-->
+<!--            android:layout_marginLeft="@dimen/dp_12"-->
+<!--            android:layout_marginRight="@dimen/dp_12"-->
+<!--            android:paddingLeft="@dimen/dp_14"-->
+<!--            android:paddingRight="@dimen/dp_14"-->
+<!--            android:paddingTop="@dimen/dp_20"-->
+<!--            android:paddingBottom="@dimen/dp_20"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center_horizontal"-->
+<!--            app:qmui_radius="@dimen/dp_7"-->
+<!--            app:qmui_backgroundColor="@color/white"-->
+<!--            app:qmui_borderWidth="@dimen/dp_0">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="到店后向商家出示"-->
+<!--                android:textColor="@color/color_6B"-->
+<!--                android:textSize="@dimen/sp_13"-->
+<!--                />-->
+<!--            <ImageView-->
+<!--                android:layout_width="@dimen/dp_150"-->
+<!--                android:layout_height="@dimen/dp_150"-->
+<!--                android:layout_marginTop="7dp"-->
+<!--                android:src="@drawable/default_img_bg"/>-->
+
+<!--        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>-->
+
+
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,75 +93,44 @@
             android:layout_marginRight="@dimen/dp_12"
             android:paddingLeft="@dimen/dp_14"
             android:paddingRight="@dimen/dp_14"
-            android:paddingTop="@dimen/dp_20"
-            android:paddingBottom="@dimen/dp_20"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            app:qmui_radius="@dimen/dp_7"
-            app:qmui_backgroundColor="@color/white"
-            app:qmui_borderWidth="@dimen/dp_0">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="到店后向商家出示"
-                android:textColor="@color/color_6B"
-                android:textSize="@dimen/sp_13"
-                />
-            <ImageView
-                android:layout_width="@dimen/dp_150"
-                android:layout_height="@dimen/dp_150"
-                android:layout_marginTop="7dp"
-                android:src="@drawable/default_img_bg"/>
-
-        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
-
-
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginLeft="@dimen/dp_12"
-            android:layout_marginRight="@dimen/dp_12"
-            android:paddingLeft="@dimen/dp_14"
-            android:paddingRight="@dimen/dp_14"
             android:orientation="vertical"
             app:qmui_radius="@dimen/dp_7"
             app:qmui_backgroundColor="@color/white"
             app:qmui_borderWidth="@dimen/dp_0">
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingBottom="15dp"-->
+<!--                android:paddingTop="@dimen/dp_15">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textSize="@dimen/sp_14"-->
+<!--                    android:textColor="@color/color_34"-->
+<!--                    android:text="使用方式"/>-->
+<!--                <TextView-->
+<!--                    android:id="@+id/use_method_view"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textSize="@dimen/sp_14"-->
+<!--                    android:textColor="@color/colorAccent"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:text="查看使用方式"/>-->
+<!--            </RelativeLayout>-->
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0.5dp"-->
+<!--                android:background="@color/color_E8"/>-->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/sp_14"
-                    android:textColor="@color/color_34"
-                    android:text="使用方式"/>
-                <TextView
-                    android:id="@+id/use_method_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/sp_14"
-                    android:textColor="@color/colorAccent"
-                    android:layout_alignParentRight="true"
-                    android:text="查看使用方式"/>
-            </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_E8"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
+                android:layout_height="@dimen/dp_45"
+              >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
                 android:textColor="@color/color_34"
+                android:layout_centerVertical="true"
                 android:text="数量"/>
             <TextView
                 android:id="@+id/num_view"
@@ -139,22 +139,24 @@
                 android:textSize="@dimen/sp_14"
                 android:textColor="@color/color_9A"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:text="1"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_E8"/>
             </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_E8"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
+                android:layout_height="@dimen/dp_45">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
                 android:textColor="@color/color_34"
+                android:layout_centerVertical="true"
                 android:text="订单金额"/>
             <TextView
                 android:id="@+id/amount_view"
@@ -163,21 +165,23 @@
                 android:textSize="@dimen/sp_14"
                 android:textColor="@color/color_9A"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:text="¥0.00"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_E8"/>
             </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_E8"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
+                android:layout_height="@dimen/dp_45">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
+                android:layout_centerVertical="true"
                 android:textColor="@color/color_34"
                 android:text="创建时间"/>
             <TextView
@@ -185,22 +189,24 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
                 android:textColor="@color/color_9A"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:text="2020-11-23 18:23:48"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_E8"/>
             </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_E8"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
+                android:layout_height="@dimen/dp_45">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
+                android:layout_centerVertical="true"
                 android:textColor="@color/color_34"
                 android:text="订单号"/>
             <TextView
@@ -208,115 +214,178 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
-                android:textColor="@color/color_9A"
-                android:layout_alignParentRight="true"
-                android:text="165546788765678"/>
-            </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_E8"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
-                android:textColor="@color/color_34"
-                android:text="充值方式"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
+                android:layout_centerVertical="true"
                 android:textColor="@color/color_9A"
                 android:layout_alignParentRight="true"
                 android:text=""/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_E8"/>
             </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_E8"/>
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingBottom="15dp"-->
+<!--                android:paddingTop="@dimen/dp_15">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="@dimen/sp_14"-->
+<!--                android:textColor="@color/color_34"-->
+<!--                android:text="充值方式"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="@dimen/sp_14"-->
+<!--                android:textColor="@color/color_9A"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:text=""/>-->
+<!--            </RelativeLayout>-->
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0.5dp"-->
+<!--                android:background="@color/color_E8"/>-->
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingBottom="15dp"-->
+<!--                android:paddingTop="@dimen/dp_15">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="@dimen/sp_14"-->
+<!--                android:textColor="@color/color_34"-->
+<!--                android:text="充值账号"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textSize="@dimen/sp_14"-->
+<!--                android:textColor="@color/color_9A"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:text="15311632102"/>-->
+<!--            </RelativeLayout>-->
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0.5dp"-->
+<!--                android:background="@color/color_E8"/>-->
             <RelativeLayout
+                android:id="@+id/business_direct_discount_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
+                android:layout_height="@dimen/dp_45">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
-                android:textColor="@color/color_34"
-                android:text="充值账号"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
-                android:textColor="@color/color_9A"
-                android:layout_alignParentRight="true"
-                android:text="15311632102"/>
-            </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_E8"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
+                android:layout_centerVertical="true"
                 android:textColor="@color/color_34"
                 android:text="直降优惠"/>
             <TextView
+                android:id="@+id/business_direct_discount_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
+                android:layout_centerVertical="true"
                 android:textColor="@color/color_30"
                 android:layout_alignParentRight="true"
-                android:text="-¥2"/>
+                android:text="-¥0"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_E8"/>
             </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_E8"/>
             <RelativeLayout
+                android:id="@+id/business_discount_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
-                android:textColor="@color/color_34"
-                android:text="小象优惠券"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_14"
-                android:textColor="@color/color_30"
-                android:layout_alignParentRight="true"
-                android:text="-¥2"/>
-            </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_E8"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
+                android:layout_height="@dimen/dp_45"
+                >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_14"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/color_34"
+                    android:text="商家优惠券"/>
+                <TextView
+                    android:id="@+id/business_discount_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_14"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/color_30"
+                    android:layout_alignParentRight="true"
+                    android:text="-¥0"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_E8"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/platform_discount_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_45"
+               >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_14"
+                android:layout_centerVertical="true"
+                android:textColor="@color/color_34"
+                android:text="小象优惠券"/>
+            <TextView
+                android:id="@+id/platform_discount_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_14"
+                android:layout_centerVertical="true"
+                android:textColor="@color/color_30"
+                android:layout_alignParentRight="true"
+                android:text="-¥0"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_E8"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/balance_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_45"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_14"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/color_34"
+                    android:text="余额"/>
+                <TextView
+                    android:id="@+id/balance_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_14"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/color_30"
+                    android:layout_alignParentRight="true"
+                    android:text="-¥0"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_E8"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/pay_type_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_45">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_14"
+                    android:layout_centerVertical="true"
                     android:textColor="@color/color_34"
                     android:text="支付方式"/>
                 <TextView
@@ -324,23 +393,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_14"
+                    android:layout_centerVertical="true"
                     android:textColor="@color/color_9A"
                     android:layout_alignParentRight="true"
-                    android:text="微信支付"/>
+                    android:text=""/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_E8"/>
             </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/color_E8"/>
             <RelativeLayout
+                android:id="@+id/pay_amount_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingTop="@dimen/dp_15">
+                android:layout_height="@dimen/dp_45">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_14"
+                    android:layout_centerVertical="true"
                     android:textColor="@color/color_34"
                     android:text="实付金额"/>
                 <TextView
@@ -348,6 +419,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_14"
+                    android:layout_centerVertical="true"
                     android:textColor="@color/color_30"
                     android:layout_alignParentRight="true"
                     android:text="¥0.00"/>
@@ -358,6 +430,7 @@
             android:id="@+id/order_manage_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:paddingBottom="@dimen/dp_10"
             android:paddingTop="@dimen/dp_10"
             android:layout_marginLeft="@dimen/dp_12"
@@ -377,40 +450,44 @@
                 android:layout_marginLeft="@dimen/dp_8"
                 android:src="@drawable/ic_arrow_right"/>
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/bt_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="6dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:padding="6dp">
+
             <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
                 android:id="@+id/cancel_view"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
-                android:layout_weight="1"
-                app:qmui_borderColor="@color/colorAccent"
-                app:qmui_borderWidth="@dimen/dp_1"
-                app:qmui_backgroundColor="@color/white"
-                app:qmui_radius="@dimen/dp_20"
                 android:layout_margin="@dimen/dp_6"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="取消"
                 android:textColor="@color/colorAccent"
-                android:gravity="center"
                 android:textSize="@dimen/sp_16"
-                />
+                app:qmui_backgroundColor="@color/white"
+                app:qmui_borderColor="@color/colorAccent"
+                app:qmui_borderWidth="@dimen/dp_1"
+                app:qmui_radius="@dimen/dp_20" />
+
             <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
                 android:id="@+id/continue_pay_view"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
-                android:layout_weight="1"
-                app:qmui_borderColor="@color/colorAccent"
-                app:qmui_borderWidth="@dimen/dp_1"
-                app:qmui_backgroundColor="@color/colorAccent"
-                app:qmui_radius="@dimen/dp_20"
                 android:layout_margin="@dimen/dp_6"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="继续支付"
                 android:textColor="@color/white"
-                android:gravity="center"
                 android:textSize="@dimen/sp_16"
+                app:qmui_backgroundColor="@color/colorAccent"
+                app:qmui_borderColor="@color/colorAccent"
+                app:qmui_borderWidth="@dimen/dp_1"
+                app:qmui_radius="@dimen/dp_20"
 
                 />
 

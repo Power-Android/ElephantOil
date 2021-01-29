@@ -7,6 +7,8 @@ import android.view.View;
 
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -55,6 +57,10 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
     private SmartRefreshLayout mRefuelOrderRefreshView;
     private SmartRefreshLayout mIntegralOrderRefreshView;
 
+    private OrderDetailsViewModel orderDetailsViewModel;
+
+    private int mPosition=-1;
+
 
     @Override
     protected void initView() {
@@ -76,9 +82,7 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
         refuelOrderAdapter = new RefuelOrderListAdapter(R.layout.adapter_order_layout, refuelOrderData);
         mRefuelOrderRecyclerView.setAdapter(refuelOrderAdapter);
         refuelOrderAdapter.setEmptyView(R.layout.empty_layout, mRefuelOrderRecyclerView);
-        refuelOrderAdapter.setOnItemClickListener((adapter, view, position) -> {
-            OrderDetailsActivity.openPage(this, ((RefuelOrderBean)adapter.getItem(position)).getOrderId());
-        });
+
         mIntegralOrderRecyclerView = integralOrderLayout.findViewById(R.id.recycler_view);
         mIntegralOrderRefreshView = integralOrderLayout.findViewById(R.id.refresh_view);
         mIntegralOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -87,6 +91,7 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
         integralOrderAdapter.setEmptyView(R.layout.empty_layout, mIntegralOrderRecyclerView);
         refuelOrderList();
         integralOrderList();
+        orderDetailsViewModel = new ViewModelProvider(this).get(OrderDetailsViewModel.class);
     }
 
     @Override
@@ -142,6 +147,22 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
 
             }
         });
+        refuelOrderAdapter.setOnItemClickListener((adapter, view, position) -> {
+            OrderDetailsActivity.openPage(this, ((RefuelOrderBean)adapter.getItem(position)).getOrderId());
+        });
+        refuelOrderAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+               mPosition=position;
+                switch (view.getId()){
+                    case R.id.continue_pay_view:
+                        break;
+                    case R.id.cancel_order_view:
+                        cancelOrder(((RefuelOrderBean)adapter.getItem(position)).getOrderId());
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -176,6 +197,9 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
                     mRefuelOrderRefreshView.finishLoadMore(true);
                 }
             } else {
+                if(pageNum==1){
+                    refuelOrderAdapter.setNewData(null);
+                }
                 mRefuelOrderRefreshView.finishLoadMoreWithNoMoreData();
             }
         });
@@ -190,7 +214,20 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
                     mIntegralOrderRefreshView.finishLoadMore(true);
                 }
             } else {
+                if(pageNum2==1){
+                    integralOrderAdapter.setNewData(null);
+                }
                 mIntegralOrderRefreshView.finishLoadMoreWithNoMoreData();
+            }
+        });
+
+        orderDetailsViewModel.cancelOrderDetailsLiveData.observe(this,data->{
+            if(data.getCode()==1){
+                showToastSuccess("取消成功");
+                ((RefuelOrderBean)refuelOrderAdapter.getItem(mPosition)).setStatus(3);
+                refuelOrderAdapter.notifyItemChanged(mPosition);
+            }else{
+                showToastError("取消失败");
             }
         });
 
@@ -255,6 +292,13 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
 
 
     private void loadData() {
+        mRefuelOrderRefreshView.setEnableRefresh(true);
+        mRefuelOrderRefreshView.setEnableLoadMore(false);
+        mRefuelOrderRefreshView.setNoMoreData(false);
+
+        mIntegralOrderRefreshView.setEnableRefresh(true);
+        mIntegralOrderRefreshView.setEnableLoadMore(false);
+        mIntegralOrderRefreshView.setNoMoreData(false);
 //        if(isOilOrder){
         pageNum = 1;
         refuelOrderList();
@@ -264,6 +308,7 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
 //        }
     }
 
+
     private void refuelOrderList() {
         mViewModel.refuelOrderList(status, pageNum, pageSize);
     }
@@ -271,4 +316,7 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
     private void integralOrderList() {
         mViewModel.integralOrderList(status, pageNum2, pageSize);
     }
+private void cancelOrder(String orderId){
+    orderDetailsViewModel.cancelOrder(orderId);
+}
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.ProductMapKeyConstants;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.ProductClassBean;
@@ -21,7 +22,7 @@ import rxhttp.RxHttp;
 public class IntegralRepository extends BaseRepository {
 
     public void getBannerOfPostion(MutableLiveData<List<BannerBean>> bannersLiveData){
-        addDisposable(RxHttp.postForm(ApiService.BANNER_OF_POSITION)
+        addDisposable(RxHttp.postForm(ApiService.GET_BANNER_OF_POSITION)
                 .add("position",7)
                 .asResponseList(BannerBean.class)
                 .subscribe(data -> bannersLiveData.postValue(data))
@@ -29,6 +30,7 @@ public class IntegralRepository extends BaseRepository {
     }
     public void queryProductCategorys(MutableLiveData<List<ProductClassBean>> productCategorysLiveData){
         addDisposable(RxHttp.postForm(ApiService.PRODUCT_CATEGORYS)
+                .add("mapKey", ProductMapKeyConstants.SHOPPING_INDEX)
                 .asResponseList(ProductClassBean.class)
                 .subscribe(data -> productCategorysLiveData.postValue(data))
         );

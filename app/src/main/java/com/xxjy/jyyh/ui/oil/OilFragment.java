@@ -210,6 +210,9 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mViewModel.signOilStationLiveData.observe(this, signStations -> {
             adapter.setNewData(signStations.getStations());
             mBinding.recyclerView.scrollToPosition(0);
+            mBinding.refreshview.setEnableRefresh(true);
+            mBinding.refreshview.setEnableLoadMore(false);
+            mBinding.refreshview.setNoMoreData(false);
             getOilStations();
         });
         mViewModel.oilStationLiveData.observe(this, dataStations -> {

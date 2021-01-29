@@ -26,9 +26,9 @@ public class ApiService {
     //闪验、验证码登录
     public static final String VERIFY_LOGIN = "api/v1/user/flash/login";
     //移动端微信授权登录
-    public static final String WECHAT_LOGIN ="api/v1/user/openId2Login";
+    public static final String WECHAT_LOGIN = "api/v1/user/openId2Login";
     //app绑定手机号码
-    public static final String APP_BIND_PHONE ="api/v1/user/flash/appBindPhone";
+    public static final String APP_BIND_PHONE = "api/v1/user/flash/appBindPhone";
 
     //获取首页油站
     public static final String HOME_OIL = "api/gasPublic/getHomeOilStations";
@@ -84,6 +84,8 @@ public class ApiService {
     public static final String INTEGRAL_ORDER_LIST = "api/product/v1/queryOrders";
     //获取加油订单详情
     public static final String REFUEL_ORDER_DETAILS = "api/gasPublic/refuelOrderDetails";
+    //取消加油订单
+    public static final String REFUEL_ORDER_CANCEL = "api/gasPublic/cancelOrder";
 
 
     //查询余额

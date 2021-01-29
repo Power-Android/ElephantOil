@@ -186,19 +186,21 @@
                                 android:orientation="horizontal">
 
                                 <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                                    android:id="@+id/banner_left_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="@dimen/dp_107"
                                     android:layout_marginRight="@dimen/dp_5"
                                     android:layout_weight="1"
-                                    android:src="@drawable/ic_daily_lottery"
+                                    android:src="@drawable/default_img_bg"
                                     app:qmui_border_width="@dimen/dp_0"
                                     app:qmui_corner_radius="8dp" />
 
                                 <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                                    android:id="@+id/banner_right_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="@dimen/dp_107"
                                     android:layout_weight="1"
-                                    android:src="@drawable/ic_points_grabbing"
+                                    android:src="@drawable/default_img_bg"
                                     app:qmui_border_width="@dimen/dp_0"
                                     app:qmui_corner_radius="8dp" />
                             </LinearLayout>

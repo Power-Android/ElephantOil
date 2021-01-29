@@ -25,7 +25,8 @@ public class RefuelOrderListAdapter extends BaseQuickAdapter<RefuelOrderBean, Ba
                 .setText(R.id.item_status_view, item.getStatusName())
                 .setText(R.id.item_price_view, "¥" + item.getPayAmount())
                 .setText(R.id.item_title_view, item.getProductName());
-
+        helper.addOnClickListener(R.id.continue_pay_view);
+        helper.addOnClickListener(R.id.cancel_order_view);
         switch (item.getStatus()) {
             case 0:
                 helper.getView(R.id.bt_layout).setVisibility(View.VISIBLE);
