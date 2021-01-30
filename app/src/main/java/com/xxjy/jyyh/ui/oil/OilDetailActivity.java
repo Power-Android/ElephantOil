@@ -37,6 +37,7 @@ import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityOilDetailBinding;
 import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
+import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.dialog.OilAmountDialog;
 import com.xxjy.jyyh.dialog.OilCouponDialog;
 import com.xxjy.jyyh.dialog.OilGunDialog;
@@ -54,6 +55,7 @@ import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
+import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,6 +189,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     @Override
     protected void initListener() {
         mBinding.backIv.setOnClickListener(this::onViewClicked);
+        mBinding.oilNavigationTv.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -194,6 +197,16 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         switch (view.getId()) {
             case R.id.back_iv:
                 finish();
+                break;
+            case R.id.oil_navigation_tv:
+                if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                    NavigationDialog navigationDialog = new NavigationDialog(this,
+                            mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
+                            mStationsBean.getGasName());
+                    navigationDialog.show();
+                } else {
+                    showToastWarning("您当前未安装地图软件，请先安装");
+                }
                 break;
         }
     }
@@ -222,6 +235,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mBinding.oilLiterTv.setText("￥" + mStationsBean.getOilPriceList().get(0).getPriceYfq() + "/L");
             mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(0).getOilName());
             mBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
+            mBinding.invokeTv.setVisibility(mStationsBean.getIsInvoice() == 0 ? View.VISIBLE : View.GONE);
 
             if (mStationsBean.getCzbLabels() != null && mStationsBean.getCzbLabels().size() > 0) {
                 mTagList = mStationsBean.getCzbLabels();

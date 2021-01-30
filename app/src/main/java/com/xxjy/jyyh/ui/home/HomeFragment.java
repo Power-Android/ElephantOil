@@ -46,6 +46,7 @@ import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentHomeBinding;
 import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
+import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.dialog.OilAmountDialog;
 import com.xxjy.jyyh.dialog.OilCouponDialog;
 import com.xxjy.jyyh.dialog.OilGunDialog;
@@ -70,6 +71,7 @@ import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
+import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 
 import java.util.ArrayList;
@@ -231,6 +233,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.searchIv.setOnClickListener(this::onViewClicked);
         mBinding.awardTv.setOnClickListener(this::onViewClicked);
         mBinding.otherOilTv.setOnClickListener(this::onViewClicked);
+        mBinding.oilNavigationTv.setOnClickListener(this::onViewClicked);
 
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
     }
@@ -264,6 +267,16 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             case R.id.other_oil_tv:
                 BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
                         new EventEntity(EventConstants.EVENT_CHANGE_FRAGMENT));
+                break;
+            case R.id.oil_navigation_tv:
+                if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                    NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
+                            mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
+                            mStationsBean.getGasName());
+                    navigationDialog.show();
+                } else {
+                    showToastWarning("您当前未安装地图软件，请先安装");
+                }
                 break;
         }
     }
