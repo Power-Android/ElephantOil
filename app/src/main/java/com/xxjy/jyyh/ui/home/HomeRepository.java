@@ -13,6 +13,7 @@ import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
+import com.xxjy.jyyh.entity.TaskBean;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
@@ -98,16 +99,11 @@ public class HomeRepository extends BaseRepository {
      * 加油任务
      */
     public void getRefuelJob(String gasId,
-                             MutableLiveData<String> refuelOilLiveData) {
+                             MutableLiveData<List<TaskBean>> refuelOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.REFUEL_JOB)
                 .add(Constants.GAS_STATION_ID, gasId)
-                .asResponse(String.class)
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Throwable {
-                        refuelOilLiveData.postValue(s);
-                    }
-                })
+                .asResponseList(TaskBean.class)
+                .subscribe( data-> refuelOilLiveData.postValue(data))
         );
     }
 

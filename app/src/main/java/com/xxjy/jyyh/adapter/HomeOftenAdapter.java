@@ -36,10 +36,10 @@ public class HomeOftenAdapter extends BaseQuickAdapter<OfentEntity, BaseViewHold
             titleTv.setText(item.getGasName());
         }else {
             SpanUtils.with(titleTv)
-                    .setForegroundColor(mContext.getResources().getColor(R.color.color_76FF))
                     .append(item.getGasName())
-                    .setForegroundColor(mContext.getResources().getColor(R.color.color_34))
+                    .setForegroundColor(mContext.getResources().getColor(R.color.color_76FF))
                     .append("、")
+                    .setForegroundColor(mContext.getResources().getColor(R.color.color_34))
                     .create();
         }
     }

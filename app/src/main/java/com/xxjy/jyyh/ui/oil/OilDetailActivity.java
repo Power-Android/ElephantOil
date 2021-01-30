@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.ui.oil;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -114,7 +115,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         BusUtils.register(this);
 
         mGasId = getIntent().getStringExtra(Constants.GAS_STATION_ID);
-        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
             mLat = Double.parseDouble(UserConstants.getLatitude());

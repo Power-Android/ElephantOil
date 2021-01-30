@@ -62,12 +62,15 @@ import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.PayOrderParams;
+import com.xxjy.jyyh.entity.TaskBean;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.pay.PayQueryActivity;
 import com.xxjy.jyyh.ui.pay.PayResultActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
@@ -235,6 +238,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.otherOilTv.setOnClickListener(this::onViewClicked);
         mBinding.oilNavigationTv.setOnClickListener(this::onViewClicked);
 
+
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
     }
 
@@ -260,10 +264,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             case R.id.search_iv:
                 startActivity(new Intent(mContext, SearchActivity.class));
                 break;
-            case R.id.award_tv:
-                ReceiveRewardDialog receiveRewardDialog = new ReceiveRewardDialog(getContext());
-                receiveRewardDialog.show(view);
-                break;
+//            case R.id.award_tv:
+//                ReceiveRewardDialog receiveRewardDialog = new ReceiveRewardDialog(getContext());
+//                receiveRewardDialog.show(view);
+
+//                break;
             case R.id.other_oil_tv:
                 BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
                         new EventEntity(EventConstants.EVENT_CHANGE_FRAGMENT));
@@ -310,7 +315,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
             mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
             mBinding.oilCurrentPriceTv.setText(mStationsBean.getOilPriceList().get(0).getPriceYfq());
-            mBinding.oilOriginalPriceTv.setText("油站价￥" + mStationsBean.getOilPriceList().get(0).getPriceOfficial());
+            mBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getOilPriceList().get(0).getPriceOfficial());
             mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(0).getOilName());
             mBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
             mBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
@@ -329,7 +334,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mViewModel.getOftenOils();
             }
             //加油任务
-            mViewModel.getRefuelJob(mStationsBean.getGasId());
+//            mViewModel.getRefuelJob(mStationsBean.getGasId());
+            // TODO: 2021/1/30  测试
+            mViewModel.getRefuelJob("DH000011510");
         });
 
         //常去油站
@@ -347,6 +354,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         new HomeOftenAdapter(R.layout.adapter_often_layout, mOftenList);
                 mBinding.oftenOilRecyclerView.setAdapter(oftenAdapter);
                 mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
+                oftenAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                        getActivity().startActivity(new Intent(getContext(), OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID, ((OfentEntity) adapter.getItem(position)).getGasId()));
+                    }
+                });
             } else {
                 mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
             }
@@ -361,8 +374,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
         //支付结果回调
         mViewModel.payOrderLiveData.observe(this, payOrderEntity -> {
-            if (payOrderEntity.getResult() == 0){//支付未完成
-                switch (payOrderEntity.getPayType()){
+            if (payOrderEntity.getResult() == 0) {//支付未完成
+                switch (payOrderEntity.getPayType()) {
                     case PayTypeConstants.PAY_TYPE_WEIXIN://微信H5
                         WeChatWebPayActivity.openWebPayAct(getActivity(), payOrderEntity.getUrl());
                         break;
@@ -391,12 +404,60 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
                 mPayOrderEntity = payOrderEntity;
                 shouldJump = true;
-            }else if (payOrderEntity.getResult() == 1){//支付成功
+            } else if (payOrderEntity.getResult() == 1) {//支付成功
                 jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
-            }else {
+            } else {
                 showToastWarning(payOrderEntity.getMsg());
             }
         });
+        mViewModel.refuelOilLiveData.observe(this, data -> {
+            if (data != null && data.size() > 0) {
+                TaskBean taskBean = data.get(0);
+
+                SpanUtils.with(mBinding.integralDesc)
+                        .append("• 还需加油")
+                        .append(taskBean.getnOrderAmount() + "")
+                        .setForegroundColor(getResources().getColor(R.color.color_1300))
+                        .append("元 可立即领取")
+                        .append(taskBean.getSpName())
+                        .setForegroundColor(getResources().getColor(R.color.color_1300))
+                        .append("(价值" + taskBean.getRedeemPoint() + "积分)")
+                        .setFontSize(10, true)
+
+                        .setForegroundColor(getResources().getColor(R.color.color_1300))
+                        .create();
+
+                SpanUtils.with(mBinding.orderNumDecView)
+                        .append("(约需")
+                        .append(taskBean.gettOrderNum() + "")
+                        .setForegroundColor(getResources().getColor(R.color.color_34))
+                        .append("单，还需完成")
+                        .append(taskBean.getnOrderNum() + "")
+                        .setForegroundColor(getResources().getColor(R.color.color_34))
+                        .append("单，限")
+                        .append(taskBean.getGasName())
+                        .setForegroundColor(getResources().getColor(R.color.color_34))
+                        .append(")")
+                        .create();
+                GlideUtils.loadImage(getContext(), taskBean.getSpImg(), mBinding.integralIv);
+                mBinding.progress.setMax(taskBean.gettOrderNum());
+                mBinding.progress.setProgress(taskBean.gettOrderNum() - taskBean.getnOrderAmount());
+                if (taskBean.isStatus()) {
+                    mBinding.awardTv.setBackgroundResource(R.drawable.shape_receive_6radius);
+                    mBinding.awardTv.setClickable(true);
+                } else {
+                    mBinding.awardTv.setBackgroundResource(R.drawable.shape_gray_6raduis);
+                    mBinding.awardTv.setClickable(false);
+                }
+                mBinding.awardTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), taskBean.getLink());
+                    }
+                });
+            }
+        });
+
     }
 
     private void showNumDialog(OilEntity.StationsBean stationsBean) {
@@ -410,7 +471,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             data.get(position).setSelected(true);
             adapter.notifyDataSetChanged();
             mBinding.oilCurrentPriceTv.setText(data.get(position).getPriceYfq());
-            mBinding.oilOriginalPriceTv.setText("油站价￥" + data.get(position).getPriceOfficial());
+            mBinding.oilOriginalPriceTv.setText("油站价¥" + data.get(position).getPriceOfficial());
             mBinding.oilNumTv.setText(data.get(position).getOilName());
             showGunDialog(mStationsBean, position);
         });
