@@ -101,15 +101,15 @@ public class HttpManager {
         String cv = AppUtils.getAppVersionName();       //客户端版本号
         String location = "";                           //位置信息
         try {
-//            location = UserConstants.getLocation();
+            location = UserConstants.getLocation();
         } catch (Exception e) {
             location = "";
         }
         String cityCode = "";
         String adCode = "";
         try {
-//            cityCode = UserConstants.getCityCode();
-//            adCode = UserConstants.getAdCode();
+            cityCode = UserConstants.getCityCode();
+            adCode = UserConstants.getAdCode();
         } catch (Exception e) {
 
         }

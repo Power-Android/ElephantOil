@@ -102,5 +102,7 @@ public class ApiService {
     public static final String PAY_ORDER = "api/gasPublic/refuelPayOrder";
     //加油支付结果回调数据
     public static final String PAY_ORDER_RESULT = "api/gasPublic/refuelPayOrderResult";
+    //搜索权益
+    public static final String QUERY_PRODUCTS_BY_NAME = "api/product/v1/queryProductsByName";
 
 }

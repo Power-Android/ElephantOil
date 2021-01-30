@@ -18,6 +18,33 @@ public class ProductBean {
     private  int redeemPrice;
     private  int salesNum;
     private String link;
+    private int id;
+    private String productType;
+    private String type;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getLink() {
         return link;

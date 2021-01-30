@@ -9,6 +9,7 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.xxjy.jyyh.app.App;
+import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 
 /**
  * @author power
@@ -105,5 +106,34 @@ public class UserConstants {
        return SPUtils.getInstance().getString(SPConstants.APP_CHANNEL_KEY);
     }
 
+    //定位信息
+    public static String getLocation() {
+        if (MapLocationHelper.getLocationLatitude() != 0 && MapLocationHelper.getLocationLongitude() != 0) {
+            return MapLocationHelper.getLocationLongitude() + "," + MapLocationHelper.getLocationLatitude();
+        } else {
+            return "";
+        }
+    }
 
+    /**
+     * @return 城市编码
+     */
+    public static String getCityCode() {
+        if (MapLocationHelper.getCityCode() != null) {
+            return MapLocationHelper.getCityCode();
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * @return 区域编码
+     */
+    public static String getAdCode() {
+        if (MapLocationHelper.getAdCode() != null) {
+            return MapLocationHelper.getAdCode();
+        } else {
+            return "";
+        }
+    }
 }

@@ -594,7 +594,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
+        mViewModel.getHomeOil(mLat, mLng);
+        mViewModel.getOftenOils();
+        mViewModel.getRefuelJob(mStationsBean.getGasId());
+        mViewModel.getHomeProduct();
+        refreshLayout.finishRefresh();
     }
 
     private void jumpToPayResultAct(String orderPayNo, String orderNo) {

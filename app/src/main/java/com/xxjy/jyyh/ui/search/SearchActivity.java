@@ -3,10 +3,12 @@ package com.xxjy.jyyh.ui.search;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -45,6 +47,7 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
     private List<String> mInterestRecommendList = new ArrayList<>();
     private List<String> mInterestHistoryList = new ArrayList<>();
     private String content = "油";
+    private int index = 0;
 
     @Override
     protected void initView() {
@@ -171,6 +174,27 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
     @Override
     protected void initListener() {
         mBinding.searchTv.setOnClickListener(this::onViewClicked);
+        mBinding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                index = position;
+                if (position == 0){
+                    mBinding.searchEt.setHint("搜索油站名称");
+                }else {
+                    mBinding.searchEt.setHint("搜索权益名称");
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -180,9 +204,13 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                 finish();
                 break;
             case R.id.search_tv:
+                if (TextUtils.isEmpty(mBinding.searchEt.getText())) {
+                    showToastInfo("请输入搜索内容");
+                    return;
+                }
                 Intent intent = new Intent(this, SearchResultActivity.class);
-                intent.putExtra("type", "1");
-                intent.putExtra("content",content);
+                intent.putExtra("type", index == 0 ? "1" : "2");
+                intent.putExtra("content", mBinding.searchEt.getText().toString());
                 startActivity(intent);
                 break;
             case R.id.oil_history_delete_iv://油站的历史记录删除

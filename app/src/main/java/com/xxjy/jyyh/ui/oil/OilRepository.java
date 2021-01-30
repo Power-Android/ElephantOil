@@ -41,10 +41,10 @@ public class OilRepository extends BaseRepository {
 
     public void getOilStations(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
                                String appLongitude, String oilNo, String orderBy, String distance,
-                               String pageNum,String pageSize, String gasName, String method) {
+                               String pageNum, String pageSize, String gasName, String method) {
         addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS)
-                .add("appLatitude", TextUtils.equals(appLatitude,"0")?null:appLatitude)
-                .add("appLongitude", TextUtils.equals(appLongitude,"0")?null:appLongitude)
+                .add("appLatitude", TextUtils.equals(appLatitude, "0") ? null : appLatitude)
+                .add("appLongitude", TextUtils.equals(appLongitude, "0") ? null : appLongitude)
                 .add("oilNo", oilNo)
                 .add("orderBy", orderBy)
                 .add("distance", distance)
@@ -58,15 +58,16 @@ public class OilRepository extends BaseRepository {
     }
 
     public void getSignOilStations(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
-                                   String appLongitude){
+                                   String appLongitude) {
         addDisposable(RxHttp.postForm(ApiService.SIGN_OIL_STATIONS)
-                .add("appLatitude", TextUtils.equals(appLatitude,"0")?null:appLatitude)
-                .add("appLongitude", TextUtils.equals(appLongitude,"0")?null:appLongitude)
+                .add("appLatitude", TextUtils.equals(appLatitude, "0") ? null : appLatitude)
+                .add("appLongitude", TextUtils.equals(appLongitude, "0") ? null : appLongitude)
                 .asResponse(OilEntity.class)
                 .subscribe(data -> oilStationLiveData.postValue(data))
         );
     }
-    public void getBanners(MutableLiveData<List<BannerBean>> bannersLiveData){
+
+    public void getBanners(MutableLiveData<List<BannerBean>> bannersLiveData) {
         addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS_BANNERS)
                 .asResponseList(BannerBean.class)
                 .subscribe(data -> bannersLiveData.postValue(data))

@@ -115,6 +115,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         BusUtils.register(this);
 
         mGasId = getIntent().getStringExtra(Constants.GAS_STATION_ID);
+
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {

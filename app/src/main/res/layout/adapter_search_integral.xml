@@ -33,6 +33,7 @@
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_12"/>
     <TextView
+        android:id="@+id/item_integral_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="79积分+49.00元"
