@@ -4,22 +4,33 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.tencent.mm.opensdk.constants.Build;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXImageObject;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.constants.Constants;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+
 /**
- * 车主邦
- * ---------------------------
- * <p>
- * Created by zhaozh on 2020/3/26.
- * <p>
  * 微信sdk的相关工具类,来进行注册等功能.
  * 微信的分享和登录功能使用友盟sdk来实现, 其他功能自行施行
  */
@@ -99,92 +110,15 @@ public class WXSdkManager {
     }
 
     /**
-     * 使用当前的api进行小程序调用
+     * 使用当前的api进行登录调用
      */
-    public void useWXLaunchMiniProgram(BaseActivity activity, String params) {
-        if (!isRegisterToWx()) {
-            regToWx(activity, getWxAppId());
-        }
-        if (!isRegisterToWx()) {
-            activity.showToastWarning("注册微信发生错误,请联系客服");
-            return;
-        }
-        if (!checkWXIsInstall(activity)) {
-            return;
-        }
-        WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
-        req.userName = "gh_6ba572c00045"; // 填小程序原始id
-        req.path = "pages/index/index?param=" + params;                  ////拉起小程序页面的可带参路径，不填默认拉起小程序首页，对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"。
-        if (Constants.IS_DEBUG) {
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_PREVIEW; // 可选打开 开发版，体验版和正式版
-        } else {
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE; // 可选打开 开发版，体验版和正式版
-        }
-        if (getCurrentWxApi() != null) {
-            getCurrentWxApi().sendReq(req);
-        }
-    }
-
-    /**
-     * 使用当前的api进行小程序调用
-     */
-    public void useWXAppleProgram(BaseActivity activity, String params) {
-        if (!isRegisterToWx()) {
-            regToWx(activity, getWxAppId());
-        }
-        if (!isRegisterToWx()) {
-            activity.showToastWarning("注册微信发生错误,请联系客服");
-            return;
-        }
-        if (!checkWXIsInstall(activity)) {
-            return;
-        }
-        WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
-        req.userName = "gh_b8fe0cd14d82"; // 填小程序原始id
-        try {
-            req.path = "pages/appPay/pay/index?ifEncode=true&param=" + Uri.encode(params, "utf-8");                 ////拉起小程序页面的可带参路径，不填默认拉起小程序首页，对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"。
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (Constants.IS_DEBUG) {
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_PREVIEW; // 可选打开 开发版，体验版和正式版
-        } else {
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE; // 可选打开 开发版，体验版和正式版
-        }
-        if (getCurrentWxApi() != null) {
-            getCurrentWxApi().sendReq(req);
-        }
-    }
-
-
-    /**
-     * @param activity
-     * @param params   跳转百思达小程序
-     */
-    public void useBSDMiniProgram(BaseActivity activity, String params) {
-        if (!isRegisterToWx()) {
-            regToWx(activity, getWxAppId());
-        }
-        if (!isRegisterToWx()) {
-            activity.showToastWarning("注册微信发生错误,请联系客服");
-            return;
-        }
-        if (!checkWXIsInstall(activity)) {
-            return;
-        }
-        WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
-        req.userName = "gh_1212e7d74903"; // 填小程序原始id
-        if (Constants.IS_DEBUG) {
-            req.path = "pages/payTest/pay?orderId=" + params;                  ////拉起小程序页面的可带参路径，不填默认拉起小程序首页，对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"。
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_PREVIEW; // 可选打开 开发版，体验版和正式版
-        } else {
-            req.path = "pages/pay/pay?orderId=" + params;                  ////拉起小程序页面的可带参路径，不填默认拉起小程序首页，对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"。
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE; // 可选打开 开发版，体验版和正式版
-        }
-        if (getCurrentWxApi() != null) {
-            getCurrentWxApi().sendReq(req);
-        }
-    }
+//    public void useWxLogin() {
+//        SendAuth.Req req = new SendAuth.Req();
+//        req.scope = "snsapi_userinfo";
+//        String currentState = getCurrentState();
+//        req.state = currentState;
+//        api.sendReq(req);
+//    }
 
     /**
      * 跳转微信小程序支付
@@ -205,7 +139,7 @@ public class WXSdkManager {
         }
         WXLaunchMiniProgram.Req req = new WXLaunchMiniProgram.Req();
         req.userName = "gh_b8fe0cd14d82"; // 填小程序原始id
-        req.path = "pages/appPay/pay/index?param=" + params;                  ////拉起小程序页面的可带参路径，不填默认拉起小程序首页，对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"。
+        req.path = "pages/appPay/pay/index?orderId=" + params;                  ////拉起小程序页面的可带参路径，不填默认拉起小程序首页，对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"。
         if (Constants.IS_DEBUG) {
             req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_PREVIEW; // 可选打开 开发版，体验版和正式版
         } else {
@@ -216,6 +150,77 @@ public class WXSdkManager {
         }
     }
 
+
+
+    private static final int THUMB_SIZE = 150;
+
+    public void shareWX(BaseActivity activity, String data) {
+        activity.showLoadingDialog();
+        if (!isRegisterToWx()) {
+            regToWx(activity, getWxAppId());
+        }
+        if (!isRegisterToWx()) {
+            activity.showToastWarning("注册微信发生错误,请联系客服");
+            return;
+        }
+        if (!checkWXIsInstall(activity)) {
+            return;
+        }
+
+        Observable.create(new ObservableOnSubscribe<byte[]>() {
+            @Override
+            public void subscribe(@Nullable ObservableEmitter<byte[]> emitter) {
+                emitter.onNext(Util.getHtmlByteArray(data));
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())                // 切换上游线程
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<byte[]>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(byte[] value) {
+                        activity.dismissLoadingDialog();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(value, 0, value.length);
+                        WXImageObject imgObj = new WXImageObject(bitmap);
+                        WXMediaMessage msg = new WXMediaMessage();
+                        msg.mediaObject = imgObj;
+//设置缩略图
+                        Bitmap thumbBmp = Bitmap.createScaledBitmap(bitmap, THUMB_SIZE, THUMB_SIZE, true);
+                        bitmap.recycle();
+                        msg.thumbData = Util.bmpToByteArray(thumbBmp, true);
+//                        msg.thumbData =value;
+//构造一个Req
+                        SendMessageToWX.Req req = new SendMessageToWX.Req();
+                        req.transaction = buildTransaction("img");
+                        req.message = msg;
+                        req.scene = SendMessageToWX.Req.WXSceneSession;
+//        req.userOpenId = getOpenId();
+//调用api接口，发送数据到微信
+                        if (getCurrentWxApi() != null) {
+                            getCurrentWxApi().sendReq(req);
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        activity.dismissLoadingDialog();
+                        Log.e("onError", "onError: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
 
     private boolean isRegisterToWx() {
         return getCurrentWxApi() != null && isRegisterSuccess;

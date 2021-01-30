@@ -18,6 +18,7 @@ public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, Abo
 
 
     private CustomerServiceDialog customerServiceDialog;
+
     @Override
     protected void initView() {
 //        mBinding.topLayout.setTitle("关于我们");
@@ -33,11 +34,15 @@ public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, Abo
         mBinding.privacyPolicyLayout.setOnClickListener(this::onViewClicked);
         mBinding.userAgreementLayout.setOnClickListener(this::onViewClicked);
         mBinding.customerServiceLayout.setOnClickListener(this::onViewClicked);
+        mBinding.checkVersionLayout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
+            case R.id.check_version_layout:
+                checkVersion();
+                break;
             case R.id.user_agreement_layout:
                 WebViewActivity.openWebActivity(AboutUsActivity.this, Constants.USER_XIE_YI);
                 break;
@@ -45,7 +50,7 @@ public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, Abo
                 WebViewActivity.openWebActivity(AboutUsActivity.this, Constants.YINSI_ZHENG_CE);
                 break;
             case R.id.customer_service_layout:
-                if(customerServiceDialog==null){
+                if (customerServiceDialog == null) {
                     customerServiceDialog = new CustomerServiceDialog(this);
                 }
                 customerServiceDialog.show(view);
@@ -56,6 +61,12 @@ public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, Abo
 
     @Override
     protected void dataObservable() {
+        mViewModel.callCenterLiveData.observe(this, data -> {
 
+        });
+    }
+
+    private void checkVersion() {
+        mViewModel.checkVersion();
     }
 }

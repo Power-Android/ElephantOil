@@ -44,7 +44,7 @@ public class IntegralExchangeAdapter extends BaseQuickAdapter<ProductBean, BaseV
 
 
         helper.setText(R.id.item_title_tv,item.getName())
-                .setText(R.id.item_integral_tv,item.getRedeemPrice()==0?(item.getRedeemPoint()+"积分"):(item.getRedeemPoint()+"积分"+item.getRedeemPrice()+"元"))
+                .setText(R.id.item_integral_tv,item.getRedeemPrice()==0?(item.getRedeemPoint()+"积分"):(item.getRedeemPoint()+"积分+"+item.getRedeemPrice()+"元"))
                 .setText(R.id.sell_num_view,String.format("已兑换%d件",item.getSalesNum()));
 
 

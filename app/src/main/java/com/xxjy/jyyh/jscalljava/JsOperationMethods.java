@@ -199,4 +199,14 @@ public interface JsOperationMethods {
      */
     void shareImageToWeChat(String data);
 
+    /**
+     * 加油省钱页
+     */
+    void toRefuellingPage();
+
+    /**
+     * 首页
+     */
+    void toHomePage();
+
 }

@@ -69,6 +69,25 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                 }
             }
         }, 3000);
+        int state = getIntent().getIntExtra("jumpState", -1);
+        if(state!=-1){
+            showFragment(state);
+            switch (state){
+                case 0:
+                    mBinding.navView.setSelectedItemId(R.id.navigation_home);
+                    break;
+                case 1:
+                    mBinding.navView.setSelectedItemId(R.id.navigation_oil);
+                    break;
+                case 2:
+                    mBinding.navView.setSelectedItemId(R.id.navigation_integral);
+                    break;
+                case 3:
+                    mBinding.navView.setSelectedItemId(R.id.navigation_mine);
+                    break;
+            }
+        }
+
     }
 
     private void initNavigationView() {
@@ -102,13 +121,13 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 //            layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, displayMetrics);
 //            layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, displayMetrics);
-            layoutParams.height = QMUIDisplayHelper.dp2px(this,18);
-            layoutParams.width = QMUIDisplayHelper.dp2px(this,18);
+            layoutParams.height = QMUIDisplayHelper.dp2px(this, 18);
+            layoutParams.width = QMUIDisplayHelper.dp2px(this, 18);
             iconView.setLayoutParams(layoutParams);
         }
     }
 
-    private void showFragment(int index) {
+    public void showFragment(int index) {
         mTransaction = getSupportFragmentManager().beginTransaction();
         hideFragment(mTransaction);
         mLastFgIndex = index;
@@ -211,6 +230,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     protected void dataObservable() {
 
     }
+
     /**
      * 打开首页并清空栈
      *

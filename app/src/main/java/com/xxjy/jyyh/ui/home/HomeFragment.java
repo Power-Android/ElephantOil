@@ -317,7 +317,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         WeChatWebPayActivity.openWebPayAct(getActivity(), payOrderEntity.getUrl());
                         break;
                     case PayTypeConstants.PAY_TYPE_WEIXIN_XCX://微信小程序
-                        WXSdkManager.newInstance().useWXLaunchMiniProgram(getBaseActivity(), payOrderEntity.getOrderNo());
+                        WXSdkManager.newInstance().useWXLaunchMiniProgramToPay(getBaseActivity(), payOrderEntity.getOrderNo());
                         break;
                     case PayTypeConstants.PAY_TYPE_ZHIFUBAO://支付宝H5
                         boolean urlCanUse = UiUtils.checkZhifubaoSdkCanPayUrl(getActivity(),

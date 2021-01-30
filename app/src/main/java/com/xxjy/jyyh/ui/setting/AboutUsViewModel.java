@@ -15,8 +15,14 @@ public class AboutUsViewModel extends BaseViewModel<AboutUsRepository> {
         super(application);
     }
     public MutableLiveData<CallCenterBean> callCenterLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> checkVersionLiveData = new MutableLiveData<>();
     public void getCallCenter(){
         mRespository.getCallCenter( callCenterLiveData);
+    }
+
+
+    public void checkVersion(){
+        mRespository.checkVersion(checkVersionLiveData);
     }
 
 }

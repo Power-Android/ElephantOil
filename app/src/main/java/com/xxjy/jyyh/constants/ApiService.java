@@ -82,6 +82,8 @@ public class ApiService {
     public static final String GET_ORDER_TIP = "api/gasPublic/getOrderTs";
     //创建加油订单
     public static final String CREATE_ORDER = "api/gasPublic/refuelCreateOrder";
+    //app版本更新检测
+    public static final String CHECK_VERSION = "api/v1/common/checkVersion";
     //客服中心
     public static final String CALL_CENTER = "api/v1/store/getCallCenter";
     //退出登录

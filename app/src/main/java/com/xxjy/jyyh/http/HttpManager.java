@@ -88,6 +88,7 @@ public class HttpManager {
 
     /**
      * 生成最终的请求体的参数,主要用来添加默认的 参数
+     *
      * @param p
      * @return 最终参数
      */
@@ -119,14 +120,19 @@ public class HttpManager {
         finalParams.put("t", t);//时间戳
         finalParams.put("os", "1");//操作系统
         finalParams.put("cv", cv);//客户端版本号
+        if (p != null) {
+            finalParams.put("method", p.getSimpleUrl().substring(App.URL_IS_DEBUG ?
+                    ApiService.DEBUG_URL.length() - 1 :
+                    ApiService.RELEASE_URL.length() - 1));
+            String sign = HeaderUtils.getSign(HeaderUtils.sortMapByKey(finalParams));
+            finalParams.put("sign", sign);
+            finalParams.remove("method");
+            finalParams.remove("did");
+        }else{
+            finalParams.put("did",DeviceUtils.getUniqueDeviceId());
+        }
 
-        finalParams.put("method", p.getSimpleUrl().substring(App.URL_IS_DEBUG ?
-                ApiService.DEBUG_URL.length() - 1 :
-                ApiService.RELEASE_URL.length() - 1));
-        String sign = HeaderUtils.getSign(HeaderUtils.sortMapByKey(finalParams));
-        finalParams.put("sign", sign);
-        finalParams.remove("method");
-        finalParams.remove("did");
+
         if (TextUtils.isEmpty(openId)) {
             finalParams.put("openId", "");
         } else {

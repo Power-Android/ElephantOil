@@ -212,7 +212,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                         WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
                         break;
                     case PayTypeConstants.PAY_TYPE_WEIXIN_XCX://微信小程序
-                        WXSdkManager.newInstance().useWXLaunchMiniProgram(this, payOrderEntity.getOrderNo());
+                        WXSdkManager.newInstance().useWXLaunchMiniProgramToPay(this, payOrderEntity.getOrderNo());
                         break;
                     case PayTypeConstants.PAY_TYPE_ZHIFUBAO://支付宝H5
                         boolean urlCanUse = UiUtils.checkZhifubaoSdkCanPayUrl(this,

@@ -45,6 +45,7 @@
             android:layout_marginLeft="@dimen/dp_15"
             android:background="@color/color_EE"/>
         <RelativeLayout
+            android:id="@+id/check_version_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:paddingLeft="@dimen/dp_15"

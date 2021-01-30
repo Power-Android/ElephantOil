@@ -12,6 +12,7 @@ import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.xxjy.jyyh.base.BaseActivity;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.http.HttpManager;
@@ -21,12 +22,15 @@ import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.ImageUtils;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.UiUtils;
+import com.xxjy.jyyh.utils.WXSdkManager;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 
 import org.json.JSONObject;
 
 import java.util.Map;
+
+import static com.blankj.utilcode.util.ThreadUtils.runOnUiThread;
 
 /**
  * 该类提供了 js 调用的 接口 , 可以增加方法的方式来进行跳转 , h5 调用端的代码为 :  window.benXiang.getAppInfo() 方法名字
@@ -95,10 +99,11 @@ public class JsOperation implements JsOperationMethods {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                if (mActivity instanceof WebViewActivity) {
+                if (mActivity instanceof WebViewActivity) {
 //                    WebViewActivity webViewActivity = (WebViewActivity) mActivity;
 //                    webViewActivity.showSharedIcon(shardInfo);
-//                }
+
+                }
             }
         });
     }
@@ -286,7 +291,7 @@ public class JsOperation implements JsOperationMethods {
     @JavascriptInterface
     public void saveImage(String data) {
         Log.e("saveImage","data==>"+data);
-        ImageUtils.saveImage(mActivity,data);
+//        ImageUtils.saveImage(mActivity,data);
         PermissionUtils.permissionGroup(
                 PermissionConstants.STORAGE
                 )
@@ -298,7 +303,7 @@ public class JsOperation implements JsOperationMethods {
 
                     @Override
                     public void onDenied() {
-                        Toast.makeText(mActivity,"权限被拒绝，无法保存",Toast.LENGTH_SHORT);
+                        runOnUiThread(() ->  Toast.makeText(mActivity,"权限被拒绝，无法保存",Toast.LENGTH_SHORT));
                     }
                 })
                 .request();
@@ -312,12 +317,39 @@ public class JsOperation implements JsOperationMethods {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    WXSdkManager.newInstance().shareWX(mActivity,data);
+                    WXSdkManager.newInstance().shareWX(mActivity,data);
                 }
             });
 
         }
     }
+
+    @Override
+    @JavascriptInterface
+    public void toRefuellingPage() {
+        if(mActivity instanceof WebViewActivity){
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    UiUtils.jumpToHome(mActivity, Constants.TYPE_OIL);
+                }
+            });
+        }
+    }
+
+    @Override
+    @JavascriptInterface
+    public void toHomePage() {
+        if(mActivity instanceof WebViewActivity){
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    UiUtils.jumpToHome(mActivity, Constants.TYPE_HOME);
+                }
+            });
+        }
+    }
+
     @Override
     @JavascriptInterface
     public void showSearch(boolean isShow) {

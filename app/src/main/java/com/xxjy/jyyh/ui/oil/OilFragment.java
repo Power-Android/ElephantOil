@@ -32,6 +32,7 @@ import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
@@ -179,13 +180,25 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 loadData(false);
                 break;
             case R.id.customer_service_view:
-                if(customerServiceDialog==null){
-                    customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
-                }
-                customerServiceDialog.show(view);
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        if(customerServiceDialog==null){
+                            customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
+                        }
+                        customerServiceDialog.show(view);
+                    }
+                });
+
                 break;
             case R.id.message_center_view:
-                getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
+                    }
+                });
+
                 break;
         }
     }

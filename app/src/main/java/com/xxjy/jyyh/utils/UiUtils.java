@@ -16,6 +16,8 @@ import com.alipay.sdk.util.H5PayResultModel;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.xxjy.jyyh.base.BaseActivity;
+import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.login.LoginActivity;
 
 import java.io.File;
@@ -219,6 +221,33 @@ public class UiUtils {
         Intent intent = new Intent(context, LoginActivity.class);
 //        LoginActivity.loginState = state;
         context.startActivity(intent);
+    }
+    /**
+     * 跳转首页的方法
+     *
+     * @param jumpState {@link 0} 首页
+     *                  {@link 1} 加油页
+     *                  {@link 2} 积分权益
+     *                  {@link 3} 我的
+     */
+    public static void jumpToHome(BaseActivity activity, int jumpState) {
+        if (activity instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) activity;
+            if (jumpState == Constants.TYPE_HOME) {
+                mainActivity.showFragment(jumpState);
+            } else if (jumpState == Constants.TYPE_OIL) {
+                mainActivity.showFragment(jumpState);
+            } else if (jumpState == Constants.TYPE_INTEGRAL) {
+                mainActivity.showFragment(jumpState);
+            } else if(jumpState == Constants.TYPE_MINE){
+                mainActivity.showFragment(jumpState);
+            }
+        } else {
+            Intent intent = new Intent(activity, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("jumpState",jumpState);
+            activity.startActivity(intent);
+        }
     }
 
 }

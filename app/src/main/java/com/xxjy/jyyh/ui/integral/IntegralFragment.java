@@ -46,6 +46,7 @@ import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
+import com.xxjy.jyyh.utils.LoginHelper;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.RectangleIndicator;
@@ -90,7 +91,16 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         adapter = new IntegralExchangeAdapter(R.layout.adapter_integral_exchange, productData);
         mBinding.recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener((adapter, view, position) -> WebViewActivity.openWebActivity((MainActivity) getActivity(), ((ProductBean) (adapter.getData().get(position))).getLink()));
+        adapter.setOnItemClickListener((adapter, view, position) ->{
+            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                @Override
+                public void onLogin() {
+                    WebViewActivity.openWebActivity((MainActivity) getActivity(), ((ProductBean) (adapter.getData().get(position))).getLink());
+                }
+            });
+
+
+        });
         adapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
 
         mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
@@ -138,13 +148,25 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 //                withdrawalTipsDialog.show();
                 break;
             case R.id.customer_service_view:
-                if(customerServiceDialog==null){
-                    customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
-                }
-                customerServiceDialog.show(view);
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        if(customerServiceDialog==null){
+                            customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
+                        }
+                        customerServiceDialog.show(view);
+                    }
+                });
+
                 break;
             case R.id.message_center_view:
-                getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
+                    }
+                });
+
                 break;
         }
     }

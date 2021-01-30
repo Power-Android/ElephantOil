@@ -16,4 +16,10 @@ public class AboutUsRepository extends BaseRepository {
                 .subscribe(data -> callCenterLiveData.postValue(data))
         );
     }
+    public void checkVersion( MutableLiveData<String> checkVersionLiveData){
+        addDisposable(RxHttp.postForm(ApiService.CHECK_VERSION)
+                .asResponse(String.class)
+                .subscribe(data -> checkVersionLiveData.postValue(data))
+        );
+    }
 }
