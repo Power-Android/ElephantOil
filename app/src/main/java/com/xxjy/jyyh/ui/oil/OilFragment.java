@@ -210,7 +210,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 mBinding.msgBanner.setDatas(data);
                 mBinding.newsLayout.setVisibility(View.VISIBLE);
             } else {
-                mBinding.newsLayout.setVisibility(View.GONE);
+                mBinding.newsLayout.setVisibility(View.INVISIBLE);
             }
         });
         mViewModel.oilNumLiveData.observe(this, data -> {

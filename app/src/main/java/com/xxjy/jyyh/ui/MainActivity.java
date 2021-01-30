@@ -2,6 +2,7 @@ package com.xxjy.jyyh.ui;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -27,11 +28,15 @@ import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMainBinding;
+import com.xxjy.jyyh.dialog.CheckVersionDialog;
+import com.xxjy.jyyh.dialog.VersionUpDialog;
 import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.ui.home.HomeFragment;
 import com.xxjy.jyyh.ui.integral.IntegralFragment;
 import com.xxjy.jyyh.ui.mine.MineFragment;
 import com.xxjy.jyyh.ui.oil.OilFragment;
+import com.xxjy.jyyh.ui.setting.AboutUsViewModel;
+import com.xxjy.jyyh.utils.Util;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +55,8 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
 
     //极光intent
     public static final String TAG_FLAG_INTENT_VALUE_INFO = "intentInfo";
+private AboutUsViewModel aboutUsViewModel;
+
 
     @BusUtils.Bus(tag = EventConstants.EVENT_CHANGE_FRAGMENT)
     public void onEvent(@NotNull EventEntity event) {
@@ -87,7 +94,8 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                     break;
             }
         }
-
+        aboutUsViewModel = new ViewModelProvider(this).get(AboutUsViewModel.class);
+        checkVersion();
     }
 
     private void initNavigationView() {
@@ -228,7 +236,15 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
 
     @Override
     protected void dataObservable() {
+        aboutUsViewModel.checkVersionLiveData.observe(this, data -> {
+            int compare = Util.compareVersion(data.getLastVersion(), Util.getVersionName());
+            if (compare == 1) {
+                //是否强制更新，0：否，1：是
+                VersionUpDialog checkVersionDialog = new VersionUpDialog(this,data);
+                checkVersionDialog.show();
+            }
 
+        });
     }
 
     /**
@@ -241,5 +257,9 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
 //        ActivityUtils.startHomeActivity();
+    }
+
+    private void checkVersion() {
+        aboutUsViewModel.checkVersion();
     }
 }

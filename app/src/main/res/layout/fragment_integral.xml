@@ -138,6 +138,7 @@
                                     android:textSize="@dimen/sp_15" />
 
                                 <ImageView
+                                    android:id="@+id/explanation_view"
                                     android:layout_width="@dimen/dp_12"
                                     android:layout_height="@dimen/dp_12"
                                     android:layout_marginBottom="3dp"

@@ -11,8 +11,10 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.databinding.ActivityAboutUsBinding;
+import com.xxjy.jyyh.dialog.CheckVersionDialog;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.Util;
 
 public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, AboutUsViewModel> {
 
@@ -61,7 +63,13 @@ public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, Abo
 
     @Override
     protected void dataObservable() {
-        mViewModel.callCenterLiveData.observe(this, data -> {
+        mViewModel.checkVersionLiveData.observe(this, data -> {
+            int compare = Util.compareVersion(data.getLastVersion(), Util.getVersionName());
+            if (compare == 1) {
+                //是否强制更新，0：否，1：是
+                CheckVersionDialog checkVersionDialog = new CheckVersionDialog(this,data);
+                checkVersionDialog.show();
+            }
 
         });
     }

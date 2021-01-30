@@ -13,6 +13,7 @@ public class Constants {
 
     public static final String USER_XIE_YI = "https://m.qqgyhk.com/account/messageDetail/400221";
     public static final String YINSI_ZHENG_CE = "https://m.qqgyhk.com/account/messageDetail/400222";
+    public static final String INTEGRAL_EXPLANATION_URL="https://tcore.qqgyhk.com/mall/introduction";
 
     /**
      * release服务器

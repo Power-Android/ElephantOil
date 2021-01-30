@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.view.Gravity;
 import android.view.View;
 
@@ -34,6 +35,7 @@ import com.xxjy.jyyh.adapter.IntegralExchangeAdapter;
 import com.xxjy.jyyh.adapter.OilStationListAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentIntegralBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
@@ -134,6 +136,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         mBinding.integralView.setOnClickListener(this::onViewClicked);
         mBinding.customerServiceView.setOnClickListener(this::onViewClicked);
         mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
+        mBinding.explanationView.setOnClickListener(this::onViewClicked);
 
     }
 
@@ -167,6 +170,14 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                     }
                 });
 
+                break;
+            case R.id.explanation_view:
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.INTEGRAL_EXPLANATION_URL);
+                    }
+                });
                 break;
         }
     }

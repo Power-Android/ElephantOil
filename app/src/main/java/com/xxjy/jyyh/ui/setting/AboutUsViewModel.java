@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.CallCenterBean;
 import com.xxjy.jyyh.entity.UserBean;
+import com.xxjy.jyyh.entity.VersionEntity;
 
 public class AboutUsViewModel extends BaseViewModel<AboutUsRepository> {
 
@@ -15,7 +16,7 @@ public class AboutUsViewModel extends BaseViewModel<AboutUsRepository> {
         super(application);
     }
     public MutableLiveData<CallCenterBean> callCenterLiveData = new MutableLiveData<>();
-    public MutableLiveData<String> checkVersionLiveData = new MutableLiveData<>();
+    public MutableLiveData<VersionEntity> checkVersionLiveData = new MutableLiveData<>();
     public void getCallCenter(){
         mRespository.getCallCenter( callCenterLiveData);
     }

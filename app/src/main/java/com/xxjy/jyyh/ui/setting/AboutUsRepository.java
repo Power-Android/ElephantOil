@@ -6,6 +6,7 @@ import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.entity.CallCenterBean;
 import com.xxjy.jyyh.entity.UserBean;
+import com.xxjy.jyyh.entity.VersionEntity;
 
 import rxhttp.RxHttp;
 
@@ -16,9 +17,9 @@ public class AboutUsRepository extends BaseRepository {
                 .subscribe(data -> callCenterLiveData.postValue(data))
         );
     }
-    public void checkVersion( MutableLiveData<String> checkVersionLiveData){
+    public void checkVersion( MutableLiveData<VersionEntity> checkVersionLiveData){
         addDisposable(RxHttp.postForm(ApiService.CHECK_VERSION)
-                .asResponse(String.class)
+                .asResponse(VersionEntity.class)
                 .subscribe(data -> checkVersionLiveData.postValue(data))
         );
     }
