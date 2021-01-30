@@ -12,8 +12,10 @@ import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.alipay.sdk.app.PayTask;
 import com.amap.api.location.CoordinateConverter;
 import com.amap.api.location.DPoint;
+import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
@@ -22,16 +24,20 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilCheckedAdapter;
 import com.xxjy.jyyh.adapter.OilNumAdapter;
 import com.xxjy.jyyh.adapter.OilStationFlexAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityOilDetailBinding;
 import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
+import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.dialog.OilAmountDialog;
 import com.xxjy.jyyh.dialog.OilCouponDialog;
 import com.xxjy.jyyh.dialog.OilGunDialog;
@@ -40,16 +46,21 @@ import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
+import com.xxjy.jyyh.ui.pay.PayQueryActivity;
 import com.xxjy.jyyh.ui.pay.PayResultActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
+import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.blankj.utilcode.util.ThreadUtils.runOnUiThread;
 
 public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding, OilViewModel> {
     private List<OilEntity.StationsBean.CzbLabelsBean> mTagList = new ArrayList<>();
@@ -68,11 +79,40 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     private OilStationFlexAdapter mFlexAdapter;
     private OilCheckedAdapter mOilCheckedAdapter;
     private boolean isShouldAutoOpenWeb = false;    //标记是否应该自动打开浏览器进行支付
+    //是否需要跳转支付确认页
+    private boolean shouldJump = false;
+    private PayOrderEntity mPayOrderEntity;
 
+    /**
+     * @param orderEntity
+     * 消息事件：支付后跳转支付确认页
+     */
+    @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_PAY_QUERY, sticky = true)
+    public void onEvent(PayOrderEntity orderEntity){
+        showJump(orderEntity);
+    }
+
+    private void showJump(PayOrderEntity orderEntity) {
+        if (orderEntity == null) return;
+        if (shouldJump) {
+            shouldJump = false;
+            PayQueryActivity.openPayQueryActivity(this,
+                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
+            closeDialog();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        showJump(mPayOrderEntity);
+    }
 
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.backIv, false);
+        BusUtils.register(this);
+
         mGasId = getIntent().getStringExtra(Constants.GAS_STATION_ID);
         mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
 
@@ -121,6 +161,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             showGunDialog(mStationsBean, position);
         });
 
+        initWebViewClient();
     }
 
     private void requestPermission() {
@@ -148,6 +189,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     @Override
     protected void initListener() {
         mBinding.backIv.setOnClickListener(this::onViewClicked);
+        mBinding.oilNavigationTv.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -155,6 +197,16 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         switch (view.getId()) {
             case R.id.back_iv:
                 finish();
+                break;
+            case R.id.oil_navigation_tv:
+                if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                    NavigationDialog navigationDialog = new NavigationDialog(this,
+                            mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
+                            mStationsBean.getGasName());
+                    navigationDialog.show();
+                } else {
+                    showToastWarning("您当前未安装地图软件，请先安装");
+                }
                 break;
         }
     }
@@ -183,6 +235,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mBinding.oilLiterTv.setText("￥" + mStationsBean.getOilPriceList().get(0).getPriceYfq() + "/L");
             mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(0).getOilName());
             mBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
+            mBinding.invokeTv.setVisibility(mStationsBean.getIsInvoice() == 0 ? View.VISIBLE : View.GONE);
 
             if (mStationsBean.getCzbLabels() != null && mStationsBean.getCzbLabels().size() > 0) {
                 mTagList = mStationsBean.getCzbLabels();
@@ -233,6 +286,9 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                         }
                         break;
                 }
+                //                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
+                mPayOrderEntity = payOrderEntity;
+                shouldJump = true;
             }else if (payOrderEntity.getResult() == 1){//支付成功
                 jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
             }else {
@@ -330,10 +386,16 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
             @Override
             public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
-                GasStationLocationTipsDialog gasStationLocationTipsDialog =
-                        new GasStationLocationTipsDialog(OilDetailActivity.this,
-                                mBinding.getRoot(), "成都加油站");
-                gasStationLocationTipsDialog.show();
+//                GasStationLocationTipsDialog gasStationLocationTipsDialog =
+//                        new GasStationLocationTipsDialog(OilDetailActivity.this,
+//                                mBinding.getRoot(), "成都加油站");
+//                gasStationLocationTipsDialog.show();
+                List<OilPayTypeEntity> data = adapter.getData();
+                for (OilPayTypeEntity item: data) {
+                    item.setSelect(false);
+                }
+                data.get(position).setSelect(true);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -374,15 +436,72 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     }
 
     private void closeDialog() {
-        mOilGunDialog.dismiss();
-        mOilAmountDialog.dismiss();
-        mOilPayDialog.dismiss();
-
-        mOilGunDialog = null;
-        mOilAmountDialog = null;
-        mOilPayDialog = null;
+        if (mOilGunDialog != null){
+            mOilGunDialog.dismiss();
+            mOilGunDialog = null;
+        }
+        if (mOilAmountDialog != null){
+            mOilAmountDialog.dismiss();
+            mOilAmountDialog = null;
+        }
+        if (mOilCouponDialog != null){
+            mOilCouponDialog.dismiss();
+            mOilCouponDialog = null;
+        }
+        if (mOilTipsDialog != null){
+            mOilTipsDialog.dismiss();
+            mOilTipsDialog = null;
+        }
+        if (mOilPayDialog != null){
+            mOilPayDialog.dismiss();
+            mOilPayDialog = null;
+        }
 
         //关掉以后重新刷新数据,否则再次打开时上下选中不一致
         mViewModel.getOilDetail(mGasId, mLat, mLng);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BusUtils.removeSticky(EventConstants.EVENT_JUMP_PAY_QUERY);
+    }
+
+    protected void initWebViewClient() {
+        mBinding.payWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(final WebView webView, String url) {
+                if (!(url.startsWith("http") || url.startsWith("https"))) {
+                    return true;
+                }
+
+                isShouldAutoOpenWeb = false;
+                /**
+                 * 推荐采用的新的二合一接口(payInterceptorWithUrl),只需调用一次
+                 */
+                final PayTask task = new PayTask(OilDetailActivity.this);
+                boolean isIntercepted = task.payInterceptorWithUrl(url, true,
+                        result -> runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                jumpToPayResultAct(result.getResultCode(), result.getResultCode());
+                            }
+                        }));
+
+                /**
+                 * 判断是否成功拦截
+                 * 若成功拦截，则无需继续加载该URL；否则继续加载
+                 */
+                if (!isIntercepted) {   //如果不使用sdk直接将url抛出到浏览器
+                    UiUtils.openPhoneWebUrl(OilDetailActivity.this, url);
+                }
+                return true;
+            }
+        });
     }
 }

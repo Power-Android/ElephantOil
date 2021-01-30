@@ -120,6 +120,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/oil_address_tv"
             app:layout_constraintEnd_toEndOf="parent"/>
         <TextView
+            android:id="@+id/invoke_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="站内开票"
