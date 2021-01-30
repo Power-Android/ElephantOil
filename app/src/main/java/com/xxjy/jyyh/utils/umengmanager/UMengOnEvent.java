@@ -1,13 +1,10 @@
 package com.xxjy.jyyh.utils.umengmanager;
 
-import android.text.TextUtils;
-
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.constants.UserConstants;
-import com.xxjy.jyyh.utils.SharedPreferencesUtils;
 
 import java.util.HashMap;
 import java.util.Map;

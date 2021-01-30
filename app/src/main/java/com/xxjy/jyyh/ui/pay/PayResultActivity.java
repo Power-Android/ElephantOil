@@ -50,7 +50,6 @@ public class PayResultActivity extends BindingActivity<ActivityPayResultBinding,
                 Toasty.success(this,"复制成功").show();
                 break;
         }
-
     }
 
     @Override

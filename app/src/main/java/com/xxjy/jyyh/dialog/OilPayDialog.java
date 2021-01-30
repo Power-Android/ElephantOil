@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.dialog;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,15 +9,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.rxjava.rxlife.RxLife;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilPayTypeAdapter;
 import com.xxjy.jyyh.base.BaseActivity;
+import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.databinding.DialogOilPayLayoutBinding;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderParams;
+import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.functions.Consumer;
+import rxhttp.RxHttp;
 
 /**
  * @author power
@@ -27,16 +35,24 @@ import java.util.List;
 public class OilPayDialog extends BottomSheetDialog {
     private Context mContext;
     private BaseActivity mActivity;
-    private PayOrderParams params;
+    private OilEntity.StationsBean stationsBean;
+    private int oilNoPosition, gunNoPosition;
+    private String orderId, payAmount;
     private BottomSheetBehavior mBehavior;
     private DialogOilPayLayoutBinding mBinding;
-    private List<String> mPayTypeList = new ArrayList<>();
+    private List<OilPayTypeEntity> mPayTypeList = new ArrayList<>();
+    private OilPayTypeAdapter mOilPayTypeAdapter;
 
     public OilPayDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
-                        int oilNoPosition, int gunNoPosition, String orderId) {
+                        int oilNoPosition, int gunNoPosition, String orderId, String payAmount) {
         super(context, R.style.bottom_sheet_dialog);
         this.mContext = context;
         this.mActivity = activity;
+        this.stationsBean = stationsBean;
+        this.oilNoPosition = oilNoPosition;
+        this.gunNoPosition = gunNoPosition;
+        this.orderId = orderId;
+        this.payAmount = payAmount;
         mBinding = DialogOilPayLayoutBinding.bind(
                 View.inflate(mContext, R.layout.dialog_oil_pay_layout, null));
         init();
@@ -55,13 +71,14 @@ public class OilPayDialog extends BottomSheetDialog {
     }
 
     private void initData() {
-        for (int i = 0; i < 3; i++) {
-            mPayTypeList.add("");
-        }
+        mBinding.payAmountTv.setText(payAmount);
+        mBinding.payOilInfoTv.setText(stationsBean.getGasName() + "-" +
+                stationsBean.getOilPriceList().get(oilNoPosition).getOilName());
+
         mBinding.payTypeRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        OilPayTypeAdapter oilPayTypeAdapter = new OilPayTypeAdapter(R.layout.adapter_oil_pay, mPayTypeList);
-        mBinding.payTypeRecyclerView.setAdapter(oilPayTypeAdapter);
-        oilPayTypeAdapter.setOnItemClickListener((adapter, view, position) -> {
+        mOilPayTypeAdapter = new OilPayTypeAdapter(R.layout.adapter_oil_pay, mPayTypeList);
+        mBinding.payTypeRecyclerView.setAdapter(mOilPayTypeAdapter);
+        mOilPayTypeAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (mOnItemClickedListener != null) {
                 mOnItemClickedListener.onOilPayTypeClick(adapter, view, position);
             }
@@ -73,38 +90,46 @@ public class OilPayDialog extends BottomSheetDialog {
             }
         });
 
-        mBinding.oilPayTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
+        mBinding.oilPayTv.setOnClickListener(view -> {
+            if (mOnItemClickedListener != null){
+                String payType = "";
+                for (int i = 0; i < mPayTypeList.size(); i++) {
+                    if (mPayTypeList.get(i).isSelect()){
+                        payType = mPayTypeList.get(i).getId();
+                    }
+                }
+                if (TextUtils.isEmpty(payType)){
+                    MyToast.showInfo(mContext, "请选择支付方式");
+                    return;
+                }
+                mOnItemClickedListener.onPayOrderClick(payType, orderId, payAmount);
             }
         });
+
+        getPayType();
     }
 
-    private void dispatchData() {
-        mBinding.payAmountTv.setText(params.getPayAmount());
-        String oilType = "";
-        switch (params.getOilType()) {
-            case "1":
-                oilType = "汽油";
-                break;
-            case "2":
-                oilType = "柴油";
-                break;
-            case "3":
-                oilType = "天然气";
-                break;
-        }
-        mBinding.payOilInfoTv.setText(params.getGasName() +
-                "-" + params.getOilName() + oilType + "-" +
-                params.getGunNo() + "号枪");
-
+    private void getPayType() {
+        RxHttp.postForm(ApiService.GET_PAY_TYPE)
+                .asResponseList(String.class)
+                .to(RxLife.toMain(mActivity))
+                .subscribe(strings -> {
+                    for (int i = 0; i < strings.size(); i++) {
+                        OilPayTypeEntity oilPayTypeEntity = new OilPayTypeEntity();
+                        oilPayTypeEntity.setId(strings.get(i));
+                        mPayTypeList.add(i, oilPayTypeEntity);
+                    }
+                    mPayTypeList.get(0).setSelect(true);
+                    mOilPayTypeAdapter.setNewData(mPayTypeList);
+                });
     }
 
     public interface OnItemClickedListener {
         void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position);
 
         void onCloseAllClick();
+
+        void onPayOrderClick(String payType, String orderId, String payAmount);
     }
 
     private OnItemClickedListener mOnItemClickedListener;

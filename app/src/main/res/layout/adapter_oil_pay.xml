@@ -13,6 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
+        android:id="@+id/item_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="微信支付"
@@ -22,6 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_pay_type_iv"/>
     <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/item_check_box"
         android:layout_width="@dimen/dp_16"
         android:layout_height="@dimen/dp_16"
         android:layout_marginEnd="@dimen/dp_13"

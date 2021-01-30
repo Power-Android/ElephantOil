@@ -36,7 +36,7 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_price_fall)
                         .setGone(R.id.item_balance_tv, false)
                         .setText(R.id.item_discount_tv, item.getFallAmount() > 0 ?
-                                "- ￥" + item.getFallAmount() : "请选择加油金额")
+                                "-￥" + item.getFallAmount() : "请选择加油金额")
                         .setTextColor(R.id.item_discount_tv, item.getFallAmount() > 0 ?
                                 mContext.getResources().getColor(R.color.color_27) :
                                 mContext.getResources().getColor(R.color.color_B1))
@@ -50,6 +50,9 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                 if (item.getPlatformDesc().equals("请选择优惠券")){
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
+                }else if (item.getPlatformDesc().equals("暂无可用优惠券")){
+                    helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
+                            .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
                 }else {
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
@@ -63,7 +66,10 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                 if (item.getPlatformDesc().equals("请选择优惠券")){
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
-                }else {
+                }else if (item.getPlatformDesc().equals("暂无可用优惠券")){
+                    helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
+                            .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
+                } else {
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
                 }
@@ -79,7 +85,7 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                             .setTextColor(R.id.item_discount_tv,
                                     mContext.getResources().getColor(R.color.color_27))
                             .setChecked(R.id.item_switch_tv, true)
-                            .setGone(R.id.item_switch_tv, true);
+                            .setEnabled(R.id.item_switch_tv, true);
                 } else {
                     helper.setImageResource(R.id.item_img_iv, R.drawable.icon_balance)
                             .setText(R.id.item_balance_tv, "")
@@ -88,7 +94,7 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                             .setTextColor(R.id.item_discount_tv,
                                     mContext.getResources().getColor(R.color.color_B1))
                             .setChecked(R.id.item_switch_tv, false)
-                            .setGone(R.id.item_switch_tv, true);
+                            .setEnabled(R.id.item_switch_tv, false);
                 }
                 discountTv.setCompoundDrawables(null, null, null, null);
                 helper.addOnClickListener(R.id.item_switch_tv);

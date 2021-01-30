@@ -33,6 +33,7 @@ public class OilNumDialog extends BottomSheetDialog {
     private DialogOilNumLayoutBinding mBinding;
     private OilNumAdapter mOilNumAdapter;
     private List<OilEntity.StationsBean.OilPriceListBean> mList = new ArrayList<>();
+    private int selectPosition = 0;
 
     public OilNumDialog(Context context, OilEntity.StationsBean stationsBean) {
         super(context, R.style.bottom_sheet_dialog);
@@ -62,7 +63,13 @@ public class OilNumDialog extends BottomSheetDialog {
         }
         mList = mStationsBean.getOilPriceList();
         //默认第一个选中
-        mList.get(0).setSelected(true);
+        for (int i = 0; i < mList.size(); i++) {
+            if (mList.get(i).isSelected()){
+                selectPosition = i;
+                break;
+            }
+        }
+        mList.get(selectPosition).setSelected(true);
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
         mOilNumAdapter = new OilNumAdapter(R.layout.adapter_oil_num_layout, mList);
         mBinding.recyclerView.setAdapter(mOilNumAdapter);

@@ -2,12 +2,17 @@
 package com.xxjy.jyyh.utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.alipay.sdk.app.H5PayCallback;
+import com.alipay.sdk.app.PayTask;
+import com.alipay.sdk.util.H5PayResultModel;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.xxjy.jyyh.base.BaseActivity;
@@ -63,6 +68,39 @@ public class UiUtils {
         webSetting.setGeolocationDatabasePath(webGeoLocFile.getPath());
     }
 
+    /**
+     * 检测url连接是否可以使用支付宝sdk进行支付
+     *
+     * @return
+     */
+    public static boolean checkZhifubaoSdkCanPayUrl(Activity activity, String url, H5PayCallback callback) {
+        boolean result = false;
+        if (TextUtils.isEmpty(url)) return false;
+        if (url.startsWith("http") || url.startsWith("https")) {
+            /**
+             * 推荐采用的新的二合一接口(payInterceptorWithUrl),只需调用一次
+             */
+            final PayTask task = new PayTask(activity);
+            result = task.payInterceptorWithUrl(url, true, new H5PayCallback() {
+                @Override
+                public void onPayResult(final H5PayResultModel result) {
+                    // 支付结果返回
+                    final String url = result.getReturnUrl();
+                    if (!TextUtils.isEmpty(url)) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (callback != null) {
+                                    callback.onPayResult(result);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        return result;
+    }
 
     public static boolean checkWebUrl(BaseActivity activity, String url) {
         if (url.startsWith("weixin://wap/pay?")) {

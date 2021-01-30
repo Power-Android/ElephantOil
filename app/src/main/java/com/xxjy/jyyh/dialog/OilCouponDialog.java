@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.dialog;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +22,8 @@ import com.xxjy.jyyh.entity.OilEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
 
 /**
@@ -39,13 +42,14 @@ public class OilCouponDialog extends BottomSheetDialog {
     private final DialogOilCouponBinding mBinding;
     private List<CouponBean> mList = new ArrayList<>();
     private OilCouponAdapter mOilCouponAdapter;
-    private String amount, oilNo;
+    private String amount;
 
-    public OilCouponDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
+    public OilCouponDialog(Context context, BaseActivity activity, String amount, OilEntity.StationsBean stationsBean,
                            int oilNoPosition, int gunNoPosition, boolean isPlat) {
         super(context, R.style.bottom_sheet_dialog);
         this.mContext = context;
         this.mActivity = activity;
+        this.amount = amount;
         this.mStationsBean = stationsBean;
         this.oilNoPosition = oilNoPosition;
         this.gunNoPosition = gunNoPosition;
@@ -71,7 +75,7 @@ public class OilCouponDialog extends BottomSheetDialog {
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mOilCouponAdapter = new OilCouponAdapter(R.layout.adapter_oil_coupon, mList);
         mBinding.recyclerView.setAdapter(mOilCouponAdapter);
-        mOilCouponAdapter.setOnItemClickListener((adapter, view, position) -> {
+        mOilCouponAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             if (mOnItemClickedListener != null) {
                 mOnItemClickedListener.onOilCouponClick(adapter, view, position, isPlat);
                 dismiss();
@@ -96,7 +100,7 @@ public class OilCouponDialog extends BottomSheetDialog {
         RxHttp.postForm(ApiService.PLATFORM_COUPON)
                 .add("canUse", "1")
                 .add("rangeType", "2")
-                .add("amount", amount)
+                .add("amount", TextUtils.isEmpty(amount) ? "0" : amount)
                 .add(Constants.GAS_STATION_ID, mStationsBean.getGasId())
                 .asResponseList(CouponBean.class)
                 .to(RxLife.toMain(mActivity))
@@ -109,7 +113,8 @@ public class OilCouponDialog extends BottomSheetDialog {
         RxHttp.postForm(ApiService.BUSINESS_COUPON)
                 .add("canUse", "1")
                 .add("amount", amount)
-                .add(Constants.OIL_NUMBER_ID, oilNo)
+                .add(Constants.OIL_NUMBER_ID, String.valueOf(
+                        mStationsBean.getOilPriceList().get(oilNoPosition).getOilNo()))
                 .add(Constants.GAS_STATION_ID, mStationsBean.getGasId())
                 .asResponseList(CouponBean.class)
                 .to(RxLife.toMain(mActivity))

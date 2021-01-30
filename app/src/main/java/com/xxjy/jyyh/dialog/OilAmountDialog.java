@@ -91,6 +91,11 @@ public class OilAmountDialog extends BottomSheetDialog {
         initListener();
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
+    }
+
     private void init() {
         getWindow().getAttributes().windowAnimations =
                 R.style.bottom_sheet_dialog;
@@ -119,6 +124,8 @@ public class OilAmountDialog extends BottomSheetDialog {
             mOilAmountAdapter.notifyDataSetChanged();
             //刷新价格互斥
             getMultiplePrice(platId, businessAmount);
+            getPlatformCoupon();
+            getBusinessCoupon();
         });
 
         //优惠列表
@@ -157,6 +164,8 @@ public class OilAmountDialog extends BottomSheetDialog {
                     }
                     //刷新互斥价格
                     getMultiplePrice(platId, businessAmount);
+                    getPlatformCoupon();
+                    getBusinessCoupon();
                     break;
             }
         });
@@ -191,8 +200,10 @@ public class OilAmountDialog extends BottomSheetDialog {
 
         KeyboardUtils.registerSoftInputChangedListener(mActivity, height -> {
             if (height == 0) {
-                //TODO 1.刷新价格互斥
+                //刷新价格互斥
                 getMultiplePrice(platId, businessAmount);
+                getPlatformCoupon();
+                getBusinessCoupon();
             }
         });
 
@@ -228,7 +239,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                 .to(RxLife.toMain(mActivity))
                 .subscribe(orderId -> {
                             if (mOnItemClickedListener != null) {
-                                mOnItemClickedListener.onCreateOrder(view, orderId);
+                                mOnItemClickedListener.onCreateOrder(view, orderId, mMultiplePriceBean.getDuePrice());
                             }
                         },
                         onError -> {
@@ -240,6 +251,7 @@ public class OilAmountDialog extends BottomSheetDialog {
 
     private void getPlatformCoupon() {
         //0真正可用 1已用 2过期  3时间未到 4 金额未达到
+        if (TextUtils.isEmpty(mBinding.amountEt.getText())) return;
         RxHttp.postForm(ApiService.PLATFORM_COUPON)
                 .add("canUse", "1")
                 .add("rangeType", "2")
@@ -252,13 +264,14 @@ public class OilAmountDialog extends BottomSheetDialog {
                         platformCoupons = couponBeans;
                         mDiscountAdapter.getData().get(1).setPlatformDesc("请选择优惠券");
                     } else {
-                        mDiscountAdapter.getData().get(1).setPlatformDesc("暂无可用");
+                        mDiscountAdapter.getData().get(1).setPlatformDesc("暂无可用优惠券");
                     }
                     mDiscountAdapter.notifyDataSetChanged();
                 });
     }
 
     private void getBusinessCoupon() {
+        if (TextUtils.isEmpty(mBinding.amountEt.getText())) return;
         RxHttp.postForm(ApiService.BUSINESS_COUPON)
                 .add("canUse", "1")
                 .add("amount", mBinding.amountEt.getText())
@@ -271,7 +284,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                         businessCoupons = couponBeans;
                         mDiscountAdapter.getData().get(2).setBusinessDesc("请选择优惠券");
                     } else {
-                        mDiscountAdapter.getData().get(2).setBusinessDesc("暂无可用");
+                        mDiscountAdapter.getData().get(2).setBusinessDesc("暂无可用优惠券");
                     }
                     mDiscountAdapter.notifyDataSetChanged();
                 });
@@ -354,11 +367,20 @@ public class OilAmountDialog extends BottomSheetDialog {
             if (isPlat) {
                 mPlatCouponBean = couponBean;
                 platId = couponBean.getId();
+                mDiscountList.get(1).setPlatformDesc("-￥" + couponBean.getAmountReduce());
             } else {
                 mBusinessCouponBean = couponBean;
                 businessAmount = couponBean.getAmountReduce();
+                mDiscountList.get(2).setPlatformDesc("-￥" + couponBean.getAmountReduce());
+            }
+        }else {
+            if (isPlat){
+                mDiscountList.get(1).setPlatformDesc("请选择优惠券");
+            }else {
+                mDiscountList.get(2).setPlatformDesc("请选择优惠券");
             }
         }
+        mDiscountAdapter.notifyDataSetChanged();
         getMultiplePrice(platId, businessAmount);
     }
 
@@ -393,7 +415,7 @@ public class OilAmountDialog extends BottomSheetDialog {
         void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
                                 String amount, String oilNo);
 
-        void onCreateOrder(View view, String orderId);
+        void onCreateOrder(View view, String orderId, String payAmount);
     }
 
     private OnItemClickedListener mOnItemClickedListener;

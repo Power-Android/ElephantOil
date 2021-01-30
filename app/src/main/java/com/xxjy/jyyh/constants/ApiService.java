@@ -108,10 +108,17 @@ public static final String USER_LOGOUT ="api/v1/wx/logout";
     //油站详情
     public static final String OIL_DETAIL = "api/gasPublic/getGasStationInfo";
 
+    //首页积分豪礼
     public static final String HOME_PRODUCT = "api/product/v1/queryProductsByModule";
     //获取系统通知
     public static final String GET_ARTICLES = "api/v1/common/getArticles";
     //获取订单通知
     public static final String GET_NOTICES = "api/user/getNotices";
+
+    //获取加油收银台
+    public static final String GET_PAY_TYPE  = "api/gasPublic/refuelCashierDesk";
+
+    //加油支付
+    public static final String PAY_ORDER = "api/gasPublic/refuelPayOrder";
 
 }

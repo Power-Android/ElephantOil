@@ -177,7 +177,7 @@ public class JsOperation implements JsOperationMethods {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                WeChatWebPayActivity.openWebPayAct(mActivity, null, "", url);
+                WeChatWebPayActivity.openWebPayAct(mActivity, url);
             }
         });
     }

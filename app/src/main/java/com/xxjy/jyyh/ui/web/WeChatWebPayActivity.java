@@ -313,7 +313,7 @@ public class WeChatWebPayActivity extends BindingActivity<ActivityWeChatWebPayBi
         super.onDestroy();
     }
 
-    public static void openWebPayAct(Activity activity, String url, String params, String loadJs) {
+    public static void openWebPayAct(Activity activity, String loadJs) {
         Intent intent = new Intent(activity, WeChatWebPayActivity.class);
         if (!TextUtils.isEmpty(loadJs)) {
             intent.putExtra(TAG_PAY_LOAD_JS, loadJs);

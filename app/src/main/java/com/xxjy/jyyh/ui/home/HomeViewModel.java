@@ -10,6 +10,7 @@ import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.entity.PayOrderEntity;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<List<OfentEntity>> oftenOilLiveData = new MutableLiveData<>();
     public MutableLiveData<String> refuelOilLiveData = new MutableLiveData<>();
     public MutableLiveData<List<HomeProductEntity.FirmProductsVoBean>> productLiveData = new MutableLiveData<>();
+    public MutableLiveData<PayOrderEntity> payOrderLiveData = new MutableLiveData<>();
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -48,5 +50,9 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getHomeProduct() {
         mRespository.getHomeProduct(productLiveData);
+    }
+
+    public void payOrder(String payType, String orderId, String payAmount) {
+        mRespository.payOrder(payType, orderId, payAmount, payOrderLiveData);
     }
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.xxjy.jyyh.adapter.OilNumAdapter;
 import com.xxjy.jyyh.adapter.OilStationFlexAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityOilDetailBinding;
 import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
@@ -38,7 +40,13 @@ import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
+import com.xxjy.jyyh.ui.pay.PayResultActivity;
+import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
+import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
+import com.xxjy.jyyh.utils.UiUtils;
+import com.xxjy.jyyh.utils.WXSdkManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +67,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     private OilEntity.StationsBean mStationsBean;
     private OilStationFlexAdapter mFlexAdapter;
     private OilCheckedAdapter mOilCheckedAdapter;
+    private boolean isShouldAutoOpenWeb = false;    //标记是否应该自动打开浏览器进行支付
+
 
     @Override
     protected void initView() {
@@ -193,13 +203,47 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mOilNumList.get(0).setSelected(true);
             mOilNumAdapter.setNewData(mOilNumList);
         });
+
+        //支付结果回调
+        mHomeViewModel.payOrderLiveData.observe(this, payOrderEntity -> {
+            if (payOrderEntity.getResult() == 0){//支付未完成
+                switch (payOrderEntity.getPayType()){
+                    case PayTypeConstants.PAY_TYPE_WEIXIN://微信H5
+                        WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
+                        break;
+                    case PayTypeConstants.PAY_TYPE_WEIXIN_XCX://微信小程序
+                        WXSdkManager.newInstance().useWXLaunchMiniProgram(this, payOrderEntity.getOrderNo());
+                        break;
+                    case PayTypeConstants.PAY_TYPE_ZHIFUBAO://支付宝H5
+                        boolean urlCanUse = UiUtils.checkZhifubaoSdkCanPayUrl(this,
+                                payOrderEntity.getUrl(),
+                                h5PayResultModel -> {//直接跳转支付宝
+                                    jumpToPayResultAct(payOrderEntity.getOrderPayNo(),
+                                            payOrderEntity.getOrderNo());
+                                });
+                        if (!urlCanUse) {//外部浏览器打开
+                            isShouldAutoOpenWeb = true;
+                            mBinding.payWebView.loadUrl(payOrderEntity.getUrl());
+                            mBinding.payWebView.post(() -> {
+                                if (isShouldAutoOpenWeb) {
+                                    UiUtils.openPhoneWebUrl(this,
+                                            payOrderEntity.getUrl());
+                                }
+                            });
+                        }
+                        break;
+                }
+            }else if (payOrderEntity.getResult() == 1){//支付成功
+                jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
+            }else {
+                showToastWarning(payOrderEntity.getMsg());
+            }
+        });
     }
 
     private void showGunDialog(OilEntity.StationsBean stationsBean, int oilNoPosition) {
         //枪号dialog
-        if (mOilGunDialog == null) {
-            mOilGunDialog = new OilGunDialog(this, stationsBean, oilNoPosition);
-        }
+        mOilGunDialog = new OilGunDialog(this, stationsBean, oilNoPosition);
         mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
             List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
             for (int i = 0; i < data.size(); i++) {
@@ -221,10 +265,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
     private void showAmountDialog(OilEntity.StationsBean stationsBean, int oilNoPosition, int gunNoPosition) {
         //快捷金额dialog  请输入加油金额 请选择优惠券 暂无优惠券
-        if (mOilAmountDialog == null) {
-            mOilAmountDialog = new OilAmountDialog(this, this, stationsBean,
-                    oilNoPosition, gunNoPosition);
-        }
+        mOilAmountDialog = new OilAmountDialog(this, this, stationsBean,
+                oilNoPosition, gunNoPosition);
         mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
             @Override
             public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
@@ -235,8 +277,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             }
 
             @Override
-            public void onCreateOrder(View view, String orderId) {
-                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, view);
+            public void onCreateOrder(View view, String orderId, String payAmount) {
+                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount, view);
             }
         });
 
@@ -246,10 +288,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     private void showCouponDialog(OilEntity.StationsBean stationsBean, String amount,
                                   int oilNoPosition, int gunNoPosition, boolean isPlat) {
         //优惠券dialog
-        if (mOilCouponDialog == null) {
-            mOilCouponDialog = new OilCouponDialog(this, this, stationsBean,
-                    oilNoPosition, gunNoPosition, isPlat);
-        }
+        mOilCouponDialog = new OilCouponDialog(this, this, amount, stationsBean,
+                oilNoPosition, gunNoPosition, isPlat);
         mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
             @Override
             public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat) {
@@ -269,27 +309,24 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     }
 
     private void showTipsDialog(OilEntity.StationsBean stationsBean, int oilNoPosition,
-                                int gunNoPosition, String orderId, View view) {
+                                int gunNoPosition, String orderId, String payAmount, View view) {
         //温馨提示dialog
-        if (mOilTipsDialog == null) {
-            mOilTipsDialog = new OilTipsDialog(this, this);
-        }
+        mOilTipsDialog = new OilTipsDialog(this, this);
         mOilTipsDialog.setOnItemClickedListener(() -> {
             mOilTipsDialog.dismiss();
             //show的时候把订单信息传过去
-            showPayDialog(stationsBean, oilNoPosition, gunNoPosition, orderId);
+            showPayDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount);
         });
 
         mOilTipsDialog.show(view);
     }
 
     private void showPayDialog(OilEntity.StationsBean stationsBean, int oilNoPosition,
-                               int gunNoPosition, String orderId) {
+                               int gunNoPosition, String orderId, String payAmount) {
         //支付dialog
-        if (mOilPayDialog == null) {
-            mOilPayDialog = new OilPayDialog(this, this, stationsBean,
-                    oilNoPosition, gunNoPosition, orderId);
-        }
+        mOilPayDialog = new OilPayDialog(this, this, stationsBean,
+                oilNoPosition, gunNoPosition, orderId, payAmount);
+
         mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
             @Override
             public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
@@ -312,6 +349,11 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                 //关掉以后重新刷新数据,否则再次打开时上下选中不一致
                 mViewModel.getOilDetail(mGasId, mLat, mLng);
             }
+
+            @Override
+            public void onPayOrderClick(String payType, String orderId, String payAmount) {
+                mHomeViewModel.payOrder(payType, orderId, payAmount);
+            }
         });
 
         mOilPayDialog.show();
@@ -327,5 +369,14 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                 return "天然气";
         }
         return "";
+    }
+
+    private void jumpToPayResultAct(String orderPayNo, String orderNo) {
+        if (TextUtils.isEmpty(orderPayNo) && TextUtils.isEmpty(orderNo)) {
+            return;
+        }
+        Intent intent = new Intent(this, RefuelingPayResultActivity.class);
+        intent.putExtra("orderPayNo", orderPayNo);
+        intent.putExtra("orderNo", orderNo);
     }
 }

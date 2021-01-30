@@ -12,6 +12,7 @@ import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
@@ -123,6 +124,16 @@ public class HomeRepository extends BaseRepository {
                 .subscribe(homeProductEntities ->
                         productLiveData.postValue(homeProductEntities.get(0).getFirmProductsVo()))
 
+        );
+    }
+
+    public void payOrder(String payType, String orderId, String payAmount, MutableLiveData<PayOrderEntity> payOrderLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.PAY_ORDER)
+                .add("payType", payType)
+                .add("orderId", orderId)
+                .add("payAmount", payAmount)
+                .asResponse(PayOrderEntity.class)
+                .subscribe(payOrderEntity -> payOrderLiveData.postValue(payOrderEntity))
         );
     }
 }

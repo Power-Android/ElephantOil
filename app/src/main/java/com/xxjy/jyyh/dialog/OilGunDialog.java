@@ -56,6 +56,9 @@ public class OilGunDialog extends BottomSheetDialog {
 
     private void initData() {
         mList = stationsBean.getOilPriceList().get(oilNoPosition).getGunNos();
+        for (int i = 0; i < mList.size(); i++) {
+            mList.get(i).setSelected(false);
+        }
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
         mOilGunAdapter = new OilGunAdapter(R.layout.adapter_oil_num_layout, mList);
         mBinding.recyclerView.setAdapter(mOilGunAdapter);
