@@ -338,16 +338,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
             @Override
             public void onCloseAllClick() {
-                mOilGunDialog.dismiss();
-                mOilAmountDialog.dismiss();
-                mOilPayDialog.dismiss();
-
-                mOilGunDialog = null;
-                mOilAmountDialog = null;
-                mOilPayDialog = null;
-
-                //关掉以后重新刷新数据,否则再次打开时上下选中不一致
-                mViewModel.getOilDetail(mGasId, mLat, mLng);
+                closeDialog();
             }
 
             @Override
@@ -378,5 +369,20 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         Intent intent = new Intent(this, RefuelingPayResultActivity.class);
         intent.putExtra("orderPayNo", orderPayNo);
         intent.putExtra("orderNo", orderNo);
+        startActivity(intent);
+        closeDialog();
+    }
+
+    private void closeDialog() {
+        mOilGunDialog.dismiss();
+        mOilAmountDialog.dismiss();
+        mOilPayDialog.dismiss();
+
+        mOilGunDialog = null;
+        mOilAmountDialog = null;
+        mOilPayDialog = null;
+
+        //关掉以后重新刷新数据,否则再次打开时上下选中不一致
+        mViewModel.getOilDetail(mGasId, mLat, mLng);
     }
 }

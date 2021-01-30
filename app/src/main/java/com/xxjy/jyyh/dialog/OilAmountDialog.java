@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,7 +73,6 @@ public class OilAmountDialog extends BottomSheetDialog {
     private List<CouponBean> platformCoupons = new ArrayList<>();
     private List<CouponBean> businessCoupons = new ArrayList<>();
     private CouponBean mPlatCouponBean, mBusinessCouponBean;
-    private boolean isPlat;
     private String platId = "", businessAmount = "";//平台优惠券id， 商机优惠金额
 
     public OilAmountDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
@@ -123,15 +123,13 @@ public class OilAmountDialog extends BottomSheetDialog {
                     Float.parseFloat(data.get(position).getAmount()), 0));
             mOilAmountAdapter.notifyDataSetChanged();
             //刷新价格互斥
-            getMultiplePrice(platId, businessAmount);
-            getPlatformCoupon();
-            getBusinessCoupon();
+            refreshData();
         });
 
         //优惠列表
         for (int i = 0; i < 4; i++) {
             mDiscountList.add(new OilDiscountEntity(0, "请选择加油金额",
-                    "请选择加油金额", 0));
+                    "请选择加油金额", 0, false));
         }
         mBinding.discountRecyclerView.setLayoutManager(
                 new LinearLayoutManager(mContext));
@@ -163,9 +161,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                         }
                     }
                     //刷新互斥价格
-                    getMultiplePrice(platId, businessAmount);
-                    getPlatformCoupon();
-                    getBusinessCoupon();
+                    refreshData();
                     break;
             }
         });
@@ -201,9 +197,7 @@ public class OilAmountDialog extends BottomSheetDialog {
         KeyboardUtils.registerSoftInputChangedListener(mActivity, height -> {
             if (height == 0) {
                 //刷新价格互斥
-                getMultiplePrice(platId, businessAmount);
-                getPlatformCoupon();
-                getBusinessCoupon();
+                refreshData();
             }
         });
 
@@ -356,7 +350,8 @@ public class OilAmountDialog extends BottomSheetDialog {
                             mDiscountAdapter.notifyDataSetChanged();
 
                             mBinding.createOrderTv.setEnabled(
-                                    Float.parseFloat(multiplePriceBean.getDuePrice()) > 0);
+                                    Float.parseFloat(multiplePriceBean.getDuePrice()) > 0 ||
+                                    Float.parseFloat(multiplePriceBean.getSumDiscountPrice()) > 0);
 
                         }, throwable -> mBinding.loadingView.setVisibility(View.GONE),
                         () -> mBinding.loadingView.setVisibility(View.GONE));
@@ -384,30 +379,11 @@ public class OilAmountDialog extends BottomSheetDialog {
         getMultiplePrice(platId, businessAmount);
     }
 
-    public PayOrderParams getPayInfo() {
-        PayOrderParams params = new PayOrderParams();
-        params.setAmount(mBinding.amountEt.getText().toString());
-        params.setGasId(mStationsBean.getGasId());
-        params.setGunNo(String.valueOf(mStationsBean.getOilPriceList().get(oilNoPosition)
-                .getGunNos().get(gunNoPosition).getGunNo()));
-        params.setOilNo(String.valueOf(
-                mStationsBean.getOilPriceList().get(oilNoPosition).getOilNo()));
-        params.setOilName(mStationsBean.getOilPriceList().get(oilNoPosition).getOilName());
-        params.setGasName(mStationsBean.getGasName());
-        params.setPriceGun(mStationsBean.getOilPriceList().get(oilNoPosition).getPriceGun());
-        params.setPriceUnit(mStationsBean.getOilPriceList().get(oilNoPosition).getPriceYfq());
-        params.setOilType(mStationsBean.getOilPriceList().get(oilNoPosition).getOilType() + "");
-        params.setPhone(SPUtils.getInstance().getString(SPConstants.MOBILE));
-        if (mPlatCouponBean != null) {
-            params.setXxCouponId(mPlatCouponBean.getId());
-        }
-        if (mBusinessCouponBean != null) {
-            params.setCzbCouponId(mBusinessCouponBean.getId());
-            params.setCzbCouponAmount(mBusinessCouponBean.getAmountReduce());
-        }
-        params.setPayAmount(mMultiplePriceBean.getDuePrice());
-        params.setUsedBalance(mMultiplePriceBean.getBalancePrice());
-        return params;
+    private void refreshData(){
+        getPlatformCoupon();
+        getBusinessCoupon();
+        //刷新价格互斥
+        getMultiplePrice(platId, businessAmount);
     }
 
     public interface OnItemClickedListener {

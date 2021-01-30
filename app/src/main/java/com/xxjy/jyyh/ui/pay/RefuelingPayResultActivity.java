@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.ui.pay;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -15,26 +16,35 @@ import com.xxjy.jyyh.adapter.IntegralExchangeAdapter;
 import com.xxjy.jyyh.adapter.PayResultBannerAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityRefuelingPayResultBinding;
+import com.xxjy.jyyh.entity.PayResultEntity;
 import com.xxjy.jyyh.ui.order.OrderDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelingPayResultBinding,RefuelingPayResultViewModel> {
+public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelingPayResultBinding,
+        RefuelingPayResultViewModel> {
 
 
-    private List<String> data=new ArrayList<>();
+    private List<String> data = new ArrayList<>();
     private PayResultBannerAdapter payResultBannerAdapter;
-//    private IntegralExchangeAdapter integralExchangeAdapter;
+    private String mOrderNo;
+    private String mOrderPayNo;
+
+    //    private IntegralExchangeAdapter integralExchangeAdapter;
     @Override
     protected void initView() {
         mBinding.titleLayout.tvTitle.setText("支付结果");
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
-        BarUtils.setStatusBarColor(this,Color.parseColor("#1676FF"));
+        BarUtils.setStatusBarColor(this, Color.parseColor("#1676FF"));
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
+
+        mOrderNo = getIntent().getStringExtra("orderNo");
+        mOrderPayNo = getIntent().getStringExtra("orderPayNo");
+
         data.add("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1765232562,2313752077&fm=26&gp=0.jpg");
         data.add("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1292020288,3194758620&fm=26&gp=0.jpg");
-        payResultBannerAdapter = new PayResultBannerAdapter(R.layout.item_pay_result_banner,data);
+        payResultBannerAdapter = new PayResultBannerAdapter(R.layout.item_pay_result_banner, data);
         mBinding.bannerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.bannerRecyclerView.setAdapter(payResultBannerAdapter);
 
@@ -42,17 +52,17 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 //        mBinding.recommendRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
 //        mBinding.recommendRecyclerView.setAdapter(integralExchangeAdapter);
 
-
+        mViewModel.getPayResult(mOrderNo, mOrderPayNo);
     }
 
     @Override
     protected void initListener() {
-mBinding.goOrderView.setOnClickListener(this::onViewClicked);
+        mBinding.goOrderView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.go_order_view:
                 startActivity(new Intent(this, OrderDetailsActivity.class));
                 break;
@@ -62,6 +72,11 @@ mBinding.goOrderView.setOnClickListener(this::onViewClicked);
 
     @Override
     protected void dataObservable() {
+        mViewModel.payResultLiveData.observe(this, new Observer<PayResultEntity>() {
+            @Override
+            public void onChanged(PayResultEntity resultEntity) {
 
+            }
+        });
     }
 }

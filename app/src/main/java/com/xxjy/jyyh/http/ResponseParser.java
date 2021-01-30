@@ -1,7 +1,12 @@
 package com.xxjy.jyyh.http;
 
 
+import android.app.Activity;
+
+import com.blankj.utilcode.util.ActivityUtils;
 import com.xxjy.jyyh.app.App;
+import com.xxjy.jyyh.utils.LoginHelper;
+import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.io.IOException;
@@ -48,6 +53,10 @@ public class ResponseParser<T> extends AbstractParser<T> {
         }
 
         if (data.getCode() != 1 ) {
+            if (data.getCode() == 1007){
+                LoginHelper.loginOut(null);
+                UiUtils.toLoginActivity(App.getContext());
+            }
             MyToast.showWarning(App.getContext(), data != null && data.getMsg() != null ? data.getMsg() : "网络请求错误");
             //code不等于 1，说明数据不正确，抛出异常
             throw new ParseException(String.valueOf(data.getCode()), data.getMsg(), response);

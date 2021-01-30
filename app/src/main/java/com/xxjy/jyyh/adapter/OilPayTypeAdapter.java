@@ -39,7 +39,7 @@ public class OilPayTypeAdapter extends BaseQuickAdapter<OilPayTypeEntity, BaseVi
                 helper.setImageResource(R.id.item_pay_type_iv, R.drawable.ic_wechat_apple)
                         .setText(R.id.item_title_tv, "小程序支付");
                 break;
-            case "AliWapPay"://支付宝支付
+            case "aliwappay"://支付宝支付
                 helper.setImageResource(R.id.item_pay_type_iv, R.drawable.alipay_icon)
                         .setText(R.id.item_title_tv, "支付宝支付");
                 break;

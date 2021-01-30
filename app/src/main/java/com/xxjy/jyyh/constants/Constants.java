@@ -31,7 +31,7 @@ public class Constants {
     public static final String WX_APP_SCRIPT = "787d5dcefab80f6bca272800e9bad139";//ab730ab00dd73986593da2ce6514ffe8     6b4edd26960e017c050f940210a99723
 
     //微信支付回调地址
-    public static final String HTTP_CALL_BACK_URL = App.URL_IS_DEBUG ? "https://dev.qqgyhk.com" : "https://m.qqgyhk.com";
+    public static final String HTTP_CALL_BACK_URL = App.URL_IS_DEBUG ? "https://tcore.qqgyhk.com" : "https://core.qqgyhk.com";
     //fragment
     public static final String CURRENT_FRAGMENT_KEY = "current_fragment";
     public static final int TYPE_HOME = 0;

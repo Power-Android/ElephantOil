@@ -85,6 +85,7 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                             .setTextColor(R.id.item_discount_tv,
                                     mContext.getResources().getColor(R.color.color_27))
                             .setChecked(R.id.item_switch_tv, true)
+                            .setGone(R.id.item_switch_tv, true)
                             .setEnabled(R.id.item_switch_tv, true);
                 } else {
                     helper.setImageResource(R.id.item_img_iv, R.drawable.icon_balance)
@@ -94,6 +95,7 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                             .setTextColor(R.id.item_discount_tv,
                                     mContext.getResources().getColor(R.color.color_B1))
                             .setChecked(R.id.item_switch_tv, false)
+                            .setGone(R.id.item_switch_tv, false)
                             .setEnabled(R.id.item_switch_tv, false);
                 }
                 discountTv.setCompoundDrawables(null, null, null, null);

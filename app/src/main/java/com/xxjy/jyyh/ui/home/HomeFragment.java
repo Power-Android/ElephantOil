@@ -384,7 +384,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     private void showAmountDialog(OilEntity.StationsBean stationsBean, int oilNoPosition, int gunNoPosition) {
         //快捷金额dialog  请输入加油金额 请选择优惠券 暂无优惠券
-        OilAmountDialog mOilAmountDialog = new OilAmountDialog(mContext, getBaseActivity(), stationsBean,
+        mOilAmountDialog = new OilAmountDialog(mContext, getBaseActivity(), stationsBean,
                 oilNoPosition, gunNoPosition);
         mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
             @Override
@@ -455,18 +455,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
             @Override
             public void onCloseAllClick() {
-                mOilNumDialog.dismiss();
-                mOilGunDialog.dismiss();
-                mOilAmountDialog.dismiss();
-                mOilPayDialog.dismiss();
-
-                mOilNumDialog = null;
-                mOilGunDialog = null;
-                mOilAmountDialog = null;
-                mOilPayDialog = null;
-
-                //关掉以后重新刷新数据,否则再次打开时上下选中不一致
-                mViewModel.getHomeOil(mLat, mLng);
+                closeDialog();
             }
 
             @Override
@@ -495,5 +484,22 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         Intent intent = new Intent(mContext, RefuelingPayResultActivity.class);
         intent.putExtra("orderPayNo", orderPayNo);
         intent.putExtra("orderNo", orderNo);
+        startActivity(intent);
+        closeDialog();
+    }
+
+    private void closeDialog() {
+        mOilNumDialog.dismiss();
+        mOilGunDialog.dismiss();
+        mOilAmountDialog.dismiss();
+        mOilPayDialog.dismiss();
+
+        mOilNumDialog = null;
+        mOilGunDialog = null;
+        mOilAmountDialog = null;
+        mOilPayDialog = null;
+
+        //关掉以后重新刷新数据,否则再次打开时上下选中不一致
+        mViewModel.getHomeOil(mLat, mLng);
     }
 }

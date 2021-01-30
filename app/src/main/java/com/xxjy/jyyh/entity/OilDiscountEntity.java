@@ -62,10 +62,11 @@ public class OilDiscountEntity {
         this.balance = balance;
     }
 
-    public OilDiscountEntity(float fallAmount, String platformDesc, String businessDesc, float balance) {
+    public OilDiscountEntity(float fallAmount, String platformDesc, String businessDesc, float balance, boolean isUseBill) {
         this.fallAmount = fallAmount;
         this.platformDesc = platformDesc;
         this.businessDesc = businessDesc;
         this.balance = balance;
+        this.isUseBill = isUseBill;
     }
 }
