@@ -65,12 +65,6 @@ public class OilTipsDialog extends QMUIFullScreenPopup {
         closeBtn(false);
         skinManager(QMUISkinManager.defaultInstance(mContext));
 
-        onDismiss(() -> {
-            if (mOnItemClickedListener != null) {
-                mOnItemClickedListener.onQueryClick();
-            }
-        });
-
         mBinding.queryTv.setOnClickListener(view -> {
             if (mOnItemClickedListener != null) {
                 mOnItemClickedListener.onQueryClick();

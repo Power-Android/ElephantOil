@@ -54,7 +54,7 @@
         android:id="@+id/item_switch_tv"
         android:layout_width="@dimen/dp_35"
         android:layout_height="@dimen/dp_21"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@drawable/selector_switch"
         android:layout_marginEnd="@dimen/dp_12"
         app:layout_constraintEnd_toEndOf="parent"

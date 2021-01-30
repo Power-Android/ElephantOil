@@ -21,6 +21,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilStationListAdapter;
 import com.xxjy.jyyh.adapter.TopLineAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentOilBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
@@ -84,8 +85,10 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
-
-
+            List<OilEntity.StationsBean> data = adapter.getData();
+            Intent intent = new Intent(mContext, OilDetailActivity.class);
+            intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
+            startActivity(intent);
         });
 
         mBinding.msgBanner.setAdapter(new TopLineAdapter(new ArrayList<>(), true))

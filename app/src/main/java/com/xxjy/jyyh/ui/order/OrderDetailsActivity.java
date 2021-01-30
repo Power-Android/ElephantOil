@@ -28,7 +28,7 @@ import java.util.List;
 
 public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBinding, OrderDetailsViewModel> {
 
-    private static final String ORDER_ID = "order_id";
+    public static final String ORDER_ID = "order_id";
 
     private QMUIPopup mNormalPopup;
 
