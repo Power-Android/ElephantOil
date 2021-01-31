@@ -327,21 +327,28 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         });
         bannerViewModel2.getBannerOfPostion(BannerPositionConstants.INTEGRAL_HOME_BANNER).observe(this, data -> {
             mBinding.refreshview.finishRefresh(true);
-            //banner
-            mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
-                @Override
-                public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
-                    Glide.with(holder.imageView)
-                            .load(data.getImgUrl())
-                            .apply(new RequestOptions()
-                                    .error(R.drawable.default_img_bg))
-                            .into(holder.imageView);
-                    holder.imageView.setOnClickListener(v -> {
-                        WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
-                    });
-                }
-            }).addBannerLifecycleObserver(this)
-                    .setIndicator(new RectangleIndicator(mContext));
+            if(data!=null&&data.size()>0){
+                mBinding.banner.setVisibility(View.VISIBLE);
+                //banner
+                mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
+                    @Override
+                    public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
+                        Glide.with(holder.imageView)
+                                .load(data.getImgUrl())
+                                .apply(new RequestOptions()
+                                        .error(R.drawable.default_img_bg))
+                                .into(holder.imageView);
+                        holder.imageView.setOnClickListener(v -> {
+                            WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
+                        });
+                    }
+                }).addBannerLifecycleObserver(this)
+                        .setIndicator(new RectangleIndicator(mContext));
+            }  else{
+                mBinding.banner.setVisibility(View.GONE);
+
+            }
+
         });
 
         mViewModel.integralBalanceLiveData.observe(this, data -> {

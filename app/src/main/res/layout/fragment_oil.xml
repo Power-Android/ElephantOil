@@ -57,7 +57,7 @@
             <LinearLayout
                 android:id="@+id/top_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_195"
+                android:layout_height="wrap_content"
                 android:background="#00000000"
                 android:orientation="vertical"
                 app:layout_scrollFlags="scroll">
