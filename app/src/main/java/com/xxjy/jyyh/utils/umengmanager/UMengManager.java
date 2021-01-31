@@ -11,10 +11,6 @@ import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.constants.Constants;
 
 /**
- * 车主邦
- * ---------------------------
- * <p>
- * Created by zhaozh on 2017/11/20.
  * umeng 管理器
  */
 

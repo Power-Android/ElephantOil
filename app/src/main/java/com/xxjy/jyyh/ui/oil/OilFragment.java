@@ -32,6 +32,7 @@ import com.xxjy.jyyh.entity.DistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
+import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.StatusBarUtil;
@@ -78,8 +79,6 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     @Override
     protected void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
-
-
         mBinding.refreshview.setEnableLoadMore(false);
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, data);
@@ -148,11 +147,17 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.oilDistancePriceLayout.setOnClickListener(this::onViewClicked);
         mBinding.customerServiceView.setOnClickListener(this::onViewClicked);
         mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
+        mBinding.topSearchLayout.setOnClickListener(this::onViewClicked);
+        mBinding.searchLayout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.search_layout:
+            case R.id.top_search_layout:
+                startActivity(new Intent(getContext(), SearchActivity.class));
+                break;
             case R.id.oil_sort_layout:
 
                 getOilNums();

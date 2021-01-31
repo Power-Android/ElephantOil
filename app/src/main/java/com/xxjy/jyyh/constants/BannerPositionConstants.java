@@ -16,6 +16,9 @@ public class BannerPositionConstants {
     //    12,"加油首页轮播广告
     //    13,"加油温馨提示
     //    14,权益功能区
+//    APP_START_AD(17,"开屏广告"),
+//    APP_LEAD_AD(18,"引导广告"),
+//    APP_OPEN_AD(19,"弹窗广告");
     public static final int HOME_BANNER = 1;
     public static final int REFUELING_RESULTS_BANNER = 2;
     public static final int REFUELING_PAY_SUCCESS_BANNER = 3;
@@ -31,5 +34,9 @@ public class BannerPositionConstants {
     public static final int REFUEL_WARM_TIPS_BANNER = 13;
     public static final int INTEGRAL_HOME_FUNCTION_BANNER = 14;
     public static final int MINE_BANNER = 15;
+    public static final int APP_START_AD = 17;
+    public static final int APP_LEAD_AD = 18;
+    public static final int APP_OPEN_AD = 19;
+
 
 }

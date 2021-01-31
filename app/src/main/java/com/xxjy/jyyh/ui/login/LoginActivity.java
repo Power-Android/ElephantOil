@@ -3,6 +3,7 @@ package com.xxjy.jyyh.ui.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.lifecycle.Observer;
@@ -22,6 +23,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityLoginBinding;
+import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.utils.GsonTool;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
@@ -58,6 +60,35 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
     @Override
     protected void dataObservable() {
         mViewModel.mVerifyLoginLiveData.observe(this, s -> mViewModel.setLoginSuccess(s, ""));
+        mViewModel.mWechatLoginLiveData.observe(this,data ->{
+            if (data == null) {
+                showToastWarning("登录失败,请使用其他登录方式");
+                return;
+            }
+            String token = data.getToken();
+            String openId = data.getOpenId();
+            String unionId = data.getUnionId();
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(openId)) {
+//                            loginToMain(token, "", openId);
+                if (!TextUtils.isEmpty(openId)) {
+                    UserConstants.setOpenId(openId);
+                }
+                UserConstants.setToken(token);
+                UserConstants.setIsLogin(true);
+                UMengManager.onProfileSignIn("userID");
+//        Tool.postJPushdata();
+                MainActivity.openMainActAndClearTask(LoginActivity.this);
+
+            } else if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(unionId)) {
+                showToast("关联微信成功,请您绑定手机号");
+                InputAutoActivity.TAG_LOGIN_WXOPENID = openId;
+                InputAutoActivity.TAG_LOGIN_UNIONID = unionId;
+                WeChatBindingPhoneActivity.openBindingWxAct(LoginActivity.this);
+            } else {
+                showToastWarning("登录失败,请使用其他登录方式");
+            }
+
+        });
     }
 
     private void tryOpenLoginActivity() {
@@ -153,9 +184,13 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
                 if (map != null && map.containsKey("openid") && map.containsKey("accessToken")) {
                     String openId = map.get("openid");
                     String accessToken = map.get("accessToken");
-//                    checkUserWxInfo(openId, accessToken);
+                    openId2Login(openId, accessToken);
                 }
             }
         });
+    }
+
+    private void openId2Login(String openId,String accessToken){
+        mViewModel.openId2Login( openId, accessToken);
     }
 }

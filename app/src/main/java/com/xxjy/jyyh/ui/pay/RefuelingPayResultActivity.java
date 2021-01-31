@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -116,5 +117,12 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     break;
             }
         });
+    }
+
+    public static void openPayResultPage(Activity activity, String orderNo, String orderPayNo){
+        Intent intent = new Intent(activity, RefuelingPayResultActivity.class);
+        intent.putExtra("orderNo", orderNo);
+        intent.putExtra("orderPayNo", orderPayNo);
+        activity.startActivity(intent);
     }
 }

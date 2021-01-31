@@ -55,4 +55,7 @@ public class SPConstants {
 
 
     public static final String OPEN_ID = "openId";
+
+    //app引导guide版本标识
+    public static final String SP_APP_SHOW_GUIDE_VERSION = "guide_version";
 }

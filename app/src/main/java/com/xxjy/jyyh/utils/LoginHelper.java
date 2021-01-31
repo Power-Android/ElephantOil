@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.ui.login.LoginActivity;
+import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 
 /**
  * @author power
@@ -36,6 +37,7 @@ public class LoginHelper {
         SPUtils.getInstance().put(SPConstants.APP_TOKEN,"");
         SPUtils.getInstance().put(SPConstants.USER_TYPE,-1);
         SPUtils.getInstance().put(SPConstants.OPEN_ID,"");
+        UMengManager.onProfileSignOff();
         if (activity != null){
             activity.finish();
         }

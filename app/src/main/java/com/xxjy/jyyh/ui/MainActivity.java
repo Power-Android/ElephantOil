@@ -5,9 +5,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.UserConstants;
@@ -31,11 +34,14 @@ import com.xxjy.jyyh.databinding.ActivityMainBinding;
 import com.xxjy.jyyh.dialog.CheckVersionDialog;
 import com.xxjy.jyyh.dialog.VersionUpDialog;
 import com.xxjy.jyyh.entity.EventEntity;
+import com.xxjy.jyyh.ui.broadcast.HomeAdDialog;
 import com.xxjy.jyyh.ui.home.HomeFragment;
+import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.integral.IntegralFragment;
 import com.xxjy.jyyh.ui.mine.MineFragment;
 import com.xxjy.jyyh.ui.oil.OilFragment;
 import com.xxjy.jyyh.ui.setting.AboutUsViewModel;
+import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.Util;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 
@@ -56,6 +62,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     //极光intent
     public static final String TAG_FLAG_INTENT_VALUE_INFO = "intentInfo";
 private AboutUsViewModel aboutUsViewModel;
+private BannerViewModel bannerViewModel;
 
 
     @BusUtils.Bus(tag = EventConstants.EVENT_CHANGE_FRAGMENT)
@@ -66,6 +73,7 @@ private AboutUsViewModel aboutUsViewModel;
     @Override
     protected void initView() {
         BusUtils.register(this);
+        disPathIntentMessage(getIntent());
         initNavigationView();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -95,6 +103,7 @@ private AboutUsViewModel aboutUsViewModel;
             }
         }
         aboutUsViewModel = new ViewModelProvider(this).get(AboutUsViewModel.class);
+        bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
         checkVersion();
     }
 
@@ -241,12 +250,34 @@ private AboutUsViewModel aboutUsViewModel;
             if (compare == 1) {
                 //是否强制更新，0：否，1：是
                 VersionUpDialog checkVersionDialog = new VersionUpDialog(this,data);
+                checkVersionDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        getAdData();
+                    }
+                });
                 checkVersionDialog.show();
+            }else{
+                getAdData();
             }
 
         });
     }
 
+    private void getAdData() {
+        bannerViewModel.getBannerOfPostion(BannerPositionConstants.APP_OPEN_AD).observe(this,data->{
+            if(data!=null&&data.size()>0){
+                HomeAdDialog homeAdDialog = new HomeAdDialog(this,data.get(0));
+                homeAdDialog.show(mBinding.getRoot());
+            }
+        });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        disPathIntentMessage(intent);
+    }
     /**
      * 打开首页并清空栈
      *
@@ -258,8 +289,17 @@ private AboutUsViewModel aboutUsViewModel;
         activity.startActivity(intent);
 //        ActivityUtils.startHomeActivity();
     }
-
+    private void disPathIntentMessage(Intent intent) {
+        if (intent == null) {
+            intent = getIntent();
+        }
+        String intentInfo = intent.getStringExtra(TAG_FLAG_INTENT_VALUE_INFO);
+        if (TextUtils.isEmpty(intentInfo)) return;
+        NaviActivityInfo.disPathIntentFromUrl(this, intentInfo);
+        intent.removeExtra(TAG_FLAG_INTENT_VALUE_INFO);
+    }
     private void checkVersion() {
         aboutUsViewModel.checkVersion();
     }
+
 }

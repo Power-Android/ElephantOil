@@ -33,8 +33,8 @@ public class PrivacyAgreementDialog extends BaseDialog implements View.OnClickLi
     public PrivacyAgreementDialog(BaseActivity context) {
         super(context, Gravity.CENTER, false, false);
         activity = context;
-        initListener();
         initView();
+        initListener();
     }
 
     @Override

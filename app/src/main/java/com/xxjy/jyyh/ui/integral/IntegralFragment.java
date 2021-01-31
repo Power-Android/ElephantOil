@@ -46,6 +46,7 @@ import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.ProductClassBean;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
+import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
@@ -137,6 +138,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         mBinding.customerServiceView.setOnClickListener(this::onViewClicked);
         mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
         mBinding.explanationView.setOnClickListener(this::onViewClicked);
+        mBinding.searchLayout.setOnClickListener(this::onViewClicked);
 
     }
 
@@ -144,6 +146,9 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     protected void onViewClicked(View view) {
 
         switch (view.getId()) {
+            case R.id.search_layout:
+                startActivity(new Intent(getContext(), SearchActivity.class));
+                break;
             case R.id.integral_view:
 //                if (withdrawalTipsDialog == null) {
 //                    withdrawalTipsDialog = new WithdrawalTipsDialog(getContext(), mBinding.getRoot());

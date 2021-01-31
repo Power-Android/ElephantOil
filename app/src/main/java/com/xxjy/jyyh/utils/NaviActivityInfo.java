@@ -1,11 +1,16 @@
 package com.xxjy.jyyh.utils;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.xxjy.jyyh.base.BaseActivity;
+import com.xxjy.jyyh.dialog.CustomerServiceDialog;
+import com.xxjy.jyyh.ui.mine.MyCouponActivity;
+import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
+import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 
 import java.io.File;
@@ -19,18 +24,10 @@ import java.io.File;
 public class NaviActivityInfo {
     private static final String SAVE_PICTURE_ERROR_MSG = "图片保存失败，请提供存储卡读写权限";
 
-    //一键加油
-    public static final String NATIVE_RECHARGE_ADD_OIL = "native=rechargeAddOil";
-
-    //消息中心
-    public static final String NATIVE_TO_MSG_CENTER = "native=toMessageCenter";
-
-    //商城的商品分类列表(商城二级界面)
-    public static final String NATIVE_STORE_TYPE_LIST = "native=storeTypeList";
-
     //跳转加油支付结果界面
     public static final String NATIVE_TO_PAY_RESULT = "native=payResultAddOil";
-
+    //消息中心
+    public static final String NATIVE_TO_MSG_CENTER = "native=toMessageCenter";
     //显示客服帮助的弹窗
     public static final String NATIVE_SHOW_CALL_HELP = "native=customerService";
 
@@ -40,14 +37,8 @@ public class NaviActivityInfo {
     //跳转到客服打电话页面
     public static final String NATIVE_TO_HELP_DIAL_PHONE = "native=dialPhoneService";
 
-    //地址管理界面
-    public static final String NATIVE_TO_ADDRESS_MANAGE = "native=addressManagement";
-
     //优惠券列表
     public static final String NATIVE_TO_MY_COUPON = "native=couponList";
-
-    //跳转到首页
-    public static final String NATIVE_TO_ONECARD_HOME = "native=toOnecardHome";
 
     //保存图片
     public static final String NATIVE_SAVE_PICTURE = "native=savePicture";
@@ -61,102 +52,63 @@ public class NaviActivityInfo {
      */
     public static void disPathIntentFromUrl(BaseActivity activity, String urlInfo) {
         if (TextUtils.isEmpty(urlInfo)) return;
-//        if (urlInfo.contains(NATIVE_RECHARGE_ADD_OIL)) {        //一键加油
-////            if (Tool.htmlDatas != null && !TextUtils.isEmpty(Tool.htmlDatas.getOneKeyRefuel())) {
-////                urlInfo = Tool.htmlDatas.getOneKeyRefuel();
-////            }
-////            WebViewCzbOilActivity.openCzbOilebActivity(activity, urlInfo);
-//            String isOpenVip = getParams(urlInfo, "isOpenVip");
-//            if (TextUtils.isEmpty(isOpenVip)) {
-//                isOpenVip = null;
-//            }
-//            OilStationListActivity.openOilStationListAct(activity, isOpenVip);
-//        }
-////        else if (urlInfo.contains(NATIVE_RECHARGE_ONE_CARD)) {   //1号卡充值
-////            RechargeOneCardActivity.openRechargeOneCardAct(activity);
-////        }
-//        else if (urlInfo.contains(NATIVE_STORE_TYPE_LIST)) {   //商城的商品分类列表
-//            String mapClassId = getParams(urlInfo, "mapClassId");
-//            String storeId = getParams(urlInfo, "storeId");
-//            StoreTypeNewDetailActivity.openStoreProductDetail(activity, mapClassId, storeId);
-//        } else if (urlInfo.contains(NATIVE_TO_MSG_CENTER)) {    //消息中心
-//            if (activity instanceof MessageCenterActivity) return;
-//            if (Tool.checkIsLogin(activity)) {
-//                activity.startActivity(MessageCenterActivity.class);
-//            }
-//        } else if (urlInfo.contains(NATIVE_TO_PAY_RESULT)) {    //支付结果
-//            String orderNo = getParams(urlInfo, "orderNo");
-//            String orderId = getParams(urlInfo, "orderId");
-//            PayResultNewActivity.openPayResultAct(activity, orderNo, orderId);
-//        }
-//        //客服相关
-//        else if (urlInfo.contains(NATIVE_SHOW_CALL_HELP)) {
-//            String phoneNumber = getParams(urlInfo, "phoneNumber");
-//            Tool.showCallHelpDialog(activity, phoneNumber);
-//        } else if (urlInfo.contains(NATIVE_TO_HELP_CHAT)) {
-//            CallHelpDialog.toWebChatOnline(activity, "");
-//        } else if (urlInfo.contains(NATIVE_TO_HELP_DIAL_PHONE)) {
-//            String phoneNumber = getParams(urlInfo, "phoneNumber");
-//            CallHelpDialog.toDialPhoneAct(activity, phoneNumber);
-//        }
-//        //客服
-//        else if (urlInfo.contains(NATIVE_TO_ADDRESS_MANAGE)) {
-//            GoodsAddressListActivity.openAddressListAct(activity);
-//        } else if (urlInfo.contains(NATIVE_TO_MY_COUPON)) {
-//            if (Tool.checkIsLogin(activity)) {
-//                MyCouponsActivity.openMyCouponsListAct(activity);
-//            }
-//        } else if (urlInfo.contains(NATIVE_TO_ONECARD_HOME)) {
-//            String index = getParams(urlInfo, "index");
-//            if (!TextUtils.isEmpty(index)) {
-//                if (index.equals("store")) {
-//                    UiUtils.jumpToHome(activity, Tool.LOGIN_TO_STORE);
-//                    return;
-//                } else if (index.equals("mine")) {
-//                    UiUtils.jumpToHome(activity, Tool.LOGIN_TO_MY);
-//                    return;
-//                } else if (index.equals("shoppingCart")) {
-//                    UiUtils.jumpToHome(activity, Tool.LOGIN_TO_SHOPPING);
-//                    return;
-//                }
-//            }
-//            UiUtils.jumpToHome(activity, Tool.LOGIN_OUT);
-//        } else if (urlInfo.contains(NATIVE_SAVE_PICTURE)) {
-//            String imageString = getParams(urlInfo, "imageString");
-//            if (!TextUtils.isEmpty(imageString)) {
-//                try {
-//                    int indexOf = imageString.indexOf(",");
-//                    if (indexOf >= imageString.length() - 1) {
-//                        activity.showToastWarning(SAVE_PICTURE_ERROR_MSG);
-//                        return;
-//                    }
-//                    String result = imageString.substring(indexOf + 1);
-////                    byte[] bytes = Base64.decode(result, Base64.DEFAULT);
-//                    String startString = imageString.substring(0, indexOf);
-//                    byte[] bytes = EncodeUtils.base64Decode(result);
-//                    if (bytes != null) {
-//                        Bitmap.CompressFormat formats = Bitmap.CompressFormat.JPEG;
-//                        if (!TextUtils.isEmpty(startString)) {
-//                            if (startString.contains("png")) {
-//                                formats = Bitmap.CompressFormat.PNG;
-//                            }
-//                        }
-//                        File file = ImageUtils.save2Album(ImageUtils.bytes2Bitmap(bytes), formats);
-//                        if (file != null) {
-//                            activity.showToastSuccess("保存成功，图片已保存至相册");
-//                        } else {
-//                            activity.showToastWarning(SAVE_PICTURE_ERROR_MSG);
-//                        }
-//                    }
-//                } catch (Exception e) {
-//                    activity.showToastWarning(SAVE_PICTURE_ERROR_MSG);
-//                }
-//            }
-//        }
-//        //默认的
-//        else {
+    if (urlInfo.contains(NATIVE_TO_PAY_RESULT)) {    //支付结果
+            String orderNo = getParams(urlInfo, "orderNo");
+            String orderId = getParams(urlInfo, "orderId");
+            RefuelingPayResultActivity.openPayResultPage(activity, orderNo, orderId);
+        } else if (urlInfo.contains(NATIVE_TO_HELP_CHAT)||urlInfo.contains(NATIVE_SHOW_CALL_HELP)||urlInfo.contains(NATIVE_TO_HELP_DIAL_PHONE)) {
+
+        CustomerServiceDialog  customerServiceDialog = new CustomerServiceDialog(activity);
+        try {
+            customerServiceDialog.show(activity.getWindow().getDecorView().findViewById(android.R.id.content));
+        }catch (Exception e){
+
+        }
+
+        } else if (urlInfo.contains(NATIVE_TO_MSG_CENTER)) {
+
+        activity.startActivity(new Intent(activity, MessageCenterActivity.class));
+
+        } else if (urlInfo.contains(NATIVE_TO_MY_COUPON)) {
+
+        activity.startActivity(new Intent(activity, MyCouponActivity.class));
+
+        } else if (urlInfo.contains(NATIVE_SAVE_PICTURE)) {
+            String imageString = getParams(urlInfo, "imageString");
+            if (!TextUtils.isEmpty(imageString)) {
+                try {
+                    int indexOf = imageString.indexOf(",");
+                    if (indexOf >= imageString.length() - 1) {
+                        activity.showToastWarning(SAVE_PICTURE_ERROR_MSG);
+                        return;
+                    }
+                    String result = imageString.substring(indexOf + 1);
+//                    byte[] bytes = Base64.decode(result, Base64.DEFAULT);
+                    String startString = imageString.substring(0, indexOf);
+                    byte[] bytes = EncodeUtils.base64Decode(result);
+                    if (bytes != null) {
+                        Bitmap.CompressFormat formats = Bitmap.CompressFormat.JPEG;
+                        if (!TextUtils.isEmpty(startString)) {
+                            if (startString.contains("png")) {
+                                formats = Bitmap.CompressFormat.PNG;
+                            }
+                        }
+                        File file = ImageUtils.save2Album(ImageUtils.bytes2Bitmap(bytes), formats);
+                        if (file != null) {
+                            activity.showToastSuccess("保存成功，图片已保存至相册");
+                        } else {
+                            activity.showToastWarning(SAVE_PICTURE_ERROR_MSG);
+                        }
+                    }
+                } catch (Exception e) {
+                    activity.showToastWarning(SAVE_PICTURE_ERROR_MSG);
+                }
+            }
+        }
+        //默认的
+        else {
             WebViewActivity.openRealUrlWebActivity(activity, urlInfo);
-//        }
+        }
     }
 
     //从link中获取key值, 取值位置是 链接?之后的 key=value 的value值

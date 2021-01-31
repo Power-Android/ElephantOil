@@ -22,9 +22,6 @@ import rxhttp.RxHttp;
  */
 public class IntegralRepository extends BaseRepository {
 
-    public void queryIntegralBalance(){
-
-    }
     public void queryIntegralBalance(MutableLiveData<String> integralBalanceLiveData){
         addDisposable(RxHttp.postForm(ApiService.QUERY_INTEGRAL_BALANCE)
                 .asResponse(String.class)
