@@ -26,7 +26,7 @@ public class IntegralOrderListAdapter extends BaseQuickAdapter<IntegralOrderBean
                 .setText(R.id.item_status_view, item.getStatusName())
                 .setText(R.id.item_price_view, item.getFinalIntegral()+"积分+" + item.getFinalPayment()+"元")
                 .setText(R.id.item_title_view, item.getProductName());
-
+helper.addOnClickListener(R.id.cancel_order_view,R.id.continue_pay_view);
         switch (item.getStatus()) {
             case 0:
                 helper.getView(R.id.bt_layout).setVisibility(View.VISIBLE);

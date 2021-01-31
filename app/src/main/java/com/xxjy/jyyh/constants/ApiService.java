@@ -74,6 +74,8 @@ public class ApiService {
     public static final String REFUEL_ORDER_DETAILS = "api/gasPublic/refuelOrderDetails";
     //取消加油订单
     public static final String REFUEL_ORDER_CANCEL = "api/gasPublic/cancelOrder";
+    //取消订单 积分商城订单
+    public static final String PRODUCT_ORDER_CANCEL = "api/product/v1/cancelOrder";
     //查询余额
     public static final String QUERY_BALANCE = "api/user/queryBalance";
     //查询积分余额

@@ -104,7 +104,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     mBinding.tagIv.setVisibility(View.VISIBLE);
                     mBinding.statusTv.setText("支付成功");
                     mBinding.statusTv.setTextColor(getResources().getColor(R.color.color_30));
-                    mBinding.fallMoney.setText("本单优惠￥" + resultEntity.getDiscountAmount());
+                    mBinding.fallMoney.setText("本单优惠¥" + resultEntity.getDiscountAmount());
                     mBinding.tagView.setText("本单获得");
                     mBinding.integralTv.setText(resultEntity.getIntegral()+"");
                     mBinding.integralAll.setText(resultEntity.getIntegralBalance()+"");

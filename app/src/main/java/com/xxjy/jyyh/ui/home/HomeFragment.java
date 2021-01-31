@@ -62,7 +62,9 @@ import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.PayOrderParams;
+import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.TaskBean;
+import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.pay.PayQueryActivity;
 import com.xxjy.jyyh.ui.pay.PayResultActivity;
@@ -183,7 +185,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mExchangeAdapter = new HomeExchangeAdapter(R.layout.adapter_home_exchange, mExchangeList);
         mBinding.exchangeRecyclerView.setAdapter(mExchangeAdapter);
         mExchangeAdapter.setOnItemClickListener((adapter, view, position) -> {
-
+            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                @Override
+                public void onLogin() {
+                    WebViewActivity.openWebActivity((MainActivity) getActivity(), ((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink());
+                }
+            });
         });
 
         mViewModel.getHomeProduct();

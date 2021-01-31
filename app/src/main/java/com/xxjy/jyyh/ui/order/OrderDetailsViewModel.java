@@ -20,10 +20,14 @@ public class OrderDetailsViewModel extends BaseViewModel<OrderDetailsRepository>
     }
     public MutableLiveData<RefuelOrderBean> refuelOrderDetailsLiveData = new MutableLiveData<>();
     public MutableLiveData<Response> cancelOrderDetailsLiveData = new MutableLiveData<>();
+    public MutableLiveData<Response> productCancelOrderDetailsLiveData = new MutableLiveData<>();
     public void refuelOrderDetails(String orderId) {
         mRespository.refuelOrderDetails(refuelOrderDetailsLiveData, orderId);
     }
     public void cancelOrder(String orderId) {
         mRespository.cancelOrder(cancelOrderDetailsLiveData, orderId);
+    }
+    public void productCancelOrder(String orderId) {
+        mRespository.productCancelOrder(productCancelOrderDetailsLiveData, orderId);
     }
 }

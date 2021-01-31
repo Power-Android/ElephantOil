@@ -31,6 +31,7 @@ import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityOrderListBinding;
 import com.xxjy.jyyh.entity.IntegralOrderBean;
 import com.xxjy.jyyh.entity.RefuelOrderBean;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +62,22 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
 
     private int mPosition=-1;
 
+    private int type=0;
+
 
     @Override
     protected void initView() {
         mBinding.titleLayout.tvTitle.setText("订单列表");
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
         BarUtils.setStatusBarColor(this, Color.parseColor("#1676FF"));
+        type =getIntent().getIntExtra("type",0);
+        if(type==0){
+            isOilOrder=true;
+        }else{
+            isOilOrder=false;
+        }
+
+        changeBt();
         initTab();
         refuelOrderLayout = View.inflate(this, R.layout.refuel_order_list, null);
         integralOrderLayout = View.inflate(this, R.layout.refuel_order_list, null);
@@ -92,6 +103,7 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
         refuelOrderList();
         integralOrderList();
         orderDetailsViewModel = new ViewModelProvider(this).get(OrderDetailsViewModel.class);
+        mBinding.viewPager.setCurrentItem(type);
     }
 
     @Override
@@ -156,11 +168,32 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
                mPosition=position;
                 switch (view.getId()){
                     case R.id.continue_pay_view:
+                        OrderDetailsActivity.openPage(OrderListActivity.this,((RefuelOrderBean)adapter.getItem(position)).getOrderId(),true);
                         break;
                     case R.id.cancel_order_view:
                         cancelOrder(((RefuelOrderBean)adapter.getItem(position)).getOrderId());
                         break;
                 }
+            }
+        });
+        integralOrderAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+               mPosition=position;
+                switch (view.getId()){
+                    case R.id.continue_pay_view:
+                        WebViewActivity.openRealUrlWebActivity(OrderListActivity.this,((IntegralOrderBean)adapter.getItem(position)).getLink()+"&showCashier=true");
+                        break;
+                    case R.id.cancel_order_view:
+                        productCancelOrder(((IntegralOrderBean)adapter.getItem(position)).getOrderId());
+                        break;
+                }
+            }
+        });
+        integralOrderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                WebViewActivity.openRealUrlWebActivity(OrderListActivity.this,((IntegralOrderBean)adapter.getItem(position)).getLink());
             }
         });
     }
@@ -225,7 +258,18 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
             if(data.getCode()==1){
                 showToastSuccess("取消成功");
                 ((RefuelOrderBean)refuelOrderAdapter.getItem(mPosition)).setStatus(3);
+                ((RefuelOrderBean)refuelOrderAdapter.getItem(mPosition)).setStatusName("支付失败");
                 refuelOrderAdapter.notifyItemChanged(mPosition);
+            }else{
+                showToastError("取消失败");
+            }
+        });
+        orderDetailsViewModel.productCancelOrderDetailsLiveData.observe(this,data->{
+            if(data.getCode()==1){
+                showToastSuccess("取消成功");
+                ((IntegralOrderBean)integralOrderAdapter.getItem(mPosition)).setStatus(3);
+                ((IntegralOrderBean)integralOrderAdapter.getItem(mPosition)).setStatusName("兑换失败");
+                integralOrderAdapter.notifyItemChanged(mPosition);
             }else{
                 showToastError("取消失败");
             }
@@ -318,5 +362,8 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
     }
 private void cancelOrder(String orderId){
     orderDetailsViewModel.cancelOrder(orderId);
+}
+private void productCancelOrder(String orderId){
+    orderDetailsViewModel.productCancelOrder(orderId);
 }
 }

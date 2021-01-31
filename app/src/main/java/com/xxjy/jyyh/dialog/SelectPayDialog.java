@@ -1,6 +1,5 @@
 package com.xxjy.jyyh.dialog;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -14,47 +13,30 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilPayTypeAdapter;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.constants.ApiService;
-import com.xxjy.jyyh.databinding.DialogOilPayLayoutBinding;
-import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.databinding.DialogSelectPayLayoutBinding;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
-import com.xxjy.jyyh.entity.PayOrderParams;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
 
-/**
- * @author power
- * @date 1/23/21 2:29 PM
- * @project ElephantOil
- * @description:
- */
-public class OilPayDialog extends BottomSheetDialog {
-    private Context mContext;
+public class SelectPayDialog extends BottomSheetDialog {
     private BaseActivity mActivity;
-    private OilEntity.StationsBean stationsBean;
-    private int oilNoPosition, gunNoPosition;
-    private String orderId, payAmount;
+
+    private String orderId, payAmount,mTitle;
     private BottomSheetBehavior mBehavior;
-    private DialogOilPayLayoutBinding mBinding;
+    private DialogSelectPayLayoutBinding mBinding;
     private List<OilPayTypeEntity> mPayTypeList = new ArrayList<>();
     private OilPayTypeAdapter mOilPayTypeAdapter;
 
-    public OilPayDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
-                        int oilNoPosition, int gunNoPosition, String orderId, String payAmount) {
-        super(context, R.style.bottom_sheet_dialog);
-        this.mContext = context;
+    public SelectPayDialog(BaseActivity activity, String title, String orderId, String payAmount) {
+        super(activity, R.style.bottom_sheet_dialog);
         this.mActivity = activity;
-        this.stationsBean = stationsBean;
-        this.oilNoPosition = oilNoPosition;
-        this.gunNoPosition = gunNoPosition;
         this.orderId = orderId;
         this.payAmount = payAmount;
-        mBinding = DialogOilPayLayoutBinding.bind(
-                View.inflate(mContext, R.layout.dialog_oil_pay_layout, null));
+        this.mTitle = title;
+        mBinding = DialogSelectPayLayoutBinding.bind(
+                View.inflate(mActivity, R.layout.dialog_select_pay_layout, null));
         init();
         initData();
     }
@@ -72,10 +54,9 @@ public class OilPayDialog extends BottomSheetDialog {
 
     private void initData() {
         mBinding.payAmountTv.setText(payAmount);
-        mBinding.payOilInfoTv.setText(stationsBean.getGasName() + "-" +
-                stationsBean.getOilPriceList().get(oilNoPosition).getOilName());
+        mBinding.payOilInfoTv.setText(mTitle);
 
-        mBinding.payTypeRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mBinding.payTypeRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mOilPayTypeAdapter = new OilPayTypeAdapter(R.layout.adapter_oil_pay, mPayTypeList);
         mBinding.payTypeRecyclerView.setAdapter(mOilPayTypeAdapter);
         mOilPayTypeAdapter.setOnItemClickListener((adapter, view, position) -> {
@@ -100,7 +81,7 @@ public class OilPayDialog extends BottomSheetDialog {
                     }
                 }
                 if (TextUtils.isEmpty(payType)){
-                    MyToast.showInfo(mContext, "请选择支付方式");
+                    MyToast.showInfo(mActivity, "请选择支付方式");
                     return;
                 }
                 mOnItemClickedListener.onPayOrderClick(payType, orderId, payAmount);

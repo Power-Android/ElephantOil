@@ -15,8 +15,8 @@ public class UMengLoginWx {
         UMShareAPI.get(activity).getPlatformInfo(activity, SHARE_MEDIA.WEIXIN, umAuthAdapter);
     }
 
-    public static void deleteOauthWx() {
-
+    public static void deleteOauthWx(BaseActivity activity,UMAuthAdapter umAuthAdapter) {
+        UMShareAPI.get(activity).deleteOauth(activity, SHARE_MEDIA.WEIXIN, umAuthAdapter);
     }
 
     public static abstract class UMAuthAdapter implements UMAuthListener {

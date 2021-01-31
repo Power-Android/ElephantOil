@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CleanUtils;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.UserConstants;
@@ -13,6 +14,9 @@ import com.xxjy.jyyh.databinding.ActivitySettingBinding;
 import com.xxjy.jyyh.utils.DataCleanManager;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
+import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
+
+import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -74,6 +78,12 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
             case R.id.logout_view:
                 LoginHelper.loginOut(this);
                 mViewModel.logout();
+                UMengLoginWx.deleteOauthWx(this, new UMengLoginWx.UMAuthAdapter() {
+                    @Override
+                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+
+                    }
+                });
                 finish();
                 break;
         }

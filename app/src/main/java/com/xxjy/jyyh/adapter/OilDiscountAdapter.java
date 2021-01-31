@@ -36,7 +36,7 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_price_fall)
                         .setGone(R.id.item_balance_tv, false)
                         .setText(R.id.item_discount_tv, item.getFallAmount() > 0 ?
-                                "-￥" + item.getFallAmount() : "请选择加油金额")
+                                "-¥" + item.getFallAmount() : "请选择加油金额")
                         .setTextColor(R.id.item_discount_tv, item.getFallAmount() > 0 ?
                                 mContext.getResources().getColor(R.color.color_27) :
                                 mContext.getResources().getColor(R.color.color_B1))
@@ -78,9 +78,9 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
             case 3://余额
                 if (item.getBalance() > 0) {
                     helper.setImageResource(R.id.item_img_iv, R.drawable.icon_balance)
-                            .setText(R.id.item_balance_tv, "￥" + NumberUtils.format(item.getBalance(), 2))
+                            .setText(R.id.item_balance_tv, "¥" + NumberUtils.format(item.getBalance(), 2))
                             .setText(R.id.item_title_tv, "余额")
-                            .setText(R.id.item_discount_tv, item.isUseBill() ? "本次可抵扣￥" +
+                            .setText(R.id.item_discount_tv, item.isUseBill() ? "本次可抵扣¥" +
                                     NumberUtils.format(item.getBalanceDiscount(), 2) : "")
                             .setTextColor(R.id.item_discount_tv,
                                     mContext.getResources().getColor(R.color.color_27))

@@ -104,10 +104,10 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             public void onLogin() {
                 switch (view.getId()) {
                     case R.id.equity_order_layout:
-                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
+                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class).putExtra("type",1));
                         break;
                     case R.id.refueling_order_layout:
-                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
+                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class).putExtra("type",0));
                         break;
                     case R.id.customer_service_view:
                         if(customerServiceDialog==null){

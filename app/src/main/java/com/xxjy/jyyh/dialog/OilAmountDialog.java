@@ -338,10 +338,10 @@ public class OilAmountDialog extends BottomSheetDialog {
                             mBinding.literTv.setText(String.format("约%sL",
                                     multiplePriceBean.getLiter()));
                             //实付金额
-                            mBinding.currentPriceTv.setText(String.format("实付：￥%s",
+                            mBinding.currentPriceTv.setText(String.format("实付：¥%s",
                                     multiplePriceBean.getDuePrice()));
                             //优惠金额
-                            mBinding.discountPriceTv.setText(String.format("优惠合计：￥%s",
+                            mBinding.discountPriceTv.setText(String.format("优惠合计：¥%s",
                                     multiplePriceBean.getSumDiscountPrice()));
                             //抵扣余额
                             mDiscountAdapter.getData().get(3).setBalanceDiscount(
@@ -362,11 +362,11 @@ public class OilAmountDialog extends BottomSheetDialog {
             if (isPlat) {
                 mPlatCouponBean = couponBean;
                 platId = couponBean.getId();
-                mDiscountList.get(1).setPlatformDesc("-￥" + couponBean.getAmountReduce());
+                mDiscountList.get(1).setPlatformDesc("-¥" + couponBean.getAmountReduce());
             } else {
                 mBusinessCouponBean = couponBean;
                 businessAmount = couponBean.getAmountReduce();
-                mDiscountList.get(2).setPlatformDesc("-￥" + couponBean.getAmountReduce());
+                mDiscountList.get(2).setPlatformDesc("-¥" + couponBean.getAmountReduce());
             }
         }else {
             if (isPlat){

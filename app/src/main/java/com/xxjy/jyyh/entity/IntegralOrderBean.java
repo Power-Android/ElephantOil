@@ -19,6 +19,15 @@ public class IntegralOrderBean {
     private String productName;
     private int status;
     private String statusName;
+    private String link;
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     public String getCreateTime() {
         return createTime;

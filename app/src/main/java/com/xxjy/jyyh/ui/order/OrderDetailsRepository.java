@@ -25,4 +25,11 @@ public class OrderDetailsRepository extends BaseRepository {
                 .subscribe(data -> cancelOrderDetailsLiveData.postValue(data))
         );
     }
+    public void productCancelOrder(MutableLiveData<Response> productCancelOrderDetailsLiveData, String orderId){
+        addDisposable(RxHttp.postForm(ApiService.PRODUCT_ORDER_CANCEL)
+                .add("orderId",orderId)
+                .asCodeResponse(Response.class)
+                .subscribe(data -> productCancelOrderDetailsLiveData.postValue(data))
+        );
+    }
 }

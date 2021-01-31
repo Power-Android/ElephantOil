@@ -155,7 +155,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             }
             data.get(position).setSelected(true);
             adapter.notifyDataSetChanged();
-            mBinding.oilLiterTv.setText("￥" + data.get(position).getPriceYfq() + "/L");
+            mBinding.oilLiterTv.setText("¥" + data.get(position).getPriceYfq() + "/L");
             mBinding.oilNumTv.setText(data.get(position).getOilName());
             mOilCheckedList.set(0, data.get(position).getOilName() +
                     getOilKind(data.get(position).getOilType() + ""));
@@ -234,7 +234,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mStationsBean = stationsBean;
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
             mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
-            mBinding.oilLiterTv.setText("￥" + mStationsBean.getOilPriceList().get(0).getPriceYfq() + "/L");
+            mBinding.oilLiterTv.setText("¥" + mStationsBean.getOilPriceList().get(0).getPriceYfq() + "/L");
             mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(0).getOilName());
             mBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
             mBinding.invokeTv.setVisibility(mStationsBean.getIsInvoice() == 0 ? View.VISIBLE : View.GONE);

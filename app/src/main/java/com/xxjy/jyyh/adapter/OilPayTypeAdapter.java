@@ -10,7 +10,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author power
@@ -20,13 +22,16 @@ import java.util.List;
  */
 public class OilPayTypeAdapter extends BaseQuickAdapter<OilPayTypeEntity, BaseViewHolder> {
 
+    private int selectPosition = 0;
+
     public OilPayTypeAdapter(int layoutResId, @Nullable List<OilPayTypeEntity> data) {
         super(layoutResId, data);
+
     }
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, OilPayTypeEntity item) {
-        switch (item.getId()){
+        switch (item.getId()) {
             case "wxwap"://微信H5
                 helper.setImageResource(R.id.item_pay_type_iv, R.drawable.wechat_icon)
                         .setText(R.id.item_title_tv, "微信支付");
@@ -44,6 +49,19 @@ public class OilPayTypeAdapter extends BaseQuickAdapter<OilPayTypeEntity, BaseVi
                         .setText(R.id.item_title_tv, "支付宝支付");
                 break;
         }
-        helper.setChecked(R.id.item_check_box, item.isSelect());
+        if (selectPosition == helper.getAdapterPosition()) {
+            item.setSelect(true);
+            helper.setImageResource(R.id.item_check_box, R.drawable.ic_checked);
+        } else {
+            item.setSelect(false);
+            helper.setImageResource(R.id.item_check_box,  R.drawable.ic_uncheck);
+        }
+
+    }
+
+
+    public void setCheckItem(int position) {
+        this.selectPosition = position;
+        notifyDataSetChanged();
     }
 }
