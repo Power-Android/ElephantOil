@@ -1,10 +1,16 @@
 package com.xxjy.jyyh.adapter;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.base.BaseActivity;
+import com.xxjy.jyyh.entity.RecomdEntity;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
 
 import java.util.List;
 
@@ -14,15 +20,16 @@ import java.util.List;
  * @project ElephantOil
  * @description:
  */
-public class SearchRecommendAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class SearchRecommendAdapter extends BaseQuickAdapter<RecomdEntity, BaseViewHolder> {
 
-    public SearchRecommendAdapter(int layoutResId, @Nullable List<String> data) {
+    public SearchRecommendAdapter(int layoutResId, @Nullable List<RecomdEntity> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, String item) {
-
+    protected void convert(@NonNull BaseViewHolder helper, RecomdEntity item) {
+        helper.setText(R.id.item_title_tv, item.getName());
+        helper.itemView.setOnClickListener(view -> WebViewActivity.openRealUrlWebActivity((BaseActivity) mContext, item.getLink()));
     }
 
 

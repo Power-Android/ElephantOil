@@ -2,6 +2,7 @@ package com.xxjy.jyyh.ui.search;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -14,16 +15,24 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
+import com.blankj.utilcode.util.KeyboardUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.adapter.IntegralHistoryAdapter;
 import com.xxjy.jyyh.adapter.MyViewPagerAdapter;
 import com.xxjy.jyyh.adapter.SearchHistoryAdapter;
 import com.xxjy.jyyh.adapter.SearchRecommendAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivitySearchBinding;
+import com.xxjy.jyyh.dialog.QueryDialog;
+import com.xxjy.jyyh.entity.IntegralHistoryEntity;
+import com.xxjy.jyyh.entity.RecomdEntity;
+import com.xxjy.jyyh.entity.SearchHistoryEntity;
+import com.xxjy.jyyh.room.DBInstance;
 import com.xxjy.jyyh.wight.SettingLayout;
 
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -42,12 +51,16 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
     private final List<View> mList = new ArrayList<>(2);
     private View mOilView;
     private View mInterestView;
-    private List<String> mOilRecommendList = new ArrayList<>();
-    private List<String> mOilHistoryList = new ArrayList<>();
-    private List<String> mInterestRecommendList = new ArrayList<>();
-    private List<String> mInterestHistoryList = new ArrayList<>();
-    private String content = "油";
+    private List<RecomdEntity> mOilRecommendList = new ArrayList<>();
+    private List<SearchHistoryEntity> mOilHistoryList = new ArrayList<>();
+    private List<RecomdEntity> mInterestRecommendList = new ArrayList<>();
+    private List<IntegralHistoryEntity> mInterestHistoryList = new ArrayList<>();
     private int index = 0;
+    private SearchHistoryAdapter mOilHistoryAdapter;
+    private IntegralHistoryAdapter mInterestHistoryAdapter;
+    private QueryDialog mQueryDialog;
+    private SearchRecommendAdapter mOilRecommendAdapter;
+    private SearchRecommendAdapter mInterestRecommendAdapter;
 
     @Override
     protected void initView() {
@@ -60,8 +73,11 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         mInterestView = View.inflate(this, R.layout.integral_interest_layout, null);
         mList.add(mOilView);
         mList.add(mInterestView);
-        initRecommendView();
-        initInterestView();
+        initOilView();
+        initIntegralView();
+
+        initDao();
+
         MyViewPagerAdapter adapter = new MyViewPagerAdapter(titles, mList);
         mBinding.viewPager.setOffscreenPageLimit(1);
         mBinding.viewPager.setAdapter(adapter);
@@ -103,37 +119,51 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         });
         mBinding.indicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(mBinding.indicator, mBinding.viewPager);
+
+        mViewModel.getRecomnd("2");//2油站热门推荐 1权益热门推荐
+        mViewModel.getRecomnd("1");
+    }
+
+    private void initDao() {
+        mOilHistoryList = DBInstance.getInstance().getSearchHistory();
+        if (mOilHistoryList != null && mOilHistoryList.size() > 0){
+            mOilHistoryAdapter.setNewData(mOilHistoryList);
+            mOilHistoryAdapter.notifyDataSetChanged();
+        }
+        mInterestHistoryList = DBInstance.getInstance().getSearchIntegralHistory();
+        if (mInterestHistoryList != null && mInterestHistoryList.size() > 0){
+            mInterestHistoryAdapter.setNewData(mInterestHistoryList);
+            mInterestHistoryAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
      * 初始化搜油站view
      */
-    private void initRecommendView() {
-        for (int i = 0; i < 10; i++) {
-            mOilRecommendList.add("");
-        }
+    private void initOilView() {
         RecyclerView oilRecommendRecyclerView = mOilView.findViewById(R.id.oil_recommend_recycler_view);
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
         flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
         oilRecommendRecyclerView.setLayoutManager(flexboxLayoutManager);
-        SearchRecommendAdapter oilRecommendAdapter =
-                new SearchRecommendAdapter(R.layout.adapter_search_tag, mOilRecommendList);
-        oilRecommendRecyclerView.setAdapter(oilRecommendAdapter);
+        mOilRecommendAdapter = new SearchRecommendAdapter(R.layout.adapter_search_recommend, mOilRecommendList);
+        oilRecommendRecyclerView.setAdapter(mOilRecommendAdapter);
 
-        for (int i = 0; i < 10; i++) {
-            mOilHistoryList.add("");
-        }
         RecyclerView oilHistoryRecyclerView = mOilView.findViewById(R.id.oil_history_recycler_view);
         FlexboxLayoutManager flexboxLayoutManager1 = new FlexboxLayoutManager(this);
         flexboxLayoutManager1.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager1.setJustifyContent(JustifyContent.FLEX_START);
         flexboxLayoutManager1.setAlignItems(AlignItems.FLEX_START);
         oilHistoryRecyclerView.setLayoutManager(flexboxLayoutManager1);
-        SearchHistoryAdapter oilHistoryAdapter =
-                new SearchHistoryAdapter(R.layout.adapter_search_tag, mOilHistoryList);
-        oilHistoryRecyclerView.setAdapter(oilHistoryAdapter);
+        mOilHistoryAdapter = new SearchHistoryAdapter(R.layout.adapter_search_tag, mOilHistoryList);
+        oilHistoryRecyclerView.setAdapter(mOilHistoryAdapter);
+        mOilHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
+            intent.putExtra("type", index == 0 ? "1" : "2");
+            intent.putExtra("content", mBinding.searchEt.getText().toString());
+            startActivity(intent);
+        });
 
         mOilView.findViewById(R.id.oil_history_delete_iv).setOnClickListener(this::onViewClicked);
     }
@@ -141,38 +171,38 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
     /**
      * 初始化搜权益view
      */
-    private void initInterestView() {
-        for (int i = 0; i < 10; i++) {
-            mInterestRecommendList.add("");
-        }
+    private void initIntegralView() {
         RecyclerView interestRecommendRecyclerView = mInterestView.findViewById(R.id.interest_recycler_view);
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
         flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
         interestRecommendRecyclerView.setLayoutManager(flexboxLayoutManager);
-        SearchRecommendAdapter interestRecommendAdapter =
-                new SearchRecommendAdapter(R.layout.adapter_search_tag, mInterestRecommendList);
-        interestRecommendRecyclerView.setAdapter(interestRecommendAdapter);
+        mInterestRecommendAdapter = new SearchRecommendAdapter(R.layout.adapter_search_recommend, mInterestRecommendList);
+        interestRecommendRecyclerView.setAdapter(mInterestRecommendAdapter);
 
-        for (int i = 0; i < 10; i++) {
-            mInterestHistoryList.add("");
-        }
+
         RecyclerView interestHistoryRecyclerView = mInterestView.findViewById(R.id.interest_history_recycler_view);
         FlexboxLayoutManager flexboxLayoutManager1 = new FlexboxLayoutManager(this);
         flexboxLayoutManager1.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager1.setJustifyContent(JustifyContent.FLEX_START);
         flexboxLayoutManager1.setAlignItems(AlignItems.FLEX_START);
         interestHistoryRecyclerView.setLayoutManager(flexboxLayoutManager1);
-        SearchHistoryAdapter interestHistoryAdapter =
-                new SearchHistoryAdapter(R.layout.adapter_search_tag, mInterestHistoryList);
-        interestHistoryRecyclerView.setAdapter(interestHistoryAdapter);
+        mInterestHistoryAdapter = new IntegralHistoryAdapter(R.layout.adapter_search_tag, mInterestHistoryList);
+        interestHistoryRecyclerView.setAdapter(mInterestHistoryAdapter);
+        mInterestHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
+            intent.putExtra("type", index == 0 ? "1" : "2");
+            intent.putExtra("content", mBinding.searchEt.getText().toString());
+            startActivity(intent);
+        });
 
         mInterestView.findViewById(R.id.interest_history_delete_iv).setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void initListener() {
+        mBinding.backIv.setOnClickListener(this::onViewClicked);
         mBinding.searchTv.setOnClickListener(this::onViewClicked);
         mBinding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -208,20 +238,47 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                     showToastInfo("请输入搜索内容");
                     return;
                 }
+                KeyboardUtils.hideSoftInput(this);
+                if (index == 0){
+                    DBInstance.getInstance().insertData(mBinding.searchEt.getText().toString());
+                }else {
+                    DBInstance.getInstance().insertIntegralData(mBinding.searchEt.getText().toString());
+                }
+                initDao();
                 Intent intent = new Intent(this, SearchResultActivity.class);
                 intent.putExtra("type", index == 0 ? "1" : "2");
                 intent.putExtra("content", mBinding.searchEt.getText().toString());
                 startActivity(intent);
                 break;
             case R.id.oil_history_delete_iv://油站的历史记录删除
+                mQueryDialog = new QueryDialog(this);
+                mQueryDialog.show();
+                mQueryDialog.setOnConfirmListener(() -> {
+                    DBInstance.getInstance().deleteAllData();
+                    mOilHistoryList.clear();
+                    mOilHistoryAdapter.notifyDataSetChanged();
+                });
                 break;
             case R.id.interest_history_delete_iv://权益的历史记录删除
+                mQueryDialog = new QueryDialog(this);
+                mQueryDialog.show();
+                mQueryDialog.setOnConfirmListener(() -> {
+                    DBInstance.getInstance().deleteAllData();
+                    mInterestHistoryList.clear();
+                    mInterestHistoryAdapter.notifyDataSetChanged();
+                });
                 break;
         }
     }
 
     @Override
     protected void dataObservable() {
+        mViewModel.recomdLiveData.observe(this, recomdEntities -> {
+            mOilRecommendAdapter.setNewData(recomdEntities);
+        });
 
+        mViewModel.recomdLiveData1.observe(this, recomdEntities -> {
+            mInterestRecommendAdapter.setNewData(recomdEntities);
+        });
     }
 }

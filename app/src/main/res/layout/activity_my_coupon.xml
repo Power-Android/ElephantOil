@@ -5,103 +5,105 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.mine.MyCouponActivity">
-<View
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_135"
-    android:background="@color/colorAccent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_135"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-    <include
-        android:id="@+id/title_layout"
-        layout="@layout/top_title_blue_layout"
-       />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-<!--    <com.qmuiteam.qmui.widget.tab.QMUITabSegment-->
-<!--        android:id="@+id/tab_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/dp_40"-->
-<!--        android:layout_marginTop="@dimen/dp_10"-->
-<!--       />-->
+        <include
+            android:id="@+id/title_layout"
+            layout="@layout/top_title_blue_layout" />
+
+        <!--    <com.qmuiteam.qmui.widget.tab.QMUITabSegment-->
+        <!--        android:id="@+id/tab_view"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="@dimen/dp_40"-->
+        <!--        android:layout_marginTop="@dimen/dp_10"-->
+        <!--       />-->
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/indicator"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_44"
             app:layout_constraintTop_toBottomOf="@+id/search_cl" />
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-           />
-<!--    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:qmui_radiusTopLeft="@dimen/dp_18"-->
-<!--        app:qmui_radiusTopRight="@dimen/dp_18"-->
-<!--        app:qmui_backgroundColor="@color/color_F5"-->
-<!--        android:orientation="vertical"-->
-<!--        >-->
+            android:layout_height="match_parent" />
+        <!--    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="match_parent"-->
+        <!--        app:qmui_radiusTopLeft="@dimen/dp_18"-->
+        <!--        app:qmui_radiusTopRight="@dimen/dp_18"-->
+        <!--        app:qmui_backgroundColor="@color/color_F5"-->
+        <!--        android:orientation="vertical"-->
+        <!--        >-->
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/tab_layout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="@dimen/dp_11"-->
-<!--            android:padding="@dimen/dp_6"-->
-<!--            android:gravity="center"-->
-<!--            android:orientation="horizontal">-->
-<!--            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton-->
-<!--                android:id="@+id/can_use_bt"-->
-<!--                android:layout_width="@dimen/dp_130"-->
-<!--                android:layout_height="@dimen/dp_30"-->
-<!--                app:qmui_borderColor="@color/colorAccent"-->
-<!--                app:qmui_borderWidth="@dimen/dp_1"-->
-<!--                app:qmui_backgroundColor="@color/color_F5"-->
-<!--                app:qmui_radius="@dimen/dp_20"-->
-<!--                android:layout_margin="@dimen/dp_6"-->
-<!--                android:text="可使用"-->
-<!--                android:textColor="@color/colorAccent"-->
-<!--                android:gravity="center"-->
-<!--                android:textSize="@dimen/sp_14"-->
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/tab_layout"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="@dimen/dp_11"-->
+        <!--            android:padding="@dimen/dp_6"-->
+        <!--            android:gravity="center"-->
+        <!--            android:orientation="horizontal">-->
+        <!--            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton-->
+        <!--                android:id="@+id/can_use_bt"-->
+        <!--                android:layout_width="@dimen/dp_130"-->
+        <!--                android:layout_height="@dimen/dp_30"-->
+        <!--                app:qmui_borderColor="@color/colorAccent"-->
+        <!--                app:qmui_borderWidth="@dimen/dp_1"-->
+        <!--                app:qmui_backgroundColor="@color/color_F5"-->
+        <!--                app:qmui_radius="@dimen/dp_20"-->
+        <!--                android:layout_margin="@dimen/dp_6"-->
+        <!--                android:text="可使用"-->
+        <!--                android:textColor="@color/colorAccent"-->
+        <!--                android:gravity="center"-->
+        <!--                android:textSize="@dimen/sp_14"-->
 
-<!--                />-->
-<!--            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton-->
-<!--                android:id="@+id/no_can_use_bt"-->
-<!--                android:layout_width="@dimen/dp_130"-->
-<!--                android:layout_height="@dimen/dp_30"-->
-<!--                app:qmui_borderColor="@color/color_F5"-->
-<!--                app:qmui_borderWidth="@dimen/dp_1"-->
-<!--                app:qmui_backgroundColor="@color/color_F5"-->
-<!--                app:qmui_radius="@dimen/dp_20"-->
-<!--                android:layout_margin="@dimen/dp_6"-->
-<!--                android:text="不可用"-->
-<!--                android:textColor="@color/color_58"-->
-<!--                android:gravity="center"-->
-<!--                android:textSize="@dimen/sp_14"-->
-<!--                />-->
-<!--        </LinearLayout>-->
+        <!--                />-->
+        <!--            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton-->
+        <!--                android:id="@+id/no_can_use_bt"-->
+        <!--                android:layout_width="@dimen/dp_130"-->
+        <!--                android:layout_height="@dimen/dp_30"-->
+        <!--                app:qmui_borderColor="@color/color_F5"-->
+        <!--                app:qmui_borderWidth="@dimen/dp_1"-->
+        <!--                app:qmui_backgroundColor="@color/color_F5"-->
+        <!--                app:qmui_radius="@dimen/dp_20"-->
+        <!--                android:layout_margin="@dimen/dp_6"-->
+        <!--                android:text="不可用"-->
+        <!--                android:textColor="@color/color_58"-->
+        <!--                android:gravity="center"-->
+        <!--                android:textSize="@dimen/sp_14"-->
+        <!--                />-->
+        <!--        </LinearLayout>-->
 
-<!--        <com.scwang.smart.refresh.layout.SmartRefreshLayout-->
-<!--            android:id="@+id/refresh_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--           >-->
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/recycler_view"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:background="@color/color_F5"-->
-<!--                android:layout_marginRight="@dimen/dp_20"-->
-<!--                android:layout_marginLeft="@dimen/dp_20"/>-->
-<!--        </com.scwang.smart.refresh.layout.SmartRefreshLayout>-->
-<!--    </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>-->
+        <!--        <com.scwang.smart.refresh.layout.SmartRefreshLayout-->
+        <!--            android:id="@+id/refresh_view"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--           >-->
+        <!--            <androidx.recyclerview.widget.RecyclerView-->
+        <!--                android:id="@+id/recycler_view"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:background="@color/color_F5"-->
+        <!--                android:layout_marginRight="@dimen/dp_20"-->
+        <!--                android:layout_marginLeft="@dimen/dp_20"/>-->
+        <!--        </com.scwang.smart.refresh.layout.SmartRefreshLayout>-->
+        <!--    </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>-->
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

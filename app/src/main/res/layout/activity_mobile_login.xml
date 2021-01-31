@@ -154,7 +154,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/dp_22"
                         android:layout_marginTop="@dimen/dp_7"
-                        android:onClick="@{onClick}"
                         android:orientation="horizontal"
                         android:paddingTop="@dimen/dp_4"
                         android:paddingBottom="@dimen/dp_4">
@@ -220,7 +219,6 @@
                         android:layout_marginRight="@dimen/dp_29"
                         android:background="@drawable/selector_btn_login_one_key_bg_state"
                         android:enabled="false"
-                        android:onClick="@{onClick}"
                         android:text="登录"
                         android:gravity="center"
                         android:textColor="@color/selector_btn_login_in_enabled_text_color"

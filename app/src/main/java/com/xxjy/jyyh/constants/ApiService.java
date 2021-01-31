@@ -106,5 +106,7 @@ public class ApiService {
     public static final String PAY_ORDER_RESULT = "api/gasPublic/refuelPayOrderResult";
     //搜索权益
     public static final String QUERY_PRODUCTS_BY_NAME = "api/product/v1/queryProductsByName";
+    //热门搜索
+    public static final String HOT_SEARCH = "api/product/v1/hotSearch";
 
 }

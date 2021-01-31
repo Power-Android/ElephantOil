@@ -9,3 +9,6 @@
 local.properties
 /.idea/
 
+/app/release/
+app/mapping.txt
+app/seeds.txt

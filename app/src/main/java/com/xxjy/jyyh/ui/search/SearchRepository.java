@@ -1,11 +1,13 @@
 package com.xxjy.jyyh.ui.search;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.entity.ProductBean;
+import com.xxjy.jyyh.entity.RecomdEntity;
 
 import java.util.List;
 
@@ -28,6 +30,22 @@ public class SearchRepository extends BaseRepository {
                 .add(Constants.PAGE_SIZE, pageSize)
                 .asResponseList(ProductBean.class)
                 .subscribe(productBeans -> intergraLiveData.postValue(productBeans))
+        );
+    }
+
+    public void getRecomnd(String type, MutableLiveData<List<RecomdEntity>> recomdLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.HOT_SEARCH)
+                .add("type", type)
+                .asResponseList(RecomdEntity.class)
+                .subscribe(recomdEntities -> recomdLiveData.postValue(recomdEntities))
+        );
+    }
+
+    public void getRecomnd1(String type, MutableLiveData<List<RecomdEntity>> recomdLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.HOT_SEARCH)
+                .add("type", type)
+                .asResponseList(RecomdEntity.class)
+                .subscribe(recomdEntities -> recomdLiveData.postValue(recomdEntities))
         );
     }
 }
