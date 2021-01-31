@@ -199,8 +199,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     break;
             }
 
-            if(isContinuePay){
-                showPayDialog(refuelOrderBean.getProductName(),refuelOrderBean.getOrderId(),refuelOrderBean.getPayAmount());
+            if(isContinuePay&&data.getStatus()==0){
+                    showPayDialog(refuelOrderBean.getProductName(),refuelOrderBean.getOrderId(),refuelOrderBean.getPayAmount());
             }
         });
 
