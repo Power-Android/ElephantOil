@@ -25,6 +25,7 @@ import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentOilBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
+import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.dialog.SelectDistanceDialog;
 import com.xxjy.jyyh.dialog.SelectOilNumDialog;
 import com.xxjy.jyyh.entity.BannerBean;
@@ -36,6 +37,7 @@ import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.StatusBarUtil;
+import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
@@ -89,6 +91,24 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             Intent intent = new Intent(mContext, OilDetailActivity.class);
             intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
             startActivity(intent);
+        });
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                List<OilEntity.StationsBean> data = adapter.getData();
+                switch (view.getId()){
+                    case R.id.navigation_ll:
+                        if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                            NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
+                                    data.get(position).getStationLatitude(), data.get(position).getStationLongitude(),
+                                    data.get(position).getGasName());
+                            navigationDialog.show();
+                        } else {
+                            showToastWarning("您当前未安装地图软件，请先安装");
+                        }
+                        break;
+                }
+            }
         });
 
         mBinding.msgBanner.setAdapter(new TopLineAdapter(new ArrayList<>(), true))

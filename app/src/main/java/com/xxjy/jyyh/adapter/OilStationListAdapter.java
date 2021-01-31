@@ -81,7 +81,7 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
                 addTagView(mContext, item.isIsSign(), lab.getTagName(), (QMUIFloatLayout) helper.getView(R.id.float_layout));
             }
         }
-
+helper.addOnClickListener(R.id.navigation_ll);
 
 
     }
