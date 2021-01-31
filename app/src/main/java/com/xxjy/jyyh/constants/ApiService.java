@@ -108,5 +108,7 @@ public class ApiService {
     public static final String QUERY_PRODUCTS_BY_NAME = "api/product/v1/queryProductsByName";
     //热门搜索
     public static final String HOT_SEARCH = "api/product/v1/hotSearch";
+    //查询油站距离
+    public static final String GET_OIL_DISTANCE = "api/gasPublic/getDistance";
 
 }

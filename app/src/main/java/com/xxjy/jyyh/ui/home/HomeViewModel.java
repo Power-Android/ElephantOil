@@ -3,12 +3,14 @@ package com.xxjy.jyyh.ui.home;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
+import com.xxjy.jyyh.entity.OilDistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.TaskBean;
@@ -28,6 +30,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<List<TaskBean>> refuelOilLiveData = new MutableLiveData<>();
     public MutableLiveData<List<HomeProductEntity.FirmProductsVoBean>> productLiveData = new MutableLiveData<>();
     public MutableLiveData<PayOrderEntity> payOrderLiveData = new MutableLiveData<>();
+    public MutableLiveData<OilDistanceEntity> distanceLiveData = new MutableLiveData<>();
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -55,5 +58,9 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void payOrder(String payType, String orderId, String payAmount) {
         mRespository.payOrder(payType, orderId, payAmount, payOrderLiveData);
+    }
+
+    public void checkDistance(String gasId) {
+        mRespository.checkDistance(gasId, distanceLiveData);
     }
 }

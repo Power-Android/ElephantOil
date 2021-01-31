@@ -38,6 +38,7 @@ import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityOilDetailBinding;
 import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
+import com.xxjy.jyyh.dialog.LocationTipsDialog;
 import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.dialog.OilAmountDialog;
 import com.xxjy.jyyh.dialog.OilCouponDialog;
@@ -83,13 +84,15 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     //是否需要跳转支付确认页
     private boolean shouldJump = false;
     private PayOrderEntity mPayOrderEntity;
+    private boolean isFar = false;//油站是否在距离内
+    private GasStationLocationTipsDialog mGasStationTipsDialog;
+    private LocationTipsDialog mLocationTipsDialog;
 
     /**
-     * @param orderEntity
-     * 消息事件：支付后跳转支付确认页
+     * @param orderEntity 消息事件：支付后跳转支付确认页
      */
     @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_PAY_QUERY, sticky = true)
-    public void onEvent(PayOrderEntity orderEntity){
+    public void onEvent(PayOrderEntity orderEntity) {
         showJump(orderEntity);
     }
 
@@ -216,17 +219,21 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     @Override
     protected void dataObservable() {
         mHomeViewModel.locationLiveData.observe(this, locationEntity -> {
-            UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
-            UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
-            DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
-            DPoint p2 = new DPoint(mLat, mLng);
-            float distance = CoordinateConverter.calculateLineDistance(p, p2);
-            if (distance > 100) {
-                mLng = locationEntity.getLng();
-                mLat = locationEntity.getLat();
-                LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
-                //首页油站
-                mViewModel.getOilDetail(mGasId, mLat, mLng);
+            if (locationEntity.isSuccess()) {
+                UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
+                UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
+                DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
+                DPoint p2 = new DPoint(mLat, mLng);
+                float distance = CoordinateConverter.calculateLineDistance(p, p2);
+                if (distance > 100) {
+                    mLng = locationEntity.getLng();
+                    mLat = locationEntity.getLat();
+                    LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
+                    //首页油站
+                    mViewModel.getOilDetail(mGasId, mLat, mLng);
+                }
+            } else {
+                showFailLocation();
             }
         });
 
@@ -257,12 +264,14 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mOilNumList = mStationsBean.getOilPriceList();
             mOilNumList.get(0).setSelected(true);
             mOilNumAdapter.setNewData(mOilNumList);
+
+            mHomeViewModel.checkDistance(mStationsBean.getGasId());
         });
 
         //支付结果回调
         mHomeViewModel.payOrderLiveData.observe(this, payOrderEntity -> {
-            if (payOrderEntity.getResult() == 0){//支付未完成
-                switch (payOrderEntity.getPayType()){
+            if (payOrderEntity.getResult() == 0) {//支付未完成
+                switch (payOrderEntity.getPayType()) {
                     case PayTypeConstants.PAY_TYPE_WEIXIN://微信H5
                         WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
                         break;
@@ -291,10 +300,18 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                 //                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
                 mPayOrderEntity = payOrderEntity;
                 shouldJump = true;
-            }else if (payOrderEntity.getResult() == 1){//支付成功
+            } else if (payOrderEntity.getResult() == 1) {//支付成功
                 jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
-            }else {
+            } else {
                 showToastWarning(payOrderEntity.getMsg());
+            }
+        });
+
+        mHomeViewModel.distanceLiveData.observe(this, oilDistanceEntity -> {
+            if (oilDistanceEntity.isHere()) {
+                isFar = false;
+            } else {
+                isFar = true;
             }
         });
     }
@@ -303,19 +320,23 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         //枪号dialog
         mOilGunDialog = new OilGunDialog(this, stationsBean, oilNoPosition);
         mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
-            List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
-            for (int i = 0; i < data.size(); i++) {
-                data.get(i).setSelected(false);
+            if (isFar){
+                showChoiceOil(stationsBean.getGasName(), view);
+            }else {
+                List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
+                for (int i = 0; i < data.size(); i++) {
+                    data.get(i).setSelected(false);
+                }
+                data.get(position).setSelected(true);
+                adapter.notifyDataSetChanged();
+                if (mOilCheckedList.size() <= 1) {
+                    mOilCheckedList.add(1, data.get(position).getGunNo() + "号枪");
+                } else {
+                    mOilCheckedList.set(1, data.get(position).getGunNo() + "号枪");
+                }
+                mOilCheckedAdapter.notifyDataSetChanged();
+                showAmountDialog(stationsBean, oilNoPosition, position);
             }
-            data.get(position).setSelected(true);
-            adapter.notifyDataSetChanged();
-            if (mOilCheckedList.size() <= 1) {
-                mOilCheckedList.add(1, data.get(position).getGunNo() + "号枪");
-            } else {
-                mOilCheckedList.set(1, data.get(position).getGunNo() + "号枪");
-            }
-            mOilCheckedAdapter.notifyDataSetChanged();
-            showAmountDialog(stationsBean, oilNoPosition, position);
         });
 
         mOilGunDialog.show();
@@ -336,7 +357,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
             @Override
             public void onCreateOrder(View view, String orderId, String payAmount) {
-                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount, view);
+//                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount, view);
+                showPayDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount);
             }
         });
 
@@ -393,7 +415,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 //                                mBinding.getRoot(), "成都加油站");
 //                gasStationLocationTipsDialog.show();
                 List<OilPayTypeEntity> data = adapter.getData();
-                for (OilPayTypeEntity item: data) {
+                for (OilPayTypeEntity item : data) {
                     item.setSelect(false);
                 }
                 data.get(position).setSelect(true);
@@ -412,6 +434,48 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         });
 
         mOilPayDialog.show();
+    }
+
+    private void showFailLocation() {
+        mLocationTipsDialog = new LocationTipsDialog(this, mBinding.titleTv);
+        mLocationTipsDialog.setOnClickListener(view -> {
+            switch (view.getId()) {
+                case R.id.location_agin:
+                    requestPermission();
+                    break;
+                case R.id.all_oil:
+                    BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT);
+                    break;
+            }
+        });
+        mLocationTipsDialog.show();
+    }
+
+    private void showChoiceOil(String stationName, View view) {
+        mGasStationTipsDialog = new GasStationLocationTipsDialog(this, view, stationName);
+        mGasStationTipsDialog.setOnClickListener(view1 -> {
+            switch (view1.getId()){
+                case R.id.select_agin://重新选择
+                    closeDialog();
+                    break;
+                case R.id.navigation_tv://导航过去
+                    if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                        NavigationDialog navigationDialog = new NavigationDialog(this,
+                                mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
+                                mStationsBean.getGasName());
+                        closeDialog();
+                        navigationDialog.show();
+                    } else {
+                        showToastWarning("您当前未安装地图软件，请先安装");
+                    }
+                    break;
+                case R.id.continue_view://继续支付
+                    isFar = false;
+                    break;
+            }
+
+        });
+        mGasStationTipsDialog.show();
     }
 
     private String getOilKind(String oilType) {
@@ -438,25 +502,31 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     }
 
     private void closeDialog() {
-        if (mOilGunDialog != null){
+        if (mOilGunDialog != null) {
             mOilGunDialog.dismiss();
             mOilGunDialog = null;
         }
-        if (mOilAmountDialog != null){
+        if (mOilAmountDialog != null) {
             mOilAmountDialog.dismiss();
             mOilAmountDialog = null;
         }
-        if (mOilCouponDialog != null){
+        if (mOilCouponDialog != null) {
             mOilCouponDialog.dismiss();
             mOilCouponDialog = null;
         }
-        if (mOilTipsDialog != null){
+        if (mOilTipsDialog != null) {
             mOilTipsDialog.dismiss();
             mOilTipsDialog = null;
         }
-        if (mOilPayDialog != null){
+        if (mOilPayDialog != null) {
             mOilPayDialog.dismiss();
             mOilPayDialog = null;
+        }
+        if (mLocationTipsDialog != null){
+            mLocationTipsDialog = null;
+        }
+        if (mGasStationTipsDialog != null){
+            mGasStationTipsDialog = null;
         }
 
         //关掉以后重新刷新数据,否则再次打开时上下选中不一致

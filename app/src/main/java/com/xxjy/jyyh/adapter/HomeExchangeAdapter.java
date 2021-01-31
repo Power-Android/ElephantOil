@@ -32,6 +32,6 @@ public class HomeExchangeAdapter extends BaseQuickAdapter<HomeProductEntity.Firm
                 .setText(R.id.item_integral_tv, item.getRedeemPrice() == 0 ?
                         item.getRedeemPoint() + "积分" :
                         item.getRedeemPoint() + "积分 + " + item.getRedeemPrice() + "元")
-                .setText(R.id.item_sale_tv, "已兑换" + item.getSalesNum() + "件");
+                .setText(R.id.sell_num_view, "已兑换" + item.getSalesNum() + "件");
     }
 }

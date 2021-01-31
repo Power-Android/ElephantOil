@@ -54,10 +54,16 @@ public class LocationTipsDialog {
                     .skinManager(QMUISkinManager.defaultInstance(mContext));
 
         }
-        mPopup.onBlankClick(new QMUIFullScreenPopup.OnBlankClickListener() {
-            @Override
-            public void onBlankClick(QMUIFullScreenPopup popup) {
-                popup.dismiss();
+        mPopup.onBlankClick(popup -> popup.dismiss());
+
+        mBinding.locationAgin.setOnClickListener(view -> {
+            if (mOnClickListener != null){
+                mOnClickListener.onClick(view);
+            }
+        });
+        mBinding.allOil.setOnClickListener(view -> {
+            if (mOnClickListener != null){
+                mOnClickListener.onClick(view);
             }
         });
     }
@@ -69,7 +75,7 @@ public class LocationTipsDialog {
     }
 
     public interface OnClickListener{
-        void onClick(boolean isConfirm);
+        void onClick(View view);
     }
 
     private OnClickListener mOnClickListener;

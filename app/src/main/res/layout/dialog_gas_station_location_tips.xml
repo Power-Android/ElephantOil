@@ -54,6 +54,8 @@
             android:layout_marginTop="@dimen/dp_22"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_5"
             app:qmui_borderWidth="@dimen/dp_1"
             app:qmui_radius="@dimen/dp_6"
             app:qmui_borderColor="@color/colorAccent"
@@ -91,12 +93,13 @@
                 app:qmui_backgroundColor="@color/colorAccent"
                 >
                 <TextView
+                    android:id="@+id/select_agin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_16"
                     android:textColor="@color/white"
                     android:layout_centerInParent="true"
-                    android:text="重新授权"
+                    android:text="重新选择"
                     />
             </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
             <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
@@ -109,12 +112,13 @@
                 app:qmui_backgroundColor="@color/color_D0"
                 >
                 <TextView
+                    android:id="@+id/navigation_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_16"
                     android:textColor="@color/white"
                     android:layout_centerInParent="true"
-                    android:text="查看全部油站"
+                    android:text="导航过去"
                     />
             </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
 

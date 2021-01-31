@@ -12,6 +12,15 @@ public class LocationEntity {
     private String city;        //市
     private String district;    //区
     private String address;     //地址
+    private boolean isSuccess;
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(boolean success) {
+        isSuccess = success;
+    }
 
     public double getLat() {
         return mLat;

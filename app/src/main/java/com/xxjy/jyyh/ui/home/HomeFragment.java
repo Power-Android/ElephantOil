@@ -49,6 +49,7 @@ import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentHomeBinding;
 import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
+import com.xxjy.jyyh.dialog.LocationTipsDialog;
 import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.dialog.OilAmountDialog;
 import com.xxjy.jyyh.dialog.OilCouponDialog;
@@ -62,6 +63,7 @@ import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
+import com.xxjy.jyyh.entity.OilDistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
@@ -117,15 +119,17 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     //是否需要跳转支付确认页
     private boolean shouldJump = false;
     private PayOrderEntity mPayOrderEntity;
+    private boolean isFar = false;//油站是否在距离内
+    private GasStationLocationTipsDialog mGasStationTipsDialog;
+    private LocationTipsDialog mLocationTipsDialog;
 
     private BannerViewModel bannerViewModel;
 
     /**
-     * @param orderEntity
-     * 消息事件：支付后跳转支付确认页
+     * @param orderEntity 消息事件：支付后跳转支付确认页
      */
     @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_PAY_QUERY, sticky = true)
-    public void onEvent(PayOrderEntity orderEntity){
+    public void onEvent(PayOrderEntity orderEntity) {
         showJump(orderEntity);
     }
 
@@ -335,19 +339,22 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     @Override
     protected void dataObservable() {
         mViewModel.locationLiveData.observe(this, locationEntity -> {
-            UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
-            UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
-            DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
-            DPoint p2 = new DPoint(mLat, mLng);
-            mBinding.addressTv.setText(locationEntity.getAddress());
-            float distance = CoordinateConverter.calculateLineDistance(p, p2);
-            if (distance > 100) {
-                mLng = locationEntity.getLng();
-                mLat = locationEntity.getLat();
-                LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
-                //首页油站
-                mViewModel.getHomeOil(mLat, mLng);
-
+            if (locationEntity.isSuccess()) {
+                UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
+                UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
+                DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
+                DPoint p2 = new DPoint(mLat, mLng);
+                mBinding.addressTv.setText(locationEntity.getAddress());
+                float distance = CoordinateConverter.calculateLineDistance(p, p2);
+                if (distance > 100) {
+                    mLng = locationEntity.getLng();
+                    mLat = locationEntity.getLat();
+                    LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
+                    //首页油站
+                    mViewModel.getHomeOil(mLat, mLng);
+                }
+            } else {
+                showFailLocation();
             }
         });
 
@@ -380,9 +387,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mViewModel.getOftenOils();
             }
             //加油任务
-//            mViewModel.getRefuelJob(mStationsBean.getGasId());
-            // TODO: 2021/1/30  测试
-            mViewModel.getRefuelJob("DH000011510");
+            mViewModel.getRefuelJob(mStationsBean.getGasId());
+//            mViewModel.getRefuelJob("DH000011510");
+            mViewModel.checkDistance(mStationsBean.getGasId());
         });
 
         //常去油站
@@ -504,6 +511,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
 
+        mViewModel.distanceLiveData.observe(this, oilDistanceEntity -> {
+            if (oilDistanceEntity.isHere()) {
+                isFar = false;
+            } else {
+                isFar = true;
+            }
+        });
+
     }
 
     private void showNumDialog(OilEntity.StationsBean stationsBean) {
@@ -529,14 +544,18 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         //枪号dialog
         mOilGunDialog = new OilGunDialog(mContext, stationsBean, oilNoPosition);
         mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
-            List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
-            for (int i = 0; i < data.size(); i++) {
-                data.get(i).setSelected(false);
-            }
-            data.get(position).setSelected(true);
-            adapter.notifyDataSetChanged();
+            if (isFar) {
+                showChoiceOil(stationsBean.getGasName(), view);
+            } else {
+                List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
+                for (int i = 0; i < data.size(); i++) {
+                    data.get(i).setSelected(false);
+                }
+                data.get(position).setSelected(true);
+                adapter.notifyDataSetChanged();
 
-            showAmountDialog(stationsBean, oilNoPosition, position);
+                showAmountDialog(stationsBean, oilNoPosition, position);
+            }
         });
 
         mOilGunDialog.show();
@@ -557,7 +576,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
             @Override
             public void onCreateOrder(View view, String orderId, String payAmount) {
-                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount, view);
+//                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount, view);
+                showPayDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount);
             }
         });
 
@@ -612,7 +632,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //                        new GasStationLocationTipsDialog(getContext(), mBinding.getRoot(), "成都加油站");
 //                gasStationLocationTipsDialog.show();
                 List<OilPayTypeEntity> data = adapter.getData();
-                for (OilPayTypeEntity item: data) {
+                for (OilPayTypeEntity item : data) {
                     item.setSelect(false);
                 }
                 data.get(position).setSelect(true);
@@ -633,6 +653,48 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilPayDialog.show();
     }
 
+    private void showFailLocation() {
+        mLocationTipsDialog = new LocationTipsDialog(mContext, mBinding.locationIv);
+        mLocationTipsDialog.setOnClickListener(view -> {
+            switch (view.getId()) {
+                case R.id.location_agin:
+                    requestPermission();
+                    break;
+                case R.id.all_oil:
+                    BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT);
+                    break;
+            }
+        });
+        mLocationTipsDialog.show();
+    }
+
+    private void showChoiceOil(String stationName, View view) {
+        mGasStationTipsDialog = new GasStationLocationTipsDialog(mContext, view, stationName);
+        mGasStationTipsDialog.setOnClickListener(view1 -> {
+            switch (view1.getId()){
+                case R.id.select_agin://重新选择
+                    closeDialog();
+                    break;
+                case R.id.navigation_tv://导航过去
+                    if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                        NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
+                                mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
+                                mStationsBean.getGasName());
+                        closeDialog();
+                        navigationDialog.show();
+                    } else {
+                        showToastWarning("您当前未安装地图软件，请先安装");
+                    }
+                    break;
+                case R.id.continue_view://继续支付
+                    isFar = false;
+                    break;
+            }
+
+        });
+        mGasStationTipsDialog.show();
+    }
+
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
 
@@ -644,6 +706,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.getOftenOils();
         mViewModel.getRefuelJob(mStationsBean.getGasId());
         mViewModel.getHomeProduct();
+        mViewModel.checkDistance(mStationsBean.getGasId());
+
         loadBanner();
         refreshLayout.finishRefresh();
     }
@@ -660,29 +724,35 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     }
 
     private void closeDialog() {
-        if (mOilNumDialog != null){
+        if (mOilNumDialog != null) {
             mOilNumDialog.dismiss();
             mOilNumDialog = null;
         }
-        if (mOilGunDialog != null){
+        if (mOilGunDialog != null) {
             mOilGunDialog.dismiss();
             mOilGunDialog = null;
         }
-        if (mOilAmountDialog != null){
+        if (mOilAmountDialog != null) {
             mOilAmountDialog.dismiss();
             mOilAmountDialog = null;
         }
-        if (mOilCouponDialog != null){
+        if (mOilCouponDialog != null) {
             mOilCouponDialog.dismiss();
             mOilCouponDialog = null;
         }
-        if (mOilTipsDialog != null){
+        if (mOilTipsDialog != null) {
             mOilTipsDialog.dismiss();
             mOilTipsDialog = null;
         }
-        if (mOilPayDialog != null){
+        if (mOilPayDialog != null) {
             mOilPayDialog.dismiss();
             mOilPayDialog = null;
+        }
+        if (mLocationTipsDialog != null){
+            mLocationTipsDialog = null;
+        }
+        if (mGasStationTipsDialog != null){
+            mGasStationTipsDialog = null;
         }
 
         //关掉以后重新刷新数据,否则再次打开时上下选中不一致
@@ -715,11 +785,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 final PayTask task = new PayTask(getActivity());
                 boolean isIntercepted = task.payInterceptorWithUrl(url, true,
                         result -> runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        jumpToPayResultAct(result.getResultCode(), result.getResultCode());
-                    }
-                }));
+                            @Override
+                            public void run() {
+                                jumpToPayResultAct(result.getResultCode(), result.getResultCode());
+                            }
+                        }));
 
                 /**
                  * 判断是否成功拦截

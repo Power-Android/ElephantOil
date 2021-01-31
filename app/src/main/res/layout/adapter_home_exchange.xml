@@ -20,7 +20,6 @@
         android:id="@+id/item_title_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="腾讯视频会员季卡文字过长asdasd就2行显示超出"
         android:textSize="@dimen/sp_11"
         android:textColor="@color/color_34"
         android:maxLines="2"
@@ -46,7 +45,7 @@
         app:layout_constraintStart_toStartOf="@id/item_img_iv"
         app:layout_constraintEnd_toEndOf="@id/item_img_iv"/>
     <TextView
-        android:id="@+id/item_sale_tv"
+        android:id="@+id/sell_num_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="已兑换738件"
@@ -62,5 +61,5 @@
         android:src="@drawable/icon_org_arrow"
         android:layout_marginEnd="@dimen/dp_10"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/item_sale_tv"/>
+        app:layout_constraintBottom_toBottomOf="@+id/sell_num_view"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

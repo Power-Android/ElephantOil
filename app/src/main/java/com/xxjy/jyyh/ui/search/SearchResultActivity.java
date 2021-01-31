@@ -132,6 +132,9 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
 
                         loadData(false);
                     });
+                }else {
+                    pageNum = 1;
+                    getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
                 }
                 break;
             case R.id.tab2:

@@ -138,17 +138,13 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         mBinding.customerServiceView.setOnClickListener(this::onViewClicked);
         mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
         mBinding.explanationView.setOnClickListener(this::onViewClicked);
-        mBinding.searchLayout.setOnClickListener(this::onViewClicked);
-
+        mBinding.searchBar.setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void onViewClicked(View view) {
 
         switch (view.getId()) {
-            case R.id.search_layout:
-                startActivity(new Intent(getContext(), SearchActivity.class));
-                break;
             case R.id.integral_view:
 //                if (withdrawalTipsDialog == null) {
 //                    withdrawalTipsDialog = new WithdrawalTipsDialog(getContext(), mBinding.getRoot());
@@ -156,33 +152,25 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 //                withdrawalTipsDialog.show();
                 break;
             case R.id.customer_service_view:
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        if(customerServiceDialog==null){
-                            customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
-                        }
-                        customerServiceDialog.show(view);
+                LoginHelper.login(getContext(), () -> {
+                    if(customerServiceDialog==null){
+                        customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
                     }
+                    customerServiceDialog.show(view);
                 });
 
                 break;
             case R.id.message_center_view:
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
-                    }
-                });
+                LoginHelper.login(getContext(), () ->
+                        getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class)));
 
                 break;
             case R.id.explanation_view:
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.INTEGRAL_EXPLANATION_URL);
-                    }
-                });
+                LoginHelper.login(getContext(), () ->
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.INTEGRAL_EXPLANATION_URL));
+                break;
+            case R.id.search_bar:
+                startActivity(new Intent(mContext, SearchActivity.class));
                 break;
         }
     }

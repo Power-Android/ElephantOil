@@ -8,9 +8,11 @@ import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.ProductMapKeyConstants;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
+import com.xxjy.jyyh.entity.OilDistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.TaskBean;
@@ -44,6 +46,7 @@ public class HomeRepository extends BaseRepository {
             locationEntity.setCity(mapLocation.getCity());
             locationEntity.setDistrict(mapLocation.getDistrict());
             locationEntity.setAddress(mapLocation.getAddress());
+            locationEntity.setSuccess(true);
             locationLiveData.postValue(locationEntity);
         } else {
             MapLocationHelper.getInstance().getLocation(new MapLocationHelper.LocationResult() {
@@ -54,11 +57,14 @@ public class HomeRepository extends BaseRepository {
                     locationEntity.setCity(location.getCity());
                     locationEntity.setDistrict(location.getDistrict());
                     locationEntity.setAddress(location.getAddress());
+                    locationEntity.setSuccess(true);
                     locationLiveData.postValue(locationEntity);
                 }
 
                 @Override
                 public void locationFiler() {
+                    locationEntity.setSuccess(false);
+                    locationLiveData.postValue(locationEntity);
                     MyToast.showWarning(App.getContext(),"请去设置里开启定位权限!");
                 }
             });
@@ -130,6 +136,16 @@ public class HomeRepository extends BaseRepository {
                 .add("payAmount", payAmount)
                 .asResponse(PayOrderEntity.class)
                 .subscribe(payOrderEntity -> payOrderLiveData.postValue(payOrderEntity))
+        );
+    }
+
+    public void checkDistance(String gasId, MutableLiveData<OilDistanceEntity> distanceLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.GET_OIL_DISTANCE)
+                .add("gasId",gasId)
+                .add(Constants.LATITUDE, UserConstants.getLatitude())
+                .add(Constants.LONGTIDUE, UserConstants.getLongitude())
+                .asResponse(OilDistanceEntity.class)
+                .subscribe(oilDistanceEntity -> distanceLiveData.postValue(oilDistanceEntity))
         );
     }
 }

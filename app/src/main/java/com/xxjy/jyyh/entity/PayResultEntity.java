@@ -11,9 +11,9 @@ import java.util.List;
 public class PayResultEntity {
 
     private ActiveParamsBean activeParams;
-    private Integer discountAmount;
-    private Integer integral;
-    private Integer integralBalance;
+    private String discountAmount;
+    private String integral;
+    private String integralBalance;
     private String msg;
     private String payAmount;
     private Integer result;
@@ -26,27 +26,27 @@ public class PayResultEntity {
         this.activeParams = activeParams;
     }
 
-    public Integer getDiscountAmount() {
+    public String getDiscountAmount() {
         return discountAmount;
     }
 
-    public void setDiscountAmount(Integer discountAmount) {
+    public void setDiscountAmount(String discountAmount) {
         this.discountAmount = discountAmount;
     }
 
-    public Integer getIntegral() {
+    public String getIntegral() {
         return integral;
     }
 
-    public void setIntegral(Integer integral) {
+    public void setIntegral(String integral) {
         this.integral = integral;
     }
 
-    public Integer getIntegralBalance() {
+    public String getIntegralBalance() {
         return integralBalance;
     }
 
-    public void setIntegralBalance(Integer integralBalance) {
+    public void setIntegralBalance(String integralBalance) {
         this.integralBalance = integralBalance;
     }
 

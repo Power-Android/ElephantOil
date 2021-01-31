@@ -43,6 +43,7 @@
              app:qmui_backgroundColor="@color/colorAccent"
            >
              <TextView
+                 android:id="@+id/location_agin"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:textSize="@dimen/sp_16"
@@ -61,6 +62,7 @@
              app:qmui_backgroundColor="@color/color_D0"
             >
              <TextView
+                 android:id="@+id/all_oil"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:textSize="@dimen/sp_16"

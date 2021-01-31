@@ -17,11 +17,16 @@ import com.xxjy.jyyh.entity.PayResultEntity;
 public class RefuelingPayResultViewModel extends BaseViewModel<RefuelingPayResultRepository> {
     public MutableLiveData<PayResultEntity> payResultLiveData = new MutableLiveData<>();
 
+
     public RefuelingPayResultViewModel(@NonNull Application application) {
         super(application);
     }
 
     public void getPayResult(String orderNo, String orderPayNo) {
         mRespository.getPayResult(orderNo, orderPayNo, payResultLiveData);
+    }
+
+    public void getHomeProduct() {
+
     }
 }

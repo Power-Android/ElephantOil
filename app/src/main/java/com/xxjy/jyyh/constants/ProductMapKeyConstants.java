@@ -10,5 +10,4 @@ public class ProductMapKeyConstants {
     public static final String RUSH_BUYING="rush_buying";
     public static final String SHOPPING_INDEX="shopping_index";
 
-
 }

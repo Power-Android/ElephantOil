@@ -56,8 +56,8 @@
                             android:id="@+id/tag_iv"
                             android:layout_width="@dimen/dp_19"
                             android:layout_height="@dimen/dp_19"
-                            android:visibility="gone"
-                            android:src="@drawable/ic_pay_success" />
+                            android:src="@drawable/ic_pay_success"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/status_tv"
@@ -176,20 +176,6 @@
                         app:qmui_borderColor="@color/color_C3"
                         app:qmui_borderWidth="@dimen/dp_0_5"
                         app:qmui_radius="@dimen/dp_16" />
-
-                    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-                        android:id="@+id/try_again_view"
-                        android:layout_width="@dimen/dp_114"
-                        android:layout_height="@dimen/dp_32"
-                        android:layout_marginLeft="@dimen/dp_23"
-                        android:text="再试一次"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/sp_14"
-                        android:visibility="gone"
-                        app:qmui_backgroundColor="@color/colorAccent"
-                        app:qmui_borderColor="@color/colorAccent"
-                        app:qmui_borderWidth="@dimen/dp_0_5"
-                        app:qmui_radius="@dimen/dp_16" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -210,10 +196,10 @@
                     android:id="@+id/recommend_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:layout_marginEnd="@dimen/dp_12"
                     android:background="@color/color_F5" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
-
-
 </RelativeLayout>

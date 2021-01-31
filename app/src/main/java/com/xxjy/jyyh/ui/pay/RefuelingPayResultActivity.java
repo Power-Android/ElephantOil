@@ -2,8 +2,10 @@ package com.xxjy.jyyh.ui.pay;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,16 +14,25 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.BusUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.IntegralExchangeAdapter;
 import com.xxjy.jyyh.adapter.PayResultBannerAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.databinding.ActivityRefuelingPayResultBinding;
+import com.xxjy.jyyh.entity.EventEntity;
+import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.PayResultEntity;
+import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.home.HomeViewModel;
 import com.xxjy.jyyh.ui.order.OrderDetailsActivity;
+import com.xxjy.jyyh.ui.order.OrderListActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.LoginHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +42,13 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
 
     private List<PayResultEntity.ActiveParamsBean.BannerBean> data = new ArrayList<>();
+    private List<HomeProductEntity.FirmProductsVoBean> mExchangeList = new ArrayList<>();
     private PayResultBannerAdapter payResultBannerAdapter;
     private String mOrderNo;
     private String mOrderPayNo;
+    private HomeExchangeAdapter mExchangeAdapter;
+    private HomeViewModel mHomeViewModel;
 
-    //    private IntegralExchangeAdapter integralExchangeAdapter;
     @Override
     protected void initView() {
         mBinding.titleLayout.tvTitle.setText("支付结果");
@@ -46,22 +59,28 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
         mOrderNo = getIntent().getStringExtra("orderNo");
         mOrderPayNo = getIntent().getStringExtra("orderPayNo");
 
+        mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
         payResultBannerAdapter = new PayResultBannerAdapter(R.layout.item_pay_result_banner, data);
         mBinding.bannerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.bannerRecyclerView.setAdapter(payResultBannerAdapter);
-        payResultBannerAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                List<PayResultEntity.ActiveParamsBean.BannerBean> data = adapter.getData();
-                WebViewActivity.openRealUrlWebActivity(RefuelingPayResultActivity.this, data.get(position).getLink());
-            }
+        payResultBannerAdapter.setOnItemClickListener((adapter, view, position) -> {
+            List<PayResultEntity.ActiveParamsBean.BannerBean> data = adapter.getData();
+            WebViewActivity.openRealUrlWebActivity(RefuelingPayResultActivity.this, data.get(position).getLink());
         });
 
-//        integralExchangeAdapter = new IntegralExchangeAdapter(R.layout.adapter_integral_exchange,data);
-//        mBinding.recommendRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
-//        mBinding.recommendRecyclerView.setAdapter(integralExchangeAdapter);
+        mBinding.recommendRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mExchangeAdapter = new HomeExchangeAdapter(R.layout.adapter_integral_exchange, mExchangeList);
+        mBinding.recommendRecyclerView.setAdapter(mExchangeAdapter);
+        mExchangeAdapter.setOnItemClickListener((adapter, view, position) -> {
+            LoginHelper.login(this, () ->
+                    WebViewActivity.openWebActivity(this,
+                            ((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink()));
+        });
+
 
         mViewModel.getPayResult(mOrderNo, mOrderPayNo);
+        mHomeViewModel.getHomeProduct();
     }
 
     @Override
@@ -74,33 +93,19 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
     protected void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.go_order_view:
-                Intent intent = new Intent(this, OrderDetailsActivity.class);
-                intent.putExtra(OrderDetailsActivity.ORDER_ID, mOrderNo);
-                startActivity(intent);
+                startActivity(new Intent(this, OrderListActivity.class).putExtra("type",0));
+                finish();
                 break;
             case R.id.go_home_view:
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
         }
-
     }
 
     @Override
     protected void dataObservable() {
         mViewModel.payResultLiveData.observe(this, resultEntity -> {
             switch (resultEntity.getResult()){
-                case 0://支付失败
-                    mBinding.tagIv.setVisibility(View.GONE);
-                    mBinding.statusTv.setText("支付失败");
-                    mBinding.statusTv.setTextColor(getResources().getColor(R.color.color_34));
-                    mBinding.fallMoney.setText(resultEntity.getMsg());
-                    mBinding.tagView.setText("预计下单可获得");
-                    mBinding.integralTv.setText(resultEntity.getIntegral()+"");
-                    mBinding.integralAll.setText(resultEntity.getIntegralBalance()+"");
-                    mBinding.goOrderView.setVisibility(View.GONE);
-                    mBinding.tryAgainView.setVisibility(View.VISIBLE);
-                    payResultBannerAdapter.setNewData(resultEntity.getActiveParams().getBanner());
-                    break;
                 case 1://支付成功
                     mBinding.tagIv.setVisibility(View.VISIBLE);
                     mBinding.statusTv.setText("支付成功");
@@ -109,12 +114,26 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     mBinding.tagView.setText("本单获得");
                     mBinding.integralTv.setText(resultEntity.getIntegral()+"");
                     mBinding.integralAll.setText(resultEntity.getIntegralBalance()+"");
-                    mBinding.goOrderView.setVisibility(View.VISIBLE);
-                    mBinding.tryAgainView.setVisibility(View.GONE);
                     payResultBannerAdapter.setNewData(resultEntity.getActiveParams().getBanner());
                     break;
-                case 2://待支付
+                case 0://处理中
+                case 2://支付失败
+                case 3://已取消
+                    mBinding.tagIv.setVisibility(View.GONE);
+                    mBinding.statusTv.setText(resultEntity.getMsg());
+                    mBinding.statusTv.setTextColor(getResources().getColor(R.color.color_34));
+                    mBinding.fallMoney.setText("");
+                    mBinding.tagView.setText("预计下单可获得");
+                    mBinding.integralTv.setText(resultEntity.getIntegral()+"");
+                    mBinding.integralAll.setText(resultEntity.getIntegralBalance()+"");
+                    payResultBannerAdapter.setNewData(resultEntity.getActiveParams().getBanner());
                     break;
+            }
+        });
+
+        mHomeViewModel.productLiveData.observe(this, firmProductsVoBeans -> {
+            if (firmProductsVoBeans != null && firmProductsVoBeans.size() > 0) {
+                mExchangeAdapter.setNewData(firmProductsVoBeans);
             }
         });
     }

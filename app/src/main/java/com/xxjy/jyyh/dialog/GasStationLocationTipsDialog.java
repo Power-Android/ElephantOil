@@ -21,13 +21,14 @@ public class GasStationLocationTipsDialog {
     private QMUIFullScreenPopup mPopup;
     private DialogGasStationLocationTipsBinding mBinding;
     private View mView;
-private String mStationName;
-    public GasStationLocationTipsDialog(Context context, View view,String stationName) {
+    private String mStationName;
+
+    public GasStationLocationTipsDialog(Context context, View view, String stationName) {
         this.mContext = context;
         this.mView = view;
-        this.mStationName=stationName;
+        this.mStationName = stationName;
         mBinding = DialogGasStationLocationTipsBinding.bind(
-                View.inflate(mContext,R.layout.dialog_gas_station_location_tips, null));
+                View.inflate(mContext, R.layout.dialog_gas_station_location_tips, null));
         init();
     }
 
@@ -52,21 +53,48 @@ private String mStationName;
             }
         });
         mBinding.stationNameView.setText(mStationName);
+
+        mBinding.selectAgin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnClickListener != null){
+                    mPopup.dismiss();
+                    mOnClickListener.onClick(view);
+                }
+            }
+        });
+        mBinding.continueView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnClickListener != null){
+                    mPopup.dismiss();
+                    mOnClickListener.onClick(view);
+                }
+            }
+        });
+        mBinding.navigationTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnClickListener != null){
+                    mPopup.dismiss();
+                    mOnClickListener.onClick(view);
+                }
+            }
+        });
     }
 
 
-
-    public void show(){
+    public void show() {
         mPopup.show(mView);
     }
 
-    public interface OnClickListener{
-        void onClick(boolean isConfirm);
+    public interface OnClickListener {
+        void onClick(View view);
     }
 
     private OnClickListener mOnClickListener;
 
-    public void setOnClickListener(OnClickListener onClickListener){
+    public void setOnClickListener(OnClickListener onClickListener) {
         this.mOnClickListener = onClickListener;
     }
 }

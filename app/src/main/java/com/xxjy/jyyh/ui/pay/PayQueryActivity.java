@@ -37,8 +37,8 @@ public class PayQueryActivity extends BindingActivity<ActivityPayQueryBinding, P
     @Override
     protected void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv1:
-            case R.id.tv2:
+            case R.id.tv1://还未支付
+            case R.id.tv2://已支付
                 jumpToPayResultAct(mOrderPayNo, mOrderNo);
                 break;
         }

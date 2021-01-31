@@ -61,7 +61,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
 
     //极光intent
     public static final String TAG_FLAG_INTENT_VALUE_INFO = "intentInfo";
-private AboutUsViewModel aboutUsViewModel;
+    private AboutUsViewModel aboutUsViewModel;
 private BannerViewModel bannerViewModel;
 
 
@@ -85,9 +85,9 @@ private BannerViewModel bannerViewModel;
             }
         }, 3000);
         int state = getIntent().getIntExtra("jumpState", -1);
-        if(state!=-1){
+        if (state != -1) {
             showFragment(state);
-            switch (state){
+            switch (state) {
                 case 0:
                     mBinding.navView.setSelectedItemId(R.id.navigation_home);
                     break;
@@ -249,7 +249,7 @@ private BannerViewModel bannerViewModel;
             int compare = Util.compareVersion(data.getLastVersion(), Util.getVersionName());
             if (compare == 1) {
                 //是否强制更新，0：否，1：是
-                VersionUpDialog checkVersionDialog = new VersionUpDialog(this,data);
+                VersionUpDialog checkVersionDialog = new VersionUpDialog(this, data);
                 checkVersionDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
