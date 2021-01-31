@@ -61,8 +61,6 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
 
     private String mAdImageUrl;
     private String mAdLinkInfo;     //跳转信息
-    private String mAdStartTime;     //开始时间
-    private String mAdEndTime;     //结束时间
 
     private boolean isShownYSXY = false;    //是否展示过隐私协议
 

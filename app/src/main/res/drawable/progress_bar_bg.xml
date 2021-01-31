@@ -4,12 +4,27 @@
     <item
         android:id="@android:id/background"
         android:drawable="@drawable/shape_progress_bg"
-        android:height="@dimen/dp_8"></item>
+        >
+
+    </item>
 
     <!--  设置进度条颜色  -->
-    <item
-        android:id="@android:id/progress"
-        android:drawable="@drawable/bg_progress"
-        android:height="@dimen/dp_8">
+<!--    <item-->
+<!--        android:id="@android:id/progress"-->
+<!--        android:drawable="@drawable/bg_progress"-->
+<!--        android:height="@dimen/dp_8">-->
+<!--    </item>-->
+
+
+    <item android:id="@android:id/progress"
+        android:drawable="@drawable/bg_progress">
+        <clip>
+            <shape android:shape="rectangle">
+                <corners android:radius="8dp" />
+
+            </shape>
+        </clip>
+
+
     </item>
 </layer-list>

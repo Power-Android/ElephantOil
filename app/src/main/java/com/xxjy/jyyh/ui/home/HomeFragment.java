@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
@@ -40,6 +42,7 @@ import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.HomeOftenAdapter;
 import com.xxjy.jyyh.adapter.OilStationFlexAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
+import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.PayTypeConstants;
@@ -54,6 +57,7 @@ import com.xxjy.jyyh.dialog.OilNumDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.dialog.ReceiveRewardDialog;
+import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.entity.HomeProductEntity;
@@ -65,6 +69,7 @@ import com.xxjy.jyyh.entity.PayOrderParams;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.TaskBean;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.pay.PayQueryActivity;
 import com.xxjy.jyyh.ui.pay.PayResultActivity;
@@ -78,6 +83,10 @@ import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
+import com.youth.banner.Banner;
+import com.youth.banner.adapter.BannerImageAdapter;
+import com.youth.banner.holder.BannerImageHolder;
+import com.youth.banner.indicator.RectangleIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +117,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     //是否需要跳转支付确认页
     private boolean shouldJump = false;
     private PayOrderEntity mPayOrderEntity;
+
+    private BannerViewModel bannerViewModel;
 
     /**
      * @param orderEntity
@@ -152,7 +163,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         getBaseActivity().setTransparentStatusBar();
         mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         BusUtils.register(this);
-
+        bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
         if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
             mLat = Double.parseDouble(UserConstants.getLatitude());
             mLng = Double.parseDouble(UserConstants.getLongitude());
@@ -194,9 +205,37 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         });
 
         mViewModel.getHomeProduct();
-
+        loadBanner();
         initWebViewClient();
     }
+
+    private void loadBanner(){
+        bannerViewModel.getBannerOfPostion(BannerPositionConstants.HOME_BANNER).observe(this, data -> {
+            if(data!=null&&data.size()>0){
+                mBinding.banner.setVisibility(View.VISIBLE);
+                //banner
+                mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
+                    @Override
+                    public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
+                        Glide.with(holder.imageView)
+                                .load(data.getImgUrl())
+                                .apply(new RequestOptions()
+                                        .error(R.drawable.default_img_bg))
+                                .into(holder.imageView);
+                        holder.imageView.setOnClickListener(v -> {
+                            WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
+                        });
+                    }
+                }).addBannerLifecycleObserver(this)
+                        .setIndicator(new RectangleIndicator(mContext));
+            }else{
+                mBinding.banner.setVisibility(View.GONE);
+            }
+
+
+        });
+    }
+
 
     private void requestPermission() {
         PermissionUtils.permission(
@@ -605,6 +644,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.getOftenOils();
         mViewModel.getRefuelJob(mStationsBean.getGasId());
         mViewModel.getHomeProduct();
+        loadBanner();
         refreshLayout.finishRefresh();
     }
 

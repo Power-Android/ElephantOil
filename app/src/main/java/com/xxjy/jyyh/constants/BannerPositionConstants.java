@@ -16,6 +16,7 @@ public class BannerPositionConstants {
     //    12,"加油首页轮播广告
     //    13,"加油温馨提示
     //    14,权益功能区
+    //  15,个人中心更多服务
 //    APP_START_AD(17,"开屏广告"),
 //    APP_LEAD_AD(18,"引导广告"),
 //    APP_OPEN_AD(19,"弹窗广告");
