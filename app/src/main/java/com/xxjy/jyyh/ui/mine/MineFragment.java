@@ -58,6 +58,13 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             mBinding.integralView.setText("0");
             mBinding.balanceView.setText("0");
         }
+        if (UserConstants.getGoneIntegral()){
+            mBinding.equityOrderLayout.setVisibility(View.INVISIBLE);
+            mBinding.moreServiceLayout.setVisibility(View.GONE);
+        }else {
+            mBinding.equityOrderLayout.setVisibility(View.VISIBLE);
+            mBinding.moreServiceLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -27,6 +27,7 @@ import com.xxjy.jyyh.adapter.MyViewPagerAdapter;
 import com.xxjy.jyyh.adapter.SearchHistoryAdapter;
 import com.xxjy.jyyh.adapter.SearchRecommendAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivitySearchBinding;
 import com.xxjy.jyyh.dialog.QueryDialog;
 import com.xxjy.jyyh.entity.IntegralHistoryEntity;
@@ -82,7 +83,16 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         mBinding.viewPager.setOffscreenPageLimit(1);
         mBinding.viewPager.setAdapter(adapter);
 
+        boolean goneIntegral = UserConstants.getGoneIntegral();
+
         CommonNavigator commonNavigator = new CommonNavigator(this);
+        if (goneIntegral){
+            mBinding.indicator.setVisibility(View.GONE);
+            commonNavigator.setFollowTouch(false);
+        }else {
+            mBinding.indicator.setVisibility(View.VISIBLE);
+            commonNavigator.setFollowTouch(true);
+        }
         commonNavigator.setAdjustMode(true);
         int padding = 70;
         commonNavigator.setLeftPadding(padding);

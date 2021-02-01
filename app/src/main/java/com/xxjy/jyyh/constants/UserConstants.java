@@ -106,6 +106,15 @@ public class UserConstants {
        return SPUtils.getInstance().getString(SPConstants.APP_CHANNEL_KEY);
     }
 
+    public static void setGoneIntegral(boolean b){
+        SPUtils.getInstance().put(SPConstants.GONE_INTEGRAL, b);
+    }
+
+    public static boolean getGoneIntegral(){
+        return SPUtils.getInstance().getBoolean(SPConstants.GONE_INTEGRAL, false);
+    }
+
+
     //定位信息
     public static String getLocation() {
         if (MapLocationHelper.getLocationLatitude() != 0 && MapLocationHelper.getLocationLongitude() != 0) {

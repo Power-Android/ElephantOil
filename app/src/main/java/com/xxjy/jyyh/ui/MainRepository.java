@@ -1,6 +1,12 @@
 package com.xxjy.jyyh.ui;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.xxjy.jyyh.base.BaseRepository;
+import com.xxjy.jyyh.constants.ApiService;
+
+import io.reactivex.rxjava3.functions.Consumer;
+import rxhttp.RxHttp;
 
 /**
  * @author power
@@ -10,4 +16,12 @@ import com.xxjy.jyyh.base.BaseRepository;
  */
 public class MainRepository extends BaseRepository {
 
+    public void getOsOverAll(MutableLiveData<Boolean> osLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.GET_OS_OVERALL)
+                .asResponse(Boolean.class)
+                .subscribe(b -> {
+                    osLiveData.postValue(b);
+                })
+        );
+    }
 }

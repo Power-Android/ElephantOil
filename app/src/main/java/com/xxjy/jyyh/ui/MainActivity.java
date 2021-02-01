@@ -2,6 +2,7 @@ package com.xxjy.jyyh.ui;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.BusUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,6 +31,7 @@ import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
+import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMainBinding;
 import com.xxjy.jyyh.dialog.CheckVersionDialog;
@@ -74,16 +77,19 @@ private BannerViewModel bannerViewModel;
     protected void initView() {
         BusUtils.register(this);
         disPathIntentMessage(getIntent());
-        initNavigationView();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //未登录的时候尝试检查闪验是否支持
-                if (!UserConstants.getIsLogin()) {
-                    ShanYanManager.checkShanYanSupportState();
-                }
+        mViewModel.getOsOverAll().observe(this, b -> {
+            if (!b){
+                UserConstants.setGoneIntegral(true);
+                mBinding.navView.getMenu().removeItem(R.id.navigation_integral);
             }
-        }, 3000);
+        });
+        initNavigationView();
+        new Handler().postDelayed(() -> {
+            //未登录的时候尝试检查闪验是否支持
+            if (!UserConstants.getIsLogin()) {
+                ShanYanManager.checkShanYanSupportState();
+            }
+        }, 2000);
         int state = getIntent().getIntExtra("jumpState", -1);
         if (state != -1) {
             showFragment(state);
@@ -109,7 +115,6 @@ private BannerViewModel bannerViewModel;
 
     private void initNavigationView() {
         mBinding.navView.setItemIconTintList(null);
-        adjustNavigationIcoSize(mBinding.navView);
         mBinding.navView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.navigation_home:
@@ -128,20 +133,6 @@ private BannerViewModel bannerViewModel;
             return true;
         });
         mBinding.navView.setSelectedItemId(R.id.navigation_home);
-    }
-
-    private void adjustNavigationIcoSize(BottomNavigationView navigation) {
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) navigation.getChildAt(0);
-        for (int i = 0; i < menuView.getChildCount(); i++) {
-            final View iconView = menuView.getChildAt(i).findViewById(R.id.icon);
-            final ViewGroup.LayoutParams layoutParams = iconView.getLayoutParams();
-            final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-//            layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, displayMetrics);
-//            layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, displayMetrics);
-            layoutParams.height = QMUIDisplayHelper.dp2px(this, 18);
-            layoutParams.width = QMUIDisplayHelper.dp2px(this, 18);
-            iconView.setLayoutParams(layoutParams);
-        }
     }
 
     public void showFragment(int index) {
@@ -220,7 +211,7 @@ private BannerViewModel bannerViewModel;
     public void onBackPressed() {
         long currentTime = System.currentTimeMillis();
         if ((currentTime - clickTime) > Constants.DOUBLE_INTERVAL_TIME) {
-            ToastUtils.showShort(getString(R.string.double_click_exit_toast));
+            showToastInfo(getString(R.string.double_click_exit_toast));
             clickTime = System.currentTimeMillis();
         } else {
             finish();

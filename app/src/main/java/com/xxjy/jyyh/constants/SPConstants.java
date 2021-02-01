@@ -58,4 +58,9 @@ public class SPConstants {
 
     //app引导guide版本标识
     public static final String SP_APP_SHOW_GUIDE_VERSION = "guide_version";
+
+    /**
+     * 隐藏权益相关内容
+     */
+    public static final String GONE_INTEGRAL = "gone_integral";
 }
