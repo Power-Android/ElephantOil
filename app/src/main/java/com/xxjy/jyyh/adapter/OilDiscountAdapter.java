@@ -53,9 +53,12 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                 }else if (item.getPlatformDesc().equals("暂无可用优惠券")){
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
-                }else {
+                }else if (item.getPlatformDesc().equals("请选择加油金额")){
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
+                } else {
+                    helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
+                            .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
                 }
                 setDrawable(discountTv, R.drawable.arrow_right_icon);
                 break;
@@ -63,15 +66,18 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_elephant_coupon)
                         .setGone(R.id.item_balance_tv, false)
                         .setText(R.id.item_title_tv, "商家优惠券");
-                if (item.getPlatformDesc().equals("请选择优惠券")){
+                if (item.getBusinessDesc().equals("请选择优惠券")){
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
-                }else if (item.getPlatformDesc().equals("暂无可用优惠券")){
-                    helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
+                }else if (item.getBusinessDesc().equals("暂无可用优惠券")){
+                    helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
+                            .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
+                } else if (item.getBusinessDesc().equals("请选择加油金额")){
+                    helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
                 } else {
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
-                            .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
+                            .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
                 }
                 setDrawable(discountTv, R.drawable.arrow_right_icon);
                 break;

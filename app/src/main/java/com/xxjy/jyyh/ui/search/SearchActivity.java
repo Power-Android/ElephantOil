@@ -254,7 +254,7 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                 finish();
                 break;
             case R.id.search_tv:
-                if (TextUtils.isEmpty(mBinding.searchEt.getText())) {
+                if (TextUtils.isEmpty(mBinding.searchEt.getText().toString().trim())) {
                     showToastInfo("请输入搜索内容");
                     return;
                 }

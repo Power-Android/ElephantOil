@@ -161,7 +161,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                         }
                     }
                     //刷新互斥价格
-                    refreshData();
+                    getMultiplePrice(platId, businessAmount);
                     break;
             }
         });
