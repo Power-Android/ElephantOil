@@ -86,10 +86,10 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         boolean goneIntegral = UserConstants.getGoneIntegral();
 
         CommonNavigator commonNavigator = new CommonNavigator(this);
-        if (goneIntegral){
+        if (goneIntegral) {
             mBinding.indicator.setVisibility(View.GONE);
             commonNavigator.setFollowTouch(false);
-        }else {
+        } else {
             mBinding.indicator.setVisibility(View.VISIBLE);
             commonNavigator.setFollowTouch(true);
         }
@@ -136,22 +136,22 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
 
     private void initDao() {
         mOilHistoryList = DBInstance.getInstance().getSearchHistory();
-        if (mOilHistoryList != null && mOilHistoryList.size() > 0){
+        if (mOilHistoryList != null && mOilHistoryList.size() > 0) {
             mOilHistoryAdapter.setNewData(mOilHistoryList);
             mOilHistoryAdapter.notifyDataSetChanged();
             mOilView.findViewById(R.id.oil_history_title).setVisibility(View.VISIBLE);
             mOilView.findViewById(R.id.oil_history_delete_iv).setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mOilView.findViewById(R.id.oil_history_title).setVisibility(View.GONE);
             mOilView.findViewById(R.id.oil_history_delete_iv).setVisibility(View.GONE);
         }
         mInterestHistoryList = DBInstance.getInstance().getSearchIntegralHistory();
-        if (mInterestHistoryList != null && mInterestHistoryList.size() > 0){
+        if (mInterestHistoryList != null && mInterestHistoryList.size() > 0) {
             mInterestHistoryAdapter.setNewData(mInterestHistoryList);
             mInterestHistoryAdapter.notifyDataSetChanged();
             mInterestView.findViewById(R.id.interest_history_title).setVisibility(View.VISIBLE);
             mInterestView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mInterestView.findViewById(R.id.interest_history_title).setVisibility(View.GONE);
             mInterestView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.GONE);
         }
@@ -181,7 +181,7 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         mOilHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
             intent.putExtra("type", index == 0 ? "1" : "2");
-            intent.putExtra("content", ((SearchHistoryEntity)adapter.getItem(position)).getGasName());
+            intent.putExtra("content", ((SearchHistoryEntity) adapter.getItem(position)).getGasName());
             startActivity(intent);
         });
 
@@ -233,9 +233,9 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
             @Override
             public void onPageSelected(int position) {
                 index = position;
-                if (position == 0){
+                if (position == 0) {
                     mBinding.searchEt.setHint("搜索油站名称");
-                }else {
+                } else {
                     mBinding.searchEt.setHint("搜索权益名称");
                 }
             }
@@ -259,9 +259,9 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                     return;
                 }
                 KeyboardUtils.hideSoftInput(this);
-                if (index == 0){
+                if (index == 0) {
                     DBInstance.getInstance().insertData(mBinding.searchEt.getText().toString());
-                }else {
+                } else {
                     DBInstance.getInstance().insertIntegralData(mBinding.searchEt.getText().toString());
                 }
                 initDao();
@@ -294,11 +294,19 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
     @Override
     protected void dataObservable() {
         mViewModel.recomdLiveData.observe(this, recomdEntities -> {
-            mOilRecommendAdapter.setNewData(recomdEntities);
+            if (recomdEntities != null && recomdEntities.size() > 0) {
+                mOilRecommendAdapter.setNewData(recomdEntities);
+            } else {
+                mOilView.findViewById(R.id.recommend_title).setVisibility(View.GONE);
+            }
         });
 
         mViewModel.recomdLiveData1.observe(this, recomdEntities -> {
-            mInterestRecommendAdapter.setNewData(recomdEntities);
+            if (recomdEntities != null && recomdEntities.size() > 0) {
+                mInterestRecommendAdapter.setNewData(recomdEntities);
+            }else {
+                mInterestView.findViewById(R.id.interest_title).setVisibility(View.GONE);
+            }
         });
     }
 }

@@ -55,7 +55,6 @@ public class ResponseParser<T> extends AbstractParser<T> {
         if (data.getCode() != 1 ) {
             if (data.getCode() == 1007){
                 LoginHelper.loginOut(null);
-                UiUtils.toLoginActivity(App.getContext());
             }
             MyToast.showWarning(App.getContext(), data != null && data.getMsg() != null ? data.getMsg() : "网络请求错误");
             //code不等于 1，说明数据不正确，抛出异常
