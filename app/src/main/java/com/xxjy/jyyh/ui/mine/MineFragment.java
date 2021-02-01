@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.NumberUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -181,7 +182,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             mBinding.nameView.setText(data.getPhone());
             mBinding.userPhoneView.setText(data.getPhone());
             mBinding.couponView.setText(data.getCouponsSize());
-            mBinding.integralView.setText(data.getIntegralBalance());
+            mBinding.integralView.setText(NumberUtils.format(Double.parseDouble(data.getIntegralBalance()),0));
             mBinding.balanceView.setText(data.getBalance());
 //            mBinding.userPhoneView.setVisibility(View.VISIBLE);
 

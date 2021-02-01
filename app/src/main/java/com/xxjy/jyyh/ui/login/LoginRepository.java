@@ -28,7 +28,8 @@ public class LoginRepository extends BaseRepository {
                 .add("twinklyToken", twinklyToken)
                 .add("did", DeviceUtils.getUniqueDeviceId())
                 .add("jpushId", jpushId)
-                .add("inviteCode", inviteCode, !TextUtils.isEmpty(inviteCode))
+                .add("invitePhone", inviteCode,!TextUtils.isEmpty(inviteCode)&&inviteCode.length()==11)
+                .add("inviteCode", inviteCode, !TextUtils.isEmpty(inviteCode)&&inviteCode.length()==4)
                 .asResponse(String.class)
                 .subscribe(new Consumer<String>() {
                     @Override
@@ -62,7 +63,8 @@ public class LoginRepository extends BaseRepository {
                 .add("unionId", wxUnionId, !TextUtils.isEmpty(wxUnionId))
                 .add("did", uuid)
                 .add("jpushId", registrationID)
-                .add("invitePhone", invitationCode, !TextUtils.isEmpty(invitationCode))
+                .add("invitePhone", invitationCode,!TextUtils.isEmpty(invitationCode)&&invitationCode.length()==11)
+                .add("inviteCode", invitationCode, !TextUtils.isEmpty(invitationCode)&&invitationCode.length()==4)
                 .asResponse(String.class)
                 .doOnSubscribe(disposable -> showLoading(true))
                 .doFinally(() -> showLoading(false))
@@ -79,10 +81,12 @@ public class LoginRepository extends BaseRepository {
                 .subscribe(s -> mWechatLoginLiveData.postValue(s))
         );
     }
-    public void appBindPhone(MutableLiveData<String> mBindPhoneLiveData, String phone, String validCode,String openId,String unionId,String jpushId){
+    public void appBindPhone(MutableLiveData<String> mBindPhoneLiveData, String phone, String validCode,String openId,String unionId,String invitationCode,String jpushId){
         addDisposable(RxHttp.postForm(ApiService.APP_BIND_PHONE)
                 .add("phone", phone)
                 .add("validCode", validCode)
+                .add("invitePhone", invitationCode,!TextUtils.isEmpty(invitationCode)&&invitationCode.length()==11)
+                .add("inviteCode", invitationCode, !TextUtils.isEmpty(invitationCode)&&invitationCode.length()==4)
                 .add("openId", TextUtils.isEmpty(openId)?null:openId)
                 .add("unionId", TextUtils.isEmpty(unionId)?null:unionId)
                 .add("did", DeviceUtils.getUniqueDeviceId())

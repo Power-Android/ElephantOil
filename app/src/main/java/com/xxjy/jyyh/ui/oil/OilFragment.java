@@ -141,7 +141,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
                     mBinding.searchLayout.setVisibility(View.VISIBLE);
-                    mBinding.popupLayout.setBackgroundColor(Color.parseColor("#1676FF"));
+                    mBinding.popupLayout.setBackgroundColor(Color.parseColor("#00000000"));
                     mBinding.oilSelectDistanceTv.setTextColor(Color.parseColor("#FFFFFF"));
                     mBinding.oilSortOilNumTv.setTextColor(Color.parseColor("#FFFFFF"));
                     mBinding.oilSelectDistanceFirstTv.setTextColor(Color.parseColor("#FFFFFF"));

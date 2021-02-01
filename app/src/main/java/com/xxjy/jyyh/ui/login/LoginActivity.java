@@ -156,6 +156,8 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
                     try {
                         SYConfigUtils.ShanYanResultBean shanYanResultBean =
                                 GsonTool.parseJson(result, SYConfigUtils.ShanYanResultBean.class);
+
+
                         verifyNormal(shanYanResultBean.getToken());
                     } catch (Exception e) {
                         showToast("登录失败,请重试或者选择其他登录方式");
@@ -173,6 +175,16 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
     }
 
     private void verifyNormal(String token) {
+
+
+        if (!TextUtils.isEmpty( SYConfigUtils.inviteCode)) {
+            if (SYConfigUtils.inviteCode.length()==4|| SYConfigUtils.inviteCode.length()==11) {
+
+            }else{
+                showToastWarning("请输入正确邀请人");
+                return;
+            }
+        }
         mViewModel.verifyLogin(token, JPushInterface.getRegistrationID(this),
                 SYConfigUtils.inviteCode);
     }

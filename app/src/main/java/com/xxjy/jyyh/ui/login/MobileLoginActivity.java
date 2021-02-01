@@ -170,10 +170,12 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                     break;
                 }
 
-                String inviteNumber = mBinding.invitationEt.getText().toString();
+                String inviteNumber = mBinding.invitationEt.getText().toString().trim();
                 if (!TextUtils.isEmpty(inviteNumber)) {
-                    if (!RegexUtils.isMobileSimple(inviteNumber)) {
-                        showToastWarning("请输入正确邀请人手机号");
+                    if (inviteNumber.length()==4|| inviteNumber.length()==11) {
+
+                    }else{
+                        showToastWarning("请输入正确邀请人");
                         return;
                     }
                 }

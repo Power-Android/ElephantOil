@@ -61,7 +61,7 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
     public void openId2Login(String openId,String accessToken){
         mRespository.openId2Login(mWechatLoginLiveData,openId,accessToken);
     }
-    public void appBindPhone(String phone,String validCode, String openId,String unionId,String jpushId){
-        mRespository.appBindPhone(mBindPhoneLiveData,phone,validCode,openId,unionId,jpushId);
+    public void appBindPhone(String phone,String validCode, String openId,String unionId,String invitationCode,String jpushId){
+        mRespository.appBindPhone(mBindPhoneLiveData,phone,validCode,openId,unionId,invitationCode,jpushId);
     }
 }

@@ -12,12 +12,16 @@ import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityWeChatBindingPhoneBinding;
 import com.xxjy.jyyh.utils.UiUtils;
+import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
+
+import kotlin.jvm.internal.PropertyReference0Impl;
 
 public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBindingPhoneBinding,LoginViewModel> {
 
 
     private String mPhoneNumber;
-
+    private String inviteNumber;
+    private static boolean isDown = false;
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.toolbar);
@@ -44,6 +48,7 @@ public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBi
         mBinding.close.setOnClickListener(this::onViewClicked);
         mBinding.registerUserClearPhone.setOnClickListener(this::onViewClicked);
         mBinding.loginGetCode.setOnClickListener(this::onViewClicked);
+        mBinding.userInviteNumberLayout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -56,6 +61,7 @@ public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBi
                 mBinding.userPhoneNumber.setText("");
                 break;
             case R.id.login_get_code:
+
                 mPhoneNumber = mBinding.userPhoneNumber.getText().toString();
                 if (TextUtils.isEmpty(mPhoneNumber)) {
                     showToastWarning(getResources().getString(R.string.login_null_phone));
@@ -65,8 +71,30 @@ public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBi
                     showToastWarning(getResources().getString(R.string.login_wrong_phone_number));
                     return;
                 }
+                 inviteNumber = mBinding.invitationEt.getText().toString();
+                if (!TextUtils.isEmpty(inviteNumber)) {
+                    if (inviteNumber.length()==4|| inviteNumber.length()==11) {
+
+                    }else{
+                        showToastWarning("请输入正确邀请人");
+                        return;
+                    }
+                }
+
+
                 UiUtils.canClickViewStateDelayed(mBinding.loginGetCode);
                 getAutoCode();
+                break;
+            case R.id.user_invite_number_layout:        //邀请人手机号
+                if (isDown) {
+                    mBinding.userInviteNumberImgState.animate().setDuration(200).rotation(90).start();
+                    mBinding.invitationLl.setVisibility(View.GONE);
+                    isDown = false;
+                } else {
+                    mBinding.userInviteNumberImgState.animate().setDuration(200).rotation(0).start();
+                    mBinding.invitationLl.setVisibility(View.VISIBLE);
+                    isDown = true;
+                }
                 break;
             default:
                 break;
@@ -83,6 +111,7 @@ public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBi
             if (data) {
                     showToastSuccess("发送成功");
                     InputAutoActivity.TAG_LOGIN_PHONE_NUMBER = mPhoneNumber;
+                    InputAutoActivity.INVITE_CODE = inviteNumber;
                 InputAutoActivity.openInputAutoCodeAct(WeChatBindingPhoneActivity.this);
                 } else {
                     showToastWarning("发送失败");

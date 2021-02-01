@@ -27,6 +27,7 @@ public class InputAutoActivity extends BindingActivity<ActivityInputAutoBinding,
     public static String TAG_LOGIN_WXOPENID;   //微信openid
     public static String TAG_LOGIN_UNIONID;   //微信unionId
     public static String TAG_LOGIN_PHONE_NUMBER;   //手机号
+    public static String INVITE_CODE;//邀请人
 
     private MyCountDownTime time;
 
@@ -129,7 +130,7 @@ public class InputAutoActivity extends BindingActivity<ActivityInputAutoBinding,
     }
 
     private void bindPhone(String autoCode) {
-        mViewModel.appBindPhone(TAG_LOGIN_PHONE_NUMBER, autoCode, TAG_LOGIN_WXOPENID, TAG_LOGIN_UNIONID, JPushInterface.getRegistrationID(this));
+        mViewModel.appBindPhone(TAG_LOGIN_PHONE_NUMBER, autoCode, TAG_LOGIN_WXOPENID, TAG_LOGIN_UNIONID,INVITE_CODE, JPushInterface.getRegistrationID(this));
     }
 
     /**
