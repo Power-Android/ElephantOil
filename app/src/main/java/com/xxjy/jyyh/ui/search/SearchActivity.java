@@ -283,7 +283,7 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                 mQueryDialog = new QueryDialog(this);
                 mQueryDialog.show();
                 mQueryDialog.setOnConfirmListener(() -> {
-                    DBInstance.getInstance().deleteAllData();
+                    DBInstance.getInstance().deleteAllIntegralData();
                     mInterestHistoryList.clear();
                     mInterestHistoryAdapter.notifyDataSetChanged();
                 });

@@ -24,4 +24,12 @@ public class MainRepository extends BaseRepository {
                 })
         );
     }
+
+    public void getIsNewUser(MutableLiveData<Boolean> isNewLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.IS_NEW_USER)
+                .asResponse(Boolean.class)
+                .subscribe(b -> isNewLiveData.postValue(b))
+
+        );
+    }
 }

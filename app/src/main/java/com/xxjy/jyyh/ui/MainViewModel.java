@@ -25,4 +25,10 @@ public class MainViewModel extends BaseViewModel<MainRepository> {
         mRespository.getOsOverAll(osLiveData);
         return osLiveData;
     }
+
+    public LiveData<Boolean> getIsNewUser() {
+        MutableLiveData<Boolean> isNewLiveData = new MutableLiveData<>();
+        mRespository.getIsNewUser(isNewLiveData);
+        return isNewLiveData;
+    }
 }

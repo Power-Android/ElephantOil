@@ -206,7 +206,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
 //                @Override
 //                public void onLogin() {
-                    NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink());
+            NaviActivityInfo.disPathIntentFromUrl((MainActivity) getActivity(), ((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink());
 //                    WebViewActivity.openWebActivity((MainActivity) getActivity(), ((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink());
 //                }
 //            });
@@ -217,9 +217,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         initWebViewClient();
     }
 
-    private void loadBanner(){
+    private void loadBanner() {
         bannerViewModel.getBannerOfPostion(BannerPositionConstants.HOME_BANNER).observe(this, data -> {
-            if(data!=null&&data.size()>0){
+            if (data != null && data.size() > 0) {
                 mBinding.banner.setVisibility(View.VISIBLE);
                 //banner
                 mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
@@ -236,7 +236,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     }
                 }).addBannerLifecycleObserver(this)
                         .setIndicator(new RectangleIndicator(mContext));
-            }else{
+            } else {
                 mBinding.banner.setVisibility(View.GONE);
             }
 
@@ -247,9 +247,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     private void requestPermission() {
         PermissionUtils.permission(
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION)
                 .callback(new PermissionUtils.SimpleCallback() {
@@ -291,6 +288,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 });
         mBinding.quickOilTv.setOnClickListener(this::onViewClicked);
         mBinding.homeQuickOilRl.setOnClickListener(this::onViewClicked);
+        mBinding.oilNumTv.setOnClickListener(this::onViewClicked);
         mBinding.searchIv.setOnClickListener(this::onViewClicked);
         mBinding.awardTv.setOnClickListener(this::onViewClicked);
         mBinding.otherOilTv.setOnClickListener(this::onViewClicked);
@@ -306,6 +304,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     protected void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.quick_oil_tv:
+            case R.id.oil_num_tv:
                 LoginHelper.login(getContext(), new LoginHelper.CallBack() {
                     @Override
                     public void onLogin() {
@@ -370,19 +369,19 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     @Override
     protected void dataObservable() {
         mViewModel.locationLiveData.observe(this, locationEntity -> {
-                UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
-                UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
-                DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
-                DPoint p2 = new DPoint(mLat, mLng);
-                mBinding.addressTv.setText(locationEntity.getAddress());
-                float distance = CoordinateConverter.calculateLineDistance(p, p2);
-                if (distance > 100) {
-                    mLng = locationEntity.getLng();
-                    mLat = locationEntity.getLat();
-                    LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
-                    //首页油站
-                    mViewModel.getHomeOil(mLat, mLng);
-                }
+            UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
+            UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
+            DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
+            DPoint p2 = new DPoint(mLat, mLng);
+            mBinding.addressTv.setText(locationEntity.getAddress());
+            float distance = CoordinateConverter.calculateLineDistance(p, p2);
+            if (distance > 100) {
+                mLng = locationEntity.getLng();
+                mLat = locationEntity.getLat();
+                LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
+                //首页油站
+                mViewModel.getHomeOil(mLat, mLng);
+            }
         });
 
         //优选油站
@@ -395,7 +394,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             Glide.with(mContext).load(mStationsBean.getGasTypeImg()).into(mBinding.oilImgIv);
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
             mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
-            if(mStationsBean.getOilPriceList()!=null&&mStationsBean.getOilPriceList().size()>0){
+            if (mStationsBean.getOilPriceList() != null && mStationsBean.getOilPriceList().size() > 0) {
                 mBinding.oilCurrentPriceTv.setText(mStationsBean.getOilPriceList().get(0).getPriceYfq());
                 mBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getOilPriceList().get(0).getPriceOfficial());
                 mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(0).getOilName());
@@ -495,56 +494,56 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
         mViewModel.refuelOilLiveData.observe(this, data -> {
-            if(data.getData()!=null){
-               List<TaskBean> taskBeans= (List<TaskBean>)data.getData();
+            if (data.getData() != null) {
+                List<TaskBean> taskBeans = (List<TaskBean>) data.getData();
 
-            if (taskBeans != null && taskBeans.size() > 0) {
-                mBinding.integralRl.setVisibility(View.VISIBLE);
-                TaskBean taskBean = taskBeans.get(0);
+                if (taskBeans != null && taskBeans.size() > 0) {
+                    mBinding.integralRl.setVisibility(View.VISIBLE);
+                    TaskBean taskBean = taskBeans.get(0);
 
-                SpanUtils.with(mBinding.integralDesc)
-                        .append("• 还需加油")
-                        .append(taskBean.getnOrderAmount() + "")
-                        .setForegroundColor(getResources().getColor(R.color.color_1300))
-                        .append("元 可立即领取")
-                        .append(taskBean.getSpName())
-                        .setForegroundColor(getResources().getColor(R.color.color_1300))
-                        .append("(价值" + taskBean.getRedeemPoint() + "积分)")
-                        .setFontSize(10, true)
+                    SpanUtils.with(mBinding.integralDesc)
+                            .append("• 还需加油")
+                            .append(taskBean.getnOrderAmount() + "")
+                            .setForegroundColor(getResources().getColor(R.color.color_1300))
+                            .append("元 可立即领取")
+                            .append(taskBean.getSpName())
+                            .setForegroundColor(getResources().getColor(R.color.color_1300))
+                            .append("(价值" + taskBean.getRedeemPoint() + "积分)")
+                            .setFontSize(10, true)
 
-                        .setForegroundColor(getResources().getColor(R.color.color_1300))
-                        .create();
+                            .setForegroundColor(getResources().getColor(R.color.color_1300))
+                            .create();
 
-                SpanUtils.with(mBinding.orderNumDecView)
-                        .append("(约需")
-                        .append(taskBean.gettOrderNum() + "")
-                        .setForegroundColor(getResources().getColor(R.color.color_34))
-                        .append("单，还需完成")
-                        .append(taskBean.getnOrderNum() + "")
-                        .setForegroundColor(getResources().getColor(R.color.color_34))
-                        .append("单，限")
-                        .append(taskBean.getGasName())
-                        .setForegroundColor(getResources().getColor(R.color.color_34))
-                        .append(")")
-                        .create();
-                GlideUtils.loadImage(getContext(), taskBean.getSpImg(), mBinding.integralIv);
-                mBinding.progress.setMax(taskBean.gettOrderNum());
-                mBinding.progress.setProgress(taskBean.gettOrderNum() - taskBean.getnOrderAmount());
-                if (taskBean.isStatus()) {
-                    mBinding.awardTv.setBackgroundResource(R.drawable.shape_receive_6radius);
-                    mBinding.awardTv.setClickable(true);
-                } else {
-                    mBinding.awardTv.setBackgroundResource(R.drawable.shape_gray_6raduis);
-                    mBinding.awardTv.setClickable(false);
-                }
-                mBinding.awardTv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), taskBean.getLink());
+                    SpanUtils.with(mBinding.orderNumDecView)
+                            .append("(约需")
+                            .append(taskBean.gettOrderNum() + "")
+                            .setForegroundColor(getResources().getColor(R.color.color_34))
+                            .append("单，还需完成")
+                            .append(taskBean.getnOrderNum() + "")
+                            .setForegroundColor(getResources().getColor(R.color.color_34))
+                            .append("单，限")
+                            .append(taskBean.getGasName())
+                            .setForegroundColor(getResources().getColor(R.color.color_34))
+                            .append(")")
+                            .create();
+                    GlideUtils.loadImage(getContext(), taskBean.getSpImg(), mBinding.integralIv);
+                    mBinding.progress.setMax(taskBean.gettOrderNum());
+                    mBinding.progress.setProgress(taskBean.gettOrderNum() - taskBean.getnOrderAmount());
+                    if (taskBean.isStatus()) {
+                        mBinding.awardTv.setBackgroundResource(R.drawable.shape_receive_6radius);
+                        mBinding.awardTv.setClickable(true);
+                    } else {
+                        mBinding.awardTv.setBackgroundResource(R.drawable.shape_gray_6raduis);
+                        mBinding.awardTv.setClickable(false);
                     }
-                });
-            }
-            }else{
+                    mBinding.awardTv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), taskBean.getLink());
+                        }
+                    });
+                }
+            } else {
                 mBinding.integralRl.setVisibility(View.GONE);
             }
         });
@@ -710,7 +709,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private void showChoiceOil(String stationName, View view) {
         mGasStationTipsDialog = new GasStationLocationTipsDialog(mContext, view, stationName);
         mGasStationTipsDialog.setOnClickListener(view1 -> {
-            switch (view1.getId()){
+            switch (view1.getId()) {
                 case R.id.select_agin://重新选择
                     closeDialog();
                     break;
@@ -743,7 +742,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mViewModel.getHomeOil(mLat, mLng);
         mViewModel.getOftenOils();
-        if (mStationsBean != null){
+        if (mStationsBean != null) {
             mViewModel.getRefuelJob(mStationsBean.getGasId());
             mViewModel.checkDistance(mStationsBean.getGasId());
         }
@@ -789,10 +788,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             mOilPayDialog.dismiss();
             mOilPayDialog = null;
         }
-        if (mLocationTipsDialog != null){
+        if (mLocationTipsDialog != null) {
             mLocationTipsDialog = null;
         }
-        if (mGasStationTipsDialog != null){
+        if (mGasStationTipsDialog != null) {
             mGasStationTipsDialog = null;
         }
 

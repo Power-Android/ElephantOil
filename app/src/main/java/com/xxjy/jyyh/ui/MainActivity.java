@@ -61,18 +61,19 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     private IntegralFragment mIntergralFragment;
     private MineFragment mMineFragment;
     private FragmentTransaction mTransaction;
+    private int isNewUser = -1;//新用户，未满3单跳油站列表，老用户满3单跳首页
 
     //极光intent
     public static final String TAG_FLAG_INTENT_VALUE_INFO = "intentInfo";
     private AboutUsViewModel aboutUsViewModel;
-private BannerViewModel bannerViewModel;
+    private BannerViewModel bannerViewModel;
 
 
     @BusUtils.Bus(tag = EventConstants.EVENT_CHANGE_FRAGMENT)
     public void onEvent(@NotNull EventEntity event) {
-        if(TextUtils.equals(event.getEvent(),EventConstants.EVENT_CHANGE_FRAGMENT)){
+        if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_CHANGE_FRAGMENT)) {
             mBinding.navView.setSelectedItemId(R.id.navigation_oil);
-        }else if(TextUtils.equals(event.getEvent(),EventConstants.EVENT_TO_INTEGRAL_FRAGMENT)){
+        } else if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_TO_INTEGRAL_FRAGMENT)) {
             mBinding.navView.setSelectedItemId(R.id.navigation_integral);
         }
     }
@@ -82,10 +83,18 @@ private BannerViewModel bannerViewModel;
         BusUtils.register(this);
         disPathIntentMessage(getIntent());
         mViewModel.getOsOverAll().observe(this, b -> {
-            if (!b){
+            if (!b) {
                 UserConstants.setGoneIntegral(true);
                 mBinding.navView.getMenu().removeItem(R.id.navigation_integral);
             }
+        });
+        mViewModel.getIsNewUser().observe(this, aBoolean -> {
+            if (aBoolean){
+                isNewUser = 1;
+            }else {
+                isNewUser = 0;
+            }
+            showDiffFragment(isNewUser);
         });
         initNavigationView();
         new Handler().postDelayed(() -> {
@@ -95,9 +104,17 @@ private BannerViewModel bannerViewModel;
             }
         }, 2000);
         int state = getIntent().getIntExtra("jumpState", -1);
-        if (state != -1) {
-            showFragment(state);
-            switch (state) {
+        showDiffFragment(state);
+
+        aboutUsViewModel = new ViewModelProvider(this).get(AboutUsViewModel.class);
+        bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
+        checkVersion();
+    }
+
+    private void showDiffFragment(int position) {
+        if (position != -1) {
+            showFragment(position);
+            switch (position) {
                 case 0:
                     mBinding.navView.setSelectedItemId(R.id.navigation_home);
                     break;
@@ -112,9 +129,6 @@ private BannerViewModel bannerViewModel;
                     break;
             }
         }
-        aboutUsViewModel = new ViewModelProvider(this).get(AboutUsViewModel.class);
-        bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
-        checkVersion();
     }
 
     private void initNavigationView() {
@@ -252,7 +266,7 @@ private BannerViewModel bannerViewModel;
                     }
                 });
                 checkVersionDialog.show();
-            }else{
+            } else {
                 getAdData();
             }
 
@@ -260,9 +274,9 @@ private BannerViewModel bannerViewModel;
     }
 
     private void getAdData() {
-        bannerViewModel.getBannerOfPostion(BannerPositionConstants.APP_OPEN_AD).observe(this,data->{
-            if(data!=null&&data.size()>0){
-                HomeAdDialog homeAdDialog = new HomeAdDialog(this,data.get(0));
+        bannerViewModel.getBannerOfPostion(BannerPositionConstants.APP_OPEN_AD).observe(this, data -> {
+            if (data != null && data.size() > 0) {
+                HomeAdDialog homeAdDialog = new HomeAdDialog(this, data.get(0));
                 homeAdDialog.show(mBinding.getRoot());
             }
         });
@@ -273,6 +287,7 @@ private BannerViewModel bannerViewModel;
         super.onNewIntent(intent);
         disPathIntentMessage(intent);
     }
+
     /**
      * 打开首页并清空栈
      *
@@ -284,6 +299,7 @@ private BannerViewModel bannerViewModel;
         activity.startActivity(intent);
 //        ActivityUtils.startHomeActivity();
     }
+
     private void disPathIntentMessage(Intent intent) {
         if (intent == null) {
             intent = getIntent();
@@ -293,6 +309,7 @@ private BannerViewModel bannerViewModel;
         NaviActivityInfo.disPathIntentFromUrl(this, intentInfo);
         intent.removeExtra(TAG_FLAG_INTENT_VALUE_INFO);
     }
+
     private void checkVersion() {
         aboutUsViewModel.checkVersion();
     }
