@@ -25,10 +25,9 @@ public class BannerViewModel extends BaseViewModel<BannerRepository> {
     }
 
 
-
     public MutableLiveData<List<BannerBean>> getBannerOfPostion(int position) {
-         MutableLiveData<List<BannerBean>> bannersLiveData = new MutableLiveData<>();
-        mRespository.getBannerOfPostion(bannersLiveData,position);
+        MutableLiveData<List<BannerBean>> bannersLiveData = new MutableLiveData<>();
+        mRespository.getBannerOfPostion(bannersLiveData, position);
         return bannersLiveData;
     }
 }

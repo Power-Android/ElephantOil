@@ -19,7 +19,9 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.DeviceUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BaseActivity;
@@ -37,7 +39,8 @@ import com.xxjy.jyyh.utils.locationmanger.GPSUtil;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.umengmanager.UMengOnEvent;
 
-public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,BannerViewModel> implements PermissionUtils.SimpleCallback {
+public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,BannerViewModel>
+        implements PermissionUtils.SimpleCallback {
     private static final String BAR_TITLE = "启动页";
 
     public static final int PERMISSION_REQUEST_CODE = 1;
@@ -107,6 +110,7 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
                     } else {
                         isShowAd = !TextUtils.isEmpty(mAdImageUrl);
                         if (isShowAd) {
+                            LogUtils.e("isShowAd", TimeUtils.getNowString());
                             handler.sendEmptyMessage(MSG_WHAT_TRY_SHOW_AD);
                         } else {
                             handler.sendEmptyMessage(MSG_WHAT_DISPATH_INFO);
@@ -211,7 +215,7 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
                 mAdImageUrl = data.get(0).getImgUrl();
                 mAdLinkInfo =data.get(0).getLink();
             }
-            handler.sendEmptyMessageDelayed(MSG_WHAT_TRY_SHOW_GUIDE, 2000);
+//            handler.sendEmptyMessageDelayed(MSG_WHAT_TRY_SHOW_GUIDE, 2000);
         });
     }
 
@@ -228,6 +232,7 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
                             mWelcomeAdTv.setVisibility(View.VISIBLE);
                             mWelcomeAdTv.startAnimation(mAlphaAnimation);
                             handler.sendEmptyMessage(MSG_WHAT_COUNT_DOWN_TIME);
+                            LogUtils.e(TimeUtils.getNowString());
                         }
                     });
                 } catch (InterruptedException e) {
@@ -273,6 +278,7 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
 
     @Override
     public void onGranted() {
+        LogUtils.e("1111111");
         next();
     }
 
@@ -281,14 +287,7 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
         if (GPSUtil.isOpenGPS(this)) {
             if (isFirstIn) {
                 isFirstIn = false;
-//                AndPermissionManager.showSettingDialog(this, 2, null,
-//                        "您取消了一些必要权限,有些产品功能将无法使用,是否配置权限?", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                next();
-//                            }
-//                        });
-//
+                next();
             } else {
                 next();
             }

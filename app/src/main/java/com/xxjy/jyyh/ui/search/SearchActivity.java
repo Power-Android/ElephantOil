@@ -129,11 +129,21 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         if (mOilHistoryList != null && mOilHistoryList.size() > 0){
             mOilHistoryAdapter.setNewData(mOilHistoryList);
             mOilHistoryAdapter.notifyDataSetChanged();
+            mOilView.findViewById(R.id.oil_history_title).setVisibility(View.VISIBLE);
+            mOilView.findViewById(R.id.oil_history_delete_iv).setVisibility(View.VISIBLE);
+        }else {
+            mOilView.findViewById(R.id.oil_history_title).setVisibility(View.GONE);
+            mOilView.findViewById(R.id.oil_history_delete_iv).setVisibility(View.GONE);
         }
         mInterestHistoryList = DBInstance.getInstance().getSearchIntegralHistory();
         if (mInterestHistoryList != null && mInterestHistoryList.size() > 0){
             mInterestHistoryAdapter.setNewData(mInterestHistoryList);
             mInterestHistoryAdapter.notifyDataSetChanged();
+            mInterestView.findViewById(R.id.interest_history_title).setVisibility(View.VISIBLE);
+            mInterestView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.VISIBLE);
+        }else {
+            mInterestView.findViewById(R.id.interest_history_title).setVisibility(View.GONE);
+            mInterestView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.GONE);
         }
     }
 

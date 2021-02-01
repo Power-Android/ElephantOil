@@ -256,7 +256,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
                     @Override
                     public void onDenied() {
-                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
+                        mLat = 0;
+                        mLng = 0;
+                        mViewModel.getHomeOil(mLat, mLng);
+                        showFailLocation();
+//                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
                     }
                 })
                 .request();
@@ -287,7 +291,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.awardTv.setOnClickListener(this::onViewClicked);
         mBinding.otherOilTv.setOnClickListener(this::onViewClicked);
         mBinding.oilNavigationTv.setOnClickListener(this::onViewClicked);
-
+        mBinding.locationIv.setOnClickListener(this::onViewClicked);
+        mBinding.addressTv.setOnClickListener(this::onViewClicked);
 
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
     }
@@ -333,13 +338,16 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     showToastWarning("您当前未安装地图软件，请先安装");
                 }
                 break;
+            case R.id.location_iv:
+            case R.id.address_tv:
+                requestPermission();
+                break;
         }
     }
 
     @Override
     protected void dataObservable() {
         mViewModel.locationLiveData.observe(this, locationEntity -> {
-            if (locationEntity.isSuccess()) {
                 UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
                 UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
                 DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
@@ -353,14 +361,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     //首页油站
                     mViewModel.getHomeOil(mLat, mLng);
                 }
-            } else {
-                showFailLocation();
-            }
         });
 
         //优选油站
         mViewModel.homeOilLiveData.observe(this, oilEntity -> {
-            if (oilEntity == null || oilEntity.getStations() == null || oilEntity.getStations().size() <= 0) {
+            if (oilEntity == null || oilEntity.getStations() == null ||
+                    oilEntity.getStations().size() <= 0 || oilEntity.getStations().get(0).getOilPriceList() == null) {
                 return;
             }
             mStationsBean = oilEntity.getStations().get(0);
@@ -661,7 +667,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     requestPermission();
                     break;
                 case R.id.all_oil:
-                    BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT);
+                    BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
+                            new EventEntity(EventConstants.EVENT_CHANGE_FRAGMENT));
                     break;
             }
         });
@@ -704,9 +711,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mViewModel.getHomeOil(mLat, mLng);
         mViewModel.getOftenOils();
-        mViewModel.getRefuelJob(mStationsBean.getGasId());
+        if (mStationsBean != null){
+            mViewModel.getRefuelJob(mStationsBean.getGasId());
+            mViewModel.checkDistance(mStationsBean.getGasId());
+        }
         mViewModel.getHomeProduct();
-        mViewModel.checkDistance(mStationsBean.getGasId());
 
         loadBanner();
         refreshLayout.finishRefresh();

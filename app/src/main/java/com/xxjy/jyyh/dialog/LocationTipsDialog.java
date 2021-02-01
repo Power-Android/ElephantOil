@@ -60,11 +60,13 @@ public class LocationTipsDialog {
             if (mOnClickListener != null){
                 mOnClickListener.onClick(view);
             }
+            mPopup.dismiss();
         });
         mBinding.allOil.setOnClickListener(view -> {
             if (mOnClickListener != null){
                 mOnClickListener.onClick(view);
             }
+            mPopup.dismiss();
         });
     }
 

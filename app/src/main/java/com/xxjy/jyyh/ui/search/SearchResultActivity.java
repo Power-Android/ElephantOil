@@ -208,18 +208,23 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         });
 
         mOilViewModel.oilStationLiveData.observe(this, dataStations -> {
-            if (pageNum == 1) {
-                mOilListAdapter.setNewData(dataStations.getStations());
-                mBinding.refreshView.setEnableLoadMore(true);
-                mBinding.refreshView.finishRefresh(true);
-            } else {
-                if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0) {
-                    mOilListAdapter.addData(dataStations.getStations());
-                    mBinding.refreshView.finishLoadMore(true);
+            if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0){
+                if (pageNum == 1) {
+                    mOilListAdapter.setNewData(dataStations.getStations());
+                    mBinding.refreshView.setEnableLoadMore(true);
+                    mBinding.refreshView.finishRefresh(true);
                 } else {
-                    mBinding.refreshView.finishLoadMoreWithNoMoreData();
+                    if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0) {
+                        mOilListAdapter.addData(dataStations.getStations());
+                        mBinding.refreshView.finishLoadMore(true);
+                    } else {
+                        mBinding.refreshView.finishLoadMoreWithNoMoreData();
+                    }
                 }
+            }else {
+                mBinding.noResultLayout.setVisibility(View.VISIBLE);
             }
+
         });
 
         mViewModel.intergraLiveData.observe(this, productBeans -> {
