@@ -3,12 +3,14 @@ package com.xxjy.jyyh.ui.search;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -26,9 +28,11 @@ import com.xxjy.jyyh.dialog.SelectOilNumDialog;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.ProductBean;
+import com.xxjy.jyyh.room.DBInstance;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.oil.OilViewModel;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.LoginHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +49,12 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
 
     private SelectDistanceDialog selectDistanceDialog;
     private SelectOilNumDialog selectOilNumDialog;
-    private int distance = 50;
+    private int distance = -1;
     private OilViewModel mOilViewModel;
     private int pageNum = 1;
     private int pageSize = 10;
     private boolean firstDistanceOrPrice = true;
-    private String mCheckOilGasId = "92";
+    private String mCheckOilGasId = "";
     private OilStationListAdapter mOilListAdapter;
     private String integralType = "1";//权益type 1 是 综合  2 是价格 3 是销量
     private SearchIntegralAdapter mIntegralAdapter;
@@ -64,21 +68,27 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
 
         mBinding.searchEt.setText(mContent);
 
-        mOilViewModel = ViewModelProviders.of(this).get(OilViewModel.class);
+        mOilViewModel = new ViewModelProvider(this).get(OilViewModel.class);
 
         if (TextUtils.equals("1", mType)) {
-            mBinding.tab1Tv.setText("50km内");
-            mBinding.tab2Tv.setText("92#");
+            mBinding.tab1Tv.setText("距离不限");
+            mBinding.tab2Tv.setText("油号不限");
             mBinding.tab3Tv.setText("距离优先");
 
             mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
             mOilListAdapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, mOilList);
             mBinding.recyclerView.setAdapter(mOilListAdapter);
             mOilListAdapter.setOnItemClickListener((adapter, view, position) -> {
-                List<OilEntity.StationsBean> data = adapter.getData();
-                Intent intent = new Intent(SearchResultActivity.this, OilDetailActivity.class);
-                intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
-                startActivity(intent);
+
+                LoginHelper.login(this, new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        List<OilEntity.StationsBean> data = adapter.getData();
+                        Intent intent = new Intent(SearchResultActivity.this, OilDetailActivity.class);
+                        intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
+                        startActivity(intent);
+                    }
+                });
             });
 
             getOilStations(UserConstants.getLatitude(), UserConstants.getLongitude(), mCheckOilGasId,
@@ -97,8 +107,14 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             mIntegralAdapter.setOnItemClickListener((adapter, view, position) -> {
                 List<ProductBean> data = adapter.getData();
                 if (!TextUtils.isEmpty(data.get(position).getLink())){
-                    WebViewActivity.openRealUrlWebActivity(SearchResultActivity.this,
-                            data.get(position).getLink());
+                    LoginHelper.login(this, new LoginHelper.CallBack() {
+                        @Override
+                        public void onLogin() {
+                            WebViewActivity.openRealUrlWebActivity(SearchResultActivity.this,
+                                    data.get(position).getLink());
+                        }
+                    });
+
                 }
             });
 
@@ -125,6 +141,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                         selectDistanceDialog = new SelectDistanceDialog(
                                 this, mBinding.tabLayout, mBinding.getRoot());
                     }
+                    selectDistanceDialog.setSelectPosition(5);
                     selectDistanceDialog.show();
                     selectDistanceDialog.setOnItemClickedListener((adapter, view1, position, distanceEntity) -> {
                         distance = distanceEntity.getDistance();
@@ -162,12 +179,19 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
                 }
             case R.id.search_tv:
+                mContent = mBinding.searchEt.getText().toString().trim();
+                if(TextUtils.isEmpty(mContent)){
+                    showToastInfo("请输入搜索内容");
+                    return;
+                }
                 if (TextUtils.equals("1", mType)) {
+                    DBInstance.getInstance().insertData(mContent);
                     pageNum = 1;
                     getOilStations(UserConstants.getLatitude(), UserConstants.getLongitude(), mCheckOilGasId,
                             firstDistanceOrPrice ? "1" : "2", distance == -1 ? null : String.valueOf(distance * 1000),
                             String.valueOf(pageNum), String.valueOf(pageSize), mContent, "sb");
                 } else {
+                    DBInstance.getInstance().insertIntegralData(mContent);
                     pageNum = 1;
                     getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
                 }
