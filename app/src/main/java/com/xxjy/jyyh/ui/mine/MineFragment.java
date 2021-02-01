@@ -169,8 +169,15 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 
         });
         mViewModel.bannersLiveData.observe(this, data -> {
-            mineTabAdapter.setNewData(data);
-            mBinding.refreshview.finishRefresh();
+            if(data!=null&&data.size()>0){
+                mBinding.moreServiceLayout.setVisibility(View.VISIBLE);
+                mineTabAdapter.setNewData(data);
+                mBinding.refreshview.finishRefresh();
+            }else {
+                mBinding.moreServiceLayout.setVisibility(View.GONE);
+
+            }
+
         });
     }
 

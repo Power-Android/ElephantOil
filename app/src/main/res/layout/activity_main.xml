@@ -12,6 +12,7 @@
         android:layout_height="@dimen/dp_50"
         android:layout_width="match_parent"
         app:itemTextColor="@drawable/selector_nav_textcolor"
+        app:itemIconSize="@dimen/dp_22"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

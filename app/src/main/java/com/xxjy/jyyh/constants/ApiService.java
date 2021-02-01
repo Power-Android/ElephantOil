@@ -87,7 +87,7 @@ public class ApiService {
     //app版本更新检测
     public static final String CHECK_VERSION = "api/v1/common/checkVersion";
     //客服中心
-    public static final String CALL_CENTER = "api/v1/store/getCallCenter";
+    public static final String CALL_CENTER = "api/v1/common/getCallCenter";
     //退出登录
     public static final String USER_LOGOUT = "api/v1/wx/logout";
     //油站详情

@@ -70,6 +70,7 @@ import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.PayOrderParams;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.TaskBean;
+import com.xxjy.jyyh.http.Response;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
@@ -81,6 +82,7 @@ import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
+import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
@@ -203,7 +205,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             LoginHelper.login(getContext(), new LoginHelper.CallBack() {
                 @Override
                 public void onLogin() {
-                    WebViewActivity.openWebActivity((MainActivity) getActivity(), ((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink());
+                    NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink());
+//                    WebViewActivity.openWebActivity((MainActivity) getActivity(), ((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink());
                 }
             });
         });
@@ -301,11 +304,17 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     protected void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.quick_oil_tv:
-                if (mStationsBean != null && mStationsBean.getOilPriceList().size() > 0) {
-                    showNumDialog(mStationsBean);
-                } else {
-                    showToastWarning("暂无加油信息~");
-                }
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        if (mStationsBean != null && mStationsBean.getOilPriceList().size() > 0) {
+                            showNumDialog(mStationsBean);
+                        } else {
+                            showToastWarning("暂无加油信息~");
+                        }
+                    }
+                });
+
                 break;
             case R.id.home_quick_oil_rl:
                 LoginHelper.login(mContext, () -> {
@@ -329,14 +338,21 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         new EventEntity(EventConstants.EVENT_CHANGE_FRAGMENT));
                 break;
             case R.id.oil_navigation_tv:
-                if (MapIntentUtils.isPhoneHasMapNavigation()) {
-                    NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
-                            mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
-                            mStationsBean.getGasName());
-                    navigationDialog.show();
-                } else {
-                    showToastWarning("您当前未安装地图软件，请先安装");
-                }
+
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                            NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
+                                    mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
+                                    mStationsBean.getGasName());
+                            navigationDialog.show();
+                        } else {
+                            showToastWarning("您当前未安装地图软件，请先安装");
+                        }
+                    }
+                });
+
                 break;
             case R.id.location_iv:
             case R.id.address_tv:
@@ -373,9 +389,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             Glide.with(mContext).load(mStationsBean.getGasTypeImg()).into(mBinding.oilImgIv);
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
             mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
-            mBinding.oilCurrentPriceTv.setText(mStationsBean.getOilPriceList().get(0).getPriceYfq());
-            mBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getOilPriceList().get(0).getPriceOfficial());
-            mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(0).getOilName());
+            if(mStationsBean.getOilPriceList()!=null&&mStationsBean.getOilPriceList().size()>0){
+                mBinding.oilCurrentPriceTv.setText(mStationsBean.getOilPriceList().get(0).getPriceYfq());
+                mBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getOilPriceList().get(0).getPriceOfficial());
+                mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(0).getOilName());
+            }
+
             mBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
             mBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
             mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -470,8 +489,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
         mViewModel.refuelOilLiveData.observe(this, data -> {
-            if (data != null && data.size() > 0) {
-                TaskBean taskBean = data.get(0);
+            if(data.getData()!=null){
+               List<TaskBean> taskBeans= (List<TaskBean>)data.getData();
+
+            if (taskBeans != null && taskBeans.size() > 0) {
+                mBinding.integralRl.setVisibility(View.VISIBLE);
+                TaskBean taskBean = taskBeans.get(0);
 
                 SpanUtils.with(mBinding.integralDesc)
                         .append("• 还需加油")
@@ -514,6 +537,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         WebViewActivity.openRealUrlWebActivity(getBaseActivity(), taskBean.getLink());
                     }
                 });
+            }
+            }else{
+                mBinding.integralRl.setVisibility(View.GONE);
             }
         });
 

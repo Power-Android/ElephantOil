@@ -50,6 +50,7 @@ import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
+import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.RectangleIndicator;
@@ -150,6 +151,8 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 //                    withdrawalTipsDialog = new WithdrawalTipsDialog(getContext(), mBinding.getRoot());
 //                }
 //                withdrawalTipsDialog.show();
+                LoginHelper.login(getContext(), () -> {  });
+
                 break;
             case R.id.customer_service_view:
                 LoginHelper.login(getContext(), () -> {
@@ -298,13 +301,24 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                     mBinding.bannerRightView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(0).getLink());
+                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                                @Override
+                                public void onLogin() {
+                                    NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.get(0).getLink());
+                                }
+                            });
+//                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(0).getLink());
                         }
                     });
                     mBinding.bannerLeftView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(0).getLink());
+                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                                @Override
+                                public void onLogin() {
+                                    NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.get(1).getLink());
+                                }
+                            });
                         }
                     });
                 } else {
@@ -327,7 +341,13 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                                         .error(R.drawable.default_img_bg))
                                 .into(holder.imageView);
                         holder.imageView.setOnClickListener(v -> {
-                            WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
+                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                                @Override
+                                public void onLogin() {
+                                    NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.getLink());
+                                }
+                            });
+//                            WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
                         });
                     }
                 }).addBannerLifecycleObserver(this)

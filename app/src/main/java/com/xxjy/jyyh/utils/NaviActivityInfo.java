@@ -52,26 +52,26 @@ public class NaviActivityInfo {
      */
     public static void disPathIntentFromUrl(BaseActivity activity, String urlInfo) {
         if (TextUtils.isEmpty(urlInfo)) return;
-    if (urlInfo.contains(NATIVE_TO_PAY_RESULT)) {    //支付结果
+        if (urlInfo.contains(NATIVE_TO_PAY_RESULT)) {    //支付结果
             String orderNo = getParams(urlInfo, "orderNo");
             String orderId = getParams(urlInfo, "orderId");
             RefuelingPayResultActivity.openPayResultPage(activity, orderNo, orderId);
-        } else if (urlInfo.contains(NATIVE_TO_HELP_CHAT)||urlInfo.contains(NATIVE_SHOW_CALL_HELP)||urlInfo.contains(NATIVE_TO_HELP_DIAL_PHONE)) {
+        } else if (urlInfo.contains(NATIVE_TO_HELP_CHAT) || urlInfo.contains(NATIVE_SHOW_CALL_HELP) || urlInfo.contains(NATIVE_TO_HELP_DIAL_PHONE)) {
 
-        CustomerServiceDialog  customerServiceDialog = new CustomerServiceDialog(activity);
-        try {
-            customerServiceDialog.show(activity.getWindow().getDecorView().findViewById(android.R.id.content));
-        }catch (Exception e){
+            CustomerServiceDialog customerServiceDialog = new CustomerServiceDialog(activity);
+            try {
+                customerServiceDialog.show(activity.getWindow().getDecorView().findViewById(android.R.id.content));
+            } catch (Exception e) {
 
-        }
+            }
 
         } else if (urlInfo.contains(NATIVE_TO_MSG_CENTER)) {
 
-        activity.startActivity(new Intent(activity, MessageCenterActivity.class));
+            activity.startActivity(new Intent(activity, MessageCenterActivity.class));
 
         } else if (urlInfo.contains(NATIVE_TO_MY_COUPON)) {
 
-        activity.startActivity(new Intent(activity, MyCouponActivity.class));
+            activity.startActivity(new Intent(activity, MyCouponActivity.class));
 
         } else if (urlInfo.contains(NATIVE_SAVE_PICTURE)) {
             String imageString = getParams(urlInfo, "imageString");

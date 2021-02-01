@@ -301,6 +301,7 @@
                 </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
                 <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
+                    android:id="@+id/more_service_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_12"

@@ -52,7 +52,7 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
 
     public static final String TYPE_ACT_LINK = "act";           //打开该界面的tag
 
-    private int mSeconds = 4;   //倒计时的秒数
+    private int mSeconds = 3;   //倒计时的秒数
 
     private ImageView mWelcomeAd;
     private TextView mWelcomeAdTv;

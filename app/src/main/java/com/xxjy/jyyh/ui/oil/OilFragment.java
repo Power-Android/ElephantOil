@@ -36,6 +36,7 @@ import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
+import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.youth.banner.Banner;
@@ -87,27 +88,40 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
-            List<OilEntity.StationsBean> data = adapter.getData();
-            Intent intent = new Intent(mContext, OilDetailActivity.class);
-            intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
-            startActivity(intent);
+
+            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                @Override
+                public void onLogin() {
+                    List<OilEntity.StationsBean> data = adapter.getData();
+                    Intent intent = new Intent(mContext, OilDetailActivity.class);
+                    intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
+                    startActivity(intent);
+                }
+            });
+
         });
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 List<OilEntity.StationsBean> data = adapter.getData();
-                switch (view.getId()){
-                    case R.id.navigation_ll:
-                        if (MapIntentUtils.isPhoneHasMapNavigation()) {
-                            NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
-                                    data.get(position).getStationLatitude(), data.get(position).getStationLongitude(),
-                                    data.get(position).getGasName());
-                            navigationDialog.show();
-                        } else {
-                            showToastWarning("您当前未安装地图软件，请先安装");
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        switch (view.getId()){
+                            case R.id.navigation_ll:
+                                if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                                    NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
+                                            data.get(position).getStationLatitude(), data.get(position).getStationLongitude(),
+                                            data.get(position).getGasName());
+                                    navigationDialog.show();
+                                } else {
+                                    showToastWarning("您当前未安装地图软件，请先安装");
+                                }
+                                break;
                         }
-                        break;
-                }
+
+                    }
+                });
             }
         });
 
@@ -267,7 +281,14 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                                         .error(R.drawable.default_img_bg))
                                 .into(holder.imageView);
                         holder.imageView.setOnClickListener(v -> {
-                            WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
+                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                                @Override
+                                public void onLogin() {
+                                    NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.getLink());
+                                }
+                            });
+
+//                            WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
                         });
                     }
                 }).addBannerLifecycleObserver(this)

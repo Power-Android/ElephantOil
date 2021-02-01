@@ -16,6 +16,7 @@ import com.xxjy.jyyh.entity.OilDistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.TaskBean;
+import com.xxjy.jyyh.http.Response;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
@@ -105,10 +106,10 @@ public class HomeRepository extends BaseRepository {
      * 加油任务
      */
     public void getRefuelJob(String gasId,
-                             MutableLiveData<List<TaskBean>> refuelOilLiveData) {
+                             MutableLiveData<Response> refuelOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.REFUEL_JOB)
                 .add(Constants.GAS_STATION_ID, gasId)
-                .asResponseList(TaskBean.class)
+                .asCodeResponse(Response.class)
                 .subscribe( data-> refuelOilLiveData.postValue(data))
         );
     }
