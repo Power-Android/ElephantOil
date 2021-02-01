@@ -219,7 +219,7 @@ public class UiUtils {
      */
     public static void toLoginActivity(Context context, int state) {
         Intent intent = new Intent(context, LoginActivity.class);
-//        LoginActivity.loginState = state;
+        LoginActivity.loginState = state;
         context.startActivity(intent);
     }
     /**

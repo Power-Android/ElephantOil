@@ -16,6 +16,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.TextWatcherAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMobileLoginBinding;
 import com.xxjy.jyyh.ui.MainActivity;
@@ -95,6 +96,9 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
         mBinding.userPhoneNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                if (mBinding==null||mBinding.userPhoneNumberLine == null) {
+                    return;
+                }
                 if (hasFocus || !TextUtils.isEmpty(mBinding.userPhoneNumber.getTextWithoutSpace())) {
                     mBinding.userPhoneNumberLine.setBackgroundColor(lineGetFocus);
                 } else {
@@ -105,6 +109,9 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
         mBinding.userPhoneCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                if (mBinding==null||mBinding.userPhoneCodeLine == null) {
+                    return;
+                }
                 if (hasFocus || !TextUtils.isEmpty(mBinding.userPhoneCode.getText())) {
                     mBinding.userPhoneCodeLine.setBackgroundColor(lineGetFocus);
                 } else {
@@ -228,14 +235,14 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                 if (map != null && map.containsKey("openid") && map.containsKey("accessToken")) {
                     String openId = map.get("openid");
                     String accessToken = map.get("accessToken");
-                    openId2Login(openId,accessToken);
+                    openId2Login(openId, accessToken);
                 }
             }
         });
     }
 
-    private void openId2Login(String openId,String accessToken){
-        mViewModel.openId2Login( openId, accessToken);
+    private void openId2Login(String openId, String accessToken) {
+        mViewModel.openId2Login(openId, accessToken);
     }
 
     @Override
@@ -255,33 +262,37 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
 
             mViewModel.setLoginSuccess(s, mPhoneNumber);
         });
-        mViewModel.mWechatLoginLiveData.observe(this,data ->{
+        mViewModel.mWechatLoginLiveData.observe(this, data -> {
             if (data == null) {
-                            showToastWarning("登录失败,请使用其他登录方式");
-                            return;
-                        }
-                        String token = data.getToken();
-                        String openId = data.getOpenId();
-                        String unionId = data.getUnionId();
-                        if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(openId)) {
+                showToastWarning("登录失败,请使用其他登录方式");
+                return;
+            }
+            String token = data.getToken();
+            String openId = data.getOpenId();
+            String unionId = data.getUnionId();
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(openId)) {
 //                            loginToMain(token, "", openId);
-                            if (!TextUtils.isEmpty(openId)) {
-                                UserConstants.setOpenId(openId);
-                            }
-                            UserConstants.setToken(token);
-                            UserConstants.setIsLogin(true);
-                            UMengManager.onProfileSignIn("userID");
+                if (!TextUtils.isEmpty(openId)) {
+                    UserConstants.setOpenId(openId);
+                }
+                UserConstants.setToken(token);
+                UserConstants.setIsLogin(true);
+                UMengManager.onProfileSignIn("userID");
 //        Tool.postJPushdata();
-                            MainActivity.openMainActAndClearTask(MobileLoginActivity.this);
+                if (LoginActivity.loginState == Constants.LOGIN_FINISH) {
+                    finish();
+                    return;
+                }
+                MainActivity.openMainActAndClearTask(MobileLoginActivity.this);
 
-                        } else if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(unionId)) {
-                            showToast("关联微信成功,请您绑定手机号");
-                            InputAutoActivity.TAG_LOGIN_WXOPENID = openId;
-                            InputAutoActivity.TAG_LOGIN_UNIONID = unionId;
-                            WeChatBindingPhoneActivity.openBindingWxAct(MobileLoginActivity.this);
-                        } else {
-                            showToastWarning("登录失败,请使用其他登录方式");
-                        }
+            } else if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(unionId)) {
+                showToast("关联微信成功,请您绑定手机号");
+                InputAutoActivity.TAG_LOGIN_WXOPENID = openId;
+                InputAutoActivity.TAG_LOGIN_UNIONID = unionId;
+                WeChatBindingPhoneActivity.openBindingWxAct(MobileLoginActivity.this);
+            } else {
+                showToastWarning("登录失败,请使用其他登录方式");
+            }
 
         });
     }

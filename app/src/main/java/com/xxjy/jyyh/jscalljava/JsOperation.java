@@ -63,20 +63,6 @@ public class JsOperation implements JsOperationMethods {
         return params.toString();
     }
 
-    //跳转主页
-    @Override
-    @JavascriptInterface
-    public void toBenXiangHome() {
-//        if (mActivity instanceof MainActivity) {
-//            MainActivity activity = (MainActivity) mActivity;
-//            activity.toHome();
-//        } else {
-//            Intent intent = new Intent(mActivity, MainActivity.class);
-//            MainActivity.stateFragment = Tool.LOGIN_OUT;
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            mActivity.startActivity(intent);
-//        }
-    }
 
     // 调起分享
     @Override
@@ -170,8 +156,7 @@ public class JsOperation implements JsOperationMethods {
                     WebViewActivity webViewActivity = (WebViewActivity) mActivity;
                     webViewActivity.setShouldLoadUrl(true);
                 }
-//                UiUtils.toLoginActivity(mActivity, Tool.LOGIN_FINISH);
-                UiUtils.toLoginActivity(mActivity);
+                UiUtils.toLoginActivity(mActivity, Constants.LOGIN_FINISH);
             }
         });
     }

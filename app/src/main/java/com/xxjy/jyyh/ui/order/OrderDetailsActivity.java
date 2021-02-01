@@ -26,6 +26,7 @@ import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.databinding.ActivityOrderDetailsBinding;
+import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.SelectPayDialog;
 import com.xxjy.jyyh.entity.OilEntity;
@@ -104,6 +105,9 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     if (mNormalPopup != null) {
                         mNormalPopup.dismiss();
                     }
+                    CustomerServiceDialog customerServiceDialog = new CustomerServiceDialog(this);
+                    customerServiceDialog.show(view);
+
                 };
                 mNormalPopup = QMUIPopups.listPopup(this,
                         QMUIDisplayHelper.dp2px(this, 70),

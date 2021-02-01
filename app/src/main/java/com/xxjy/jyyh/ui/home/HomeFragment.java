@@ -203,13 +203,13 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mExchangeAdapter = new HomeExchangeAdapter(R.layout.adapter_home_exchange, mExchangeList);
         mBinding.exchangeRecyclerView.setAdapter(mExchangeAdapter);
         mExchangeAdapter.setOnItemClickListener((adapter, view, position) -> {
-            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                @Override
-                public void onLogin() {
+//            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+//                @Override
+//                public void onLogin() {
                     NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink());
 //                    WebViewActivity.openWebActivity((MainActivity) getActivity(), ((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink());
-                }
-            });
+//                }
+//            });
         });
 
         mViewModel.getHomeProduct();

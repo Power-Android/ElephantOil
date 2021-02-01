@@ -29,12 +29,6 @@ public interface JsOperationMethods {
      */
     String getAppInfo();
 
-    /**
-     * 跳转至主界面
-     *
-     * @return
-     */
-    void toBenXiangHome();
 
     /**
      * 调起分享

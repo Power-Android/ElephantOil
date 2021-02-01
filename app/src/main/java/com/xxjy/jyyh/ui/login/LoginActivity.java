@@ -3,6 +3,7 @@ package com.xxjy.jyyh.ui.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityLoginBinding;
 import com.xxjy.jyyh.ui.MainActivity;
@@ -38,7 +40,7 @@ import cn.jpush.android.api.JPushInterface;
 public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginViewModel> {
 
     private boolean isOpenAuth = false;     //是否已经调起了登录
-
+    public static int loginState = -1;
 
     @Override
     protected void initView() {
@@ -77,6 +79,11 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
                 UserConstants.setIsLogin(true);
                 UMengManager.onProfileSignIn("userID");
 //        Tool.postJPushdata();
+
+                if (loginState == Constants.LOGIN_FINISH) {
+                    finish();
+                    return;
+                }
                 MainActivity.openMainActAndClearTask(LoginActivity.this);
 
             } else if (!TextUtils.isEmpty(openId) && !TextUtils.isEmpty(unionId)) {

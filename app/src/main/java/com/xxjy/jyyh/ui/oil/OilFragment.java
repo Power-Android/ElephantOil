@@ -281,12 +281,12 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                                         .error(R.drawable.default_img_bg))
                                 .into(holder.imageView);
                         holder.imageView.setOnClickListener(v -> {
-                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                                @Override
-                                public void onLogin() {
+//                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+//                                @Override
+//                                public void onLogin() {
                                     NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.getLink());
-                                }
-                            });
+//                                }
+//                            });
 
 //                            WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
                         });

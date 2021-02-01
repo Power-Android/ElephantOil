@@ -44,6 +44,17 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     private UserBean userBean;
     private CustomerServiceDialog customerServiceDialog;
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            if (UserConstants.getIsLogin()) {
+                queryUserInfo();
+            }
+        }
+    }
+
     @Override
     protected void onVisible() {
         super.onVisible();

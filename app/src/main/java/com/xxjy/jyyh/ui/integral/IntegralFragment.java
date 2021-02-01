@@ -96,12 +96,12 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         mBinding.recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener((adapter, view, position) ->{
-            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                @Override
-                public void onLogin() {
+//            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+//                @Override
+//                public void onLogin() {
                     WebViewActivity.openWebActivity((MainActivity) getActivity(), ((ProductBean) (adapter.getData().get(position))).getLink());
-                }
-            });
+//                }
+//            });
 
 
         });
@@ -292,7 +292,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                     mBinding.bannerLeftView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(0).getLink());
+                            NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.get(0).getLink());
                         }
                     });
                 } else if (data.size() == 2) {
@@ -301,24 +301,24 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                     mBinding.bannerRightView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                                @Override
-                                public void onLogin() {
+//                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+//                                @Override
+//                                public void onLogin() {
                                     NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.get(0).getLink());
-                                }
-                            });
+//                                }
+//                            });
 //                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(0).getLink());
                         }
                     });
                     mBinding.bannerLeftView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                                @Override
-                                public void onLogin() {
+//                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+//                                @Override
+//                                public void onLogin() {
                                     NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.get(1).getLink());
-                                }
-                            });
+//                                }
+//                            });
                         }
                     });
                 } else {
@@ -341,12 +341,12 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                                         .error(R.drawable.default_img_bg))
                                 .into(holder.imageView);
                         holder.imageView.setOnClickListener(v -> {
-                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                                @Override
-                                public void onLogin() {
+//                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+//                                @Override
+//                                public void onLogin() {
                                     NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.getLink());
-                                }
-                            });
+//                                }
+//                            });
 //                            WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
                         });
                     }
