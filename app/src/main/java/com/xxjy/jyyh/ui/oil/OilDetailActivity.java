@@ -251,6 +251,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mViewModel.oilLiveData.observe(this, stationsBean -> {
             mStationsBean = stationsBean;
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
+            mBinding.oilTagIv.setVisibility(stationsBean.isIsSign() ? View.VISIBLE : View.GONE);
             mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
             mBinding.oilLiterTv.setText("¥" + mStationsBean.getOilPriceList().get(0).getPriceYfq() + "/L");
             mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(0).getOilName());
