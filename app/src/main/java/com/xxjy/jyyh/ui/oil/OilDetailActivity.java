@@ -218,6 +218,14 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
     @Override
     protected void dataObservable() {
+        mViewModel.loadingView().observe(this, aBoolean -> {
+            if (aBoolean) {
+                showLoadingDialog();
+            } else {
+                dismissLoadingDialog();
+            }
+        });
+
         mHomeViewModel.locationLiveData.observe(this, locationEntity -> {
             if (locationEntity.isSuccess()) {
                 UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
@@ -233,6 +241,9 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                     mViewModel.getOilDetail(mGasId, mLat, mLng);
                 }
             } else {
+                mLat = 0;
+                mLng = 0;
+                mViewModel.getOilDetail(mGasId, mLat, mLng);
                 showFailLocation();
             }
         });
@@ -320,9 +331,9 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         //枪号dialog
         mOilGunDialog = new OilGunDialog(this, stationsBean, oilNoPosition);
         mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
-            if (isFar){
+            if (isFar) {
                 showChoiceOil(stationsBean.getGasName(), view);
-            }else {
+            } else {
                 List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
                 for (int i = 0; i < data.size(); i++) {
                     data.get(i).setSelected(false);
@@ -454,7 +465,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     private void showChoiceOil(String stationName, View view) {
         mGasStationTipsDialog = new GasStationLocationTipsDialog(this, view, stationName);
         mGasStationTipsDialog.setOnClickListener(view1 -> {
-            switch (view1.getId()){
+            switch (view1.getId()) {
                 case R.id.select_agin://重新选择
                     closeDialog();
                     break;
@@ -522,10 +533,10 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mOilPayDialog.dismiss();
             mOilPayDialog = null;
         }
-        if (mLocationTipsDialog != null){
+        if (mLocationTipsDialog != null) {
             mLocationTipsDialog = null;
         }
-        if (mGasStationTipsDialog != null){
+        if (mGasStationTipsDialog != null) {
             mGasStationTipsDialog = null;
         }
 

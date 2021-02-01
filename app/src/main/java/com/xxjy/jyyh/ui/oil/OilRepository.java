@@ -14,6 +14,8 @@ import com.xxjy.jyyh.entity.OrderNewsEntity;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
 
@@ -81,6 +83,8 @@ public class OilRepository extends BaseRepository {
                 .add(Constants.LATITUDE, lat)
                 .add(Constants.LONGTIDUE, lng)
                 .asResponse(OilEntity.StationsBean.class)
+                .doOnSubscribe(disposable -> showLoading(true))
+                .doFinally(() -> showLoading(false))
                 .subscribe(stationsBean -> oilLiveData.postValue(stationsBean))
         );
     }
