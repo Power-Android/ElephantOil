@@ -79,7 +79,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
                 UserConstants.setIsLogin(true);
                 UMengManager.onProfileSignIn("userID");
 //        Tool.postJPushdata();
-
+                SYConfigUtils.inviteCode="";
                 if (loginState == Constants.LOGIN_FINISH) {
                     finish();
                     return;
