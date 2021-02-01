@@ -181,7 +181,7 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         mOilHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
             intent.putExtra("type", index == 0 ? "1" : "2");
-            intent.putExtra("content", mBinding.searchEt.getText().toString());
+            intent.putExtra("content", ((SearchHistoryEntity)adapter.getItem(position)).getGasName());
             startActivity(intent);
         });
 

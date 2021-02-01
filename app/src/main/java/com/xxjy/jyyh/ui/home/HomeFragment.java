@@ -95,6 +95,7 @@ import com.youth.banner.indicator.RectangleIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.blankj.utilcode.util.ThreadUtils.cancel;
 import static com.blankj.utilcode.util.ThreadUtils.runOnUiThread;
 
 /**
@@ -298,6 +299,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.addressTv.setOnClickListener(this::onViewClicked);
 
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
+        mBinding.goIntegralView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -357,6 +359,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             case R.id.location_iv:
             case R.id.address_tv:
                 requestPermission();
+                break;
+            case R.id.go_integral_view:
+                BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
+                        new EventEntity(EventConstants.EVENT_TO_INTEGRAL_FRAGMENT));
                 break;
         }
     }

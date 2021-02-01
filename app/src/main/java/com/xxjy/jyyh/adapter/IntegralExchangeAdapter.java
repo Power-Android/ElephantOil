@@ -40,7 +40,7 @@ public class IntegralExchangeAdapter extends BaseQuickAdapter<ProductBean, BaseV
 //                )
 //                .into((ImageView) helper.getView(R.id.item_img_iv));
 
-        GlideUtils.loadSquareImage(mContext,item.getProductImg(),(ImageView) helper.getView(R.id.item_img_iv));
+        GlideUtils.loadRoundSquareImage(mContext,item.getProductImg(),(ImageView) helper.getView(R.id.item_img_iv));
 
 
         helper.setText(R.id.item_title_tv,item.getName())

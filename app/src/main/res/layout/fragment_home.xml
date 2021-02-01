@@ -418,6 +418,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
+                            android:id="@+id/go_integral_view"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:drawableRight="@drawable/arrow_right_icon"

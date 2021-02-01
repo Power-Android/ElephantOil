@@ -4,8 +4,8 @@
     <!-- Your custom size defind by references, can be writted in anywhere, any module, any values/*.xml, for example: -->
     <dimen name="common_margin">@dimen/dp_15</dimen>
     <!--Custom BottomNavigationView-->
-<!--    <dimen name="design_bottom_navigation_active_text_size">10sp</dimen>//选中时的字体大小-->
-<!--    <dimen name="design_bottom_navigation_text_size">10sp</dimen>//未选中时的字体大小-->
+    <dimen name="design_bottom_navigation_active_text_size">10sp</dimen>//选中时的字体大小
+    <dimen name="design_bottom_navigation_text_size">10sp</dimen>//未选中时的字体大小
     <!--<dimen name="design_bottom_navigation_active_item_max_width">@dimen/dp_168</dimen>//选中时的最大宽度-->
 <!--    <dimen name="design_bottom_navigation_height">50dp</dimen>//高度-->
     <!--<dimen name="design_bottom_navigation_elevation">@dimen/dp_4</dimen>//阴影的大小-->

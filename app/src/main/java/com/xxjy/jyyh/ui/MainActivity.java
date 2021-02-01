@@ -70,7 +70,11 @@ private BannerViewModel bannerViewModel;
 
     @BusUtils.Bus(tag = EventConstants.EVENT_CHANGE_FRAGMENT)
     public void onEvent(@NotNull EventEntity event) {
-        mBinding.navView.setSelectedItemId(R.id.navigation_oil);
+        if(TextUtils.equals(event.getEvent(),EventConstants.EVENT_CHANGE_FRAGMENT)){
+            mBinding.navView.setSelectedItemId(R.id.navigation_oil);
+        }else if(TextUtils.equals(event.getEvent(),EventConstants.EVENT_TO_INTEGRAL_FRAGMENT)){
+            mBinding.navView.setSelectedItemId(R.id.navigation_integral);
+        }
     }
 
     @Override

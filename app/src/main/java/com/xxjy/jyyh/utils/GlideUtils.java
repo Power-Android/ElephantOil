@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestOptions;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.xxjy.jyyh.R;
 
 import jp.wasabeef.glide.transformations.BitmapTransformation;
@@ -105,6 +106,20 @@ public class GlideUtils extends AppGlideModule {
     public static void loadSquareImage(Context context, String url, ImageView imageView) {
         Glide.with(context).load(url)
                 .apply(new RequestOptions().transform(new CropSquareTransformation()).error(R.drawable.default_img_bg))
+//                .skipMemoryCache(isSkipMemoryCache())
+//                .error(getErrorImage())
+//                .placeholder(getPlaceholder())
+                .fallback(getErrorImage()).into(imageView);
+    }
+    /**
+     * @describe 加载圆角正方形图片
+     * @param context   当前Activity的上下文对象
+     * @param imageView
+     */
+    public static void loadRoundSquareImage(Context context, String url, ImageView imageView) {
+        Glide.with(context).load(url)
+                .apply(new RequestOptions().transform(new CropSquareTransformation()).error(R.drawable.default_img_bg))
+                .apply(new RequestOptions().transform(new RoundedCornersTransformation(QMUIDisplayHelper.dpToPx(6),0)).error(R.drawable.default_img_bg))
 //                .skipMemoryCache(isSkipMemoryCache())
 //                .error(getErrorImage())
 //                .placeholder(getPlaceholder())

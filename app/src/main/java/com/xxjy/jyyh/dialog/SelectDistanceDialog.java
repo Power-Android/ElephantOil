@@ -76,7 +76,12 @@ public class SelectDistanceDialog {
     }
 
 
-
+public void setSelectPosition(int position){
+    mList.get(lastPosition).setChecked(false);
+    lastPosition =position;
+    mList.get(position).setChecked(true);
+    oilDistanceAdapter.notifyDataSetChanged();
+}
 private void initData(){
 //    5km内、10km内、15km内、20km内、50km内、不限距离
     mList.add(new DistanceEntity("5km内",5,false));

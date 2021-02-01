@@ -22,7 +22,18 @@
         android:background="@drawable/shape_white_6raduis">
 
 
-    <com.makeramen.roundedimageview.RoundedImageView
+<!--    <com.makeramen.roundedimageview.RoundedImageView-->
+<!--        android:id="@+id/item_img_iv"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:minWidth="@dimen/dp_160"-->
+<!--        android:minHeight="@dimen/dp_160"-->
+<!--        android:src="@drawable/default_img_bg"-->
+<!--        app:riv_corner_radius="@dimen/dp_6"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
+    <com.xxjy.jyyh.wight.SquareImageView
         android:id="@+id/item_img_iv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
