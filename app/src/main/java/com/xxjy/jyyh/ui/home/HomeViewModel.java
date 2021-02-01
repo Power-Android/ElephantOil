@@ -28,7 +28,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<LocationEntity> locationLiveData = new MutableLiveData<>();
     public MutableLiveData<OilEntity> homeOilLiveData = new MutableLiveData<>();
     public MutableLiveData<List<OfentEntity>> oftenOilLiveData = new MutableLiveData<>();
-    public MutableLiveData<Response> refuelOilLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> refuelOilLiveData = new MutableLiveData<>();
     public MutableLiveData<List<HomeProductEntity.FirmProductsVoBean>> productLiveData = new MutableLiveData<>();
     public MutableLiveData<PayOrderEntity> payOrderLiveData = new MutableLiveData<>();
     public MutableLiveData<OilDistanceEntity> distanceLiveData = new MutableLiveData<>();

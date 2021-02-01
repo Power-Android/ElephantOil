@@ -22,6 +22,7 @@ import com.amap.api.location.CoordinateConverter;
 import com.amap.api.location.DPoint;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.BusUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SPUtils;
@@ -69,6 +70,7 @@ import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.PayOrderParams;
 import com.xxjy.jyyh.entity.ProductBean;
+import com.xxjy.jyyh.entity.RefuelOilEntity;
 import com.xxjy.jyyh.entity.TaskBean;
 import com.xxjy.jyyh.http.Response;
 import com.xxjy.jyyh.ui.MainActivity;
@@ -494,42 +496,41 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
         mViewModel.refuelOilLiveData.observe(this, data -> {
-            if (data.getData() != null) {
-                List<TaskBean> taskBeans = (List<TaskBean>) data.getData();
+            if (data != null) {
+                RefuelOilEntity refuelOilEntity = GsonUtils.fromJson(data, RefuelOilEntity.class);
 
-                if (taskBeans != null && taskBeans.size() > 0) {
+                if (refuelOilEntity.getCode() == 1 && refuelOilEntity.getData() != null && refuelOilEntity.getData().size() > 0) {
                     mBinding.integralRl.setVisibility(View.VISIBLE);
-                    TaskBean taskBean = taskBeans.get(0);
+                    RefuelOilEntity.DataBean dataBean = refuelOilEntity.getData().get(0);
 
                     SpanUtils.with(mBinding.integralDesc)
                             .append("• 还需加油")
-                            .append(taskBean.getnOrderAmount() + "")
+                            .append(dataBean.getNOrderAmount() + "")
                             .setForegroundColor(getResources().getColor(R.color.color_1300))
                             .append("元 可立即领取")
-                            .append(taskBean.getSpName())
+                            .append(dataBean.getSpName())
                             .setForegroundColor(getResources().getColor(R.color.color_1300))
-                            .append("(价值" + taskBean.getRedeemPoint() + "积分)")
-                            .setFontSize(10, true)
-
+                            .append("(价值" + dataBean.getRedeemPoint() + "积分)")
+                            .setFontSize(11, true)
                             .setForegroundColor(getResources().getColor(R.color.color_1300))
                             .create();
 
                     SpanUtils.with(mBinding.orderNumDecView)
                             .append("(约需")
-                            .append(taskBean.gettOrderNum() + "")
+                            .append(dataBean.getNOrderAmount() + "")
                             .setForegroundColor(getResources().getColor(R.color.color_34))
                             .append("单，还需完成")
-                            .append(taskBean.getnOrderNum() + "")
+                            .append(dataBean.getNOrderAmount() + "")
                             .setForegroundColor(getResources().getColor(R.color.color_34))
                             .append("单，限")
-                            .append(taskBean.getGasName())
+                            .append(dataBean.getGasName())
                             .setForegroundColor(getResources().getColor(R.color.color_34))
                             .append(")")
                             .create();
-                    GlideUtils.loadImage(getContext(), taskBean.getSpImg(), mBinding.integralIv);
-                    mBinding.progress.setMax(taskBean.gettOrderNum());
-                    mBinding.progress.setProgress(taskBean.gettOrderNum() - taskBean.getnOrderAmount());
-                    if (taskBean.isStatus()) {
+                    GlideUtils.loadImage(getContext(), dataBean.getSpImg(), mBinding.integralIv);
+                    mBinding.progress.setMax(dataBean.getNOrderNum());
+                    mBinding.progress.setProgress(dataBean.getNOrderNum() - dataBean.getNOrderAmount());
+                    if (dataBean.isStatus()) {
                         mBinding.awardTv.setBackgroundResource(R.drawable.shape_receive_6radius);
                         mBinding.awardTv.setClickable(true);
                     } else {
@@ -539,7 +540,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mBinding.awardTv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), taskBean.getLink());
+                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), dataBean.getLink());
                         }
                     });
                 }

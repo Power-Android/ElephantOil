@@ -106,10 +106,10 @@ public class HomeRepository extends BaseRepository {
      * 加油任务
      */
     public void getRefuelJob(String gasId,
-                             MutableLiveData<Response> refuelOilLiveData) {
+                             MutableLiveData<String> refuelOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.REFUEL_JOB)
                 .add(Constants.GAS_STATION_ID, gasId)
-                .asCodeResponse(Response.class)
+                .asString()
                 .subscribe( data-> refuelOilLiveData.postValue(data))
         );
     }
