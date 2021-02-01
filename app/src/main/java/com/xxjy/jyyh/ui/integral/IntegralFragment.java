@@ -298,7 +298,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 } else if (data.size() == 2) {
                     GlideUtils.loadImage(getContext(), data.get(0).getImgUrl(), mBinding.bannerLeftView);
                     GlideUtils.loadImage(getContext(), data.get(1).getImgUrl(), mBinding.bannerRightView);
-                    mBinding.bannerRightView.setOnClickListener(new View.OnClickListener() {
+                    mBinding.bannerLeftView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 //                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
@@ -310,7 +310,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 //                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(0).getLink());
                         }
                     });
-                    mBinding.bannerLeftView.setOnClickListener(new View.OnClickListener() {
+                    mBinding.bannerRightView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 //                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
