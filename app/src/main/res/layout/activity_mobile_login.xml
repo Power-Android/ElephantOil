@@ -179,12 +179,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_22"
                         android:layout_marginRight="@dimen/dp_22"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_marginTop="@dimen/dp_7"
                         android:orientation="vertical">
                         <EditText
                             android:id="@+id/invitation_et"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_25"
                             android:background="@null"
                             android:hint="请输入邀请码"

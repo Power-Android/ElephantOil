@@ -75,7 +75,7 @@ public abstract class AppDataBase extends RoomDatabase {
     }
 
     public void insertIntegralData(String name) {
-        if (historyDataForward(name)) {
+        if (historyDataForward1(name)) {
             return;
         }
         getSearchIntegralHistoryDao().insert(new IntegralHistoryEntity(name));
