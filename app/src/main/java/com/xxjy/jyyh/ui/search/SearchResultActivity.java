@@ -131,6 +131,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         mBinding.searchTv.setOnClickListener(this::onViewClicked);
         mBinding.backIv.setOnClickListener(this::onViewClicked);
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
+        mBinding.noResultLayout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
