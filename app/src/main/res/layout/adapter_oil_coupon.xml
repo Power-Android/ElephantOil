@@ -43,16 +43,20 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
         android:id="@+id/item_title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="满199元减10元加油券"
         android:textColor="@color/color_34"
         android:textSize="@dimen/sp_14"
         android:textStyle="bold"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:includeFontPadding="false"
         android:layout_marginStart="@dimen/dp_100"
         android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/image_view"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
         android:id="@+id/item_coupon_date"

@@ -93,6 +93,7 @@ public class OilCouponDialog extends BottomSheetDialog {
         } else {
             getBusinessCoupon();
         }
+        mBinding.cancelIv.setOnClickListener(view -> dismiss());
     }
 
     private void getPlatformCoupon() {
