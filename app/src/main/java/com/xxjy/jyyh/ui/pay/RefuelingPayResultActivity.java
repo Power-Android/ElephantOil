@@ -105,6 +105,11 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
     @Override
     protected void dataObservable() {
         mViewModel.payResultLiveData.observe(this, resultEntity -> {
+            if (Double.parseDouble(resultEntity.getIntegral()) <= 0){
+                mBinding.integralLl.setVisibility(View.INVISIBLE);
+            }else {
+                mBinding.integralLl.setVisibility(View.VISIBLE);
+            }
             switch (resultEntity.getResult()){
                 case 1://支付成功
                     mBinding.tagIv.setVisibility(View.VISIBLE);
