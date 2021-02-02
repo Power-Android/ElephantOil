@@ -45,7 +45,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
     @Override
     protected void initView() {
         StatusBarUtil.setHeightAndPadding(this, mBinding.toolbar);
-
+        OneKeyLoginManager.getInstance().setLoadingVisibility(false);
         tryOpenLoginActivity();
     }
 
@@ -191,6 +191,8 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
 
     private void toLoginForOtherActivity() {
         if (!ShanYanManager.isShanYanSupport() || !NetworkUtils.isConnected()) {
+            OneKeyLoginManager.getInstance().finishAuthActivity();
+
             finish();
         }
         startActivity(new Intent(this, MobileLoginActivity.class));
@@ -215,6 +217,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
 
     @Override
     public void finish() {
+
         super.finish();
         overridePendingTransition(R.anim.bottom_dialog_enter, R.anim.bottom_dialog_exit);
     }
