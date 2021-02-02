@@ -52,6 +52,7 @@
                 android:textSize="@dimen/sp_13"
                 android:layout_marginEnd="@dimen/dp_5"
                 android:singleLine="true"
+                android:imeOptions="actionSearch"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/search_tv"
                 app:layout_constraintStart_toEndOf="@+id/search_iv"
@@ -184,6 +185,23 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <RelativeLayout
+            android:id="@+id/no_result_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_below="@+id/toolbar"
+            android:background="@drawable/shape_bg_top_17radius">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="抱歉，没有您要找的结果呦~"
+                android:textSize="@dimen/sp_13"
+                android:textColor="@color/color_A0"
+                android:drawableTop="@drawable/search_empty_icon"
+                android:drawablePadding="@dimen/dp_20"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/refresh_view"
             android:layout_width="match_parent"
@@ -195,23 +213,4 @@
                 android:layout_height="match_parent"/>
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/no_result_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:layout_below="@+id/toolbar"
-        android:background="@drawable/shape_bg_top_17radius">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="抱歉，没有您要找的结果呦~"
-            android:textSize="@dimen/sp_13"
-            android:textColor="@color/color_A0"
-            android:drawableTop="@drawable/search_empty_icon"
-            android:drawablePadding="@dimen/dp_20"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
-
 </RelativeLayout>
