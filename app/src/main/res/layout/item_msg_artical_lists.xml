@@ -54,6 +54,7 @@
             android:visibility="gone" />
 
         <View
+            android:id="@+id/line_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"
             android:layout_marginLeft="@dimen/dp_14"
@@ -61,6 +62,7 @@
             android:background="@color/color_EE" />
 
         <RelativeLayout
+            android:id="@+id/bottom_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_35"
             android:layout_marginLeft="@dimen/dp_14"

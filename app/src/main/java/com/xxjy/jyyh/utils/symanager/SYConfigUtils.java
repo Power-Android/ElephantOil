@@ -35,7 +35,7 @@ public class SYConfigUtils {
 
     //沉浸式竖屏样式
     public static ShanYanUIConfig getCJSConfig(final Context context, ShanYanCustomInterface relativeLayoutClick,
-                                               ShanYanCustomInterface thirdLoginClick) {
+                                               ShanYanCustomInterface thirdLoginClick,ShanYanCustomInterface invitationLayoutClick) {
         /************************************************自定义控件**************************************************************/
         Drawable backgruond = new ColorDrawable(Color.WHITE);
         Drawable returnBg = context.getResources().getDrawable(R.drawable.icon_tb_close_bg);
@@ -72,22 +72,10 @@ public class SYConfigUtils {
         invitationPrarms.setMargins(0, SizeUtils.dp2px(290), 0, 0);
         invitationLayout.setLayoutParams(invitationPrarms);
 
-        ImageView iv = invitationLayout.findViewById(R.id.iv1);
-        View iv2 = invitationLayout.findViewById(R.id.iv2);
+//        ImageView iv = invitationLayout.findViewById(R.id.iv1);
+//        View iv2 = invitationLayout.findViewById(R.id.iv2);
         EditText et = invitationLayout.findViewById(R.id.invitation_et);
-        invitationLayout.findViewById(R.id.parent_layout).setOnClickListener(view ->{
-            if (isDown){
-                iv.animate().setDuration(200).rotation(90).start();
-                et.setVisibility(View.VISIBLE);
-                iv2.setVisibility(View.VISIBLE);
-            }else {
-                iv.animate().setDuration(200).rotation(0).start();
-                et.setVisibility(View.GONE);
-                iv2.setVisibility(View.GONE);
-            }
-            isDown = !isDown;
-        });
-//        invitationLayout.findViewById(R.id.iv1).setOnClickListener(view -> {
+//        invitationLayout.findViewById(R.id.parent_layout).setOnClickListener(view ->{
 //            if (isDown){
 //                iv.animate().setDuration(200).rotation(90).start();
 //                et.setVisibility(View.VISIBLE);
@@ -99,6 +87,7 @@ public class SYConfigUtils {
 //            }
 //            isDown = !isDown;
 //        });
+
 
         et.addTextChangedListener(new TextWatcher() {
             @Override
@@ -255,7 +244,7 @@ public class SYConfigUtils {
 //                .addCustomView(numberLayout, false, false, null)
                 .addCustomView(thirdLogin, false, false, null)
                 .addCustomView(otherLoginLayout, false, false, relativeLayoutClick)
-                .addCustomView(invitationLayout, false, false, null)
+                .addCustomView(invitationLayout, false, false, invitationLayoutClick)
 
                 .build();
         return uiConfig;

@@ -85,6 +85,18 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 
     private CustomerServiceDialog customerServiceDialog;
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            if (UserConstants.getIsLogin()) {
+
+            }else{
+                mBinding.integralView.setText("0");
+            }
+        }
+    }
     @Override
     protected void initView() {
         mBinding.topBarLayout.updateBottomDivider(0, 0, 0, 0);

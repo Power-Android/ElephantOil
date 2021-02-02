@@ -92,6 +92,7 @@ public class MessageCenterActivity extends BindingActivity<ActivityMessageCenter
     protected void dataObservable() {
         mViewModel.articlesLiveData.observe(this, data -> {
             if (data != null &&data.getList()!=null&& data.getList().size() > 0) {
+                messageListAdapter.setType(false);
                 if (pageNum == 1) {
                     messageListAdapter.setNewData(data.getList());
                     mBinding.refreshview.setEnableLoadMore(true);
@@ -109,6 +110,7 @@ public class MessageCenterActivity extends BindingActivity<ActivityMessageCenter
         });
         mViewModel.noticesLiveData.observe(this, data -> {
             if (data != null &&data.getList()!=null&& data.getList().size() > 0) {
+                messageListAdapter.setType(true);
                 if (pageNum == 1) {
                     messageListAdapter.setNewData(data.getList());
                     mBinding.refreshview.setEnableLoadMore(true);

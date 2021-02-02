@@ -74,7 +74,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             mBinding.tab1Tv.setText("距离不限");
             mBinding.tab2Tv.setText("油号不限");
             mBinding.tab3Tv.setText("距离优先");
-
+            mBinding.searchEt.setHint("搜索油站名称");
             mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
             mOilListAdapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, mOilList);
             mBinding.recyclerView.setAdapter(mOilListAdapter);
@@ -100,14 +100,15 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             mBinding.tab2Tv.setText("价格");
             mBinding.tab3Tv.setText("销量");
             mBinding.tab3Iv.setVisibility(View.GONE);
+            mBinding.searchEt.setHint("搜索权益名称");
 
             mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
             mIntegralAdapter = new SearchIntegralAdapter(R.layout.adapter_search_integral, mIntegralList);
             mBinding.recyclerView.setAdapter(mIntegralAdapter);
-            mIntegralAdapter.setEmptyView(R.layout.empty_layout,mBinding.recyclerView);
+            mIntegralAdapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
             mIntegralAdapter.setOnItemClickListener((adapter, view, position) -> {
                 List<ProductBean> data = adapter.getData();
-                if (!TextUtils.isEmpty(data.get(position).getLink())){
+                if (!TextUtils.isEmpty(data.get(position).getLink())) {
                     LoginHelper.login(this, new LoginHelper.CallBack() {
                         @Override
                         public void onLogin() {
@@ -151,7 +152,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
 
                         loadData(false);
                     });
-                }else {
+                } else {
                     pageNum = 1;
                     getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
                 }
@@ -182,7 +183,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 }
             case R.id.search_tv:
                 mContent = mBinding.searchEt.getText().toString().trim();
-                if(TextUtils.isEmpty(mContent)){
+                if (TextUtils.isEmpty(mContent)) {
                     showToastInfo("请输入搜索内容");
                     return;
                 }
@@ -234,7 +235,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         });
 
         mOilViewModel.oilStationLiveData.observe(this, dataStations -> {
-            if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0){
+            if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0) {
                 mBinding.noResultLayout.setVisibility(View.GONE);
                 if (pageNum == 1) {
                     mOilListAdapter.setNewData(dataStations.getStations());
@@ -248,28 +249,28 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                         mBinding.refreshView.finishLoadMoreWithNoMoreData();
                     }
                 }
-            }else {
+            } else {
                 mBinding.noResultLayout.setVisibility(View.VISIBLE);
             }
 
         });
 
         mViewModel.intergraLiveData.observe(this, productBeans -> {
-            if (productBeans != null && productBeans.size() > 0){
+            if (productBeans != null && productBeans.size() > 0) {
                 mBinding.noResultLayout.setVisibility(View.GONE);
-            if (pageNum == 1) {
-                mIntegralAdapter.setNewData(productBeans);
-                mBinding.refreshView.setEnableLoadMore(true);
-                mBinding.refreshView.finishLoadMore(true);
-            } else {
-                if (productBeans != null && productBeans.size() > 0) {
-                    mIntegralAdapter.addData(productBeans);
+                if (pageNum == 1) {
+                    mIntegralAdapter.setNewData(productBeans);
+                    mBinding.refreshView.setEnableLoadMore(true);
                     mBinding.refreshView.finishLoadMore(true);
                 } else {
-                    mBinding.refreshView.finishLoadMoreWithNoMoreData();
+                    if (productBeans != null && productBeans.size() > 0) {
+                        mIntegralAdapter.addData(productBeans);
+                        mBinding.refreshView.finishLoadMore(true);
+                    } else {
+                        mBinding.refreshView.finishLoadMoreWithNoMoreData();
+                    }
                 }
-            }
-            }else {
+            } else {
                 mBinding.noResultLayout.setVisibility(View.VISIBLE);
             }
         });
@@ -297,9 +298,9 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     String.valueOf(pageNum), String.valueOf(pageSize), mContent, "sb");
 
         } else {
-            if (isLoadMore){
+            if (isLoadMore) {
                 pageNum++;
-            }else {
+            } else {
                 pageNum = 1;
             }
             getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));

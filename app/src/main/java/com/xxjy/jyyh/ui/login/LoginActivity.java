@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.lifecycle.Observer;
 
@@ -42,7 +44,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 
     private boolean isOpenAuth = false;     //是否已经调起了登录
     public static int loginState = -1;
-
+    private boolean isDown = false;
     @Override
     protected void initView() {
         StatusBarUtil.setHeightAndPadding(this, mBinding.toolbar);
@@ -113,6 +115,25 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
                             if (view.getId() == R.id.login_for_wx) {
                                 loginForWx();
                             }
+                        }
+                    },new ShanYanCustomInterface(){
+                        @Override
+                        public void onClick(Context context, View view) {
+                            ImageView iv = view.findViewById(R.id.iv1);
+                            View iv2 = view.findViewById(R.id.iv2);
+                            EditText et = view.findViewById(R.id.invitation_et);
+                            view.findViewById(R.id.parent_layout).setOnClickListener(v ->{
+                                if (isDown){
+                                    iv.animate().setDuration(200).rotation(90).start();
+                                    et.setVisibility(View.VISIBLE);
+                                    iv2.setVisibility(View.VISIBLE);
+                                }else {
+                                    iv.animate().setDuration(200).rotation(0).start();
+                                    et.setVisibility(View.GONE);
+                                    iv2.setVisibility(View.GONE);
+                                }
+                                isDown = !isDown;
+                            });
                         }
                     }), null);
             openLoginActivity();
