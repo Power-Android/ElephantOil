@@ -517,7 +517,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
                     SpanUtils.with(mBinding.orderNumDecView)
                             .append("(约需")
-                            .append(dataBean.getNOrderAmount() + "")
+                            .append(dataBean.getTOrderNum() + "")
                             .setForegroundColor(getResources().getColor(R.color.color_34))
                             .append("单，还需完成")
                             .append(dataBean.getNOrderAmount() + "")
