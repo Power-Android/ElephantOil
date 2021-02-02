@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -216,6 +217,10 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 mBinding.refreshview.finishLoadMoreWithNoMoreData();
             }
         });
+
+        mViewModel.integralBalanceLiveData.observe(this, data -> {
+            mBinding.integralView.setText(NumberUtils.format(Double.parseDouble(data),0));
+        });
     }
 
     private void initTab() {
@@ -369,9 +374,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 
         });
 
-        mViewModel.integralBalanceLiveData.observe(this, data -> {
-            mBinding.integralView.setText(data);
-        });
+
     }
 
     private void queryProductCategorys() {

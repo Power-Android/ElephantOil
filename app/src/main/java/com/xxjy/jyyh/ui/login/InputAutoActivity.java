@@ -39,9 +39,6 @@ public class InputAutoActivity extends BindingActivity<ActivityInputAutoBinding,
         mBinding.inputAutoCodeText.setTextSize(getResources().getDimensionPixelOffset(R.dimen.sp_20));
         mBinding.inputAutoCodeText.setCursorDrawable(R.drawable.cursor_drawable);
 
-        TAG_LOGIN_PHONE_NUMBER = getIntent().getStringExtra("phone");
-        INVITE_CODE = getIntent().getStringExtra("code");
-
         time = MyCountDownTime.getInstence(60 * 1000, 1000);
         mBinding.sendSmsPhoneNumber.setText(TAG_LOGIN_PHONE_NUMBER);
         time.start();

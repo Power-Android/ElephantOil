@@ -519,8 +519,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                             .append("(约需")
                             .append(dataBean.getTOrderNum() + "")
                             .setForegroundColor(getResources().getColor(R.color.color_34))
-                            .append("单，还需完成")
-                            .append(dataBean.getNOrderAmount() + "")
+                            .append("单，还约需完成")
+                            .append(dataBean.getNOrderNum() + "")
                             .setForegroundColor(getResources().getColor(R.color.color_34))
                             .append("单，限")
                             .append(dataBean.getGasName())
@@ -528,8 +528,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                             .append(")")
                             .create();
                     GlideUtils.loadImage(getContext(), dataBean.getSpImg(), mBinding.integralIv);
-                    mBinding.progress.setMax(dataBean.getNOrderNum());
-                    mBinding.progress.setProgress(dataBean.getNOrderNum() - dataBean.getNOrderAmount());
+                    mBinding.progress.setMax(dataBean.getTOrderNum());
+                    mBinding.progress.setProgress(dataBean.getTOrderNum() - dataBean.getNOrderNum());
                     if (dataBean.isStatus()) {
                         mBinding.awardTv.setEnabled(true);
                     } else {
