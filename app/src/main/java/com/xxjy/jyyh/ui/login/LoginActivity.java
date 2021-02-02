@@ -212,4 +212,10 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
     private void openId2Login(String openId,String accessToken){
         mViewModel.openId2Login( openId, accessToken);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.bottom_dialog_enter, R.anim.bottom_dialog_exit);
+    }
 }

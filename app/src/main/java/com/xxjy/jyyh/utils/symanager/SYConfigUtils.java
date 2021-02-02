@@ -238,6 +238,7 @@ public class SYConfigUtils {
 
                 //授权页loading
 //                .setLoadingView(view_dialog)
+                .setLoadingView(null)
 
                 //授权页相对控件设置（指定在登录按钮和协议栏之间）,使用默认
 //                .setRelativeCustomView(otherLoginLayout, false, 0, 19, 0, 19, relativeLayoutClick)
