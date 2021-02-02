@@ -14,8 +14,8 @@ import static com.xxjy.jyyh.constants.ApiService.CONFIG_BASE_URL;
 public class Constants {
 
 
-    public static final String USER_XIE_YI = CONFIG_BASE_URL+"account/messageDetail/400221";
-    public static final String YINSI_ZHENG_CE =CONFIG_BASE_URL+"account/messageDetail/400222";
+    public static final String USER_XIE_YI = CONFIG_BASE_URL+"account/articles/400221";
+    public static final String YINSI_ZHENG_CE =CONFIG_BASE_URL+"account/articles/400222";
     public static final String INTEGRAL_EXPLANATION_URL=CONFIG_BASE_URL+"mall/introduction";
 
     /**

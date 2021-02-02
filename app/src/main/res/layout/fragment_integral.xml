@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_6"
-                        android:text="搜索加油站名称"
+                        android:text="搜索权益名称"
                         android:textColor="@color/color_A0"
                         android:textSize="@dimen/sp_13" />
                 </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>

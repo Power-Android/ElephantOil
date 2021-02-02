@@ -104,6 +104,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
             mIntegralAdapter = new SearchIntegralAdapter(R.layout.adapter_search_integral, mIntegralList);
             mBinding.recyclerView.setAdapter(mIntegralAdapter);
+            mIntegralAdapter.setEmptyView(R.layout.empty_layout,mBinding.recyclerView);
             mIntegralAdapter.setOnItemClickListener((adapter, view, position) -> {
                 List<ProductBean> data = adapter.getData();
                 if (!TextUtils.isEmpty(data.get(position).getLink())){
@@ -233,6 +234,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
 
         mOilViewModel.oilStationLiveData.observe(this, dataStations -> {
             if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0){
+                mBinding.noResultLayout.setVisibility(View.GONE);
                 if (pageNum == 1) {
                     mOilListAdapter.setNewData(dataStations.getStations());
                     mBinding.refreshView.setEnableLoadMore(true);
@@ -252,6 +254,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         });
 
         mViewModel.intergraLiveData.observe(this, productBeans -> {
+            if (productBeans != null && productBeans.size() > 0){
+                mBinding.noResultLayout.setVisibility(View.GONE);
             if (pageNum == 1) {
                 mIntegralAdapter.setNewData(productBeans);
                 mBinding.refreshView.setEnableLoadMore(true);
@@ -264,7 +268,9 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     mBinding.refreshView.finishLoadMoreWithNoMoreData();
                 }
             }
-
+            }else {
+                mBinding.noResultLayout.setVisibility(View.VISIBLE);
+            }
         });
     }
 
