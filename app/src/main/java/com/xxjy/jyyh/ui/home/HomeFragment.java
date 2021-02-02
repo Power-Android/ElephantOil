@@ -531,11 +531,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mBinding.progress.setMax(dataBean.getNOrderNum());
                     mBinding.progress.setProgress(dataBean.getNOrderNum() - dataBean.getNOrderAmount());
                     if (dataBean.isStatus()) {
-                        mBinding.awardTv.setBackgroundResource(R.drawable.shape_receive_6radius);
-                        mBinding.awardTv.setClickable(true);
+                        mBinding.awardTv.setEnabled(true);
                     } else {
-                        mBinding.awardTv.setBackgroundResource(R.drawable.shape_gray_6raduis);
-                        mBinding.awardTv.setClickable(false);
+                        mBinding.awardTv.setEnabled(false);
                     }
                     mBinding.awardTv.setOnClickListener(new View.OnClickListener() {
                         @Override

@@ -340,7 +340,7 @@
                         android:layout_width="@dimen/dp_72"
                         android:layout_height="@dimen/dp_31"
                         android:alpha="0.5"
-                        android:background="@drawable/shape_receive_6radius"
+                        android:background="@drawable/select_home_receive"
                         android:gravity="center"
                         android:text="领取奖励"
                         android:textColor="@color/white"

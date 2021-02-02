@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.blankj.utilcode.util.DeviceUtils;
+import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.UserConstants;
@@ -35,6 +36,11 @@ public class LoginRepository extends BaseRepository {
                     @Override
                     public void accept(String s) throws Throwable {
                         verifyLoginLiveData.postValue(s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        OneKeyLoginManager.getInstance().setLoadingVisibility(false);
                     }
                 })
         );

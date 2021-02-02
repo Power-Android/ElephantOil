@@ -2,23 +2,23 @@ package com.xxjy.jyyh.entity;
 
 public class OrderNewsEntity {
 
-    private int amount;
-    private int discount;
+    private String amount;
+    private String discount;
     private String account;
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
-    public int getDiscount() {
+    public String getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(String discount) {
         this.discount = discount;
     }
 
