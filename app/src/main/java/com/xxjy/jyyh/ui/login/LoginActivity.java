@@ -48,7 +48,6 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
     @Override
     protected void initView() {
         StatusBarUtil.setHeightAndPadding(this, mBinding.toolbar);
-        OneKeyLoginManager.getInstance().setLoadingVisibility(false);
         tryOpenLoginActivity();
     }
 
@@ -139,6 +138,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
             openLoginActivity();
         } else {
             toLoginForOtherActivity();
+            finish();
         }
     }
 

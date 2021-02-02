@@ -54,6 +54,16 @@ public class RefuelOilEntity {
         private Integer redeemPrice;
         private Integer productType;
         private Boolean status;
+        private String progress;
+
+
+        public String getProgress() {
+            return progress;
+        }
+
+        public void setProgress(String progress) {
+            this.progress = progress;
+        }
 
         public Integer getRedeemPoint() {
             return redeemPoint;

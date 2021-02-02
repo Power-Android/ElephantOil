@@ -9,7 +9,6 @@ package com.xxjy.jyyh.jscalljava;
  * <p>
  * 已经实现的方法有
  * 1, {@link #getAppInfo()}                 获取app信息
- * 2, {@link #toBenXiangHome()}              跳转到主界面
  * 3, {@link #startShare(String)}           调起分享
  * 4, {@link #showSharedIcon(String)}       显示分享图标并传递分享内容
  * 5, {@link #showHelpIcon(String)}         显示客服图标并传递手机号
@@ -202,5 +201,9 @@ public interface JsOperationMethods {
      * 首页
      */
     void toHomePage();
+    /**
+     * 商城首页
+     */
+    void toIntegralHomePage();
 
 }

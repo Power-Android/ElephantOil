@@ -24,6 +24,7 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
@@ -158,6 +159,18 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         if (!hidden) {
             getBaseActivity().setTransparentStatusBar();
             mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
+            if(mStationsBean!=null){
+                mViewModel.getRefuelJob(mStationsBean.getGasId());
+            }
+
+        }
+    }
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+        if(mStationsBean!=null){
+            mViewModel.getRefuelJob(mStationsBean.getGasId());
         }
     }
 
@@ -528,12 +541,22 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                             .append(")")
                             .create();
                     GlideUtils.loadImage(getContext(), dataBean.getSpImg(), mBinding.integralIv);
-                    mBinding.progress.setMax(dataBean.getTOrderNum());
-                    mBinding.progress.setProgress(dataBean.getTOrderNum() - dataBean.getNOrderNum());
+                    mBinding.progress.setMax(100);
+                    if(Double.parseDouble(dataBean.getProgress())==0d){
+                        mBinding.progress.setProgress(0);
+
+                    }else{
+                        mBinding.progress.setProgress(Integer.parseInt(NumberUtils.format(Double.parseDouble(dataBean.getProgress())*100,0)));
+                    }
+                    mBinding.progress.setProgress(100);
                     if (dataBean.isStatus()) {
                         mBinding.awardTv.setEnabled(true);
+                        mBinding.awardTv.setBackgroundResource(R.drawable.shape_receive_6radius);
+                        mBinding.awardTv.setAlpha(1f);
                     } else {
                         mBinding.awardTv.setEnabled(false);
+                        mBinding.awardTv.setBackgroundResource(R.drawable.shape_no_receive_6radius);
+                        mBinding.awardTv.setAlpha(0.5f);
                     }
                     mBinding.awardTv.setOnClickListener(new View.OnClickListener() {
                         @Override

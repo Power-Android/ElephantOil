@@ -334,6 +334,18 @@ public class JsOperation implements JsOperationMethods {
             });
         }
     }
+    @Override
+    @JavascriptInterface
+    public void toIntegralHomePage() {
+        if(mActivity instanceof WebViewActivity){
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    UiUtils.jumpToHome(mActivity, Constants.TYPE_INTEGRAL);
+                }
+            });
+        }
+    }
 
     @Override
     @JavascriptInterface
