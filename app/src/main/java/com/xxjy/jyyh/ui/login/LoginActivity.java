@@ -183,6 +183,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 
             } else {
                 showToastWarning("请输入正确邀请人");
+                OneKeyLoginManager.getInstance().setLoadingVisibility(false);
                 return;
             }
         }
@@ -191,11 +192,6 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
     }
 
     private void toLoginForOtherActivity() {
-        if (!ShanYanManager.isShanYanSupport() || !NetworkUtils.isConnected()) {
-            OneKeyLoginManager.getInstance().finishAuthActivity();
-
-            finish();
-        }
         startActivity(new Intent(this, MobileLoginActivity.class));
     }
 
@@ -218,9 +214,16 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
     }
 
     @Override
-    public void finish() {
-
-        super.finish();
+    protected void onPause() {
         overridePendingTransition(R.anim.bottom_dialog_enter, R.anim.bottom_dialog_exit);
+        super.onPause();
+    }
+
+    @Override
+    public void finish() {
+        if (!ShanYanManager.isShanYanSupport() || !NetworkUtils.isConnected()) {
+            OneKeyLoginManager.getInstance().finishAuthActivity();
+        }
+        super.finish();
     }
 }

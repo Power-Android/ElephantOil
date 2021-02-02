@@ -366,13 +366,13 @@ public class OilAmountDialog extends BottomSheetDialog {
             } else {
                 mBusinessCouponBean = couponBean;
                 businessAmount = couponBean.getAmountReduce();
-                mDiscountList.get(2).setPlatformDesc("-¥" + couponBean.getAmountReduce());
+                mDiscountList.get(2).setBusinessDesc("-¥" + couponBean.getAmountReduce());
             }
         }else {
             if (isPlat){
                 mDiscountList.get(1).setPlatformDesc("请选择优惠券");
             }else {
-                mDiscountList.get(2).setPlatformDesc("请选择优惠券");
+                mDiscountList.get(2).setBusinessDesc("请选择优惠券");
             }
         }
         mDiscountAdapter.notifyDataSetChanged();

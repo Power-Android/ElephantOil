@@ -38,7 +38,7 @@ public class TopLineAdapter extends BannerAdapter<OrderNewsEntity, TopLineAdapte
                 .append("车主")
                 .append(data.getAccount())
                 .append("加油")
-                .append(String.valueOf(data.getAmount()))
+                .append(data.getAmount())
                 .append("元，节省")
                 .append(String.valueOf(data.getDiscount()))
                 .setForegroundColor(App.getContext().getResources().getColor(

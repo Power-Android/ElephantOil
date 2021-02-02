@@ -121,6 +121,7 @@
                     android:paddingBottom="5dp"
                     android:orientation="horizontal">
                     <ImageView
+                        android:id="@+id/msg_iv"
                         android:layout_width="@dimen/dp_14"
                         android:layout_height="@dimen/dp_10"
                         android:layout_marginLeft="@dimen/dp_13"

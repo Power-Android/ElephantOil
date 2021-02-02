@@ -17,12 +17,13 @@ import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
 
 import kotlin.jvm.internal.PropertyReference0Impl;
 
-public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBindingPhoneBinding,LoginViewModel> {
+public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBindingPhoneBinding, LoginViewModel> {
 
 
     private String mPhoneNumber;
     private String inviteNumber;
-    private boolean isDown = false;
+    private static boolean isDown = false;
+
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.toolbar);
@@ -72,11 +73,11 @@ public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBi
                     showToastWarning(getResources().getString(R.string.login_wrong_phone_number));
                     return;
                 }
-                 inviteNumber = mBinding.invitationEt.getText().toString();
+                inviteNumber = mBinding.invitationEt.getText().toString();
                 if (!TextUtils.isEmpty(inviteNumber)) {
-                    if (inviteNumber.length()==4|| inviteNumber.length()==11) {
+                    if (inviteNumber.length() == 4 || inviteNumber.length() == 11) {
 
-                    }else{
+                    } else {
                         showToastWarning("请输入正确邀请人");
                         return;
                     }
