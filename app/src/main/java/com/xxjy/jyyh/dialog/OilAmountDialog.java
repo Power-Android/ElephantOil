@@ -201,7 +201,11 @@ public class OilAmountDialog extends BottomSheetDialog {
             }
         });
 
-        mBinding.cancelIv.setOnClickListener(view -> dismiss());
+        mBinding.cancelIv.setOnClickListener(view ->{
+            if (mOnItemClickedListener != null){
+                mOnItemClickedListener.closeAll();
+            }
+        } );
         mBinding.backIv.setOnClickListener(view -> dismiss());
         mBinding.createOrderTv.setOnClickListener(view -> {
             createOrder(view);
@@ -392,6 +396,8 @@ public class OilAmountDialog extends BottomSheetDialog {
                                 String amount, String oilNo);
 
         void onCreateOrder(View view, String orderId, String payAmount);
+
+        void closeAll();
     }
 
     private OnItemClickedListener mOnItemClickedListener;

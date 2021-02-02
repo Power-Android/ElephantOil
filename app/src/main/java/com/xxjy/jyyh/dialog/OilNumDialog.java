@@ -78,11 +78,16 @@ public class OilNumDialog extends BottomSheetDialog {
                 mOnItemClickedListener.onOilNumClick(adapter, view, position);
             }
         });
-        mBinding.cancelIv.setOnClickListener(view -> dismiss());
+        mBinding.cancelIv.setOnClickListener(view ->{
+            if (mOnItemClickedListener != null){
+                mOnItemClickedListener.closeAll();
+            }
+        } );
     }
 
     public interface OnItemClickedListener {
         void onOilNumClick(BaseQuickAdapter adapter, View view, int position);
+        void closeAll();
     }
 
     private OnItemClickedListener mOnItemClickedListener;

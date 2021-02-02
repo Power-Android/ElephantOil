@@ -560,17 +560,25 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private void showNumDialog(OilEntity.StationsBean stationsBean) {
         //油号dialog
         mOilNumDialog = new OilNumDialog(mContext, stationsBean);
-        mOilNumDialog.setOnItemClickedListener((adapter, view, position) -> {
-            List<OilEntity.StationsBean.OilPriceListBean> data = adapter.getData();
-            for (int i = 0; i < data.size(); i++) {
-                data.get(i).setSelected(false);
+        mOilNumDialog.setOnItemClickedListener(new OilNumDialog.OnItemClickedListener() {
+            @Override
+            public void onOilNumClick(BaseQuickAdapter adapter, View view, int position) {
+                List<OilEntity.StationsBean.OilPriceListBean> data = adapter.getData();
+                for (int i = 0; i < data.size(); i++) {
+                    data.get(i).setSelected(false);
+                }
+                data.get(position).setSelected(true);
+                adapter.notifyDataSetChanged();
+                mBinding.oilCurrentPriceTv.setText(data.get(position).getPriceYfq());
+                mBinding.oilOriginalPriceTv.setText("油站价¥" + data.get(position).getPriceOfficial());
+                mBinding.oilNumTv.setText(data.get(position).getOilName());
+                showGunDialog(mStationsBean, position);
             }
-            data.get(position).setSelected(true);
-            adapter.notifyDataSetChanged();
-            mBinding.oilCurrentPriceTv.setText(data.get(position).getPriceYfq());
-            mBinding.oilOriginalPriceTv.setText("油站价¥" + data.get(position).getPriceOfficial());
-            mBinding.oilNumTv.setText(data.get(position).getOilName());
-            showGunDialog(mStationsBean, position);
+
+            @Override
+            public void closeAll() {
+                closeDialog();
+            }
         });
 
         mOilNumDialog.show();
@@ -579,18 +587,26 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private void showGunDialog(OilEntity.StationsBean stationsBean, int oilNoPosition) {
         //枪号dialog
         mOilGunDialog = new OilGunDialog(mContext, stationsBean, oilNoPosition);
-        mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
-            if (isFar) {
-                showChoiceOil(stationsBean.getGasName(), view);
-            } else {
-                List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
-                for (int i = 0; i < data.size(); i++) {
-                    data.get(i).setSelected(false);
-                }
-                data.get(position).setSelected(true);
-                adapter.notifyDataSetChanged();
+        mOilGunDialog.setOnItemClickedListener(new OilGunDialog.OnItemClickedListener() {
+            @Override
+            public void onOilGunClick(BaseQuickAdapter adapter, View view, int position) {
+                if (isFar) {
+                    showChoiceOil(stationsBean.getGasName(), view);
+                } else {
+                    List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
+                    for (int i = 0; i < data.size(); i++) {
+                        data.get(i).setSelected(false);
+                    }
+                    data.get(position).setSelected(true);
+                    adapter.notifyDataSetChanged();
 
-                showAmountDialog(stationsBean, oilNoPosition, position);
+                    showAmountDialog(stationsBean, oilNoPosition, position);
+                }
+            }
+
+            @Override
+            public void closeAll() {
+                closeDialog();
             }
         });
 
@@ -614,6 +630,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             public void onCreateOrder(View view, String orderId, String payAmount) {
 //                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount, view);
                 showPayDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount);
+            }
+
+            @Override
+            public void closeAll() {
+                closeDialog();
             }
         });
 

@@ -100,7 +100,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dp_6"
-                                android:text="本单获得 "
+                                android:text="本单预计获得 "
                                 android:textColor="@color/color_82"
                                 android:textSize="@dimen/sp_12" />
 
@@ -117,7 +117,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dp_6"
-                                android:text="积分，您当前共累计 "
+                                android:text="积分，您当前账户有 "
                                 android:textColor="@color/color_82"
                                 android:textSize="@dimen/sp_12" />
 

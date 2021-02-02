@@ -67,12 +67,17 @@ public class OilGunDialog extends BottomSheetDialog {
                 mOnItemClickedListener.onOilGunClick(adapter, view, position);
             }
         });
-        mBinding.cancelIv.setOnClickListener(view -> dismiss());
         mBinding.backIv.setOnClickListener(view -> dismiss());
+        mBinding.cancelIv.setOnClickListener(view ->{
+            if (mOnItemClickedListener != null){
+                mOnItemClickedListener.closeAll();
+            }
+        } );
     }
 
     public interface OnItemClickedListener {
         void onOilGunClick(BaseQuickAdapter adapter, View view, int position);
+        void closeAll();
     }
 
     private OnItemClickedListener mOnItemClickedListener;

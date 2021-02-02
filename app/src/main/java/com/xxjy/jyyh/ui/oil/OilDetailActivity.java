@@ -331,23 +331,31 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     private void showGunDialog(OilEntity.StationsBean stationsBean, int oilNoPosition) {
         //枪号dialog
         mOilGunDialog = new OilGunDialog(this, stationsBean, oilNoPosition);
-        mOilGunDialog.setOnItemClickedListener((adapter, view, position) -> {
-            if (isFar) {
-                showChoiceOil(stationsBean.getGasName(), view);
-            } else {
-                List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
-                for (int i = 0; i < data.size(); i++) {
-                    data.get(i).setSelected(false);
-                }
-                data.get(position).setSelected(true);
-                adapter.notifyDataSetChanged();
-                if (mOilCheckedList.size() <= 1) {
-                    mOilCheckedList.add(1, data.get(position).getGunNo() + "号枪");
+        mOilGunDialog.setOnItemClickedListener(new OilGunDialog.OnItemClickedListener() {
+            @Override
+            public void onOilGunClick(BaseQuickAdapter adapter, View view, int position) {
+                if (isFar) {
+                    showChoiceOil(stationsBean.getGasName(), view);
                 } else {
-                    mOilCheckedList.set(1, data.get(position).getGunNo() + "号枪");
+                    List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
+                    for (int i = 0; i < data.size(); i++) {
+                        data.get(i).setSelected(false);
+                    }
+                    data.get(position).setSelected(true);
+                    adapter.notifyDataSetChanged();
+                    if (mOilCheckedList.size() <= 1) {
+                        mOilCheckedList.add(1, data.get(position).getGunNo() + "号枪");
+                    } else {
+                        mOilCheckedList.set(1, data.get(position).getGunNo() + "号枪");
+                    }
+                    mOilCheckedAdapter.notifyDataSetChanged();
+                    showAmountDialog(stationsBean, oilNoPosition, position);
                 }
-                mOilCheckedAdapter.notifyDataSetChanged();
-                showAmountDialog(stationsBean, oilNoPosition, position);
+            }
+
+            @Override
+            public void closeAll() {
+                closeDialog();
             }
         });
 
@@ -371,6 +379,11 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             public void onCreateOrder(View view, String orderId, String payAmount) {
 //                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount, view);
                 showPayDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount);
+            }
+
+            @Override
+            public void closeAll() {
+                closeDialog();
             }
         });
 
