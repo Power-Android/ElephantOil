@@ -104,7 +104,7 @@ public abstract class AppDataBase extends RoomDatabase {
             if (historyEntity.getIntegralName().equals(name)) {
                 searchHistory.remove(historyEntity);
                 searchHistory.add(0, historyEntity);
-                getSearchHistoryDao().deleteAll();
+                getSearchIntegralHistoryDao().deleteAll();
                 for (int i = 0; i < searchHistory.size(); i++) {
                     searchHistory.get(i).setId(i + 1);
                 }
