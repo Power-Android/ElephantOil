@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -96,6 +97,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     String.valueOf(pageNum), String.valueOf(pageSize), mContent, "sb");
         } else {
             mBinding.tab1Tv.setText("综合");
+            mBinding.tab1Tv.setTextColor(getResources().getColor(R.color.color_76FF));
             mBinding.tab1Iv.setVisibility(View.GONE);
             mBinding.tab2Tv.setText("价格");
             mBinding.tab3Tv.setText("销量");
@@ -154,6 +156,10 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     });
                 } else {
                     pageNum = 1;
+                    integralType = "1";
+                    mBinding.tab1Tv.setTextColor(getResources().getColor(R.color.color_76FF));
+                    mBinding.tab2Tv.setTextColor(getResources().getColor(R.color.color_34));
+                    mBinding.tab3Tv.setTextColor(getResources().getColor(R.color.color_34));
                     getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
                 }
                 break;
@@ -163,6 +169,9 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 } else {
                     pageNum = 1;
                     integralType = "2";
+                    mBinding.tab2Tv.setTextColor(getResources().getColor(R.color.color_76FF));
+                    mBinding.tab1Tv.setTextColor(getResources().getColor(R.color.color_34));
+                    mBinding.tab3Tv.setTextColor(getResources().getColor(R.color.color_34));
                     getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
                 }
                 break;
@@ -179,6 +188,9 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 } else {
                     pageNum = 1;
                     integralType = "3";
+                    mBinding.tab3Tv.setTextColor(getResources().getColor(R.color.color_76FF));
+                    mBinding.tab1Tv.setTextColor(getResources().getColor(R.color.color_34));
+                    mBinding.tab2Tv.setTextColor(getResources().getColor(R.color.color_34));
                     getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
                 }
             case R.id.search_tv:
@@ -235,7 +247,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         });
 
         mOilViewModel.oilStationLiveData.observe(this, dataStations -> {
-            if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0) {
+            if (dataStations != null && dataStations.getStations() != null) {
                 mBinding.noResultLayout.setVisibility(View.GONE);
                 if (pageNum == 1) {
                     mOilListAdapter.setNewData(dataStations.getStations());
@@ -249,14 +261,14 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                         mBinding.refreshView.finishLoadMoreWithNoMoreData();
                     }
                 }
-            } else {
+            } else if (pageNum == 1){
                 mBinding.noResultLayout.setVisibility(View.VISIBLE);
             }
 
         });
 
         mViewModel.intergraLiveData.observe(this, productBeans -> {
-            if (productBeans != null && productBeans.size() > 0) {
+            if (productBeans != null) {
                 mBinding.noResultLayout.setVisibility(View.GONE);
                 if (pageNum == 1) {
                     mIntegralAdapter.setNewData(productBeans);
@@ -270,7 +282,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                         mBinding.refreshView.finishLoadMoreWithNoMoreData();
                     }
                 }
-            } else {
+            } else if (pageNum == 1){
                 mBinding.noResultLayout.setVisibility(View.VISIBLE);
             }
         });

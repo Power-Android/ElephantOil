@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -56,16 +57,18 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
     private List<SearchHistoryEntity> mOilHistoryList = new ArrayList<>();
     private List<RecomdEntity> mInterestRecommendList = new ArrayList<>();
     private List<IntegralHistoryEntity> mInterestHistoryList = new ArrayList<>();
-    private int index = 0;
     private SearchHistoryAdapter mOilHistoryAdapter;
     private IntegralHistoryAdapter mInterestHistoryAdapter;
     private QueryDialog mQueryDialog;
     private SearchRecommendAdapter mOilRecommendAdapter;
     private SearchRecommendAdapter mInterestRecommendAdapter;
+    private String mType;
 
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.toolbar, false);
+        mType = getIntent().getStringExtra("type");
+
         initMagicIndicator();
     }
 
@@ -78,7 +81,6 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         initIntegralView();
 
         initDao();
-
         MyViewPagerAdapter adapter = new MyViewPagerAdapter(titles, mList);
         mBinding.viewPager.setOffscreenPageLimit(1);
         mBinding.viewPager.setAdapter(adapter);
@@ -130,6 +132,11 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         mBinding.indicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(mBinding.indicator, mBinding.viewPager);
 
+        if (!TextUtils.isEmpty(mType) && TextUtils.equals(mType, "integral")){
+            mBinding.viewPager.setCurrentItem(1);
+            mBinding.searchEt.setHint("搜索权益名称");
+        }
+
         mViewModel.getRecomnd("2");//2油站热门推荐 1权益热门推荐
         mViewModel.getRecomnd("1");
     }
@@ -180,7 +187,7 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         oilHistoryRecyclerView.setAdapter(mOilHistoryAdapter);
         mOilHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
-            intent.putExtra("type", index == 0 ? "1" : "2");
+            intent.putExtra("type", mBinding.viewPager.getCurrentItem() == 0 ? "1" : "2");
             intent.putExtra("content", ((SearchHistoryEntity) adapter.getItem(position)).getGasName());
             startActivity(intent);
         });
@@ -212,8 +219,8 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         interestHistoryRecyclerView.setAdapter(mInterestHistoryAdapter);
         mInterestHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
-            intent.putExtra("type", index == 0 ? "1" : "2");
-            intent.putExtra("content", mBinding.searchEt.getText().toString());
+            intent.putExtra("type", mBinding.viewPager.getCurrentItem() == 0 ? "1" : "2");
+            intent.putExtra("content", ((IntegralHistoryEntity) adapter.getItem(position)).getIntegralName());
             startActivity(intent);
         });
 
@@ -232,7 +239,6 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
 
             @Override
             public void onPageSelected(int position) {
-                index = position;
                 if (position == 0) {
                     mBinding.searchEt.setHint("搜索油站名称");
                 } else {
@@ -259,14 +265,14 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                     return;
                 }
                 KeyboardUtils.hideSoftInput(this);
-                if (index == 0) {
+                if (mBinding.viewPager.getCurrentItem() == 0) {
                     DBInstance.getInstance().insertData(mBinding.searchEt.getText().toString());
                 } else {
                     DBInstance.getInstance().insertIntegralData(mBinding.searchEt.getText().toString());
                 }
                 initDao();
                 Intent intent = new Intent(this, SearchResultActivity.class);
-                intent.putExtra("type", index == 0 ? "1" : "2");
+                intent.putExtra("type", mBinding.viewPager.getCurrentItem() == 0 ? "1" : "2");
                 intent.putExtra("content", mBinding.searchEt.getText().toString());
                 startActivity(intent);
                 break;

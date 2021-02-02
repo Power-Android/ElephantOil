@@ -72,16 +72,17 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
                 .setText(R.id.oil_num_view, item.getOilName())
                 .setText(R.id.item_original_tv, "¥" + item.getPriceOfficial())
                 .addOnClickListener(R.id.navigation_ll);
-        ((TextView)helper.getView(R.id.item_original_tv)).getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        ((TextView) helper.getView(R.id.item_original_tv)).getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 
         ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
-        if(item.getCzbLabels()!=null){
-            for (OilEntity.StationsBean.CzbLabelsBean lab:
+        if (item.getCzbLabels() != null) {
+            for (OilEntity.StationsBean.CzbLabelsBean lab :
                     item.getCzbLabels()) {
-                addTagView(mContext, item.isIsSign(), lab.getTagName(), (QMUIFloatLayout) helper.getView(R.id.float_layout));
+                addTagView(mContext, item.isIsSign(), lab.getTagIndexDescription(),
+                        (QMUIFloatLayout) helper.getView(R.id.float_layout));
             }
         }
-helper.addOnClickListener(R.id.navigation_ll);
+        helper.addOnClickListener(R.id.navigation_ll);
 
 
     }

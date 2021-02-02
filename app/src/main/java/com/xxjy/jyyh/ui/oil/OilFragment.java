@@ -74,7 +74,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
 
         }
     }
@@ -107,7 +107,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 LoginHelper.login(getContext(), new LoginHelper.CallBack() {
                     @Override
                     public void onLogin() {
-                        switch (view.getId()){
+                        switch (view.getId()) {
                             case R.id.navigation_ll:
                                 if (MapIntentUtils.isPhoneHasMapNavigation()) {
                                     NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
@@ -225,7 +225,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 LoginHelper.login(getContext(), new LoginHelper.CallBack() {
                     @Override
                     public void onLogin() {
-                        if(customerServiceDialog==null){
+                        if (customerServiceDialog == null) {
                             customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
                         }
                         customerServiceDialog.show(view);
@@ -271,7 +271,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             });
         });
         mViewModel.bannersLiveData.observe(this, data -> {
-            if(data!=null&&data.size()>0){
+            if (data != null && data.size() > 0) {
                 mBinding.banner.setVisibility(View.VISIBLE);
                 //banner
                 mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
@@ -286,7 +286,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 //                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
 //                                @Override
 //                                public void onLogin() {
-                                    NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.getLink());
+                            NaviActivityInfo.disPathIntentFromUrl((MainActivity) getActivity(), data.getLink());
 //                                }
 //                            });
 
@@ -295,7 +295,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                     }
                 }).addBannerLifecycleObserver(this)
                         .setIndicator(new RectangleIndicator(mContext));
-            }else{
+            } else {
                 mBinding.banner.setVisibility(View.GONE);
             }
 
@@ -316,7 +316,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                     adapter.addData(dataStations.getStations());
                     mBinding.refreshview.setEnableLoadMore(true);
                     mBinding.refreshview.finishRefresh(true);
-                }else{
+                } else {
                     adapter.addData(dataStations.getStations());
                     mBinding.refreshview.finishLoadMore(true);
                 }
@@ -335,8 +335,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             getOilStations();
 
 
-        }else{
-            pageNum=1;
+        } else {
+            pageNum = 1;
             getSignOilStations();
 
         }

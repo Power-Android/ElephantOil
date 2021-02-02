@@ -186,7 +186,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                         WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.INTEGRAL_EXPLANATION_URL));
                 break;
             case R.id.search_bar:
-                startActivity(new Intent(mContext, SearchActivity.class));
+                startActivity(new Intent(mContext, SearchActivity.class).putExtra("type", "integral"));
                 break;
         }
     }
