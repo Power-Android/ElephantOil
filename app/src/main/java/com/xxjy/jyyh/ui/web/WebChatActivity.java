@@ -31,8 +31,7 @@ import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.UiUtils;
 
 
-public class WebChatActivity extends BindingActivity<ActivityWebChatViewBinding,WebViewViewModel>
-        implements View.OnClickListener {
+public class WebChatActivity extends BindingActivity<ActivityWebChatViewBinding,WebViewViewModel> {
 
     private static final String BAR_TITLE = "在线客服聊天";
 
@@ -85,14 +84,22 @@ public class WebChatActivity extends BindingActivity<ActivityWebChatViewBinding,
     }
 
     protected void initListener() {
-        mToolbar.setNavigationOnClickListener(this);
-        mWebShared.setOnClickListener(this);
-        mWebCallHelp.setOnClickListener(this);
+        mWebShared.setOnClickListener(this::onViewClicked);
+        mWebCallHelp.setOnClickListener(this::onViewClicked);
+        mBinding.webBack.setOnClickListener(this::onViewClicked);
+        mBinding.webClose.setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void onViewClicked(View view) {
-
+switch (view.getId()){
+    case R.id.web_back:
+        onBackClick();
+        break;
+    case R.id.web_close:
+        onBackClick();
+        break;
+}
     }
 
     @Override
@@ -106,15 +113,6 @@ public class WebChatActivity extends BindingActivity<ActivityWebChatViewBinding,
         initWebViewClient();
         initWebChromeClient();
         UiUtils.initWebView(this, webView);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case -1:
-                onBackClick();
-                break;
-        }
     }
 
     //点击返回按钮
