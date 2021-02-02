@@ -2,6 +2,9 @@ package com.xxjy.jyyh.constants;
 
 import com.xxjy.jyyh.app.App;
 
+import static com.xxjy.jyyh.constants.ApiService.CONFIG_BASE_URL;
+
+
 /**
  * @author power
  * @date 12/1/20 1:38 PM
@@ -11,9 +14,9 @@ import com.xxjy.jyyh.app.App;
 public class Constants {
 
 
-    public static final String USER_XIE_YI = "https://m.qqgyhk.com/account/messageDetail/400221";
-    public static final String YINSI_ZHENG_CE = "https://m.qqgyhk.com/account/messageDetail/400222";
-    public static final String INTEGRAL_EXPLANATION_URL="https://tcore.qqgyhk.com/mall/introduction";
+    public static final String USER_XIE_YI = CONFIG_BASE_URL+"account/messageDetail/400221";
+    public static final String YINSI_ZHENG_CE =CONFIG_BASE_URL+"account/messageDetail/400222";
+    public static final String INTEGRAL_EXPLANATION_URL=CONFIG_BASE_URL+"mall/introduction";
 
     /**
      * release服务器

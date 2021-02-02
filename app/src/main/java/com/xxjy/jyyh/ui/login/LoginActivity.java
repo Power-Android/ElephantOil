@@ -27,6 +27,7 @@ import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityLoginBinding;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.utils.GsonTool;
+import com.xxjy.jyyh.utils.JPushManager;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
@@ -37,7 +38,7 @@ import java.util.Map;
 
 import cn.jpush.android.api.JPushInterface;
 
-public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginViewModel> {
+public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginViewModel> {
 
     private boolean isOpenAuth = false;     //是否已经调起了登录
     public static int loginState = -1;
@@ -62,7 +63,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
     @Override
     protected void dataObservable() {
         mViewModel.mVerifyLoginLiveData.observe(this, s -> mViewModel.setLoginSuccess(s, ""));
-        mViewModel.mWechatLoginLiveData.observe(this,data ->{
+        mViewModel.mWechatLoginLiveData.observe(this, data -> {
             if (data == null) {
                 showToastWarning("登录失败,请使用其他登录方式");
                 return;
@@ -78,8 +79,8 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
                 UserConstants.setToken(token);
                 UserConstants.setIsLogin(true);
                 UMengManager.onProfileSignIn("userID");
-//        Tool.postJPushdata();
-                SYConfigUtils.inviteCode="";
+                JPushManager.postJPushdata();
+                SYConfigUtils.inviteCode = "";
                 if (loginState == Constants.LOGIN_FINISH) {
                     finish();
                     return;
@@ -177,10 +178,10 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
     private void verifyNormal(String token) {
 
 
-        if (!TextUtils.isEmpty( SYConfigUtils.inviteCode)) {
-            if (SYConfigUtils.inviteCode.length()==4|| SYConfigUtils.inviteCode.length()==11) {
+        if (!TextUtils.isEmpty(SYConfigUtils.inviteCode)) {
+            if (SYConfigUtils.inviteCode.length() == 4 || SYConfigUtils.inviteCode.length() == 11) {
 
-            }else{
+            } else {
                 showToastWarning("请输入正确邀请人");
                 return;
             }
@@ -197,6 +198,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
         }
         startActivity(new Intent(this, MobileLoginActivity.class));
     }
+
     private void loginForWx() {
         UMengLoginWx.loginFormWx(this, new UMengLoginWx.UMAuthAdapter() {
             @Override
@@ -211,8 +213,8 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding,LoginVie
         });
     }
 
-    private void openId2Login(String openId,String accessToken){
-        mViewModel.openId2Login( openId, accessToken);
+    private void openId2Login(String openId, String accessToken) {
+        mViewModel.openId2Login(openId, accessToken);
     }
 
     @Override

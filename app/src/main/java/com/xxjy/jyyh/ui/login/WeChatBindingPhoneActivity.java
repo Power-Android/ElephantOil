@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.TextWatcherAdapter;
@@ -21,7 +22,7 @@ public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBi
 
     private String mPhoneNumber;
     private String inviteNumber;
-    private static boolean isDown = false;
+    private boolean isDown = false;
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.toolbar);
@@ -84,6 +85,7 @@ public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBi
 
                 UiUtils.canClickViewStateDelayed(mBinding.loginGetCode);
                 getAutoCode();
+//                InputAutoActivity.openInputAutoCodeAct(WeChatBindingPhoneActivity.this);
                 break;
             case R.id.user_invite_number_layout:        //邀请人手机号
                 if (isDown) {
@@ -103,20 +105,20 @@ public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBi
 
     @Override
     protected void dataObservable() {
-
+        mViewModel.mCodeLiveData.observe(this,data->{
+            if (data) {
+                showToastSuccess("发送成功");
+                InputAutoActivity.TAG_LOGIN_PHONE_NUMBER = mPhoneNumber;
+                InputAutoActivity.INVITE_CODE = inviteNumber;
+                InputAutoActivity.openInputAutoCodeAct(WeChatBindingPhoneActivity.this);
+            } else {
+                showToastWarning("发送失败");
+            }
+        });
     }
     private void getAutoCode() {
 
-        mViewModel.sendCode("10",mPhoneNumber).observe(this,data->{
-            if (data) {
-                    showToastSuccess("发送成功");
-                    InputAutoActivity.TAG_LOGIN_PHONE_NUMBER = mPhoneNumber;
-                    InputAutoActivity.INVITE_CODE = inviteNumber;
-                InputAutoActivity.openInputAutoCodeAct(WeChatBindingPhoneActivity.this);
-                } else {
-                    showToastWarning("发送失败");
-                }
-        });
+        mViewModel.sendCode("10",mPhoneNumber);
     }
     private void refreshLoginState() {
         String phoneNumber = mBinding.userPhoneNumber.getText().toString();

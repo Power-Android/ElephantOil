@@ -3,14 +3,18 @@ package com.xxjy.jyyh.ui.login;
 import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.style.ClickableSpan;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.SpanUtils;
 import com.google.gson.Gson;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
@@ -20,6 +24,8 @@ import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMobileLoginBinding;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.JPushManager;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
@@ -39,7 +45,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
     private final int mMaxPhoneLength = 13;
     private int lineGetFocus, lineUnFocus;
     private String mPhoneNumber;
-    private static boolean isDown = false;
+    private boolean isDown = false;
     private String wxOpenId;
     private String wxUnionId;
 
@@ -49,7 +55,38 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
         lineUnFocus = Color.parseColor("#B8B8B8");
         lineGetFocus = Color.parseColor("#000000");
         mCountDownTime = MyCountDownTime.getInstence(60 * 1000, 1000);
+        SpanUtils.with(mBinding.tipView)
+                .append("登录即接受并同意遵守我们的")
+                .append("《服务协议》")
+                .setClickSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        WebViewActivity.openRealUrlWebActivity(MobileLoginActivity.this, Constants.USER_XIE_YI);
+                    }
+                    @Override
+                    public void updateDrawState(@NonNull TextPaint ds) {
+//                        super.updateDrawState(ds);
+                        ds.setUnderlineText(false);
+                    }
+                })
+                .setForegroundColor(Color.parseColor("#1676FF"))
+                .append("和")
+                .append("《隐私政策》")
+                .setClickSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        WebViewActivity.openRealUrlWebActivity(MobileLoginActivity.this, Constants.YINSI_ZHENG_CE);
+                    }
 
+                    @Override
+                    public void updateDrawState(@NonNull TextPaint ds) {
+//                        super.updateDrawState(ds);
+                        ds.setUnderlineText(false);
+                    }
+                })
+                .setForegroundColor(Color.parseColor("#1676FF"))
+                .append("以及个人敏感信息政策")
+                .create();
     }
 
     @Override
@@ -96,7 +133,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
         mBinding.userPhoneNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (mBinding==null||mBinding.userPhoneNumberLine == null) {
+                if (mBinding == null || mBinding.userPhoneNumberLine == null) {
                     return;
                 }
                 if (hasFocus || !TextUtils.isEmpty(mBinding.userPhoneNumber.getTextWithoutSpace())) {
@@ -109,7 +146,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
         mBinding.userPhoneCode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (mBinding==null||mBinding.userPhoneCodeLine == null) {
+                if (mBinding == null || mBinding.userPhoneCodeLine == null) {
                     return;
                 }
                 if (hasFocus || !TextUtils.isEmpty(mBinding.userPhoneCode.getText())) {
@@ -172,9 +209,9 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
 
                 String inviteNumber = mBinding.invitationEt.getText().toString().trim();
                 if (!TextUtils.isEmpty(inviteNumber)) {
-                    if (inviteNumber.length()==4|| inviteNumber.length()==11) {
+                    if (inviteNumber.length() == 4 || inviteNumber.length() == 11) {
 
-                    }else{
+                    } else {
                         showToastWarning("请输入正确邀请人");
                         return;
                     }
@@ -199,10 +236,6 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                     mBinding.invitationLl.setVisibility(View.VISIBLE);
                     isDown = true;
                 }
-                break;
-            case R.id.layout_1:        //用户政策
-                break;
-            case R.id.layout_2:        //隐私协议
                 break;
             default:
                 break;
@@ -280,7 +313,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                 UserConstants.setToken(token);
                 UserConstants.setIsLogin(true);
                 UMengManager.onProfileSignIn("userID");
-//        Tool.postJPushdata();
+                JPushManager.postJPushdata();
                 if (LoginActivity.loginState == Constants.LOGIN_FINISH) {
                     finish();
                     return;

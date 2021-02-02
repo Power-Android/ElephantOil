@@ -15,12 +15,20 @@ import com.alipay.sdk.app.PayTask;
 import com.alipay.sdk.util.H5PayResultModel;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
+import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BaseActivity;
+import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.http.Response;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.login.LoginActivity;
 
 import java.io.File;
+import java.util.HashMap;
+
+import cn.jpush.android.api.JPushInterface;
+import io.reactivex.rxjava3.functions.Consumer;
+import rxhttp.RxHttp;
 
 public class UiUtils {
     @SuppressLint("SetJavaScriptEnabled")
@@ -249,5 +257,7 @@ public class UiUtils {
             activity.startActivity(intent);
         }
     }
+
+
 
 }

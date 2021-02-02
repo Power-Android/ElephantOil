@@ -11,13 +11,16 @@ import rxhttp.wrapper.annotation.DefaultDomain;
 public class ApiService {
 
     //默认正式服务器url
-    public static final String RELEASE_URL = "https://core.qqgyhk.com/server/";
+    public static final String CONFIG_RELEASE_URL = "https://core.qqgyhk.com/";
+    public static final String RELEASE_URL = CONFIG_RELEASE_URL+"server/";
     //默认测试服务器url
-    public static final String DEBUG_URL = "https://tcore.qqgyhk.com/server/";
+    public static final String CONFIG_DEBUG_URL = "https://tcore.qqgyhk.com/";
+    public static final String DEBUG_URL = CONFIG_DEBUG_URL+"server/";
 //    public static final String DEBUG_URL = "https://ccore.qqgyhk.com/server/";
 
     @DefaultDomain //默认域名
     public static String BASE_URL = Constants.URL_IS_DEBUG ? DEBUG_URL : RELEASE_URL;
+    public static String CONFIG_BASE_URL = Constants.URL_IS_DEBUG ? CONFIG_DEBUG_URL : CONFIG_RELEASE_URL;
 
 
     //获取验证码
@@ -114,4 +117,6 @@ public class ApiService {
     public static final String GET_OS_OVERALL = "api/v1/common/getOsOverall";
     //加油新老用户区分
     public static final String IS_NEW_USER = "api/gasPublic/isNewUser";
+    //极光ID
+    public static final String GET_JPUSH_ID_URL =  "api/v1/user/getJPushId";
 }

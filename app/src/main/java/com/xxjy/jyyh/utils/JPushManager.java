@@ -4,8 +4,14 @@ import android.app.Application;
 import android.content.Context;
 
 import com.xxjy.jyyh.app.App;
+import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.http.Response;
+
+import java.util.HashMap;
 
 import cn.jpush.android.api.JPushInterface;
+import io.reactivex.rxjava3.functions.Consumer;
+import rxhttp.RxHttp;
 
 /**
  * 极光推送的管理器
@@ -46,5 +52,21 @@ public class JPushManager {
      */
     public static void onPageEnd(Context context, String pageName) {
 //        JAnalyticsInterface.onPageEnd(context, pageName);
+    }
+
+    //post极光regestId;
+    public static void postJPushdata() {
+        String registrationId = JPushInterface.getRegistrationID(App.getContext());
+        HashMap<String, String> map = new HashMap();
+        map.put("registrationId", registrationId);
+
+        RxHttp.postForm(ApiService.GET_JPUSH_ID_URL,map)
+                .asResponse(Response.class)
+                .subscribe(new Consumer<Response>() {
+                    @Override
+                    public void accept(Response response) throws Throwable {
+
+                    }
+                });
     }
 }

@@ -204,8 +204,6 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 mBinding.refreshview.finishLoadMoreWithNoMoreData();
             }
         });
-
-
     }
 
     private void initTab() {

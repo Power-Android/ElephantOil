@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.xxjy.jyyh.R;
@@ -110,6 +111,14 @@ public class InputAutoActivity extends BindingActivity<ActivityInputAutoBinding,
                 showToastWarning("绑定失败，请再次尝试");
             }
         });
+        mViewModel.mCodeLiveData.observe(this, data -> {
+            LogUtils.e("sendCode");
+            if (data) {
+                showToastSuccess("发送成功");
+            } else {
+                showToastWarning("发送失败");
+            }
+        });
     }
 
     private SpannableStringBuilder getSpanString(long time) {
@@ -120,13 +129,7 @@ public class InputAutoActivity extends BindingActivity<ActivityInputAutoBinding,
 
     private void getAutoCode() {
 
-        mViewModel.sendCode("10", TAG_LOGIN_PHONE_NUMBER).observe(this, data -> {
-            if (data) {
-                showToastSuccess("发送成功");
-            } else {
-                showToastWarning("发送失败");
-            }
-        });
+        mViewModel.sendCode("10", TAG_LOGIN_PHONE_NUMBER);
     }
 
     private void bindPhone(String autoCode) {

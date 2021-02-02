@@ -75,7 +75,7 @@ public class SYConfigUtils {
         ImageView iv = invitationLayout.findViewById(R.id.iv1);
         View iv2 = invitationLayout.findViewById(R.id.iv2);
         EditText et = invitationLayout.findViewById(R.id.invitation_et);
-        invitationLayout.findViewById(R.id.tv1).setOnClickListener(view ->{
+        invitationLayout.findViewById(R.id.parent_layout).setOnClickListener(view ->{
             if (isDown){
                 iv.animate().setDuration(200).rotation(90).start();
                 et.setVisibility(View.VISIBLE);
@@ -87,18 +87,18 @@ public class SYConfigUtils {
             }
             isDown = !isDown;
         });
-        invitationLayout.findViewById(R.id.iv1).setOnClickListener(view -> {
-            if (isDown){
-                iv.animate().setDuration(200).rotation(90).start();
-                et.setVisibility(View.VISIBLE);
-                iv2.setVisibility(View.VISIBLE);
-            }else {
-                iv.animate().setDuration(200).rotation(0).start();
-                et.setVisibility(View.GONE);
-                iv2.setVisibility(View.GONE);
-            }
-            isDown = !isDown;
-        });
+//        invitationLayout.findViewById(R.id.iv1).setOnClickListener(view -> {
+//            if (isDown){
+//                iv.animate().setDuration(200).rotation(90).start();
+//                et.setVisibility(View.VISIBLE);
+//                iv2.setVisibility(View.VISIBLE);
+//            }else {
+//                iv.animate().setDuration(200).rotation(0).start();
+//                et.setVisibility(View.GONE);
+//                iv2.setVisibility(View.GONE);
+//            }
+//            isDown = !isDown;
+//        });
 
         et.addTextChangedListener(new TextWatcher() {
             @Override
