@@ -547,11 +547,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mBinding.progress.setMax(100);
                     if(Double.parseDouble(dataBean.getProgress())==0d){
                         mBinding.progress.setProgress(0);
-
                     }else{
                         mBinding.progress.setProgress(Integer.parseInt(NumberUtils.format(Double.parseDouble(dataBean.getProgress())*100,0)));
                     }
-                    mBinding.progress.setProgress(100);
                     if (dataBean.isStatus()) {
                         mBinding.awardTv.setEnabled(true);
                         mBinding.awardTv.setBackgroundResource(R.drawable.shape_receive_6radius);
