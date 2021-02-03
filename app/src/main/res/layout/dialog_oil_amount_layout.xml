@@ -119,6 +119,8 @@
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_8"
         android:layout_marginEnd="@dimen/dp_20"
+        android:paddingTop="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5"
         android:background="@drawable/shape_white_4raduis"
         app:layout_constraintTop_toBottomOf="@+id/amount_recycler_view" />
 

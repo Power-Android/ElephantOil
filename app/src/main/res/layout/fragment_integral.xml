@@ -215,12 +215,12 @@
                                 android:layout_height="@dimen/dp_107"
                                 android:layout_marginTop="@dimen/dp_5"
                                 app:banner_auto_loop="true"
-                                app:banner_indicator_height="@dimen/dp_3"
+                                app:banner_indicator_height="@dimen/dp_2"
                                 app:banner_indicator_margin="@dimen/dp_3"
                                 app:banner_indicator_normal_color="@color/color_9A"
-                                app:banner_indicator_normal_width="@dimen/dp_6"
+                                app:banner_indicator_normal_width="@dimen/dp_9"
                                 app:banner_indicator_selected_color="@color/white"
-                                app:banner_indicator_selected_width="@dimen/dp_6"
+                                app:banner_indicator_selected_width="@dimen/dp_9"
                                 app:banner_loop_time="5000"
                                 app:banner_radius="@dimen/dp_8" />
                         </LinearLayout>

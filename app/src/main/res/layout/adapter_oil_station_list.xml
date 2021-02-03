@@ -57,7 +57,7 @@
                 android:singleLine="true"
                 android:textColor="@color/color_34"
                 android:textStyle="bold"
-                android:textSize="@dimen/sp_14"
+                android:textSize="@dimen/sp_16"
                 android:text="油站名称"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_oil_img"

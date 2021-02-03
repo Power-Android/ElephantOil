@@ -85,6 +85,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         mViewModel.getOsOverAll().observe(this, b -> {
             if (!b) {
                 UserConstants.setGoneIntegral(true);
+                mBinding.navView.getMenu().removeItem(R.id.navigation_home);
                 mBinding.navView.getMenu().removeItem(R.id.navigation_integral);
             }
         });

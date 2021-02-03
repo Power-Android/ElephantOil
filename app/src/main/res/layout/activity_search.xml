@@ -51,7 +51,7 @@
                 android:hint="搜索油站名称"
                 android:paddingStart="@dimen/dp_5"
                 android:textColorHint="@color/color_A0A0"
-                android:textSize="@dimen/sp_16"
+                android:textSize="@dimen/sp_13"
                 android:layout_marginEnd="@dimen/dp_5"
                 android:singleLine="true"
                 android:imeOptions="actionSearch"

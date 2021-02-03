@@ -20,7 +20,7 @@ public class SettingLayout extends AppCompatTextView implements IPagerTitleView 
 
     private int mSelectedColor;
     private int mNormalColor;
-    private int mTextSize = 17;
+    private int mTextSize = 16;
     private int mSelectTextSize = 20;
 
     public SettingLayout(Context context) {

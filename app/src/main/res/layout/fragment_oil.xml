@@ -150,6 +150,7 @@
                     app:banner_indicator_height="@dimen/dp_2"
                     app:banner_indicator_normal_width="@dimen/dp_9"
                     app:banner_indicator_selected_width="@dimen/dp_9"
+                    app:banner_indicator_marginBottom="@dimen/dp_4"
                     app:banner_radius="@dimen/dp_8"
                     app:banner_indicator_selected_color="@color/white"
                     app:banner_indicator_normal_color="@color/color_9A"

@@ -11,7 +11,7 @@ import rxhttp.wrapper.annotation.DefaultDomain;
 public class ApiService {
 
     //默认正式服务器url
-    public static final String CONFIG_RELEASE_URL = "https://core.qqgyhk.com/";
+    public static final String CONFIG_RELEASE_URL = "https://m.qqgyhk.com/";
     public static final String RELEASE_URL = CONFIG_RELEASE_URL+"server/";
     //默认测试服务器url
     public static final String CONFIG_DEBUG_URL = "https://tcore.qqgyhk.com/";

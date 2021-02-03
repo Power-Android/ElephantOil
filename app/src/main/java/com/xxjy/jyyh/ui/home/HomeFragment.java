@@ -232,6 +232,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //                }
 //            });
         });
+        mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         mViewModel.getHomeProduct();
         loadBanner();
@@ -425,7 +426,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
             mBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
             mBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-            mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
             if (mStationsBean.getCzbLabels() != null && mStationsBean.getCzbLabels().size() > 0) {
                 mOilTagList = mStationsBean.getCzbLabels();

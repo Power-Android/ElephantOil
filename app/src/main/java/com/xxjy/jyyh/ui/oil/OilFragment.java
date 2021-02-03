@@ -1,13 +1,16 @@
 package com.xxjy.jyyh.ui.oil;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -32,6 +35,7 @@ import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.DistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.home.HomeViewModel;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
@@ -41,6 +45,7 @@ import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
+import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.RectangleIndicator;
 
@@ -54,6 +59,9 @@ import java.util.List;
  * @description:
  */
 public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewModel> {
+
+    private HomeViewModel mHomeViewModel;
+
     public static OilFragment getInstance() {
         return new OilFragment();
     }
@@ -86,6 +94,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, data);
         mBinding.recyclerView.setAdapter(adapter);
+
+        mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         adapter.setOnItemClickListener((adapter, view, position) -> {
 
@@ -244,6 +254,28 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 
                 break;
         }
+    }
+
+    private void requestPermission() {
+        PermissionUtils.permission(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                .callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
+                        mHomeViewModel.getLocation();
+                    }
+
+                    @Override
+                    public void onDenied() {
+//                        mLat = 0;
+//                        mLng = 0;
+//                        mViewModel.getHomeOil(mLat, mLng);
+//                        showFailLocation();
+                        showToastWarning("权限被拒绝，请去设置里开启");
+                    }
+                })
+                .request();
     }
 
     @Override
