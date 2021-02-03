@@ -111,7 +111,7 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
             public IPagerTitleView getTitleView(Context context, final int index) {
                 SettingLayout simplePagerTitleView = new SettingLayout(context);
                 simplePagerTitleView.setText(titles[index]);
-                simplePagerTitleView.setTextSize(20);
+                simplePagerTitleView.setTextSize(16);
                 simplePagerTitleView.setmNormalColor(getResources().getColor(R.color.color_BAFF));
                 simplePagerTitleView.setmSelectedColor(getResources().getColor(R.color.white));
                 simplePagerTitleView.setOnClickListener(v -> mBinding.viewPager.setCurrentItem(index));
