@@ -73,6 +73,7 @@ public class OilCouponDialog extends BottomSheetDialog {
     }
 
     private void initData() {
+        mBinding.tv1.setText(isPlat ? "平台优惠券" : "商家优惠券");
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mOilCouponAdapter = new OilCouponAdapter(R.layout.adapter_oil_coupon, mList);
         mBinding.recyclerView.setAdapter(mOilCouponAdapter);

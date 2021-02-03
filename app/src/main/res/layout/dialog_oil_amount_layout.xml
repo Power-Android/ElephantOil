@@ -97,6 +97,7 @@
             android:background="@drawable/shape_gray_right_4radius"
             android:gravity="center"
             android:text="约0.00L"
+            android:textColor="#646464"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -28,5 +28,14 @@ public class OilAmountAdapter extends BaseQuickAdapter<OilDefaultPriceEntity.Def
         helper.itemView.setSelected(item.isSelected());
         helper.setText(R.id.item_amount_tv, NumberUtils.format(Float.parseFloat(item.getAmount()), 0))
                 .setText(R.id.item_discount_tv, "优惠¥" + item.getDepreciateAmount());
+        if (item.isSelected()){
+            helper.setTextColor(R.id.item_money_tag, mContext.getResources().getColor(R.color.color_76FF))
+                    .setTextColor(R.id.item_amount_tv, mContext.getResources().getColor(R.color.color_76FF))
+                    .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_76FF));
+        }else {
+            helper.setTextColor(R.id.item_money_tag, mContext.getResources().getColor(R.color.color_34))
+                    .setTextColor(R.id.item_amount_tv, mContext.getResources().getColor(R.color.color_34))
+                    .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_50));
+        }
     }
 }

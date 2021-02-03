@@ -39,25 +39,25 @@ public class OilCouponAdapter extends BaseQuickAdapter<CouponBean, BaseViewHolde
         switch (item.getStatus()){
             //0真正可用 1已用 2过期  3时间未到 4 金额未达到
             case 0:
-                helper.getView(R.id.rootView).setAlpha(1.0f);
+                helper.getView(R.id.mask_view).setVisibility(View.GONE);
                 helper.getView(R.id.status_view).setVisibility(View.GONE);
                 helper.getView(R.id.rootView).setEnabled(true);
                 break;
             case 1:
-                helper.getView(R.id.rootView).setAlpha(0.6f);
+                helper.getView(R.id.mask_view).setVisibility(View.VISIBLE);
                 helper.getView(R.id.status_view).setVisibility(View.VISIBLE);
                 ((ImageView)helper.getView(R.id.status_view)).setImageResource(R.drawable.ic_coupon_used);
                 helper.getView(R.id.rootView).setEnabled(false);
                 break;
             case 2:
-                helper.getView(R.id.rootView).setAlpha(0.6f);
+                helper.getView(R.id.mask_view).setVisibility(View.VISIBLE);
                 helper.getView(R.id.status_view).setVisibility(View.VISIBLE);
                 ((ImageView)helper.getView(R.id.status_view)).setImageResource(R.drawable.ic_coupon_expired);
                 helper.getView(R.id.rootView).setEnabled(false);
                 break;
             case 3:
             case 4:
-                helper.getView(R.id.rootView).setAlpha(0.6f);
+                helper.getView(R.id.mask_view).setVisibility(View.VISIBLE);
                 helper.getView(R.id.status_view).setVisibility(View.GONE);
                 helper.getView(R.id.rootView).setEnabled(false);
                 break;

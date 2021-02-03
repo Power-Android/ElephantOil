@@ -18,7 +18,7 @@
             android:layout_width="@dimen/dp_43"
             android:layout_height="@dimen/dp_43"
             android:padding="@dimen/common_margin"
-            android:src="@drawable/icon_tb_close_bg"
+            android:src="@drawable/dialog_close_iv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
