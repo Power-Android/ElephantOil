@@ -286,6 +286,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         disPathIntentMessage(intent);
+        jump(intent);
     }
 
     /**
@@ -298,6 +299,14 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
 //        ActivityUtils.startHomeActivity();
+    }
+
+    private void jump(Intent intent){
+        if (intent == null) {
+            intent = getIntent();
+        }
+        int state =intent.getIntExtra("jumpState", -1);
+        showDiffFragment(state);
     }
 
     private void disPathIntentMessage(Intent intent) {

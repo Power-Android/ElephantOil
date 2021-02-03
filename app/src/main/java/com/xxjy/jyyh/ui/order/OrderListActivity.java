@@ -218,6 +218,12 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        loadData();
+    }
+
+    @Override
     protected void dataObservable() {
         mViewModel.refuelOrderListLiveData.observe(this, data -> {
             if (data != null && data.size() > 0) {
@@ -274,7 +280,6 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
                 showToastError("取消失败");
             }
         });
-
     }
 
     private void initTab() {

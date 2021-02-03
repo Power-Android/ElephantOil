@@ -84,8 +84,6 @@ public class WebViewActivity extends BindingActivity<ActivityWebviewBinding,WebV
     //是否需要展示确认弹窗
     private boolean shouldShowSureDialog = false;
 
-
-
     protected void initData() {
         INSTENCE = this;
         StatusBarUtil.setHeightAndPadding(this, mToolbar);

@@ -56,7 +56,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
     private QMUIPopup mNormalPopup;
 
     private String orderId;
-    private boolean isContinuePay=false;
+    private boolean isContinuePay = false;
     private SelectPayDialog mOilPayDialog;
 
     private HomeViewModel homeViewModel;
@@ -76,8 +76,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
 //        mBinding.useMethodView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 //        mBinding.useMethodView.getPaint().setAntiAlias(true);
         orderId = getIntent().getStringExtra(ORDER_ID);
-        isContinuePay = getIntent().getBooleanExtra(CONTINUE_PAY,false);
-        homeViewModel =new ViewModelProvider(this).get(HomeViewModel.class);
+        isContinuePay = getIntent().getBooleanExtra(CONTINUE_PAY, false);
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         refuelOrderDetails();
         initWebViewClient();
     }
@@ -132,8 +132,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
 
                 break;
             case R.id.continue_pay_view:
-                if(refuelOrderBean!=null){
-                    showPayDialog(refuelOrderBean.getProductName(),refuelOrderBean.getOrderId(),refuelOrderBean.getPayAmount());
+                if (refuelOrderBean != null) {
+                    showPayDialog(refuelOrderBean.getProductName(), refuelOrderBean.getOrderId(), refuelOrderBean.getPayAmount());
                 }
                 break;
             case R.id.cancel_view:
@@ -145,7 +145,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
     @Override
     protected void dataObservable() {
         mViewModel.refuelOrderDetailsLiveData.observe(this, data -> {
-            refuelOrderBean =data;
+            refuelOrderBean = data;
             mBinding.stationNameView.setText(data.getProductName());
             mBinding.statusView.setText(data.getStatusName());
             mBinding.numView.setText(data.getLitre() + "L");
@@ -203,8 +203,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     break;
             }
 
-            if(isContinuePay&&data.getStatus()==0){
-                    showPayDialog(refuelOrderBean.getProductName(),refuelOrderBean.getOrderId(),refuelOrderBean.getPayAmount());
+            if (isContinuePay && data.getStatus() == 0) {
+                showPayDialog(refuelOrderBean.getProductName(), refuelOrderBean.getOrderId(), refuelOrderBean.getPayAmount());
             }
         });
 
@@ -262,17 +262,18 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
     @Override
     protected void onRestart() {
         super.onRestart();
-showJump(mPayOrderEntity);
+        showJump(mPayOrderEntity);
+        refuelOrderDetails();
     }
 
     private void showPayDialog(String title, String orderId, String payAmount) {
         //支付dialog
-        mOilPayDialog = new SelectPayDialog( this,title , orderId, payAmount);
+        mOilPayDialog = new SelectPayDialog(this, title, orderId, payAmount);
         mOilPayDialog.setOnItemClickedListener(new SelectPayDialog.OnItemClickedListener() {
             @Override
             public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
                 List<OilPayTypeEntity> data = adapter.getData();
-                for (OilPayTypeEntity item: data) {
+                for (OilPayTypeEntity item : data) {
                     item.setSelect(false);
                 }
                 data.get(position).setSelect(true);
@@ -292,6 +293,7 @@ showJump(mPayOrderEntity);
 
         mOilPayDialog.show();
     }
+
     protected void initWebViewClient() {
         mBinding.payWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -329,6 +331,7 @@ showJump(mPayOrderEntity);
             }
         });
     }
+
     private void showJump(PayOrderEntity orderEntity) {
         if (orderEntity == null) return;
         if (shouldJump) {
@@ -340,7 +343,7 @@ showJump(mPayOrderEntity);
     }
 
     private void closeDialog() {
-        if (mOilPayDialog != null){
+        if (mOilPayDialog != null) {
             mOilPayDialog.dismiss();
             mOilPayDialog = null;
         }
@@ -356,6 +359,7 @@ showJump(mPayOrderEntity);
         startActivity(intent);
         closeDialog();
     }
+
     private void refuelOrderDetails() {
         mViewModel.refuelOrderDetails(orderId);
     }
@@ -370,7 +374,8 @@ showJump(mPayOrderEntity);
         intent.putExtra(ORDER_ID, orderId);
         activity.startActivity(intent);
     }
-    public static void openPage(BaseActivity activity, String orderId,boolean isContinuePay) {
+
+    public static void openPage(BaseActivity activity, String orderId, boolean isContinuePay) {
         Intent intent = new Intent(activity, OrderDetailsActivity.class);
         intent.putExtra(ORDER_ID, orderId);
         intent.putExtra(CONTINUE_PAY, isContinuePay);
