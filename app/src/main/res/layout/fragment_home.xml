@@ -99,7 +99,7 @@
                     android:id="@+id/desc_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-               android:layout_gravity="right"
+                    android:layout_gravity="right"
                     android:layout_marginEnd="@dimen/dp_58"
                     android:text="小象加油根据您当前的位置智能优选"
                     android:textColor="@color/color_6A"
@@ -110,33 +110,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_12"
-                    android:layout_marginTop="-6dp"
                     android:layout_marginEnd="@dimen/dp_12"
-                    android:background="@drawable/icon_home_oil_bg"
                     android:visibility="visible">
+<!--                    <View-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="@dimen/dp_10"-->
+<!--                        />-->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/icon_home_oil_bg"
+                        >
 
-                        <com.makeramen.roundedimageview.RoundedImageView
-                            android:id="@+id/oil_img_iv"
+                        <View
+                            android:id="@+id/oil_img_iv_1"
                             android:layout_width="@dimen/dp_73"
                             android:layout_height="@dimen/dp_73"
                             android:layout_marginStart="@dimen/dp_32"
-                            android:layout_marginTop="@dimen/dp_7"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/default_img_bg"
+                            android:visibility="invisible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:riv_oval="true" />
+                           />
 
                         <TextView
                             android:id="@+id/oil_name_tv"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_13"
-                            android:layout_marginTop="@dimen/dp_27"
+                            android:layout_marginTop="19dp"
                             android:layout_marginEnd="@dimen/dp_12"
                             android:ellipsize="end"
                             android:singleLine="true"
@@ -144,8 +148,9 @@
                             android:textSize="@dimen/sp_16"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/oil_img_iv"
-                            app:layout_constraintTop_toTopOf="@+id/oil_img_iv" />
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/oil_img_iv_1"
+                            app:layout_constraintTop_toTopOf="@+id/oil_img_iv_1" />
 
                         <TextView
                             android:id="@+id/oil_address_tv"
@@ -173,7 +178,7 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp_15"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/oil_img_iv" />
+                            app:layout_constraintTop_toBottomOf="@+id/oil_img_iv_1" />
 
                         <TextView
                             android:id="@+id/oil_current_price_tv"
@@ -191,7 +196,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_10"
-                            android:alpha="0.69"
+                            android:alpha="0.7"
                             android:includeFontPadding="false"
                             android:text="油站价¥0.00"
                             android:textColor="@color/white"
@@ -209,7 +214,8 @@
                             android:drawablePadding="@dimen/dp_5"
                             android:gravity="center"
                             android:includeFontPadding="false"
-                            android:padding="@dimen/dp_6"
+                            android:paddingLeft="6dp"
+                            android:paddingRight="6dp"
                             android:text="92#"
                             android:textColor="@color/color_34"
                             android:textSize="@dimen/sp_12"
@@ -233,17 +239,18 @@
                             android:id="@+id/tag_recycler_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginTop="5dp"
                             android:minHeight="@dimen/dp_40"
                             app:layout_constraintEnd_toStartOf="@+id/oil_navigation_tv"
+                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="@+id/oil_money_tag"
                             app:layout_constraintTop_toBottomOf="@+id/oil_num_tv" />
+
                         <TextView
                             android:id="@+id/quick_oil_tv"
                             android:layout_width="match_parent"
                             android:layout_height="55dp"
                             android:layout_marginStart="@dimen/common_margin"
-                            android:layout_marginTop="@dimen/dp_5"
                             android:layout_marginEnd="@dimen/common_margin"
                             android:background="@drawable/home_oil_bg"
                             android:gravity="center_horizontal"
@@ -268,6 +275,25 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/quick_oil_tv" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+                    <View
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="@dimen/dp_18"
+                        android:layout_marginStart="@dimen/dp_29"
+                        android:layout_marginTop="@dimen/dp_1"
+                        android:background="@drawable/ic_top_r_bg"
+                        />
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/oil_img_iv"
+                        android:layout_width="@dimen/dp_73"
+                        android:layout_height="@dimen/dp_73"
+                        android:layout_marginStart="@dimen/dp_32"
+                        android:layout_marginTop="@dimen/dp_9"
+                        android:visibility="visible"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_img_bg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:riv_oval="true" />
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -386,7 +412,9 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/exchange_title"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_44"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_4"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 

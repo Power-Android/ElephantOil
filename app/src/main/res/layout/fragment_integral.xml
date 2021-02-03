@@ -233,13 +233,14 @@
                         android:layout_height="wrap_content"
                         android:background="@color/color_F5"
                         android:orientation="vertical"
+                        android:paddingTop="@dimen/dp_5"
                         app:layout_collapseMode="pin"
                         app:layout_scrollFlags="snap|exitUntilCollapsed">
 
                         <com.qmuiteam.qmui.widget.tab.QMUITabSegment
                             android:id="@+id/tab_view"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_45" />
+                            android:layout_height="@dimen/dp_40" />
 
                     </LinearLayout>
 

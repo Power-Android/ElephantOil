@@ -167,7 +167,9 @@
                 <LinearLayout
                     android:id="@+id/tab_select_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_48"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dp_17"
+                    android:paddingBottom="@dimen/dp_12"
                     android:orientation="horizontal">
 
                     <LinearLayout
