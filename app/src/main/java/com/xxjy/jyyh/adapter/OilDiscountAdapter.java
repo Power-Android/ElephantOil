@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.adapter;
 
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -33,10 +34,13 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
         TextView discountTv = helper.getView(R.id.item_discount_tv);
         switch (helper.getAdapterPosition()) {
             case 0://直降优惠
+                if (item.getFallAmount() > 0){
+                    helper.setText(R.id.item_discount_tv, "-¥" + item.getFallAmount());
+                }else {
+                    helper.setText(R.id.item_discount_tv, item.getFallDesc());
+                }
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_price_fall)
                         .setGone(R.id.item_balance_tv, false)
-                        .setText(R.id.item_discount_tv, item.getFallAmount() > 0 ?
-                                "-¥" + item.getFallAmount() : "请选择加油金额")
                         .setTextColor(R.id.item_discount_tv, item.getFallAmount() > 0 ?
                                 mContext.getResources().getColor(R.color.color_27) :
                                 mContext.getResources().getColor(R.color.color_B1))

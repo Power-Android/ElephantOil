@@ -87,6 +87,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     private boolean isFar = false;//油站是否在距离内
     private GasStationLocationTipsDialog mGasStationTipsDialog;
     private LocationTipsDialog mLocationTipsDialog;
+    private String mOilNo;
 
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
@@ -118,6 +119,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         BusUtils.register(this);
 
         mGasId = getIntent().getStringExtra(Constants.GAS_STATION_ID);
+        mOilNo = getIntent().getStringExtra(Constants.OIL_NUMBER_ID);
 
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
@@ -142,8 +144,13 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mBinding.oilTagRecyclerView.setAdapter(mFlexAdapter);
 
         //已选择列表
-        mBinding.oilCheckRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+//        mBinding.oilCheckRecyclerView.setLayoutManager(
+//                new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        FlexboxLayoutManager flexboxLayoutManager1 = new FlexboxLayoutManager(this);
+        flexboxLayoutManager1.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager1.setJustifyContent(JustifyContent.FLEX_START);
+        flexboxLayoutManager1.setAlignItems(AlignItems.FLEX_START);
+        mBinding.oilCheckRecyclerView.setLayoutManager(flexboxLayoutManager1);
         mOilCheckedAdapter = new OilCheckedAdapter(R.layout.adapter_oil_checked, mOilCheckedList);
         mBinding.oilCheckRecyclerView.setAdapter(mOilCheckedAdapter);
 
@@ -268,13 +275,27 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
             //已选择列表
             mOilCheckedList.clear();
-            mOilCheckedList.add(mStationsBean.getOilPriceList().get(0).getOilName() +
-                    getOilKind(mStationsBean.getOilPriceList().get(0).getOilType() + ""));
-            mOilCheckedAdapter.setNewData(mOilCheckedList);
 
-            //油号列表
+
+            //已选择列表   油号列表
             mOilNumList = mStationsBean.getOilPriceList();
-            mOilNumList.get(0).setSelected(true);
+            if (TextUtils.isEmpty(mOilNo)){
+                mOilCheckedList.add(mStationsBean.getOilPriceList().get(0).getOilName() +
+                        getOilKind(mStationsBean.getOilPriceList().get(0).getOilType() + ""));
+                mOilCheckedAdapter.setNewData(mOilCheckedList);
+
+                mOilNumList.get(0).setSelected(true);
+            }else {
+                for (int i = 0; i < mOilNumList.size(); i++) {
+                    if (TextUtils.equals(mOilNo, String.valueOf(mOilNumList.get(i).getOilNo()))){
+                        mOilCheckedList.add(mStationsBean.getOilPriceList().get(i).getOilName() +
+                                getOilKind(mStationsBean.getOilPriceList().get(i).getOilType() + ""));
+
+                        mOilCheckedAdapter.setNewData(mOilCheckedList);
+                        mOilNumList.get(i).setSelected(true);
+                    }
+                }
+            }
             mOilNumAdapter.setNewData(mOilNumList);
 
             mHomeViewModel.checkDistance(mStationsBean.getGasId());

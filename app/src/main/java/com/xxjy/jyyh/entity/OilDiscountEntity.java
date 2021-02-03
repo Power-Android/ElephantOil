@@ -8,11 +8,20 @@ package com.xxjy.jyyh.entity;
  */
 public class OilDiscountEntity {
     private float fallAmount;
+    private String fallDesc;
     private String platformDesc;
     private String businessDesc;
     private float balance;//余额
     private float balanceDiscount;//余额抵扣金额
     private boolean isUseBill;//是否使用余额
+
+    public String getFallDesc() {
+        return fallDesc;
+    }
+
+    public void setFallDesc(String fallDesc) {
+        this.fallDesc = fallDesc;
+    }
 
     public boolean isUseBill() {
         return isUseBill;
@@ -62,8 +71,9 @@ public class OilDiscountEntity {
         this.balance = balance;
     }
 
-    public OilDiscountEntity(float fallAmount, String platformDesc, String businessDesc, float balance, boolean isUseBill) {
+    public OilDiscountEntity(float fallAmount, String fallDesc, String platformDesc, String businessDesc, float balance, boolean isUseBill) {
         this.fallAmount = fallAmount;
+        this.fallDesc = fallDesc;
         this.platformDesc = platformDesc;
         this.businessDesc = businessDesc;
         this.balance = balance;
