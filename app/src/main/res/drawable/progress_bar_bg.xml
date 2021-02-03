@@ -16,7 +16,7 @@
 <!--    </item>-->
 
 
-    <item android:id="@android:id/progress"
-        android:drawable="@drawable/bg_progress_bar_9p">
+    <item android:id="@android:id/progress">
+        <clip  android:drawable="@drawable/bg_progress_bar" />
     </item>
 </layer-list>
