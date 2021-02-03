@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.adapter;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -29,9 +30,9 @@ public class OilCouponAdapter extends BaseQuickAdapter<CouponBean, BaseViewHolde
     @Override
     protected void convert(@NonNull BaseViewHolder helper, CouponBean item) {
         helper.setText(R.id.item_coupon_amount,item.getAmountReduce())
-                .setText(R.id.item_use_range_tv,String.format("满%s元可用",item.getAmount()))
+                .setText(R.id.item_use_range_tv, TextUtils.isEmpty(item.getAmount())||Double.parseDouble(item.getAmount())==0?"无门槛":String.format("满%s元可用",item.getAmount()))
                 .setText(R.id.item_title_tv,item.getName())
-                .setText(R.id.item_coupon_date,String.format("%s 至 %s",item.getStartTime(),item.getEndTime()))
+                .setText(R.id.item_coupon_date,String.format("%s - %s",item.getStartTime(),item.getEndTime()))
                 .addOnClickListener(R.id.rootView);
         GlideUtils.loadImage(mContext,item.getImgUrl(),helper.getView(R.id.image_view));
 

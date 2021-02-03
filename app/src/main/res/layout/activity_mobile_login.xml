@@ -82,13 +82,13 @@
                             android:textColorHint="#C6C6C6"
                             android:textSize="@dimen/sp_14" />
 
-                        <ImageView
-                            android:id="@+id/register_user_clear_phone"
-                            android:layout_width="@dimen/dp_24"
-                            android:layout_height="@dimen/dp_24"
-                            android:padding="@dimen/dp_6"
-                            android:src="@drawable/icon_input_clear_bg"
-                            android:visibility="invisible" />
+<!--                        <ImageView-->
+<!--                            android:id="@+id/register_user_clear_phone"-->
+<!--                            android:layout_width="@dimen/dp_24"-->
+<!--                            android:layout_height="@dimen/dp_24"-->
+<!--                            android:padding="@dimen/dp_6"-->
+<!--                            android:src="@drawable/icon_input_clear_bg"-->
+<!--                            android:visibility="invisible" />-->
                     </LinearLayout>
 
                     <View

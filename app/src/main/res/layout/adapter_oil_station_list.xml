@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/dp_12"
     android:layout_marginRight="@dimen/dp_12"
-    android:layout_marginTop="@dimen/dp_8">
+    android:layout_marginBottom="@dimen/dp_8">
 
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
 
@@ -121,7 +121,6 @@
                 android:text="92#"
                 android:textColor="@color/color_34"
                 android:textSize="@dimen/sp_15"
-                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/item_oil_img"
                 app:layout_constraintTop_toBottomOf="@+id/item_address_tv" />
 
@@ -174,7 +173,7 @@
                 android:layout_marginTop="@dimen/common_margin"
                 android:includeFontPadding="false"
                 android:text="¥0.00"
-                android:textColor="@color/color_A0"
+                android:textColor="#5478AC"
                 android:textSize="@dimen/sp_15"
                 app:layout_constraintBaseline_toBaselineOf="@+id/view1"
                 app:layout_constraintStart_toEndOf="@+id/view5"

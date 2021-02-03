@@ -114,11 +114,11 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
             @Override
             public void afterTextChanged(Editable s) {
                 mBinding.loginGetCode.setEnabled(s.toString().trim().length() >= mMaxPhoneLength);
-                if (s.toString().length() > 0) {
-                    mBinding.registerUserClearPhone.setVisibility(View.VISIBLE);
-                } else {
-                    mBinding.registerUserClearPhone.setVisibility(View.GONE);
-                }
+//                if (s.toString().length() > 0) {
+//                    mBinding.registerUserClearPhone.setVisibility(View.VISIBLE);
+//                } else {
+//                    mBinding.registerUserClearPhone.setVisibility(View.GONE);
+//                }
                 refreshLoginState();
             }
         });
@@ -219,9 +219,9 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                 UiUtils.canEnableViewStateDelayed(mBinding.loginV3Login);
                 loginByCode(codeNumber);
                 break;
-            case R.id.register_user_clear_phone:        //清空
-                mBinding.userPhoneNumber.setText("");
-                break;
+//            case R.id.register_user_clear_phone:        //清空
+//                mBinding.userPhoneNumber.setText("");
+//                break;
             case R.id.login_for_wx:        //微信登录
                 loginForWx();
                 break;

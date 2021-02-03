@@ -189,7 +189,7 @@
                             android:layout_width="@dimen/dp_6"
                             android:layout_height="@dimen/dp_5"
                             android:layout_marginLeft="@dimen/dp_7"
-                            android:src="@drawable/icon_down_arrow" />
+                            android:src="@drawable/icon_down_arrow_2" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -212,7 +212,7 @@
                             android:layout_width="@dimen/dp_6"
                             android:layout_height="@dimen/dp_5"
                             android:layout_marginLeft="@dimen/dp_7"
-                            android:src="@drawable/icon_down_arrow" />
+                            android:src="@drawable/icon_down_arrow_2" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -235,7 +235,7 @@
                             android:layout_width="@dimen/dp_6"
                             android:layout_height="@dimen/dp_5"
                             android:layout_marginLeft="@dimen/dp_7"
-                            android:src="@drawable/icon_down_arrow" />
+                            android:src="@drawable/icon_down_arrow_2" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/search_layout"
@@ -254,10 +254,10 @@
                           />
                     </LinearLayout>
                 </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_0_5"
-                    android:background="@color/color_E4"/>
+<!--                <View-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="@dimen/dp_0_5"-->
+<!--                    android:background="@color/color_E4"/>-->
             </LinearLayout>
 
 

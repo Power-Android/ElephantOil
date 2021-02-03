@@ -39,13 +39,16 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
         if (!item.isIsSign()) {
             helper.setTextColor(R.id.item_name_tv, Color.parseColor("#323334"))
                     .setTextColor(R.id.item_address_tv, Color.parseColor("#A0A0A0"))
+                    .setTextColor(R.id.item_original_tv, Color.parseColor("#A0A0A0"))
                     .setTextColor(R.id.item_navigation_tv, Color.parseColor("#555555"))
                     .setTextColor(R.id.item_address_tv, Color.parseColor("#A0A0A0"));
             helper.getView(R.id.parent_layout).setBackground(null);
+            ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
             helper.getView(R.id.type_view).setVisibility(View.GONE);
         } else {
             helper.setTextColor(R.id.item_name_tv, Color.parseColor("#1676FF"))
                     .setTextColor(R.id.item_address_tv, Color.parseColor("#5478AC"))
+                    .setTextColor(R.id.item_original_tv, Color.parseColor("#5478AC"))
                     .setTextColor(R.id.item_navigation_tv, Color.parseColor("#323334"))
                     .setTextColor(R.id.item_address_tv, Color.parseColor("#5478AC"));
             ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
@@ -55,7 +58,7 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
 
         }
 
-
+        ((TextView) helper.getView(R.id.item_original_tv)).getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         Glide.with(mContext)
                 .load(item.getGasTypeImg())
 //                .override(AdaptScreenUtils.pt2Px(67),AdaptScreenUtils.pt2Px(67))
@@ -72,15 +75,18 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
                 .setText(R.id.oil_num_view, item.getOilName())
                 .setText(R.id.item_original_tv, "¥" + item.getPriceOfficial())
                 .addOnClickListener(R.id.navigation_ll);
-        ((TextView) helper.getView(R.id.item_original_tv)).getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+
 
         ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
-        if (item.getCzbLabels() != null) {
+        if (item.getCzbLabels() != null&&item.getCzbLabels().size()>0) {
             for (OilEntity.StationsBean.CzbLabelsBean lab :
                     item.getCzbLabels()) {
                 addTagView(mContext, item.isIsSign(), lab.getTagIndexDescription(),
                         (QMUIFloatLayout) helper.getView(R.id.float_layout));
             }
+            helper.getView(R.id.float_layout).setVisibility(View.VISIBLE);
+        }else{
+            helper.getView(R.id.float_layout).setVisibility(View.GONE);
         }
         helper.addOnClickListener(R.id.navigation_ll);
 

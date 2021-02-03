@@ -92,7 +92,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         super.onHiddenChanged(hidden);
         if(!hidden){
             if (UserConstants.getIsLogin()) {
-
+                queryIntegralBalance();
             }else{
                 mBinding.integralView.setText("0");
             }
@@ -233,13 +233,12 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(getContext(), 15), QMUIDisplayHelper.sp2px(getContext(), 15));
         tabBuilder.setColor(Color.parseColor("#313233"), Color.parseColor("#1676FF"));
         tabBuilder.setTypeface(Typeface.DEFAULT_BOLD, Typeface.DEFAULT_BOLD);
-        tabBuilder.skinChangeWithTintColor(true);
 //        mBinding.tabView.getTabCount();
         for (ProductClassBean str : classData) {
             mBinding.tabView.addTab(tabBuilder.setText(str.getClassName()).build(getContext()));
         }
 
-        int space = QMUIDisplayHelper.dp2px(getContext(), 15);
+        int space = QMUIDisplayHelper.dp2px(getContext(), 30);
         mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(getContext(), 2), false, true));
         mBinding.tabView.setItemSpaceInScrollMode(space);
         mBinding.tabView.setPadding(space, 0, space, 0);

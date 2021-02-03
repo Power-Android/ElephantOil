@@ -26,7 +26,7 @@
         android:orientation="vertical"
         android:paddingLeft="@dimen/dp_14"
         android:paddingTop="@dimen/dp_17"
-        android:paddingRight="@dimen/dp_14"
+
         android:paddingBottom="@dimen/dp_17"
         app:qmui_backgroundColor="@color/white"
         app:qmui_borderWidth="0dp"
@@ -34,7 +34,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_14">
 
             <TextView
                 android:id="@+id/item_title_view"
@@ -64,13 +65,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/dp_13"
-            android:paddingBottom="@dimen/dp_13">
+            android:layout_marginTop="@dimen/dp_13"
+            android:layout_marginRight="@dimen/dp_14"
+            >
 
             <TextView
                 android:id="@+id/item_price_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="¥0.00"
                 android:textColor="@color/color_30"
                 android:textSize="@dimen/sp_15" />
@@ -90,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:layout_marginTop="@dimen/dp_13"
             android:gravity="right|center_vertical"
             android:orientation="horizontal">
 

@@ -532,7 +532,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                             .append(dataBean.getSpName())
                             .setForegroundColor(getResources().getColor(R.color.color_1300))
                             .append("(价值" + dataBean.getRedeemPoint() + "积分)")
-                            .setFontSize(11, true)
+                            .setFontSize(10, true)
                             .setForegroundColor(getResources().getColor(R.color.color_1300))
                             .create();
 
