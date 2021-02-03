@@ -387,6 +387,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                 mDiscountList.get(1).setPlatformDesc("请选择优惠券");
             }else {
                 businessAmount = "";
+                mBusinessCouponBean = null;
                 mDiscountList.get(2).setBusinessDesc("请选择优惠券");
             }
         }

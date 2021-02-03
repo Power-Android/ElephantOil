@@ -238,20 +238,19 @@
                             app:layout_constraintEnd_toStartOf="@+id/oil_navigation_tv"
                             app:layout_constraintStart_toStartOf="@+id/oil_money_tag"
                             app:layout_constraintTop_toBottomOf="@+id/oil_num_tv" />
-
                         <TextView
                             android:id="@+id/quick_oil_tv"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_50"
+                            android:layout_height="55dp"
                             android:layout_marginStart="@dimen/common_margin"
                             android:layout_marginTop="@dimen/dp_5"
                             android:layout_marginEnd="@dimen/common_margin"
                             android:background="@drawable/home_oil_bg"
                             android:gravity="center_horizontal"
-                            android:paddingTop="@dimen/dp_12"
+                            android:paddingTop="8dp"
                             android:text="一键加油"
                             android:textColor="@color/color_34"
-                            android:textSize="@dimen/sp_17"
+                            android:textSize="17sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toTopOf="@+id/other_oil_tv"
                             app:layout_constraintTop_toBottomOf="@+id/tag_recycler_view" />
@@ -412,9 +411,8 @@
                             android:text="赚积分兑豪礼"
                             android:textColor="@color/color_99"
                             android:textSize="@dimen/sp_11"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/tv1"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintBaseline_toBaselineOf="@+id/tv1"
+                            app:layout_constraintStart_toEndOf="@+id/tv1" />
 
                         <TextView
                             android:id="@+id/go_integral_view"

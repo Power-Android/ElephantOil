@@ -238,7 +238,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
             mBinding.tabView.addTab(tabBuilder.setText(str.getClassName()).build(getContext()));
         }
 
-        int space = QMUIDisplayHelper.dp2px(getContext(), 30);
+        int space = QMUIDisplayHelper.dp2px(getContext(), 25);
         mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(getContext(), 2), false, true));
         mBinding.tabView.setItemSpaceInScrollMode(space);
         mBinding.tabView.setPadding(space, 0, space, 0);
