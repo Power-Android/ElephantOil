@@ -8,6 +8,7 @@ import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.chuanglan.shanyan_sdk.listener.GetPhoneInfoListener;
 import com.chuanglan.shanyan_sdk.listener.InitListener;
 import com.xxjy.jyyh.app.App;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.ui.login.LoginActivity;
 
 /**
@@ -31,7 +32,7 @@ public class ShanYanManager {
     public static void initShanYnaSdk(Context context) {
         if (!isInitSuccess()) {
             //闪验SDK配置debug开关 （必须放在初始化之前，开启后可打印闪验SDK更加详细日志信息）
-            OneKeyLoginManager.getInstance().setDebug(App.IS_DEBUG);
+            OneKeyLoginManager.getInstance().setDebug(Constants.IS_DEBUG);
 
             //闪验SDK初始化（建议放在Application的onCreate方法中执行）
             initShanyanSDK(context);

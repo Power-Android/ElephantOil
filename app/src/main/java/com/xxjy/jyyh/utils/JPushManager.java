@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.http.Response;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class JPushManager {
 
     //初始化推送
     private static void initPush(Application application) {
-        JPushInterface.setDebugMode(App.IS_DEBUG);
+        JPushInterface.setDebugMode(Constants.IS_DEBUG);
         JPushInterface.init(application);
     }
 

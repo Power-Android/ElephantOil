@@ -35,17 +35,6 @@ public class App extends Application {
     }
 
 
-    /**
-     * 服务器连接url配置
-     */
-    public static final boolean URL_IS_DEBUG = true;   //测试用这个
-//    public static final boolean URL_IS_DEBUG = false;   //正式上线用这个
-
-    /**
-     * 配置debug模式
-     */
-    public static final boolean IS_DEBUG = true;  //测试用这个
-    //    public static final boolean IS_DEBUG = false;   //正式上线用这个
     //static 代码段可以防止内存泄露
     static {
         //设置全局的Header构建器

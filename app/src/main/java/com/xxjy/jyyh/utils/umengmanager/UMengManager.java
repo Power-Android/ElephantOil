@@ -30,8 +30,8 @@ public class UMengManager {
         //使用auto模式不再需要Activity中的代码埋点
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
 
-        setDebug(context, App.IS_DEBUG);
-        setCatchUncaughtExceptions(!App.IS_DEBUG);
+        setDebug(context, Constants.IS_DEBUG);
+        setCatchUncaughtExceptions(!Constants.IS_DEBUG);
 //        setCatchUncaughtExceptions(true);
     }
 
@@ -102,7 +102,7 @@ public class UMengManager {
      * @param ex
      */
     public static void reportError(Context mContext, Throwable ex) {
-        if (!App.IS_DEBUG) {
+        if (!Constants.IS_DEBUG) {
             MobclickAgent.reportError(mContext, ex);//异常发送友盟服务器
         }
     }
