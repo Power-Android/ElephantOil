@@ -162,7 +162,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             if(mStationsBean!=null){
                 mViewModel.getRefuelJob(mStationsBean.getGasId());
             }
-
+            if (UserConstants.getIsLogin()) {
+                mViewModel.getOftenOils();
+            }
+            mBinding.oftenOilRecyclerView.setVisibility(UserConstants.getIsLogin() ? View.VISIBLE :View.GONE);
         }
     }
 

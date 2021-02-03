@@ -47,7 +47,7 @@ public class OilRepository extends BaseRepository {
         addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS)
                 .add("appLatitude", TextUtils.equals(appLatitude, "0") ? null : appLatitude)
                 .add("appLongitude", TextUtils.equals(appLongitude, "0") ? null : appLongitude)
-                .add("oilNo", oilNo,!TextUtils.isEmpty(oilNo))
+                .add("oilNo", TextUtils.isEmpty(oilNo) ? "92" : oilNo)
                 .add("orderBy", orderBy)
                 .add("distance",distance)
                 .add("pageNum", pageNum)

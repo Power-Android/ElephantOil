@@ -108,7 +108,7 @@ private void initData(){
                 data.get(lastPosition).setChecked(false);
             }
             lastPosition = position;
-            data.get(position).setChecked(!data.get(position).isChecked());
+            data.get(position).setChecked(true);
             oilDistanceAdapter.notifyDataSetChanged();
             if(mOnItemClickedListener!=null){
                 mOnItemClickedListener.onOilDistanceClick(adapter,view,position,data.get(position));

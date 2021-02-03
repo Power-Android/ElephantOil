@@ -26,6 +26,7 @@ import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivitySearchResultBinding;
 import com.xxjy.jyyh.dialog.SelectDistanceDialog;
 import com.xxjy.jyyh.dialog.SelectOilNumDialog;
+import com.xxjy.jyyh.entity.DistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.ProductBean;
@@ -95,6 +96,13 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             getOilStations(UserConstants.getLatitude(), UserConstants.getLongitude(), mCheckOilGasId,
                     firstDistanceOrPrice ? "1" : "2", distance == -1 ? null : String.valueOf(distance * 1000),
                     String.valueOf(pageNum), String.valueOf(pageSize), mContent, "sb");
+
+            selectDistanceDialog = new SelectDistanceDialog(
+                    this, mBinding.tabLayout, mBinding.getRoot());
+            selectDistanceDialog.setSelectPosition(5);
+
+            selectOilNumDialog = new SelectOilNumDialog(getContext(), mCheckOilGasId, mBinding.tabLayout, mBinding.getRoot());
+
         } else {
             mBinding.tab1Tv.setText("综合");
             mBinding.tab1Tv.setTextColor(getResources().getColor(R.color.color_76FF));
@@ -111,14 +119,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             mIntegralAdapter.setOnItemClickListener((adapter, view, position) -> {
                 List<ProductBean> data = adapter.getData();
                 if (!TextUtils.isEmpty(data.get(position).getLink())) {
-                    LoginHelper.login(this, new LoginHelper.CallBack() {
-                        @Override
-                        public void onLogin() {
-                            WebViewActivity.openRealUrlWebActivity(SearchResultActivity.this,
-                                    data.get(position).getLink());
-                        }
-                    });
-
+                    WebViewActivity.openRealUrlWebActivity(SearchResultActivity.this,
+                            data.get(position).getLink());
                 }
             });
 
@@ -146,7 +148,6 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                         selectDistanceDialog = new SelectDistanceDialog(
                                 this, mBinding.tabLayout, mBinding.getRoot());
                     }
-                    selectDistanceDialog.setSelectPosition(5);
                     selectDistanceDialog.show();
                     selectDistanceDialog.setOnItemClickedListener((adapter, view1, position, distanceEntity) -> {
                         distance = distanceEntity.getDistance();
@@ -179,6 +180,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 if (TextUtils.equals("1", mType)) {
                     if (firstDistanceOrPrice) {
                         firstDistanceOrPrice = false;
+                        mBinding.tab2Tv.setText("92#");
+                        selectOilNumDialog.setCheckData("92");
                         mBinding.tab3Tv.setText("价格优先");
                     } else {
                         firstDistanceOrPrice = true;
@@ -304,6 +307,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 pageNum++;
             } else {
                 pageNum = 1;
+                mBinding.refreshView.finishRefresh();
             }
             getOilStations(UserConstants.getLatitude(), UserConstants.getLongitude(), mCheckOilGasId,
                     firstDistanceOrPrice ? "1" : "2", distance == -1 ? null : String.valueOf(distance * 1000),
@@ -314,6 +318,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 pageNum++;
             } else {
                 pageNum = 1;
+                mBinding.refreshView.finishRefresh();
             }
             getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
         }

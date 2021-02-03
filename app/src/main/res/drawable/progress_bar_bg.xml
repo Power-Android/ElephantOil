@@ -17,6 +17,6 @@
 
 
     <item android:id="@android:id/progress"
-        android:drawable="@drawable/bg_progress_bar">
+        android:drawable="@drawable/bg_progress_bar_9p">
     </item>
 </layer-list>
