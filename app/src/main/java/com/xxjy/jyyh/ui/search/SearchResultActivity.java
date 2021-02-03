@@ -182,6 +182,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                         firstDistanceOrPrice = false;
                         mBinding.tab2Tv.setText("92#");
                         selectOilNumDialog.setCheckData("92");
+                        mCheckOilGasId = "92";
                         mBinding.tab3Tv.setText("价格优先");
                     } else {
                         firstDistanceOrPrice = true;

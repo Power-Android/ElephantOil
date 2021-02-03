@@ -293,8 +293,8 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                 mQueryDialog.setOnConfirmListener(() -> {
                     DBInstance.getInstance().deleteAllIntegralData();
                     mInterestHistoryList.clear();
-                    mOilView.findViewById(R.id.interest_history_title).setVisibility(View.GONE);
-                    mOilView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.GONE);
+                    mInterestView.findViewById(R.id.interest_history_title).setVisibility(View.GONE);
+                    mInterestView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.GONE);
                     mInterestHistoryAdapter.notifyDataSetChanged();
                 });
                 break;
