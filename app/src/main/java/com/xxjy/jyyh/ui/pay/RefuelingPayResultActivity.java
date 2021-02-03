@@ -21,6 +21,7 @@ import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.IntegralExchangeAdapter;
 import com.xxjy.jyyh.adapter.PayResultBannerAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.databinding.ActivityRefuelingPayResultBinding;
 import com.xxjy.jyyh.entity.EventEntity;
@@ -33,6 +34,7 @@ import com.xxjy.jyyh.ui.order.OrderDetailsActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
+import com.xxjy.jyyh.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +99,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                 finish();
                 break;
             case R.id.go_home_view:
-                startActivity(new Intent(this, MainActivity.class));
+                UiUtils.jumpToHome(this, Constants.TYPE_HOME);
                 finish();
         }
     }
