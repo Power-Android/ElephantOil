@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -137,6 +138,12 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         mBinding.backIv.setOnClickListener(this::onViewClicked);
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
         mBinding.noResultLayout.setOnClickListener(this::onViewClicked);
+        mBinding.searchEt.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i == EditorInfo.IME_ACTION_SEARCH){
+                mBinding.searchTv.callOnClick();
+            }
+            return true;
+        });
     }
 
     @Override

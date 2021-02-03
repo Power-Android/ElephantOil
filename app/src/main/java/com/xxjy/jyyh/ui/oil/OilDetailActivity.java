@@ -17,6 +17,7 @@ import com.alipay.sdk.app.PayTask;
 import com.amap.api.location.CoordinateConverter;
 import com.amap.api.location.DPoint;
 import com.blankj.utilcode.util.BusUtils;
+import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
@@ -159,6 +160,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mOilNumAdapter = new OilNumAdapter(R.layout.adapter_oil_num_layout, mOilNumList);
         mBinding.recyclerView.setAdapter(mOilNumAdapter);
         mOilNumAdapter.setOnItemClickListener((adapter, view, position) -> {
+            UiUtils.canClickViewStateDelayed(view, 1000);
             List<OilEntity.StationsBean.OilPriceListBean> data = adapter.getData();
             for (int i = 0; i < data.size(); i++) {
                 data.get(i).setSelected(false);
@@ -356,7 +358,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             @Override
             public void onOilGunClick(BaseQuickAdapter adapter, View view, int position) {
                 if (isFar) {
-                    showChoiceOil(stationsBean.getGasName(), view);
+                    showChoiceOil(stationsBean.getGasName(), view, position, stationsBean, oilNoPosition, adapter);
                 } else {
                     List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
                     for (int i = 0; i < data.size(); i++) {
@@ -497,7 +499,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mLocationTipsDialog.show();
     }
 
-    private void showChoiceOil(String stationName, View view) {
+    private void showChoiceOil(String stationName, View view, int position, OilEntity.StationsBean stationsBean, int oilNoPosition, BaseQuickAdapter adapter) {
         mGasStationTipsDialog = new GasStationLocationTipsDialog(this, view, stationName);
         mGasStationTipsDialog.setOnClickListener(view1 -> {
             switch (view1.getId()) {
@@ -517,6 +519,19 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                     break;
                 case R.id.continue_view://继续支付
                     isFar = false;
+                    List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
+                    for (int i = 0; i < data.size(); i++) {
+                        data.get(i).setSelected(false);
+                    }
+                    data.get(position).setSelected(true);
+                    adapter.notifyDataSetChanged();
+                    if (mOilCheckedList.size() <= 1) {
+                        mOilCheckedList.add(1, data.get(position).getGunNo() + "号枪");
+                    } else {
+                        mOilCheckedList.set(1, data.get(position).getGunNo() + "号枪");
+                    }
+                    mOilCheckedAdapter.notifyDataSetChanged();
+                    showAmountDialog(stationsBean, oilNoPosition, position);
                     break;
             }
 

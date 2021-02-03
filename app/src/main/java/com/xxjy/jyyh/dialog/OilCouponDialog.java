@@ -18,6 +18,7 @@ import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.databinding.DialogOilCouponBinding;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,7 @@ public class OilCouponDialog extends BottomSheetDialog {
         mBinding.recyclerView.setAdapter(mOilCouponAdapter);
         mOilCouponAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             if (mOnItemClickedListener != null) {
+                UiUtils.canClickViewStateDelayed(view, 1000);
                 mOnItemClickedListener.onOilCouponClick(adapter, view, position, isPlat);
                 dismiss();
             }

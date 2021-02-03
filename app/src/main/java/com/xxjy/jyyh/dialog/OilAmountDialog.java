@@ -38,6 +38,7 @@ import com.xxjy.jyyh.entity.OilDefaultPriceEntity;
 import com.xxjy.jyyh.entity.OilDiscountEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderParams;
+import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class OilAmountDialog extends BottomSheetDialog {
     private List<CouponBean> platformCoupons = new ArrayList<>();
     private List<CouponBean> businessCoupons = new ArrayList<>();
     private CouponBean mPlatCouponBean, mBusinessCouponBean;
-    private String platId = "", businessAmount = "";//平台优惠券id， 商机优惠金额
+    private String platId = "", businessAmount = "";//平台优惠券id， 商机优惠金额 每次刷新价格是要清空
 
     public OilAmountDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
                            int oilNoPosition, int gunNoPosition) {
@@ -142,6 +143,7 @@ public class OilAmountDialog extends BottomSheetDialog {
             if (platformCoupons.size() > 0 && position == 1 ||
                     businessCoupons.size() > 0 && position == 2 &&
                             mOnItemClickedListener != null) {
+                UiUtils.canClickViewStateDelayed(view, 1000);
                 mOnItemClickedListener.onOilDiscountClick(adapter, view, position,
                         mBinding.amountEt.getText().toString(),
                         String.valueOf(mStationsBean.getOilPriceList()
@@ -230,18 +232,19 @@ public class OilAmountDialog extends BottomSheetDialog {
                 .add("priceUnit", mStationsBean.getOilPriceList().get(oilNoPosition).getPriceYfq())
                 .add("oilType", mStationsBean.getOilPriceList().get(oilNoPosition).getOilType() + "")
                 .add("phone", SPUtils.getInstance().getString(SPConstants.MOBILE))
-                .add("xxCouponId", mPlatCouponBean == null ? "" : mPlatCouponBean.getId())
+                .add("xxCouponId", platId)
                 .add("czbCouponId", mBusinessCouponBean == null ? "" : mBusinessCouponBean.getId())
-                .add("czbCouponAmount", mBusinessCouponBean == null ? "" : mBusinessCouponBean.getAmountReduce())
+                .add("czbCouponAmount", businessAmount)
                 .asResponse(String.class)
                 .to(RxLife.toMain(mActivity))
                 .subscribe(orderId -> {
                             if (mOnItemClickedListener != null) {
+                                UiUtils.canClickViewStateDelayed(view, 1000);
                                 mOnItemClickedListener.onCreateOrder(view, orderId, mMultiplePriceBean.getDuePrice());
                             }
                         },
                         onError -> {
-                            MyToast.showError(mContext, "订单创建失败,请重试~");
+                            MyToast.showError(mContext, onError.getMessage());
                             mBinding.loadingView.setVisibility(View.GONE);
                         },
                         () -> mBinding.loadingView.setVisibility(View.GONE));
@@ -392,6 +395,11 @@ public class OilAmountDialog extends BottomSheetDialog {
     }
 
     private void refreshData(){
+        //每次价格改变时，要清空这俩
+        platId = "";
+        businessAmount = "";
+        mBusinessCouponBean = null;
+
         getPlatformCoupon();
         getBusinessCoupon();
         //刷新价格互斥

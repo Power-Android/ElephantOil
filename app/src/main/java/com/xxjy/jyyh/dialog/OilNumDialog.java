@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.blankj.utilcode.util.ClickUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -15,6 +16,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilNumAdapter;
 import com.xxjy.jyyh.databinding.DialogOilNumLayoutBinding;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
@@ -75,6 +77,7 @@ public class OilNumDialog extends BottomSheetDialog {
         mBinding.recyclerView.setAdapter(mOilNumAdapter);
         mOilNumAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (mOnItemClickedListener != null) {
+                UiUtils.canClickViewStateDelayed(view, 1000);
                 mOnItemClickedListener.onOilNumClick(adapter, view, position);
             }
         });

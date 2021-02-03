@@ -22,6 +22,7 @@ import com.amap.api.location.CoordinateConverter;
 import com.amap.api.location.DPoint;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.BusUtils;
+import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NumberUtils;
@@ -130,6 +131,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private LocationTipsDialog mLocationTipsDialog;
 
     private BannerViewModel bannerViewModel;
+
+    private long mLastClickPubTS = 0;
 
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
@@ -313,6 +316,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.oilNavigationTv.setOnClickListener(this::onViewClicked);
         mBinding.locationIv.setOnClickListener(this::onViewClicked);
         mBinding.addressTv.setOnClickListener(this::onViewClicked);
+
+        ClickUtils.applySingleDebouncing(new View[]{mBinding.quickOilTv, mBinding.oilNumTv}, this::onViewClicked);
 
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
         mBinding.goIntegralView.setOnClickListener(this::onViewClicked);

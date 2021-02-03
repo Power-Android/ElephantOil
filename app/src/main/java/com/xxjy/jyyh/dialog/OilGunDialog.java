@@ -13,6 +13,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilGunAdapter;
 import com.xxjy.jyyh.databinding.DialogOilGunLayoutBinding;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,7 @@ public class OilGunDialog extends BottomSheetDialog {
         mBinding.recyclerView.setAdapter(mOilGunAdapter);
         mOilGunAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (mOnItemClickedListener != null) {
+                UiUtils.canClickViewStateDelayed(view, 1000);
                 mOnItemClickedListener.onOilGunClick(adapter, view, position);
             }
         });

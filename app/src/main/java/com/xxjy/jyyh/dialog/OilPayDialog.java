@@ -18,6 +18,7 @@ import com.xxjy.jyyh.databinding.DialogOilPayLayoutBinding;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderParams;
+import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
@@ -103,6 +104,7 @@ public class OilPayDialog extends BottomSheetDialog {
                     MyToast.showInfo(mContext, "请选择支付方式");
                     return;
                 }
+                UiUtils.canClickViewStateDelayed(view, 1000);
                 mOnItemClickedListener.onPayOrderClick(payType, orderId, payAmount);
             }
         });

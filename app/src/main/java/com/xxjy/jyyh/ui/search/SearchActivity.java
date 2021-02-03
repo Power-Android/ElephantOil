@@ -10,10 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.KeyboardUtils;
@@ -250,6 +252,12 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
             public void onPageScrollStateChanged(int state) {
 
             }
+        });
+        mBinding.searchEt.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i == EditorInfo.IME_ACTION_SEARCH){
+                mBinding.searchTv.callOnClick();
+            }
+            return false;
         });
     }
 

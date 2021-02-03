@@ -1,5 +1,7 @@
 package com.xxjy.jyyh.adapter;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -24,6 +26,7 @@ public class OilStationFlexAdapter extends BaseQuickAdapter<OilEntity.StationsBe
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, OilEntity.StationsBean.CzbLabelsBean item) {
-        helper.setText(R.id.item_title_tv, item.getTagDescription());
+        helper.setText(R.id.item_title_tv, !TextUtils.isEmpty(item.getTagDescription()) ?
+                item.getTagDescription() : item.getTagName());
     }
 }
