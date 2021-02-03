@@ -37,6 +37,7 @@
             android:layout_marginLeft="@dimen/dp_14"
             android:layout_marginTop="@dimen/dp_9"
             android:textColor="@color/color_99"
+            android:visibility="gone"
             android:textSize="@dimen/sp_11" />
 
         <TextView
@@ -48,17 +49,16 @@
             android:layout_marginRight="@dimen/dp_14"
             android:ellipsize="end"
             android:gravity="left"
+            android:layout_marginBottom="@dimen/dp_12"
             android:lineSpacingMultiplier="1.2"
-            android:maxLines="2"
             android:textColor="@color/color_34"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <View
             android:id="@+id/line_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"
             android:layout_marginLeft="@dimen/dp_14"
-            android:layout_marginTop="@dimen/dp_12"
             android:background="@color/color_EE" />
 
         <RelativeLayout

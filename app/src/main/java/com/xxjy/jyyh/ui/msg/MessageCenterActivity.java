@@ -48,7 +48,11 @@ public class MessageCenterActivity extends BindingActivity<ActivityMessageCenter
         messageListAdapter = new MessageListAdapter(R.layout.item_msg_artical_lists, data);
         mBinding.recyclerView.setAdapter(messageListAdapter);
         messageListAdapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
-        messageListAdapter.setOnItemClickListener((adapter, view, position) -> WebViewActivity.openRealUrlWebActivity(MessageCenterActivity.this,((ArticleBean)adapter.getItem(position)).getUrl()));
+        messageListAdapter.setOnItemClickListener((adapter, view, position) ->{
+            if(isSystemNotice){
+                WebViewActivity.openRealUrlWebActivity(MessageCenterActivity.this,((ArticleBean)adapter.getItem(position)).getUrl());
+            }
+        });
         mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {

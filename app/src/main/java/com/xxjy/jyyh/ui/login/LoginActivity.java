@@ -83,6 +83,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
                 JPushManager.postJPushdata();
                 SYConfigUtils.inviteCode = "";
                 if (loginState == Constants.LOGIN_FINISH) {
+                    OneKeyLoginManager.getInstance().finishAuthActivity();
                     finish();
                     return;
                 }
