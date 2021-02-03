@@ -33,7 +33,7 @@ public class TopLineAdapter extends BannerAdapter<OrderNewsEntity, TopLineAdapte
     @Override
     public void onBindView(TopLineHolder holder, OrderNewsEntity data, int position, int size) {
         holder.message.setTextColor(App.getContext().getResources().getColor(
-                mIsWhite ? R.color.white : R.color.color_34));
+                mIsWhite ? R.color.color_9EE : R.color.color_34));
         SpanUtils.with(holder.message)
                 .append("车主")
                 .append(data.getAccount())
@@ -42,7 +42,7 @@ public class TopLineAdapter extends BannerAdapter<OrderNewsEntity, TopLineAdapte
                 .append("元，节省")
                 .append(String.valueOf(data.getDiscount()))
                 .setForegroundColor(App.getContext().getResources().getColor(
-                        mIsWhite ? R.color.white : R.color.colorAccent))
+                        mIsWhite ? R.color.color_9EE : R.color.colorAccent))
                 .append("元")
                 .create();
     }

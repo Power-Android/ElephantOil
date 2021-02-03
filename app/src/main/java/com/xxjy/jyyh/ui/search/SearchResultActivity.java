@@ -139,7 +139,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
         mBinding.noResultLayout.setOnClickListener(this::onViewClicked);
         mBinding.searchEt.setOnEditorActionListener((textView, i, keyEvent) -> {
-            if (i == EditorInfo.IME_ACTION_SEARCH){
+            if (i == EditorInfo.IME_ACTION_SEARCH) {
                 mBinding.searchTv.callOnClick();
             }
             return true;
@@ -150,6 +150,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
     protected void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tab1:
+                mBinding.refreshView.setEnableRefresh(true);
+                mBinding.refreshView.setEnableLoadMore(true);
                 if (TextUtils.equals("1", mType)) {
                     if (selectDistanceDialog == null) {
                         selectDistanceDialog = new SelectDistanceDialog(
@@ -172,6 +174,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 }
                 break;
             case R.id.tab2:
+                mBinding.refreshView.setEnableRefresh(true);
+                mBinding.refreshView.setEnableLoadMore(true);
                 if (TextUtils.equals("1", mType)) {
                     getOilNums();
                 } else {
@@ -184,6 +188,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 }
                 break;
             case R.id.tab3:
+                mBinding.refreshView.setEnableRefresh(true);
+                mBinding.refreshView.setEnableLoadMore(true);
                 if (TextUtils.equals("1", mType)) {
                     if (firstDistanceOrPrice) {
                         firstDistanceOrPrice = false;
@@ -206,6 +212,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 }
             case R.id.search_tv:
                 mContent = mBinding.searchEt.getText().toString().trim();
+                mBinding.refreshView.setEnableRefresh(true);
+                mBinding.refreshView.setEnableLoadMore(true);
                 if (TextUtils.isEmpty(mContent)) {
                     showToastInfo("请输入搜索内容");
                     return;
@@ -272,8 +280,11 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                         mBinding.refreshView.finishLoadMoreWithNoMoreData();
                     }
                 }
-            } else if (pageNum == 1){
+            } else if (pageNum == 1) {
+                mBinding.refreshView.finishLoadMoreWithNoMoreData();
                 mBinding.noResultLayout.setVisibility(View.VISIBLE);
+            } else {
+                mBinding.refreshView.finishLoadMoreWithNoMoreData();
             }
 
         });
@@ -293,8 +304,11 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                         mBinding.refreshView.finishLoadMoreWithNoMoreData();
                     }
                 }
-            } else if (pageNum == 1){
+            } else if (pageNum == 1) {
+                mBinding.refreshView.finishLoadMoreWithNoMoreData();
                 mBinding.noResultLayout.setVisibility(View.VISIBLE);
+            } else {
+                mBinding.refreshView.finishLoadMoreWithNoMoreData();
             }
         });
     }
