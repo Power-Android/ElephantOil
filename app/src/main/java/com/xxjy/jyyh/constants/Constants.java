@@ -21,21 +21,21 @@ public class Constants {
     /**
      * release服务器
      */
-    public static final boolean URL_IS_DEBUG = true;   //测试用这个
-//    public static final boolean URL_IS_DEBUG = false;   //正式上线用这个
+//    public static final boolean URL_IS_DEBUG = true;   //测试用这个
+    public static final boolean URL_IS_DEBUG = false;   //正式上线用这个
 
     /**
      * 配置debug模式
      */
-    public static final boolean IS_DEBUG = true;  //测试用这个
-//    public static final boolean IS_DEBUG = false;   //正式上线用这个
+//    public static final boolean IS_DEBUG = true;  //测试用这个
+    public static final boolean IS_DEBUG = false;   //正式上线用这个
 
     //微信配置
     public static final String WX_APP_ID = "wx3704434db8357ec1";
     public static final String WX_APP_SCRIPT = "787d5dcefab80f6bca272800e9bad139";//ab730ab00dd73986593da2ce6514ffe8     6b4edd26960e017c050f940210a99723
 
     //微信支付回调地址
-    public static final String HTTP_CALL_BACK_URL = App.URL_IS_DEBUG ? "https://tcore.qqgyhk.com" : "https://core.qqgyhk.com";
+    public static final String HTTP_CALL_BACK_URL = Constants.URL_IS_DEBUG ? "https://tcore.qqgyhk.com" : "https://core.qqgyhk.com";
     //fragment
     public static final String CURRENT_FRAGMENT_KEY = "current_fragment";
     public static final int TYPE_HOME = 0;
@@ -45,8 +45,6 @@ public class Constants {
 
     //回退事件
     public static final long DOUBLE_INTERVAL_TIME = 2000;
-
-
 
     //登录处理
     public static int LOGIN_FINISH = 1;         //finish掉

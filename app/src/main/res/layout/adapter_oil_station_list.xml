@@ -50,7 +50,7 @@
                 android:id="@+id/item_name_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_12"
+                android:layout_marginStart="@dimen/dp_15"
                 android:layout_marginEnd="@dimen/common_margin"
                 android:layout_marginTop="@dimen/dp_15"
                 android:ellipsize="end"
@@ -106,7 +106,9 @@
                     android:focusableInTouchMode="true"
                     android:gravity="end"
                     android:singleLine="true"
+                    android:includeFontPadding="false"
                     android:text="0.00KM"
+                    android:layout_marginStart="@dimen/dp_m_5"
                     android:textColor="@color/color_55"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>

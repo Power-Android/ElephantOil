@@ -4,6 +4,7 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.xxjy.jyyh.app.App;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 
 import java.util.HashMap;
@@ -157,7 +158,7 @@ public class UMengOnEvent {
      * 友盟自定义事件统计: 计数统计
      */
     public static void onEvent(String eventID, Map<String, String> params) {
-        if (App.IS_DEBUG) return;
+        if (Constants.IS_DEBUG) return;
 
         if (params == null) {
             params = new HashMap<>();

@@ -9,7 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.amap.api.location.CoordinateConverter;
+import com.amap.api.location.DPoint;
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -75,6 +78,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     private boolean firstDistanceOrPrice = true;
     private int pageNum = 1;
     private int pageSize = 10;
+    private double mLng, mLat;
 
     private CustomerServiceDialog customerServiceDialog;
 
@@ -280,6 +284,20 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 
     @Override
     protected void dataObservable() {
+        mHomeViewModel.locationLiveData.observe(this, locationEntity -> {
+            UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
+            UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
+            DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
+            DPoint p2 = new DPoint(mLat, mLng);
+
+            float distance = CoordinateConverter.calculateLineDistance(p, p2);
+            if (distance > 100) {
+                mLng = locationEntity.getLng();
+                mLat = locationEntity.getLat();
+                LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
+            }
+        });
+
         mViewModel.orderNewsLiveData.observe(this, data -> {
             if (data != null && data.size() > 0) {
                 mBinding.msgBanner.setDatas(data);

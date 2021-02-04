@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.NumberUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -15,6 +16,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MineTabAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
+import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentMineBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
@@ -82,6 +84,16 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     @Override
     protected void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.topLayout);
+
+        boolean b = UserConstants.getGoneIntegral();
+        if (b){
+            mBinding.integralLayout.setVisibility(View.INVISIBLE);
+            mBinding.balanceLayout.setVisibility(View.INVISIBLE);
+        }else {
+            mBinding.integralLayout.setVisibility(View.VISIBLE);
+            mBinding.balanceLayout.setVisibility(View.VISIBLE);
+        }
+
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
         mineTabAdapter = new MineTabAdapter(R.layout.adapter_mine_tab, tabs);
         mBinding.recyclerView.setAdapter(mineTabAdapter);

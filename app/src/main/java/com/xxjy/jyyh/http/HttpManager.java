@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 
 import java.io.File;
@@ -121,7 +122,7 @@ public class HttpManager {
         finalParams.put("os", "1");//操作系统
         finalParams.put("cv", cv);//客户端版本号
         if (p != null) {
-            finalParams.put("method", p.getSimpleUrl().substring(App.URL_IS_DEBUG ?
+            finalParams.put("method", p.getSimpleUrl().substring(Constants.URL_IS_DEBUG ?
                     ApiService.DEBUG_URL.length() - 1 :
                     ApiService.RELEASE_URL.length() - 1));
             String sign = HeaderUtils.getSign(HeaderUtils.sortMapByKey(finalParams));
