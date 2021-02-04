@@ -11,6 +11,7 @@ import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.entity.WeChatLoginBean;
 import com.xxjy.jyyh.ui.MainRepository;
+import com.xxjy.jyyh.utils.JPushManager;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 
@@ -52,6 +53,7 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
         UserConstants.setIsLogin(true);
 
         UMengManager.onProfileSignIn("userID");
+//        JPushManager.postJPushdata();
 
         ActivityUtils.finishActivity(LoginActivity.class);
         ShanYanManager.finishAuthActivity();

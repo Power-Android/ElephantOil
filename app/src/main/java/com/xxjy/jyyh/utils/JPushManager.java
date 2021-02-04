@@ -3,6 +3,7 @@ package com.xxjy.jyyh.utils;
 import android.app.Application;
 import android.content.Context;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
@@ -60,6 +61,7 @@ public class JPushManager {
         String registrationId = JPushInterface.getRegistrationID(App.getContext());
         HashMap<String, String> map = new HashMap();
         map.put("registrationId", registrationId);
+        LogUtils.e(registrationId);
 
         RxHttp.postForm(ApiService.GET_JPUSH_ID_URL,map)
                 .asResponse(Response.class)

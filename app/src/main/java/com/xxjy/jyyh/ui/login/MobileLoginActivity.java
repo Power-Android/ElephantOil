@@ -313,7 +313,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                 UserConstants.setToken(token);
                 UserConstants.setIsLogin(true);
                 UMengManager.onProfileSignIn("userID");
-                JPushManager.postJPushdata();
+//                JPushManager.postJPushdata();
                 if (LoginActivity.loginState == Constants.LOGIN_FINISH) {
                     finish();
                     return;

@@ -80,7 +80,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
                 UserConstants.setToken(token);
                 UserConstants.setIsLogin(true);
                 UMengManager.onProfileSignIn("userID");
-                JPushManager.postJPushdata();
+//                JPushManager.postJPushdata();
                 SYConfigUtils.inviteCode = "";
                 if (loginState == Constants.LOGIN_FINISH) {
                     OneKeyLoginManager.getInstance().finishAuthActivity();

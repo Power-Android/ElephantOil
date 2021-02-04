@@ -62,7 +62,7 @@ public class App extends Application {
         QMUISwipeBackActivityManager.init(this);
 
         //TODO 上线前记得注释
-        CrashUtils.init(crashInfo -> ToastUtils.showLong("崩溃日志已存储至目录！"));
+//        CrashUtils.init(crashInfo -> ToastUtils.showLong("崩溃日志已存储至目录！"));
 
         //网络请求Rxhttp
         HttpManager.init(this);

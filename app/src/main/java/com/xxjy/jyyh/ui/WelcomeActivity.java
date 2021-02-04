@@ -278,7 +278,6 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
 
     @Override
     public void onGranted() {
-        LogUtils.e("1111111");
         next();
     }
 
