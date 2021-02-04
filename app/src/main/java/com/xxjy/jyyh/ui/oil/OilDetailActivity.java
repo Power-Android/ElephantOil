@@ -1,26 +1,19 @@
 package com.xxjy.jyyh.ui.oil;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.View;
+
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.alipay.sdk.app.PayTask;
 import com.amap.api.location.CoordinateConverter;
 import com.amap.api.location.DPoint;
 import com.blankj.utilcode.util.BusUtils;
-import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
@@ -47,13 +40,11 @@ import com.xxjy.jyyh.dialog.OilGunDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.entity.CouponBean;
-import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
 import com.xxjy.jyyh.ui.pay.PayQueryActivity;
-import com.xxjy.jyyh.ui.pay.PayResultActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.utils.UiUtils;
@@ -62,8 +53,6 @@ import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.blankj.utilcode.util.ThreadUtils.runOnUiThread;
 
 public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding, OilViewModel> {
     private List<OilEntity.StationsBean.CzbLabelsBean> mTagList = new ArrayList<>();

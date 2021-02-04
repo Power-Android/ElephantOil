@@ -1,21 +1,14 @@
 package com.xxjy.jyyh.ui.search;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
@@ -27,9 +20,7 @@ import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivitySearchResultBinding;
 import com.xxjy.jyyh.dialog.SelectDistanceDialog;
 import com.xxjy.jyyh.dialog.SelectOilNumDialog;
-import com.xxjy.jyyh.entity.DistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
-import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.room.DBInstance;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;

@@ -5,9 +5,7 @@ import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

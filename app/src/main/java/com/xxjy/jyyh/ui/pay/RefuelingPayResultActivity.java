@@ -1,36 +1,24 @@
 package com.xxjy.jyyh.ui.pay;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.view.View;
 
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.BusUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
-import com.xxjy.jyyh.adapter.IntegralExchangeAdapter;
 import com.xxjy.jyyh.adapter.PayResultBannerAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
-import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.databinding.ActivityRefuelingPayResultBinding;
-import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.PayResultEntity;
-import com.xxjy.jyyh.entity.ProductBean;
-import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
-import com.xxjy.jyyh.ui.order.OrderDetailsActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.LoginHelper;

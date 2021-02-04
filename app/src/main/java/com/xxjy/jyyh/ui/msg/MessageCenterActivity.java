@@ -8,9 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
-import com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout;
 import com.qmuiteam.qmui.widget.tab.QMUIBasicTabSegment;
 import com.qmuiteam.qmui.widget.tab.QMUITabBuilder;
 import com.qmuiteam.qmui.widget.tab.QMUITabIndicator;
@@ -22,7 +20,6 @@ import com.xxjy.jyyh.adapter.MessageListAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityMessageCenterBinding;
 import com.xxjy.jyyh.entity.ArticleBean;
-import com.xxjy.jyyh.entity.ArticleListBean;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 
 import java.util.ArrayList;

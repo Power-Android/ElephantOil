@@ -6,7 +6,6 @@ import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.entity.BannerBean;
-import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.UserBean;
 
 import java.util.List;

@@ -1,6 +1,5 @@
 package com.xxjy.jyyh.ui.integral;
 
-import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseRepository;

@@ -4,25 +4,17 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.location.Location;
-import android.os.Build;
-import android.provider.ContactsContract;
 import android.view.Gravity;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.tab.QMUIBasicTabSegment;
 import com.qmuiteam.qmui.widget.tab.QMUITabBuilder;
@@ -31,9 +23,7 @@ import com.qmuiteam.qmui.widget.tab.QMUITabSegment;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
-import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.IntegralExchangeAdapter;
-import com.xxjy.jyyh.adapter.OilStationListAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
@@ -58,7 +48,6 @@ import com.youth.banner.indicator.RectangleIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 /**
  * @author power

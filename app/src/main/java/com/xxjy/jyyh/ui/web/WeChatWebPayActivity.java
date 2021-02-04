@@ -1,7 +1,5 @@
 package com.xxjy.jyyh.ui.web;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

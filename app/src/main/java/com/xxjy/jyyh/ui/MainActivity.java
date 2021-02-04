@@ -1,40 +1,26 @@
 package com.xxjy.jyyh.ui;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.blankj.utilcode.util.BusUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.qmuiteam.qmui.util.QMUIDeviceHelper;
-import com.qmuiteam.qmui.util.QMUIDisplayHelper;
-import com.rxjava.rxlife.RxLife;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
-import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
-import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMainBinding;
-import com.xxjy.jyyh.dialog.CheckVersionDialog;
 import com.xxjy.jyyh.dialog.VersionUpDialog;
 import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.ui.broadcast.HomeAdDialog;
@@ -49,9 +35,6 @@ import com.xxjy.jyyh.utils.Util;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 
 import org.jetbrains.annotations.NotNull;
-
-import io.reactivex.rxjava3.functions.Consumer;
-import rxhttp.RxHttp;
 
 public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewModel> {
     private int mLastFgIndex = -1;
@@ -81,7 +64,14 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     @Override
     protected void initView() {
         BusUtils.register(this);
+
+        mHomeFragment = null;
+        mOilFragment = null;
+        mIntergralFragment = null;
+        mMineFragment = null;
+
         disPathIntentMessage(getIntent());
+        //积分权益隐藏判断
         mViewModel.getOsOverAll().observe(this, b -> {
             if (!b) {
                 UserConstants.setGoneIntegral(true);
@@ -89,6 +79,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                 mBinding.navView.getMenu().removeItem(R.id.navigation_integral);
             }
         });
+        //新老用户展示tab判断
         mViewModel.getIsNewUser().observe(this, aBoolean -> {
             if (aBoolean){
                 isNewUser = 1;
@@ -99,11 +90,11 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         });
         initNavigationView();
         new Handler().postDelayed(() -> {
-            //未登录的时候尝试检查闪验是否支持
             if (!UserConstants.getIsLogin()) {
                 ShanYanManager.checkShanYanSupportState();
             }
         }, 2000);
+
         int state = getIntent().getIntExtra("jumpState", -1);
         showDiffFragment(state);
 

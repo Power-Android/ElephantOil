@@ -6,8 +6,6 @@ import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.entity.ArticleListBean;
 
-import java.util.List;
-
 import rxhttp.RxHttp;
 
 public class MessageCenterRepository extends BaseRepository {

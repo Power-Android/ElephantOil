@@ -38,11 +38,11 @@ import com.xxjy.jyyh.entity.SharedInfoBean;
 import com.xxjy.jyyh.jscalljava.JsOperation;
 import com.xxjy.jyyh.jscalljava.jsbean.ToolBarStateBean;
 import com.xxjy.jyyh.jscalljava.jscallback.OnJsCallListener;
-import com.xxjy.jyyh.utils.StringUtils;
 import com.xxjy.jyyh.utils.GsonTool;
 import com.xxjy.jyyh.utils.JPushManager;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.StatusBarUtil;
+import com.xxjy.jyyh.utils.StringUtils;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.umengmanager.SharedInfoManager;
 

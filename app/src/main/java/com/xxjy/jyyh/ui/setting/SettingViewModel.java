@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
-import com.xxjy.jyyh.entity.CallCenterBean;
-import com.xxjy.jyyh.ui.MainRepository;
 
 public class SettingViewModel extends BaseViewModel<SettingRepository> {
 

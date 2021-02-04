@@ -15,15 +15,12 @@ import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilDistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
-import com.xxjy.jyyh.entity.TaskBean;
-import com.xxjy.jyyh.http.Response;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
 
 /**

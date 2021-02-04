@@ -1,12 +1,8 @@
 package com.xxjy.jyyh.ui.setting;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
 import android.view.View;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;

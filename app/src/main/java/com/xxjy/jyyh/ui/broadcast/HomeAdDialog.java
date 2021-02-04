@@ -10,9 +10,7 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.databinding.DialogHomeAdLayoutBinding;
-import com.xxjy.jyyh.databinding.DialogReceiveRewardLayoutBinding;
 import com.xxjy.jyyh.entity.BannerBean;
-import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 

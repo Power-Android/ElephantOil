@@ -1,6 +1,5 @@
 package com.xxjy.jyyh.ui.search;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseRepository;
@@ -11,7 +10,6 @@ import com.xxjy.jyyh.entity.RecomdEntity;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
 
 /**

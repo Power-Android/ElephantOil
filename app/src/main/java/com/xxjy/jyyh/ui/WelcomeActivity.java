@@ -1,16 +1,10 @@
 package com.xxjy.jyyh.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationUtils;
@@ -18,21 +12,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.xxjy.jyyh.R;
-import com.xxjy.jyyh.app.App;
-import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityWelcomeBinding;
-import com.xxjy.jyyh.dialog.LocationTipsDialog;
 import com.xxjy.jyyh.dialog.PrivacyAgreementDialog;
 import com.xxjy.jyyh.ui.integral.BannerViewModel;
-import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.locationmanger.GPSUtil;

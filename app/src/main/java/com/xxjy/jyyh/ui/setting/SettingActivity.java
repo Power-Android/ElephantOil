@@ -9,7 +9,6 @@ import com.blankj.utilcode.util.CleanUtils;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
-import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivitySettingBinding;
 import com.xxjy.jyyh.utils.DataCleanManager;
 import com.xxjy.jyyh.utils.LoginHelper;

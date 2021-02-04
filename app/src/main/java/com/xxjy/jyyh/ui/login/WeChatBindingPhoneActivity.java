@@ -5,7 +5,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.TextWatcherAdapter;
@@ -13,9 +12,6 @@ import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityWeChatBindingPhoneBinding;
 import com.xxjy.jyyh.utils.UiUtils;
-import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
-
-import kotlin.jvm.internal.PropertyReference0Impl;
 
 public class WeChatBindingPhoneActivity extends BindingActivity<ActivityWeChatBindingPhoneBinding, LoginViewModel> {
 

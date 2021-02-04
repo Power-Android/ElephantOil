@@ -2,13 +2,11 @@ package com.xxjy.jyyh.ui.order;
 
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -27,16 +25,12 @@ import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.databinding.ActivityOrderDetailsBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
-import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.SelectPayDialog;
-import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.RefuelOrderBean;
-import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
 import com.xxjy.jyyh.ui.pay.PayQueryActivity;
-import com.xxjy.jyyh.ui.pay.PayResultActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.utils.UiUtils;
@@ -45,8 +39,6 @@ import com.xxjy.jyyh.utils.WXSdkManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.blankj.utilcode.util.ThreadUtils.runOnUiThread;
 
 public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBinding, OrderDetailsViewModel> {
 

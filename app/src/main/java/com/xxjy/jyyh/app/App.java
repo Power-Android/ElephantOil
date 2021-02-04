@@ -4,13 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.blankj.utilcode.util.CrashUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
-import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.http.HttpManager;
 import com.xxjy.jyyh.utils.AppManager;

@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.CouponBean;
-import com.xxjy.jyyh.entity.UserBean;
 import com.xxjy.jyyh.http.Response;
 
 import java.util.List;

@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 
 import com.xxjy.jyyh.base.BaseViewModel;
-import com.xxjy.jyyh.ui.MainRepository;
 
 /**
  * @author power

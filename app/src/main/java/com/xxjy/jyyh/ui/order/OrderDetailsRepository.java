@@ -7,7 +7,6 @@ import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.entity.RefuelOrderBean;
 import com.xxjy.jyyh.http.Response;
 
-
 import rxhttp.RxHttp;
 
 public class OrderDetailsRepository extends BaseRepository {

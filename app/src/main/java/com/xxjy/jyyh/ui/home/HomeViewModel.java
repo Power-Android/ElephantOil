@@ -3,7 +3,6 @@ package com.xxjy.jyyh.ui.home;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
@@ -13,8 +12,6 @@ import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilDistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
-import com.xxjy.jyyh.entity.TaskBean;
-import com.xxjy.jyyh.http.Response;
 
 import java.util.List;
 

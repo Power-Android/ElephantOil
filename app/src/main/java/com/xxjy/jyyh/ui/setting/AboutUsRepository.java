@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.entity.CallCenterBean;
-import com.xxjy.jyyh.entity.UserBean;
 import com.xxjy.jyyh.entity.VersionEntity;
 
 import rxhttp.RxHttp;

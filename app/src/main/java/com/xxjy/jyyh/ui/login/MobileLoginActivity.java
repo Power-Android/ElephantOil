@@ -1,6 +1,5 @@
 package com.xxjy.jyyh.ui.login;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextPaint;
@@ -9,9 +8,7 @@ import android.text.style.ClickableSpan;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Observer;
 
-import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SpanUtils;
@@ -25,15 +22,11 @@ import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMobileLoginBinding;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
-import com.xxjy.jyyh.utils.JPushManager;
-import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.UiUtils;
-import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
 import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 import com.xxjy.jyyh.wight.MyCountDownTime;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import cn.jpush.android.api.JPushInterface;

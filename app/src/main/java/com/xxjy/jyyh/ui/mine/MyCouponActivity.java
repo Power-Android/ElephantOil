@@ -3,26 +3,18 @@ package com.xxjy.jyyh.ui.mine;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIKeyboardHelper;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
-import com.qmuiteam.qmui.widget.tab.QMUITabBuilder;
-import com.qmuiteam.qmui.widget.tab.QMUITabIndicator;
-import com.qmuiteam.qmui.widget.tab.QMUITabSegment;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MyCouponAdapter;
 import com.xxjy.jyyh.adapter.MyViewPagerAdapter;

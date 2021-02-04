@@ -3,20 +3,13 @@ package com.xxjy.jyyh.ui.mine;
 import android.content.Intent;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.NumberUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
-import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MineTabAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
-import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentMineBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
@@ -32,8 +25,6 @@ import com.xxjy.jyyh.utils.LoginHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import kotlin.jvm.internal.PropertyReference0Impl;
 
 public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewModel> {
     public static MineFragment getInstance() {

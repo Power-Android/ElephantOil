@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 
-import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
 
 /**

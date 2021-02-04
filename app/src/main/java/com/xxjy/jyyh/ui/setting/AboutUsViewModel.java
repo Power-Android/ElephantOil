@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.CallCenterBean;
-import com.xxjy.jyyh.entity.UserBean;
 import com.xxjy.jyyh.entity.VersionEntity;
 
 public class AboutUsViewModel extends BaseViewModel<AboutUsRepository> {

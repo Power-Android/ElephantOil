@@ -3,23 +3,17 @@ package com.xxjy.jyyh.ui.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import androidx.lifecycle.Observer;
-
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
 import com.chuanglan.shanyan_sdk.listener.OneKeyLoginListener;
 import com.chuanglan.shanyan_sdk.listener.OpenLoginAuthListener;
 import com.chuanglan.shanyan_sdk.listener.ShanYanCustomInterface;
-import com.chuanglan.shanyan_sdk.tool.ShanYanUIConfig;
 import com.google.gson.Gson;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
@@ -29,7 +23,6 @@ import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityLoginBinding;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.utils.GsonTool;
-import com.xxjy.jyyh.utils.JPushManager;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;

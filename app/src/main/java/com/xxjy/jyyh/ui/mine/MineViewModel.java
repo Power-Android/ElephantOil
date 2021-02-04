@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.BannerBean;
-import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.UserBean;
 
 import java.util.List;

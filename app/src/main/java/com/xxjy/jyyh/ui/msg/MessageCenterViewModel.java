@@ -7,10 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.ArticleListBean;
-import com.xxjy.jyyh.entity.CouponBean;
-import com.xxjy.jyyh.ui.oil.OilRepository;
-
-import java.util.List;
 
 public class MessageCenterViewModel extends BaseViewModel<MessageCenterRepository> {
 
