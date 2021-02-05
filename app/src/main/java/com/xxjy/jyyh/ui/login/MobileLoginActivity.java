@@ -235,6 +235,14 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mCountDownTime.stopCountDown();
+        mCountDownTime.cancel();
+        mCountDownTime = null;
+    }
+
     private void getAutoCode() {
         mCountDownTime.start();
         mBinding.loginGetCode.setEnabled(false);

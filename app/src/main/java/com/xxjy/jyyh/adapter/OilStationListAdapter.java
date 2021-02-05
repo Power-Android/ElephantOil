@@ -73,7 +73,7 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
                 .setText(R.id.item_navigation_tv, item.getDistance() + "KM")
                 .setText(R.id.item_actual_tv, item.getPriceYfq())
                 .setText(R.id.oil_num_view, item.getOilName())
-                .setText(R.id.item_original_tv, "¥" + item.getPriceOfficial())
+                .setText(R.id.item_original_tv, "¥" + item.getPriceGun())
                 .addOnClickListener(R.id.navigation_ll);
 
 

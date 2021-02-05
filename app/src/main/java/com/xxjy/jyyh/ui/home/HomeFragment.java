@@ -406,7 +406,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
             if (mStationsBean.getOilPriceList() != null && mStationsBean.getOilPriceList().size() > 0) {
                 mBinding.oilCurrentPriceTv.setText(mStationsBean.getOilPriceList().get(0).getPriceYfq());
-                mBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getOilPriceList().get(0).getPriceOfficial());
+                mBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getOilPriceList().get(0).getPriceGun());
                 mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(0).getOilName());
             }
 
