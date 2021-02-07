@@ -11,12 +11,21 @@ import java.util.List;
 public class PayResultEntity {
 
     private ActiveParamsBean activeParams;
+    private GasParamsBean gasParams;
     private String discountAmount;
     private String integral;
     private String integralBalance;
     private String msg;
     private String payAmount;
     private Integer result;
+
+    public GasParamsBean getGasParams() {
+        return gasParams;
+    }
+
+    public void setGasParams(GasParamsBean gasParams) {
+        this.gasParams = gasParams;
+    }
 
     public ActiveParamsBean getActiveParams() {
         return activeParams;
@@ -113,6 +122,90 @@ public class PayResultEntity {
             public void setTitle(String title) {
                 this.title = title;
             }
+        }
+    }
+    public static class GasParamsBean {
+
+//        {
+//            "amount":100,
+//                "gunNo":2,
+//                "orderId":"02210207202202GZPQHp",
+//                "phone":"15201061129",
+//                "gasId":"JT000011456",
+//                "oilNo":"92",
+//                "authId":102021106
+//        }
+      private String amount;
+      private String gunNo;
+      private String orderId;
+      private String phone;
+      private String gasId;
+      private String gasName;
+      private String oilNo;
+      private String authId;
+
+        public String getAmount() {
+            return amount;
+        }
+
+        public void setAmount(String amount) {
+            this.amount = amount;
+        }
+
+        public String getGunNo() {
+            return gunNo;
+        }
+
+        public void setGunNo(String gunNo) {
+            this.gunNo = gunNo;
+        }
+
+        public String getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getGasId() {
+            return gasId;
+        }
+
+        public void setGasId(String gasId) {
+            this.gasId = gasId;
+        }
+
+        public String getGasName() {
+            return gasName;
+        }
+
+        public void setGasName(String gasName) {
+            this.gasName = gasName;
+        }
+
+        public String getOilNo() {
+            return oilNo;
+        }
+
+        public void setOilNo(String oilNo) {
+            this.oilNo = oilNo;
+        }
+
+        public String getAuthId() {
+            return authId;
+        }
+
+        public void setAuthId(String authId) {
+            this.authId = authId;
         }
     }
 }
