@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.SystemClock;
 import android.view.View;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -42,6 +43,11 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
     private HomeExchangeAdapter mExchangeAdapter;
     private HomeViewModel mHomeViewModel;
     private MyCountDownTime mCountDownTime;
+    // 线程标志
+    private boolean isStop = false;
+    private boolean isFirst = true;
+
+    private Thread changeBgThread;
 
     @Override
     protected void initView() {
@@ -70,7 +76,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     WebViewActivity.openWebActivity(this,
                             ((HomeProductEntity.FirmProductsVoBean) (adapter.getData().get(position))).getLink()));
         });
-        mBinding.timeView.setText(TimeUtils.date2String(TimeUtils.getNowDate()));
+        mBinding.timeView.setText(TimeUtils.date2String(TimeUtils.getNowDate(), "MM月dd日 HH:mm:ss"));
 //        mBinding.tryAgainView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 //        mBinding.tryAgainView.getPaint().setAntiAlias(true);
 
@@ -79,17 +85,43 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
             @Override
             public void onTick(long millisUntilFinished) {
                 mBinding.waitTimeView.setText("支付结果查询中…\n" + (millisUntilFinished / 1000) + "s");
-                mBinding.timeView.setText(TimeUtils.date2String(TimeUtils.getNowDate(),"MM月dd日 HH:mm:ss"));
+                mBinding.timeView.setText(TimeUtils.date2String(TimeUtils.getNowDate(), "MM月dd日 HH:mm:ss"));
             }
 
             @Override
             public void onFinish() {
                 mBinding.waitTimeView.setVisibility(View.GONE);
-                mBinding.timeView.setText(TimeUtils.date2String(TimeUtils.getNowDate(),"MM月dd日 HH:mm:ss"));
+                mBinding.timeView.setText(TimeUtils.date2String(TimeUtils.getNowDate(), "MM月dd日 HH:mm:ss"));
                 mViewModel.getPayResult(mOrderNo, mOrderPayNo);
             }
         });
         mCountDownTime.start();
+
+        // 开启新线程，1秒一次更新背景图
+        changeBgThread= new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!isStop) {
+                    SystemClock.sleep(500);
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            if(mBinding!=null){
+                                if (isFirst) {
+                                    mBinding.topBgLayout.setBackgroundResource(R.drawable.pay_top_bg);
+                                } else {
+                                    mBinding.topBgLayout.setBackgroundResource(R.drawable.pay_top_bg_2);
+                                }
+                                isFirst = !isFirst;
+                            }
+
+                        }
+                    });
+                }
+            }
+        });
+        changeBgThread.start();
     }
 
     @Override
@@ -127,16 +159,17 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     mBinding.integralLl.setVisibility(View.VISIBLE);
                     mBinding.priceLayout2.setVisibility(View.VISIBLE);
                     mBinding.queryStatusView.setVisibility(View.GONE);
+                    mBinding.btLayout.setVisibility(View.VISIBLE);
                     mBinding.tvTitle.setText("支付成功");
                     mBinding.decView.setText("支付成功，请和加油员确认您的油机金额");
                     mBinding.fallMoney.setText("¥" + resultEntity.getDiscountAmount());
-                    if(resultEntity.getGasParams()!=null){
-                        mBinding.numView.setText(resultEntity.getGasParams().getGunNo()+"号枪"+" | "+resultEntity.getGasParams().getOilNo());
+                    if (resultEntity.getGasParams() != null) {
+                        mBinding.numView.setText(resultEntity.getGasParams().getGunNo() + "号枪" + " | " + resultEntity.getGasParams().getOilNo());
                         mBinding.stationNameView.setText(resultEntity.getGasParams().getGasName());
                     }
                     mBinding.tagView.setText("本单预计获得");
-                    mBinding.payAmountView.setText("¥" +resultEntity.getPayAmount()+"");
-                    mBinding.payAmountView2.setText("¥" +resultEntity.getPayAmount()+"");
+                    mBinding.payAmountView.setText("¥" + resultEntity.getPayAmount() + "");
+                    mBinding.payAmountView2.setText("¥" + resultEntity.getPayAmount() + "");
                     mBinding.integralTv.setText(resultEntity.getIntegral() + "");
                     mBinding.integralAll.setText(resultEntity.getIntegralBalance() + "");
                     payResultBannerAdapter.setNewData(resultEntity.getActiveParams().getBanner());
@@ -148,6 +181,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     mBinding.integralLl.setVisibility(View.GONE);
                     mBinding.priceLayout2.setVisibility(View.GONE);
                     mBinding.queryStatusView.setVisibility(View.VISIBLE);
+                    mBinding.btLayout.setVisibility(View.VISIBLE);
                     mBinding.queryStatusView.setText(resultEntity.getMsg());
                     mBinding.fallMoney.setText("--");
 //                    mBinding.decView.setText("请和加油员确认您的油机金额");
@@ -168,10 +202,13 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
     @Override
     protected void onDestroy() {
-        if(mCountDownTime!=null){
+        if (mCountDownTime != null) {
             mCountDownTime.cancel();
-            mCountDownTime=null;
+            mCountDownTime = null;
         }
+        // 关闭定时器
+        isStop = true;
+
         super.onDestroy();
 
     }
