@@ -69,7 +69,7 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
             case 2://商家优惠券
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_elephant_coupon)
                         .setGone(R.id.item_balance_tv, false)
-                        .setText(R.id.item_title_tv, "商家优惠券");
+                        .setText(R.id.item_title_tv, "商家优惠券（与直降优惠不同享）");
                 if (item.getBusinessDesc().equals("请选择优惠券")){
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));

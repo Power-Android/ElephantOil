@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_300"
+        android:layout_height="@dimen/dp_400"
+        android:layout_centerInParent="true">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_130"
+            android:background="@drawable/oil_hot_bg" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_marginBottom="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_75">
+                <ImageView
+                    android:id="@+id/hot_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dp_5"
+                    android:paddingBottom="@dimen/common_margin"
+                    android:paddingStart="@dimen/common_margin"
+                    android:paddingEnd="@dimen/common_margin"/>
+        </ScrollView>
+        <ImageView
+            android:id="@+id/close_iv"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:src="@drawable/ic_dialog_close"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</RelativeLayout>

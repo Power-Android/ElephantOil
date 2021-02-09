@@ -17,14 +17,12 @@ import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.databinding.DialogOilPayLayoutBinding;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
-import com.xxjy.jyyh.entity.PayOrderParams;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
 
 /**
@@ -37,6 +35,7 @@ public class OilPayDialog extends BottomSheetDialog {
     private Context mContext;
     private BaseActivity mActivity;
     private OilEntity.StationsBean stationsBean;
+    private List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBean;
     private int oilNoPosition, gunNoPosition;
     private String orderId, payAmount;
     private BottomSheetBehavior mBehavior;
@@ -45,11 +44,12 @@ public class OilPayDialog extends BottomSheetDialog {
     private OilPayTypeAdapter mOilPayTypeAdapter;
 
     public OilPayDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
-                        int oilNoPosition, int gunNoPosition, String orderId, String payAmount) {
+                        List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBean, int oilNoPosition, int gunNoPosition, String orderId, String payAmount) {
         super(context, R.style.bottom_sheet_dialog);
         this.mContext = context;
         this.mActivity = activity;
         this.stationsBean = stationsBean;
+        this.oilPriceListBean = oilPriceListBean;
         this.oilNoPosition = oilNoPosition;
         this.gunNoPosition = gunNoPosition;
         this.orderId = orderId;
@@ -74,7 +74,7 @@ public class OilPayDialog extends BottomSheetDialog {
     private void initData() {
         mBinding.payAmountTv.setText(payAmount);
         mBinding.payOilInfoTv.setText(stationsBean.getGasName() + "-" +
-                stationsBean.getOilPriceList().get(oilNoPosition).getOilName());
+                oilPriceListBean.get(oilNoPosition).getOilName());
 
         mBinding.payTypeRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mOilPayTypeAdapter = new OilPayTypeAdapter(R.layout.adapter_oil_pay, mPayTypeList);

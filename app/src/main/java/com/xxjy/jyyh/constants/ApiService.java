@@ -44,8 +44,6 @@ public class ApiService {
     public static final String SIGN_OIL_STATIONS = "api/gasPublic/getSignOilStations";
     //加油首页banner
     public static final String OIL_STATIONS_BANNERS = "api/gasPublic/getBanners";
-    //获取某个位置的banner
-    public static final String BANNER_OF_POSITION = "api/product/v1/getBannerOfPostion";
     //获取商品分类列表
     public static final String PRODUCT_CATEGORYS = "api/product/v1/queryProductCategorys";
     //根据商品分类获取商品列表

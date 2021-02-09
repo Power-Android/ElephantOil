@@ -38,6 +38,7 @@ public class BannerPositionConstants {
     public static final int APP_START_AD = 17;
     public static final int APP_LEAD_AD = 18;
     public static final int APP_OPEN_AD = 19;
+    public static final int OIL_HOT_TIP = 20;
 
 
 }

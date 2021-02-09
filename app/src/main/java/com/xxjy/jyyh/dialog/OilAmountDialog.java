@@ -63,6 +63,7 @@ public class OilAmountDialog extends BottomSheetDialog {
     private Context mContext;
     private BaseActivity mActivity;
     private OilEntity.StationsBean mStationsBean;
+    private List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBeans;
     private int oilNoPosition, gunNoPosition;
     private BottomSheetBehavior mBehavior;
     private DialogOilAmountLayoutBinding mBinding;
@@ -75,13 +76,16 @@ public class OilAmountDialog extends BottomSheetDialog {
     private List<CouponBean> businessCoupons = new ArrayList<>();
     private CouponBean mPlatCouponBean, mBusinessCouponBean;
     private String platId = "", businessAmount = "";//平台优惠券id， 商机优惠金额 每次刷新价格是要清空
+    private OilHotDialog mOilHotDialog;
 
     public OilAmountDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
+                           List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBeans,
                            int oilNoPosition, int gunNoPosition) {
         super(context, R.style.bottom_sheet_dialog);
         this.mContext = context;
         this.mActivity = activity;
         this.mStationsBean = stationsBean;
+        this.oilPriceListBeans = oilPriceListBeans;
         this.oilNoPosition = oilNoPosition;
         this.gunNoPosition = gunNoPosition;
 
@@ -146,7 +150,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                 UiUtils.canClickViewStateDelayed(view, 1000);
                 mOnItemClickedListener.onOilDiscountClick(adapter, view, position,
                         mBinding.amountEt.getText().toString(),
-                        String.valueOf(mStationsBean.getOilPriceList()
+                        String.valueOf(oilPriceListBeans
                                 .get(oilNoPosition).getOilNo()));
             }
         });
@@ -212,6 +216,15 @@ public class OilAmountDialog extends BottomSheetDialog {
         mBinding.createOrderTv.setOnClickListener(view -> {
             createOrder(view);
         });
+        mBinding.hotIv.setOnClickListener(view -> {
+            if (mOilHotDialog == null){
+                mOilHotDialog = new OilHotDialog(mContext, mActivity);
+                mOilHotDialog.show(view);
+            }else {
+                mOilHotDialog.show(view);
+            }
+
+        });
     }
 
     private void createOrder(View view) {
@@ -221,16 +234,15 @@ public class OilAmountDialog extends BottomSheetDialog {
                 .add("payAmount", mMultiplePriceBean.getDuePrice())
                 .add("usedBalance", mMultiplePriceBean.getBalancePrice())
                 .add("gasId", mStationsBean.getGasId())
-                .add("gunNo", String.valueOf(mStationsBean.getOilPriceList().get(oilNoPosition).
+                .add("gunNo", String.valueOf(oilPriceListBeans.get(oilNoPosition).
                         getGunNos().get(gunNoPosition).getGunNo()))
-                .add("oilNo", String.valueOf(mStationsBean.getOilPriceList()
-                        .get(oilNoPosition).getOilNo()))
-                .add("oilName", mStationsBean.getOilPriceList()
+                .add("oilNo", String.valueOf(oilPriceListBeans.get(oilNoPosition).getOilNo()))
+                .add("oilName", oilPriceListBeans
                         .get(oilNoPosition).getOilName())
                 .add("gasName", mStationsBean.getGasName())
-                .add("priceGun", mStationsBean.getOilPriceList().get(oilNoPosition).getPriceGun())
-                .add("priceUnit", mStationsBean.getOilPriceList().get(oilNoPosition).getPriceYfq())
-                .add("oilType", mStationsBean.getOilPriceList().get(oilNoPosition).getOilType() + "")
+                .add("priceGun", oilPriceListBeans.get(oilNoPosition).getPriceGun())
+                .add("priceUnit", oilPriceListBeans.get(oilNoPosition).getPriceYfq())
+                .add("oilType", oilPriceListBeans.get(oilNoPosition).getOilType() + "")
                 .add("phone", SPUtils.getInstance().getString(SPConstants.MOBILE))
                 .add("xxCouponId", platId)
                 .add("czbCouponId", mBusinessCouponBean == null ? "" : mBusinessCouponBean.getId())
@@ -294,7 +306,7 @@ public class OilAmountDialog extends BottomSheetDialog {
     private void getDefaultPrice() {
         RxHttp.postForm(ApiService.OIL_PRICE_DEFAULT)
                 .add(Constants.GAS_STATION_ID, mStationsBean.getGasId())
-                .add(Constants.OIL_NUMBER_ID, String.valueOf(mStationsBean.getOilPriceList()
+                .add(Constants.OIL_NUMBER_ID, String.valueOf(oilPriceListBeans
                         .get(oilNoPosition).getOilNo()))
                 .asResponse(OilDefaultPriceEntity.class)
                 .to(RxLife.toMain(mActivity))
@@ -330,7 +342,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                 .add("amount", mBinding.amountEt.getText())
                 .add(Constants.GAS_STATION_ID, mStationsBean.getGasId())
                 .add(Constants.OIL_NUMBER_ID, String.valueOf(
-                        mStationsBean.getOilPriceList().get(oilNoPosition).getOilNo()))
+                        oilPriceListBeans.get(oilNoPosition).getOilNo()))
                 .add("canUseBill", mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0")
                 .add("czbCouponAmount", TextUtils.isEmpty(businessAmount) ? "0" : businessAmount)
                 .add("couponId", platId)

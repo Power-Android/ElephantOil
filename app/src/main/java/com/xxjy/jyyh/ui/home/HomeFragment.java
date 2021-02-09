@@ -39,6 +39,8 @@ import com.tencent.smtt.sdk.WebViewClient;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.HomeOftenAdapter;
+import com.xxjy.jyyh.adapter.OilGunAdapter;
+import com.xxjy.jyyh.adapter.OilNumAdapter;
 import com.xxjy.jyyh.adapter.OilStationFlexAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
@@ -63,6 +65,7 @@ import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
+import com.xxjy.jyyh.entity.OilTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.RefuelOilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
@@ -118,7 +121,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     private BannerViewModel bannerViewModel;
 
-    private long mLastClickPubTS = 0;
+    private int mOilNoPosition, mOilGunPosition;
+    private boolean isShowAmount = false;
+
 
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
@@ -332,6 +337,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     if (mStationsBean != null) {
                         Intent intent = new Intent(mContext, OilDetailActivity.class);
                         intent.putExtra(Constants.GAS_STATION_ID, mStationsBean.getGasId());
+                        intent.putExtra(Constants.OIL_NUMBER_ID, mStationsBean.getOilPriceList().get(0).getOilNo()+"");
                         startActivity(intent);
                     }
                 });
@@ -577,17 +583,79 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilNumDialog = new OilNumDialog(mContext, stationsBean);
         mOilNumDialog.setOnItemClickedListener(new OilNumDialog.OnItemClickedListener() {
             @Override
-            public void onOilNumClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onOilTypeClick(BaseQuickAdapter adapter, View view, int position,
+                                       OilNumAdapter oilNumAdapter, OilGunAdapter oilGunAdapter) {
+                List<OilTypeEntity> data = adapter.getData();
+                for (int i = 0; i < data.size(); i++) {
+                    data.get(i).setSelect(false);
+                }
+                data.get(position).setSelect(true);
+                adapter.notifyDataSetChanged();
+                for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
+                    for (int j = 0; j < mStationsBean.getOilPriceList().get(j).getGunNos().size(); j++) {
+                        mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
+                    }
+                }
+                List<OilEntity.StationsBean.OilPriceListBean> oilPriceList = data.get(position).getOilPriceList();
+                for (int i = 0; i < oilPriceList.size(); i++) {
+                    oilPriceList.get(i).setSelected(false);
+                }
+                oilPriceList.get(0).setSelected(true);
+                mOilNoPosition = 0;
+                mOilGunPosition = 0;
+                oilNumAdapter.setNewData(oilPriceList);
+                oilGunAdapter.setNewData(oilPriceList.get(mOilGunPosition).getGunNos());
+            }
+
+            @Override
+            public void onOilNumClick(BaseQuickAdapter adapter, View view, int position, OilGunAdapter oilGunAdapter) {
                 List<OilEntity.StationsBean.OilPriceListBean> data = adapter.getData();
                 for (int i = 0; i < data.size(); i++) {
                     data.get(i).setSelected(false);
                 }
                 data.get(position).setSelected(true);
                 adapter.notifyDataSetChanged();
+                for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
+                    for (int j = 0; j < mStationsBean.getOilPriceList().get(j).getGunNos().size(); j++) {
+                        mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
+                    }
+                }
+                mOilNoPosition = position;
+                mOilGunPosition = 0;
+                oilGunAdapter.setNewData(data.get(position).getGunNos());
                 mBinding.oilCurrentPriceTv.setText(data.get(position).getPriceYfq());
                 mBinding.oilOriginalPriceTv.setText("油站价¥" + data.get(position).getPriceOfficial());
                 mBinding.oilNumTv.setText(data.get(position).getOilName());
-                showGunDialog(mStationsBean, position);
+            }
+
+            @Override
+            public void onOilGunClick(BaseQuickAdapter adapter, View view, int position) {
+                List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
+                for (int i = 0; i < data.size(); i++) {
+                    data.get(i).setSelected(false);
+                }
+                data.get(position).setSelected(true);
+                adapter.notifyDataSetChanged();
+                mOilGunPosition = position;
+            }
+
+            @Override
+            public void onQuickClick(View view, OilNumAdapter oilNumAdapter, OilGunAdapter oilGunAdapter) {
+                if (isFar) {
+                    showChoiceOil(mStationsBean.getGasName(), view);
+                }else {
+                    for (int i = 0; i < oilGunAdapter.getData().size(); i++) {
+                        if (oilGunAdapter.getData().get(i).isSelected()){
+                            isShowAmount = true;
+                        }
+                    }
+                    if (isShowAmount){
+                        showAmountDialog(mStationsBean, oilNumAdapter.getData(),
+                                mOilNoPosition, mOilGunPosition);
+                    }else {
+                        showToastInfo("请选择枪号");
+                    }
+                }
             }
 
             @Override
@@ -599,38 +667,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilNumDialog.show();
     }
 
-    private void showGunDialog(OilEntity.StationsBean stationsBean, int oilNoPosition) {
-        //枪号dialog
-        mOilGunDialog = new OilGunDialog(mContext, stationsBean, oilNoPosition);
-        mOilGunDialog.setOnItemClickedListener(new OilGunDialog.OnItemClickedListener() {
-            @Override
-            public void onOilGunClick(BaseQuickAdapter adapter, View view, int position) {
-                if (isFar) {
-                    showChoiceOil(stationsBean.getGasName(), view);
-                } else {
-                    List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
-                    for (int i = 0; i < data.size(); i++) {
-                        data.get(i).setSelected(false);
-                    }
-                    data.get(position).setSelected(true);
-                    adapter.notifyDataSetChanged();
-
-                    showAmountDialog(stationsBean, oilNoPosition, position);
-                }
-            }
-
-            @Override
-            public void closeAll() {
-                closeDialog();
-            }
-        });
-
-        mOilGunDialog.show();
-    }
-
-    private void showAmountDialog(OilEntity.StationsBean stationsBean, int oilNoPosition, int gunNoPosition) {
+    private void showAmountDialog(OilEntity.StationsBean stationsBean,
+                                  List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBean,
+                                  int oilNoPosition, int gunNoPosition) {
         //快捷金额dialog  请输入加油金额 请选择优惠券 暂无优惠券
-        mOilAmountDialog = new OilAmountDialog(mContext, getBaseActivity(), stationsBean,
+        mOilAmountDialog = new OilAmountDialog(mContext, getBaseActivity(), stationsBean, oilPriceListBean,
                 oilNoPosition, gunNoPosition);
         mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
             @Override
@@ -644,7 +685,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             @Override
             public void onCreateOrder(View view, String orderId, String payAmount) {
 //                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount, view);
-                showPayDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount);
+                showPayDialog(stationsBean, oilPriceListBean, oilNoPosition, gunNoPosition, orderId, payAmount);
             }
 
             @Override
@@ -686,17 +727,18 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilTipsDialog.setOnItemClickedListener(() -> {
             mOilTipsDialog.dismiss();
             //show的时候把订单信息传过去
-            showPayDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount);
+//            showPayDialog(stationsBean, oilPriceListBean, oilNoPosition, gunNoPosition, orderId, payAmount);
         });
 
         mOilTipsDialog.show(view);
     }
 
-    private void showPayDialog(OilEntity.StationsBean stationsBean, int oilNoPosition,
-                               int gunNoPosition, String orderId, String payAmount) {
+    private void showPayDialog(OilEntity.StationsBean stationsBean,
+                               List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBean,
+                               int oilNoPosition, int gunNoPosition, String orderId, String payAmount) {
         //支付dialog
         mOilPayDialog = new OilPayDialog(mContext, getBaseActivity(), stationsBean,
-                oilNoPosition, gunNoPosition, orderId, payAmount);
+                oilPriceListBean, oilNoPosition, gunNoPosition, orderId, payAmount);
         mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
             @Override
             public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
