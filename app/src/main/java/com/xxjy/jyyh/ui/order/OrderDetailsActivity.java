@@ -149,6 +149,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             mBinding.orderIdView.setText(data.getOrderId());
             mBinding.payTypeView.setText(data.getPayTypeName());
             mBinding.payAmountView.setText("¥" + data.getPayAmount());
+            mBinding.serviceChargeView.setText("+¥"+data.getServiceChargeAmount());
 
             switch (data.getStatus()) {
                 case 0:
@@ -160,6 +161,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.balanceLayout.setVisibility(View.VISIBLE);
                     mBinding.payTypeLayout.setVisibility(View.GONE);
                     mBinding.payAmountLayout.setVisibility(View.GONE);
+                    mBinding.serviceChargeLayout.setVisibility(View.VISIBLE);
                     break;
                 case 1:
                     mBinding.orderManageLayout.setVisibility(View.VISIBLE);
@@ -170,6 +172,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.balanceLayout.setVisibility(View.VISIBLE);
                     mBinding.payTypeLayout.setVisibility(View.VISIBLE);
                     mBinding.payAmountLayout.setVisibility(View.VISIBLE);
+                    mBinding.serviceChargeLayout.setVisibility(View.VISIBLE);
                     break;
 
                 case 2:
@@ -181,6 +184,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.balanceLayout.setVisibility(View.GONE);
                     mBinding.payTypeLayout.setVisibility(View.GONE);
                     mBinding.payAmountLayout.setVisibility(View.GONE);
+                    mBinding.serviceChargeLayout.setVisibility(View.GONE);
 
                     break;
                 default:
@@ -192,6 +196,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.balanceLayout.setVisibility(View.GONE);
                     mBinding.payTypeLayout.setVisibility(View.GONE);
                     mBinding.payAmountLayout.setVisibility(View.GONE);
+                    mBinding.serviceChargeLayout.setVisibility(View.GONE);
                     break;
             }
 

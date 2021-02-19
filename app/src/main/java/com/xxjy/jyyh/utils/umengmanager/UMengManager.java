@@ -24,7 +24,7 @@ public class UMengManager {
     public static void init(Context context) {
         //友盟分享
         PlatformConfig.setWeixin(Constants.WX_APP_ID, Constants.WX_APP_SCRIPT);
-
+        PlatformConfig.setWXFileProvider("com.xxjy.jyyh.file.provider");
         UMConfigure.init(context, UMConfigure.DEVICE_TYPE_PHONE, null);
 
         //使用auto模式不再需要Activity中的代码埋点

@@ -44,7 +44,15 @@ public class RefuelOrderBean {
     private String litre;
     private String usedBalance;
     private String payTypeName;
+    private String serviceChargeAmount;
 
+    public String getServiceChargeAmount() {
+        return serviceChargeAmount;
+    }
+
+    public void setServiceChargeAmount(String serviceChargeAmount) {
+        this.serviceChargeAmount = serviceChargeAmount;
+    }
 
     public String getAmountCoupon() {
         return amountCoupon;

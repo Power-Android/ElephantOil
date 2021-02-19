@@ -22,32 +22,16 @@
             app:qmui_radiusBottomLeft="@dimen/dp_5"
             app:qmui_radiusTopLeft="@dimen/dp_5">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/item_coupon_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/money_tag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="¥"
-                    android:layout_marginTop="@dimen/dp_5"
-                    android:textColor="@color/color_6431"
-                    android:textSize="@dimen/sp_13"
-                    android:textStyle="bold"
-                     />
-
-                <TextView
-                    android:id="@+id/item_coupon_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/money_tag"
-                    android:text="0"
-                    android:textColor="@color/color_6431"
-                    android:textSize="@dimen/sp_25"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+                android:gravity="center"
+                android:maxWidth="@dimen/dp_80"
+                android:text="0"
+                android:textColor="@color/color_6431"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/item_use_range_tv"
@@ -116,7 +100,6 @@
                 app:riv_corner_radius="@dimen/dp_3" />
         </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
     </LinearLayout>
-
 
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
         android:id="@+id/mask_view"

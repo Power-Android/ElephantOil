@@ -1,6 +1,10 @@
 package com.xxjy.jyyh.entity;
 
-public class CouponBean {
+import android.text.TextUtils;
+
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
+public class CouponBean implements MultiItemEntity {
 //    {
 //        "amount":"300.00",
 //            "amountReduce":"10.00",
@@ -25,8 +29,8 @@ public class CouponBean {
     private String id;
     private String imgUrl;
     private String name;
-    private int point;
-    private int pointReduce;
+    private String point;
+    private String pointReduce;
     private String startTime;
     private int status;
     private String validTime;
@@ -96,19 +100,19 @@ public class CouponBean {
         this.name = name;
     }
 
-    public int getPoint() {
+    public String getPoint() {
         return point;
     }
 
-    public void setPoint(int point) {
+    public void setPoint(String point) {
         this.point = point;
     }
 
-    public int getPointReduce() {
+    public String getPointReduce() {
         return pointReduce;
     }
 
-    public void setPointReduce(int pointReduce) {
+    public void setPointReduce(String pointReduce) {
         this.pointReduce = pointReduce;
     }
 
@@ -134,5 +138,14 @@ public class CouponBean {
 
     public void setValidTime(String validTime) {
         this.validTime = validTime;
+    }
+
+    @Override
+    public int getItemType() {
+        if(TextUtils.isEmpty(pointReduce)||TextUtils.equals(pointReduce,"0")){
+            return 0;
+        }else{
+            return 1;
+        }
     }
 }
