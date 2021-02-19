@@ -25,6 +25,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_img_iv"
         app:layout_constraintBottom_toBottomOf="parent"/>
+    <ImageView
+        android:id="@+id/item_title_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:src="@drawable/oil_desc_iv"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginStart="@dimen/dp_2"
+        app:layout_constraintStart_toEndOf="@+id/item_title_tv"
+        app:layout_constraintTop_toTopOf="parent"/>
     <TextView
         android:id="@+id/item_balance_tv"
         android:layout_width="wrap_content"

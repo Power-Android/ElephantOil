@@ -77,6 +77,7 @@ public class OilAmountDialog extends BottomSheetDialog {
     private CouponBean mPlatCouponBean, mBusinessCouponBean;
     private String platId = "", businessAmount = "";//平台优惠券id， 商机优惠金额 每次刷新价格是要清空
     private OilHotDialog mOilHotDialog;
+    private OilServiceDialog mOilServiceDialog;
 
     public OilAmountDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
                            List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBeans,
@@ -134,7 +135,7 @@ public class OilAmountDialog extends BottomSheetDialog {
         //优惠列表
         for (int i = 0; i < 4; i++) {
             mDiscountList.add(new OilDiscountEntity(0, "请选择加油金额","请选择加油金额",
-                    "请选择加油金额", 0, false));
+                    "请选择加油金额", 0, false, false));
         }
         mBinding.discountRecyclerView.setLayoutManager(
                 new LinearLayoutManager(mContext));
@@ -168,6 +169,14 @@ public class OilAmountDialog extends BottomSheetDialog {
                     }
                     //刷新互斥价格
                     getMultiplePrice(platId, businessAmount);
+                    break;
+                case R.id.item_title_desc://直降优惠服务费
+                    if (mOilServiceDialog == null){
+                        mOilServiceDialog = new OilServiceDialog(mContext, mActivity, mMultiplePriceBean);
+                        mOilServiceDialog.show(view);
+                    }else {
+                        mOilServiceDialog.show(view);
+                    }
                     break;
             }
         });
@@ -351,12 +360,12 @@ public class OilAmountDialog extends BottomSheetDialog {
                 .subscribe(multiplePriceBean -> {
                             this.mMultiplePriceBean = multiplePriceBean;
                             //直降金额
-                            if (Float.parseFloat(multiplePriceBean.getDepreciateAmount()) > 0){
+                            if (Float.parseFloat(multiplePriceBean.getTotalDiscountAmount()) > 0){
                                 mDiscountAdapter.getData().get(0).setFallAmount(
-                                        Float.parseFloat(multiplePriceBean.getDepreciateAmount()));
+                                        Float.parseFloat(multiplePriceBean.getTotalDiscountAmount()));
                             }else {
                                 mDiscountAdapter.getData().get(0).setFallAmount(
-                                        Float.parseFloat(multiplePriceBean.getDepreciateAmount()));
+                                        Float.parseFloat(multiplePriceBean.getTotalDiscountAmount()));
                                 mDiscountAdapter.getData().get(0).setFallDesc("暂无优惠");
                             }
                             //升数
@@ -366,8 +375,15 @@ public class OilAmountDialog extends BottomSheetDialog {
                             mBinding.currentPriceTv.setText(String.format("实付：¥%s",
                                     multiplePriceBean.getDuePrice()));
                             //优惠金额
-                            mBinding.discountPriceTv.setText(String.format("优惠合计：¥%s",
+                            mBinding.discountPriceTv.setText(String.format("已优惠：¥%s",
                                     multiplePriceBean.getSumDiscountPrice()));
+                            //服务费
+                            if (!TextUtils.isEmpty(multiplePriceBean.getServiceChargeAmount()) &&
+                                    Float.parseFloat(multiplePriceBean.getServiceChargeAmount()) > 0){
+                                mDiscountList.get(0).setService(true);
+                            }else {
+                                mDiscountList.get(0).setService(false);
+                            }
                             //抵扣余额
                             mDiscountAdapter.getData().get(3).setBalanceDiscount(
                                     Float.parseFloat(multiplePriceBean.getBalancePrice()));

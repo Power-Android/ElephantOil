@@ -452,12 +452,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         new HomeOftenAdapter(R.layout.adapter_often_layout, mOftenList);
                 mBinding.oftenOilRecyclerView.setAdapter(oftenAdapter);
                 mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
-                oftenAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        getActivity().startActivity(new Intent(getContext(), OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID, ((OfentEntity) adapter.getItem(position)).getGasId()));
-                    }
-                });
+                oftenAdapter.setOnItemClickListener((adapter, view, position) ->
+                        startActivity(new Intent(getContext(), OilDetailActivity.class)
+                        .putExtra(Constants.GAS_STATION_ID, ((OfentEntity) adapter.getItem(position)).getGasId())));
             } else {
                 mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
             }
@@ -605,6 +602,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mOilGunPosition = 0;
                 oilNumAdapter.setNewData(oilPriceList);
                 oilGunAdapter.setNewData(oilPriceList.get(mOilGunPosition).getGunNos());
+                mBinding.oilCurrentPriceTv.setText(oilPriceList.get(0).getPriceYfq());
+                mBinding.oilOriginalPriceTv.setText("油站价¥" + oilPriceList.get(0).getPriceOfficial());
+                mBinding.oilNumTv.setText(oilPriceList.get(0).getOilName());
             }
 
             @Override

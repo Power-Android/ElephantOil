@@ -61,7 +61,7 @@ import java.util.List;
 
 public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding, OilViewModel> {
     private List<OilEntity.StationsBean.CzbLabelsBean> mTagList = new ArrayList<>();
-    private List<String> mOilCheckedList = new ArrayList<>(2);//已选择列表
+    private List<String> mOilCheckedList = new ArrayList<>(3);//已选择列表
     private List<OilEntity.StationsBean.OilPriceListBean> mOilNumList = new ArrayList<>();//油号列表
     private List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> mOilGunList = new ArrayList<>();//油枪列表
     private OilTypeAdapter mOilTypeAdapter;
@@ -140,7 +140,6 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         requestPermission();
 
         //标签列表
-
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
@@ -186,18 +185,17 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                     mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
                 }
             }
-            if (mOilCheckedList.size() > 1){
-                mOilCheckedList.remove(1);
-                mOilCheckedAdapter.notifyDataSetChanged();
-            }
+            mOilCheckedList.clear();
+            mOilCheckedAdapter.notifyDataSetChanged();
+
             mOilGunAdapter.setNewData(oilPriceList.get(mOilGunPosition).getGunNos());
 
             mBinding.oilLiterTv.setText("¥" + oilPriceList.get(0).getPriceYfq() + "/L");
             mBinding.oilNumTv.setText(oilPriceList.get(0).getOilName());
             mBinding.oilPriceTv.setText("油站价：￥" + oilPriceList.get(0).getPriceOfficial());
             mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-            mOilCheckedList.set(0, oilPriceList.get(0).getOilName() +
-                    getOilKind(oilPriceList.get(0).getOilType() + ""));
+            mOilCheckedList.add(0, getOilKind(oilPriceList.get(0).getOilType() + ""));
+            mOilCheckedList.add(1, oilPriceList.get(0).getOilName());
             mOilCheckedAdapter.notifyDataSetChanged();
         });
 
@@ -220,16 +218,15 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                     mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
                 }
             }
-            if (mOilCheckedList.size() > 1){
-                mOilCheckedList.remove(1);
-                mOilCheckedAdapter.notifyDataSetChanged();
-            }
+            mOilCheckedList.clear();
+            mOilCheckedAdapter.notifyDataSetChanged();
+
             mBinding.oilLiterTv.setText("¥" + data.get(position).getPriceYfq() + "/L");
             mBinding.oilNumTv.setText(data.get(position).getOilName());
             mBinding.oilPriceTv.setText("油站价：￥" + data.get(position).getPriceOfficial());
             mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-            mOilCheckedList.set(0, data.get(position).getOilName() +
-                    getOilKind(data.get(position).getOilType() + ""));
+            mOilCheckedList.add(0, getOilKind(data.get(position).getOilType() + ""));
+            mOilCheckedList.add(1, data.get(position).getOilName());
             mOilCheckedAdapter.notifyDataSetChanged();
             mOilNoPosition = position;
             mOilGunPosition = 0;
@@ -243,15 +240,15 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mBinding.oilGunRecyclerView.setAdapter(mOilGunAdapter);
         mOilGunAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> data = adapter.getData();
-            for (int i = 0; i < data.size() ; i++) {
+            for (int i = 0; i < data.size(); i++) {
                 data.get(i).setSelected(false);
             }
             data.get(position).setSelected(true);
             adapter.notifyDataSetChanged();
-            if (mOilCheckedList.size() <= 1) {
-                mOilCheckedList.add(1, data.get(position).getGunNo() + "号枪");
+            if (mOilCheckedList.size() <= 2) {
+                mOilCheckedList.add(2, data.get(position).getGunNo() + "号枪");
             } else {
-                mOilCheckedList.set(1, data.get(position).getGunNo() + "号枪");
+                mOilCheckedList.set(2, data.get(position).getGunNo() + "号枪");
             }
             mOilCheckedAdapter.notifyDataSetChanged();
             mOilGunPosition = position;
@@ -308,16 +305,16 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             case R.id.query_tv:
                 if (isFar) {
                     showChoiceOil(mStationsBean.getGasName(), view);
-                }else {
+                } else {
                     for (int i = 0; i < mOilGunAdapter.getData().size(); i++) {
-                        if (mOilGunAdapter.getData().get(i).isSelected()){
+                        if (mOilGunAdapter.getData().get(i).isSelected()) {
                             isShowAmount = true;
                         }
                     }
-                    if (isShowAmount){
+                    if (isShowAmount) {
                         showAmountDialog(mStationsBean, mOilNumAdapter.getData(),
                                 mOilNoPosition, mOilGunPosition);
-                    }else {
+                    } else {
                         showToastInfo("请选择枪号");
                     }
                 }
@@ -453,7 +450,9 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         if (!mOilNumNaturalData.isEmpty()) {
             mOilTypeList.add(new OilTypeEntity("天然气", mOilNumNaturalData));
         }
-
+        if (TextUtils.isEmpty(mOilNo)){
+            mOilNo = String.valueOf(stationsBean.getOilPriceList().get(0).getOilNo());
+        }
         for (int i = 0; i < stationsBean.getOilPriceList().size(); i++) {
             if (String.valueOf(stationsBean.getOilPriceList().get(i).getOilNo()).equals(mOilNo)) {
                 Integer oilType = stationsBean.getOilPriceList().get(i).getOilType();
@@ -463,16 +462,16 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
         //已选择列表
         for (int i = 0; i < mOilTypeList.size(); i++) {
-            if (mOilTypeList.get(i).isSelect()){
+            if (mOilTypeList.get(i).isSelect()) {
                 List<OilEntity.StationsBean.OilPriceListBean> oilPriceList = mOilTypeList.get(i).getOilPriceList();
                 for (int j = 0; j < oilPriceList.size(); j++) {
-                    if (String.valueOf(oilPriceList.get(j).getOilNo()).equals(mOilNo)){
+                    if (String.valueOf(oilPriceList.get(j).getOilNo()).equals(mOilNo)) {
                         mBinding.oilNumTv.setText(oilPriceList.get(j).getOilName());
                         mBinding.oilLiterTv.setText("¥" + oilPriceList.get(j).getPriceYfq() + "/L");
                         mBinding.oilPriceTv.setText("油站价：￥" + oilPriceList.get(j).getPriceOfficial());
                         mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-                        mOilCheckedList.add(oilPriceList.get(j).getOilName() +
-                                getOilKind(oilPriceList.get(j).getOilType() + ""));
+                        mOilCheckedList.add(getOilKind(oilPriceList.get(j).getOilType() + ""));
+                        mOilCheckedList.add(oilPriceList.get(j).getOilName());
                     }
                 }
                 //更新油号列表
@@ -650,7 +649,17 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                     break;
                 case R.id.continue_view://继续支付
                     isFar = false;
-                    showAmountDialog(mStationsBean, mOilNumAdapter.getData(), mOilNoPosition, mOilGunPosition);
+                    for (int i = 0; i < mOilGunAdapter.getData().size(); i++) {
+                        if (mOilGunAdapter.getData().get(i).isSelected()) {
+                            isShowAmount = true;
+                        }
+                    }
+                    if (isShowAmount) {
+                        showAmountDialog(mStationsBean, mOilNumAdapter.getData(),
+                                mOilNoPosition, mOilGunPosition);
+                    } else {
+                        showToastInfo("请选择枪号");
+                    }
                     break;
             }
 

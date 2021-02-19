@@ -24,7 +24,7 @@ public class OilGunAdapter extends BaseQuickAdapter<OilEntity.StationsBean.OilPr
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, OilEntity.StationsBean.OilPriceListBean.GunNosBean item) {
-        helper.setText(R.id.item_oil_type_tv, String.valueOf(item.getGunNo()));
+        helper.setText(R.id.item_oil_type_tv, String.valueOf(item.getGunNo()) + "号枪");
         helper.itemView.setSelected(item.isSelected());
     }
 }

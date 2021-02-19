@@ -34,30 +34,32 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
         TextView discountTv = helper.getView(R.id.item_discount_tv);
         switch (helper.getAdapterPosition()) {
             case 0://直降优惠
-                if (item.getFallAmount() > 0){
+                if (item.getFallAmount() > 0) {
                     helper.setText(R.id.item_discount_tv, "-¥" + item.getFallAmount());
-                }else {
+                } else {
                     helper.setText(R.id.item_discount_tv, item.getFallDesc());
                 }
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_price_fall)
                         .setGone(R.id.item_balance_tv, false)
+                        .setGone(R.id.item_title_desc, item.isService())
                         .setTextColor(R.id.item_discount_tv, item.getFallAmount() > 0 ?
                                 mContext.getResources().getColor(R.color.color_27) :
                                 mContext.getResources().getColor(R.color.color_B1))
-                        .setText(R.id.item_title_tv, "直降优惠");
+                        .setText(R.id.item_title_tv, "优惠合计");
                 discountTv.setCompoundDrawables(null, null, null, null);
+                helper.addOnClickListener(R.id.item_title_desc);
                 break;
             case 1://平台优惠券
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_vip_package)
                         .setGone(R.id.item_balance_tv, false)
                         .setText(R.id.item_title_tv, "平台优惠券");
-                if (item.getPlatformDesc().equals("请选择优惠券")){
+                if (item.getPlatformDesc().equals("请选择优惠券")) {
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
-                }else if (item.getPlatformDesc().equals("暂无可用优惠券")){
+                } else if (item.getPlatformDesc().equals("暂无可用优惠券")) {
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
-                }else if (item.getPlatformDesc().equals("请选择加油金额")){
+                } else if (item.getPlatformDesc().equals("请选择加油金额")) {
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
                 } else {
@@ -69,14 +71,14 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
             case 2://商家优惠券
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_elephant_coupon)
                         .setGone(R.id.item_balance_tv, false)
-                        .setText(R.id.item_title_tv, "商家优惠券（与直降优惠不同享）");
-                if (item.getBusinessDesc().equals("请选择优惠券")){
+                        .setText(R.id.item_title_tv, "商家优惠券(与直降优惠不同享)");
+                if (item.getBusinessDesc().equals("请选择优惠券")) {
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
-                }else if (item.getBusinessDesc().equals("暂无可用优惠券")){
+                } else if (item.getBusinessDesc().equals("暂无可用优惠券")) {
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
-                } else if (item.getBusinessDesc().equals("请选择加油金额")){
+                } else if (item.getBusinessDesc().equals("请选择加油金额")) {
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
                 } else {
