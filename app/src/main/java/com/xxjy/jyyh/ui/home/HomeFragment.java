@@ -589,7 +589,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 data.get(position).setSelect(true);
                 adapter.notifyDataSetChanged();
                 for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
-                    for (int j = 0; j < mStationsBean.getOilPriceList().get(j).getGunNos().size(); j++) {
+                    for (int j = 0; j < mStationsBean.getOilPriceList().get(i).getGunNos().size(); j++) {
                         mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
                     }
                 }
@@ -616,7 +616,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 data.get(position).setSelected(true);
                 adapter.notifyDataSetChanged();
                 for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
-                    for (int j = 0; j < mStationsBean.getOilPriceList().get(j).getGunNos().size(); j++) {
+                    for (int j = 0; j < mStationsBean.getOilPriceList().get(i).getGunNos().size(); j++) {
                         mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
                     }
                 }

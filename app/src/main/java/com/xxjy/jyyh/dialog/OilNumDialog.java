@@ -229,10 +229,11 @@ public class OilNumDialog extends BottomSheetDialog {
 
 
     public interface OnItemClickedListener {
+        //油类型
         void onOilTypeClick(BaseQuickAdapter adapter, View view, int position, OilNumAdapter oilNumAdapter, OilGunAdapter oilGunAdapter);
-
+        //油号
         void onOilNumClick(BaseQuickAdapter adapter, View view, int position, OilGunAdapter oilGunAdapter);
-
+        //枪号
         void onOilGunClick(BaseQuickAdapter adapter, View view, int position);
 
         void onQuickClick(View view, OilNumAdapter oilNumAdapter, OilGunAdapter oilGunAdapter);

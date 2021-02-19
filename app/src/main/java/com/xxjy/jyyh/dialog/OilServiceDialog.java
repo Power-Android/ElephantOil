@@ -42,15 +42,24 @@ public class OilServiceDialog extends QMUIFullScreenPopup {
         initData();
     }
 
+    public void setData(MultiplePriceBean multiplePriceBean) {
+        this.multiplePriceBean = multiplePriceBean;
+        dispatchData();
+    }
+
+    private void dispatchData() {
+        mBinding.serviceMoneyTv.setText("￥" + multiplePriceBean.getTotalDiscountAmount());
+        mBinding.fallMoney.setText("-￥" + multiplePriceBean.getDepreciateAmount() + "元");
+        mBinding.serviceMoney.setText("+￥" + multiplePriceBean.getServiceChargeAmount() + "元");
+        mBinding.tv4.setText("本次订单收取服务费 " + multiplePriceBean.getServiceChargeAmount() + " 元");
+    }
+
     private void init() {
         addView(mBinding.getRoot());
         closeBtn(false);
         skinManager(QMUISkinManager.defaultInstance(mContext));
 
-        mBinding.serviceMoneyTv.setText("￥" + multiplePriceBean.getTotalDiscountAmount());
-        mBinding.fallMoney.setText("-￥" + multiplePriceBean.getDepreciateAmount() + "元");
-        mBinding.serviceMoney.setText("+￥" + multiplePriceBean.getServiceChargeAmount() + "元");
-        mBinding.tv4.setText("本次订单收取服务费 " + multiplePriceBean.getServiceChargeAmount() + " 元");
+        dispatchData();
 
         mBinding.closeIv.setOnClickListener(view -> {
             dismiss();

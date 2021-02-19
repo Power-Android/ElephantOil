@@ -175,6 +175,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                         mOilServiceDialog = new OilServiceDialog(mContext, mActivity, mMultiplePriceBean);
                         mOilServiceDialog.show(view);
                     }else {
+                        mOilServiceDialog.setData(mMultiplePriceBean);
                         mOilServiceDialog.show(view);
                     }
                     break;

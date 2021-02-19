@@ -181,7 +181,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mOilNumAdapter.setNewData(oilPriceList);
             //切换类型时清空枪号选中状态,清空已选择列表的枪号
             for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
-                for (int j = 0; j < mStationsBean.getOilPriceList().get(j).getGunNos().size(); j++) {
+                for (int j = 0; j < mStationsBean.getOilPriceList().get(i).getGunNos().size(); j++) {
                     mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
                 }
             }
@@ -214,7 +214,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             adapter.notifyDataSetChanged();
             //切换油号时清空枪号选中状态,清空已选择列表的枪号
             for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
-                for (int j = 0; j < mStationsBean.getOilPriceList().get(j).getGunNos().size(); j++) {
+                for (int j = 0; j < mStationsBean.getOilPriceList().get(i).getGunNos().size(); j++) {
                     mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
                 }
             }
