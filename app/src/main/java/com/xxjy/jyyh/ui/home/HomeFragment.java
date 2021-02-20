@@ -603,7 +603,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 oilNumAdapter.setNewData(oilPriceList);
                 oilGunAdapter.setNewData(oilPriceList.get(mOilGunPosition).getGunNos());
                 mBinding.oilCurrentPriceTv.setText(oilPriceList.get(0).getPriceYfq());
-                mBinding.oilOriginalPriceTv.setText("油站价¥" + oilPriceList.get(0).getPriceOfficial());
+                mBinding.oilOriginalPriceTv.setText("油站价¥" + oilPriceList.get(0).getPriceGun());
                 mBinding.oilNumTv.setText(oilPriceList.get(0).getOilName());
             }
 
@@ -624,7 +624,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mOilGunPosition = 0;
                 oilGunAdapter.setNewData(data.get(position).getGunNos());
                 mBinding.oilCurrentPriceTv.setText(data.get(position).getPriceYfq());
-                mBinding.oilOriginalPriceTv.setText("油站价¥" + data.get(position).getPriceOfficial());
+                mBinding.oilOriginalPriceTv.setText("油站价¥" + data.get(position).getPriceGun());
                 mBinding.oilNumTv.setText(data.get(position).getOilName());
             }
 

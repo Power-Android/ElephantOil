@@ -192,7 +192,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
             mBinding.oilLiterTv.setText("¥" + oilPriceList.get(0).getPriceYfq() + "/L");
             mBinding.oilNumTv.setText(oilPriceList.get(0).getOilName());
-            mBinding.oilPriceTv.setText("油站价：￥" + oilPriceList.get(0).getPriceOfficial());
+            mBinding.oilPriceTv.setText("油站价：￥" + oilPriceList.get(0).getPriceGun());
             mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
             mOilCheckedList.add(0, getOilKind(oilPriceList.get(0).getOilType() + ""));
             mOilCheckedList.add(1, oilPriceList.get(0).getOilName());
@@ -223,7 +223,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
             mBinding.oilLiterTv.setText("¥" + data.get(position).getPriceYfq() + "/L");
             mBinding.oilNumTv.setText(data.get(position).getOilName());
-            mBinding.oilPriceTv.setText("油站价：￥" + data.get(position).getPriceOfficial());
+            mBinding.oilPriceTv.setText("油站价：￥" + data.get(position).getPriceGun());
             mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
             mOilCheckedList.add(0, getOilKind(data.get(position).getOilType() + ""));
             mOilCheckedList.add(1, data.get(position).getOilName());
@@ -468,7 +468,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                     if (String.valueOf(oilPriceList.get(j).getOilNo()).equals(mOilNo)) {
                         mBinding.oilNumTv.setText(oilPriceList.get(j).getOilName());
                         mBinding.oilLiterTv.setText("¥" + oilPriceList.get(j).getPriceYfq() + "/L");
-                        mBinding.oilPriceTv.setText("油站价：￥" + oilPriceList.get(j).getPriceOfficial());
+                        mBinding.oilPriceTv.setText("油站价：￥" + oilPriceList.get(j).getPriceGun());
                         mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
                         mOilCheckedList.add(getOilKind(oilPriceList.get(j).getOilType() + ""));
                         mOilCheckedList.add(oilPriceList.get(j).getOilName());
