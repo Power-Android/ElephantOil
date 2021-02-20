@@ -107,8 +107,10 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         if (orderEntity == null) return;
         if (shouldJump) {
             shouldJump = false;
-            PayQueryActivity.openPayQueryActivity(this,
-                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
+//            PayQueryActivity.openPayQueryActivity(this,
+//                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
+            RefuelingPayResultActivity.openPayResultPage(this,
+                   orderEntity.getOrderNo(), orderEntity.getOrderPayNo());
             closeDialog();
         }
     }

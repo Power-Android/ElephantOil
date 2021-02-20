@@ -99,7 +99,7 @@
 
                 <TextView
                     android:id="@+id/item_navigation_tv"
-                    android:layout_width="@dimen/dp_50"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
                     android:focusable="true"
@@ -108,7 +108,6 @@
                     android:singleLine="true"
                     android:includeFontPadding="false"
                     android:text="0.00KM"
-                    android:layout_marginStart="@dimen/dp_m_5"
                     android:textColor="@color/color_55"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>

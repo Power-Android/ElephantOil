@@ -53,26 +53,17 @@
                     android:textStyle="bold"
                     android:textSize="@dimen/sp_19"
                     android:text="查询失败"/>
-<!--                <TextView-->
-<!--                    android:id="@+id/try_again_view"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:textColor="@color/color_30"-->
-<!--                    android:gravity="center"-->
-<!--                    android:visibility="gone"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:textSize="@dimen/sp_19"-->
-<!--                    android:text="重新查询"/>-->
                 <TextView
                     android:id="@+id/wait_time_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_30"
+                    android:visibility="visible"
                     android:gravity="center"
                     android:textStyle="bold"
                     android:background="@color/white"
                     android:textSize="@dimen/sp_19"
-                    android:text="支付结果查询中…\n3s"/>
+                    android:text="请确认是否已完成支付？"/>
                 <RelativeLayout
                     android:id="@+id/top_layout"
                     android:layout_width="match_parent"
@@ -83,8 +74,9 @@
                     <LinearLayout
                         android:id="@+id/top_bg_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/dp_260"
                         android:orientation="vertical"
+                        android:gravity="center"
                         android:background="@drawable/pay_top_bg">
                         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
                             android:layout_width="match_parent"
@@ -93,8 +85,6 @@
                             android:layout_marginRight="@dimen/dp_12"
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:layout_marginBottom="@dimen/dp_10"
                             android:paddingTop="@dimen/dp_25"
                             android:paddingBottom="@dimen/dp_25"
                             app:qmui_backgroundColor="#64C855"
@@ -158,7 +148,42 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/check_bt_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/dp_20"
+                    android:paddingBottom="@dimen/dp_20"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                        android:id="@+id/tv1"
+                        android:layout_width="@dimen/dp_114"
+                        android:layout_height="@dimen/dp_32"
+                        android:gravity="center"
+                        android:text="还未支付"
+                        android:textColor="@color/color_34"
+                        android:textSize="@dimen/sp_14"
+                        app:qmui_backgroundColor="@color/white"
+                        app:qmui_borderColor="@color/color_C3"
+                        app:qmui_borderWidth="@dimen/dp_0_5"
+                        app:qmui_radius="@dimen/dp_16" />
 
+                    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                        android:id="@+id/tv2"
+                        android:layout_width="@dimen/dp_114"
+                        android:layout_height="@dimen/dp_32"
+                        android:layout_marginLeft="@dimen/dp_23"
+                        android:gravity="center"
+                        android:text="已完成支付"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/sp_14"
+                        app:qmui_backgroundColor="@color/white"
+                        app:qmui_borderColor="@color/colorAccent"
+                        app:qmui_borderWidth="@dimen/dp_0_5"
+                        app:qmui_radius="@dimen/dp_16" />
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/bt_layout"
                     android:layout_width="match_parent"
@@ -270,6 +295,7 @@
                     android:layout_height="@dimen/dp_64"
                     android:layout_marginTop="@dimen/dp_8"
                     android:background="@color/white"
+                    android:visibility="gone"
                     android:gravity="center"
                     android:orientation="vertical">
 

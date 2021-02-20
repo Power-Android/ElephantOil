@@ -137,8 +137,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         if (orderEntity == null) return;
         if (shouldJump) {
             shouldJump = false;
-            PayQueryActivity.openPayQueryActivity(getActivity(),
-                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
+//            PayQueryActivity.openPayQueryActivity(getActivity(),
+//                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
+            RefuelingPayResultActivity.openPayResultPage(getActivity(),
+                    orderEntity.getOrderNo(), orderEntity.getOrderPayNo());
             closeDialog();
         }
     }

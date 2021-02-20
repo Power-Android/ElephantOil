@@ -142,7 +142,17 @@ public class PayResultEntity {
       private String gasId;
       private String gasName;
       private String oilNo;
+      private String oilName;
       private String authId;
+
+
+        public String getOilName() {
+            return oilName;
+        }
+
+        public void setOilName(String oilName) {
+            this.oilName = oilName;
+        }
 
         public String getAmount() {
             return amount;

@@ -334,8 +334,10 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
         if (orderEntity == null) return;
         if (shouldJump) {
             shouldJump = false;
-            PayQueryActivity.openPayQueryActivity(this,
-                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
+//            PayQueryActivity.openPayQueryActivity(this,
+//                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
+            RefuelingPayResultActivity.openPayResultPage(this,
+                    orderEntity.getOrderNo(), orderEntity.getOrderPayNo());
             closeDialog();
         }
     }
