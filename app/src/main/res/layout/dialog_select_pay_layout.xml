@@ -69,6 +69,7 @@
         android:id="@+id/pay_oil_info_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:minHeight="@dimen/dp_60"
         android:text="油站名称+油号+抢号"
         android:textColor="@color/color_34"

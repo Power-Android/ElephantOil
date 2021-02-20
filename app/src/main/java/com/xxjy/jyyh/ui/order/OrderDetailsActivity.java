@@ -56,7 +56,6 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
     private boolean shouldJump = false;
     private PayOrderEntity mPayOrderEntity;
     private boolean isShouldAutoOpenWeb = false;    //标记是否应该自动打开浏览器进行支付
-
     private RefuelOrderBean refuelOrderBean;
 
 
@@ -150,6 +149,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             mBinding.payTypeView.setText(data.getPayTypeName());
             mBinding.payAmountView.setText("¥" + data.getPayAmount());
             mBinding.serviceChargeView.setText("+¥"+data.getServiceChargeAmount());
+            mBinding.timeView.setText(data.getBuyTime());
 
             switch (data.getStatus()) {
                 case 0:

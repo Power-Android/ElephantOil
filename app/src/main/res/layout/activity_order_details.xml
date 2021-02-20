@@ -203,11 +203,12 @@
                         android:textSize="@dimen/sp_14" />
 
                     <TextView
+                        android:id="@+id/time_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="2020-11-23 18:23:48"
+                        android:text="--"
                         android:textColor="@color/color_9A"
                         android:textSize="@dimen/sp_14" />
 
@@ -321,6 +322,7 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/color_E8" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:id="@+id/service_charge_layout"
                     android:layout_width="match_parent"
@@ -350,35 +352,7 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/color_E8" />
                 </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/business_discount_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_45">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="商家优惠券"
-                        android:textColor="@color/color_34"
-                        android:textSize="@dimen/sp_14" />
-
-                    <TextView
-                        android:id="@+id/business_discount_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="-¥0"
-                        android:textColor="@color/color_30"
-                        android:textSize="@dimen/sp_14" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/color_E8" />
-                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/platform_discount_layout"
@@ -389,7 +363,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="小象优惠券"
+                        android:text="平台优惠"
                         android:textColor="@color/color_34"
                         android:textSize="@dimen/sp_14" />
 
@@ -409,7 +383,35 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/color_E8" />
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/business_discount_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="商家优惠"
+                        android:textColor="@color/color_34"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/business_discount_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="-¥0"
+                        android:textColor="@color/color_30"
+                        android:textSize="@dimen/sp_14" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/color_E8" />
+                </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/balance_layout"
                     android:layout_width="match_parent"
@@ -419,7 +421,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="余额"
+                        android:text="余额抵扣"
                         android:textColor="@color/color_34"
                         android:textSize="@dimen/sp_14" />
 
