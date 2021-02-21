@@ -25,7 +25,7 @@
         android:textStyle="bold"
         android:textColor="@color/color_76FF"
         android:textSize="@dimen/sp_16"
-        android:layout_marginTop="@dimen/dp_22"
+        android:layout_marginTop="@dimen/dp_12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -33,7 +33,7 @@
         android:id="@+id/pay_amount_cl"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_42"
-        android:layout_marginTop="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_25"
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_20"
         android:background="@drawable/shape_white_4raduis"
@@ -94,7 +94,7 @@
     <TextView
         android:id="@+id/oil_pay_tv"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/dp_50"
         android:text="立即支付"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_16"

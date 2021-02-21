@@ -305,8 +305,11 @@
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginEnd="@dimen/dp_12"
                     android:background="@drawable/shape_blue_6radius"
-                    android:minHeight="@dimen/dp_28"
-                    android:padding="@dimen/dp_10"
+                    android:minHeight="@dimen/dp_24"
+                    android:paddingStart="@dimen/dp_10"
+                    android:paddingEnd="@dimen/dp_10"
+                    android:paddingTop="@dimen/dp_8"
+                    android:paddingBottom="@dimen/dp_8"
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
