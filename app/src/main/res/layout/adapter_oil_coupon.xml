@@ -1,107 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_80"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/dp_3"
     android:layout_marginBottom="@dimen/dp_3"
-    android:id="@+id/rootView"
-    android:background="@drawable/coupon_bg">
-    <TextView
-        android:id="@+id/money_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¥"
-        android:textStyle="bold"
-        android:textSize="@dimen/sp_13"
-        android:textColor="@color/color_6431"
-        android:layout_marginStart="@dimen/dp_18"
-        android:layout_marginTop="@dimen/dp_20"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-    <TextView
-        android:id="@+id/item_coupon_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/sp_25"
-        android:text="0"
-        android:textStyle="bold"
-        android:textColor="@color/color_6431"
-        android:layout_marginTop="@dimen/dp_15"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="@dimen/dp_1"
-        app:layout_constraintStart_toEndOf="@+id/money_tag"/>
+    android:background="@color/color_F5">
 
-    <TextView
-        android:id="@+id/item_use_range_tv"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:lines="1"
-        android:text="满0元可用"
-        android:textColor="@color/color_99"
-        android:textSize="@dimen/sp_10"
-        android:layout_marginStart="@dimen/dp_10"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_80"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/item_title_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="满199元减10元加油券"
-        android:textColor="@color/color_34"
-        android:textSize="@dimen/sp_14"
-        android:textStyle="bold"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:includeFontPadding="false"
-        android:layout_marginStart="@dimen/dp_110"
-        android:layout_marginTop="@dimen/dp_20"
-        android:layout_marginEnd="@dimen/dp_5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/image_view"
-        app:layout_constraintTop_toTopOf="parent"/>
-    <TextView
-        android:id="@+id/item_coupon_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2021-01-25 14:51:49"
-        android:textColor="@color/color_9A"
-        android:textSize="@dimen/sp_11"
-        android:layout_marginTop="@dimen/dp_5"
-        android:includeFontPadding="false"
-        app:layout_constraintTop_toBottomOf="@+id/item_title_tv"
-        app:layout_constraintStart_toStartOf="@+id/item_title_tv"/>
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/image_view"
-        android:layout_width="@dimen/dp_52"
-        android:layout_height="@dimen/dp_52"
-        android:src="@drawable/default_img_bg"
-        app:riv_corner_radius="@dimen/dp_3"
-        android:layout_marginEnd="@dimen/dp_20"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-    <ImageView
-        android:id="@+id/status_view"
-        android:layout_width="@dimen/dp_57"
-        android:layout_height="@dimen/dp_45"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        android:layout_marginEnd="@dimen/dp_5"
-        android:layout_marginTop="@dimen/dp_2"
-        android:src="@drawable/ic_coupon_expired"/>
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_80"
+            android:orientation="vertical"
+            app:qmui_backgroundColor="@color/white"
+            app:qmui_radiusBottomLeft="@dimen/dp_5"
+            app:qmui_radiusTopLeft="@dimen/dp_5">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/money_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:textColor="@color/color_6431"
+                    android:textSize="@dimen/sp_13"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/item_coupon_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/money_tag"
+                    android:text="0"
+                    android:textColor="@color/color_6431"
+                    android:textSize="@dimen/sp_23"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/item_use_range_tv"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:text="满0元可用"
+                android:textColor="@color/color_99"
+                android:textSize="@dimen/sp_10" />
+        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
+
+        <View
+            android:layout_width="@dimen/dp_13"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_coupon_line" />
+
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:qmui_backgroundColor="@color/white"
+            app:qmui_radiusBottomRight="@dimen/dp_5"
+            app:qmui_radiusTopRight="@dimen/dp_5">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dp_5">
+
+                <TextView
+                    android:id="@+id/item_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lines="1"
+                    android:text="满0元减0元加油券"
+                    android:textColor="@color/color_34"
+                    android:textSize="@dimen/sp_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/item_coupon_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_9"
+                    android:includeFontPadding="false"
+                    android:text="0000-00-00 00:00:00"
+                    android:textColor="@color/color_9A"
+                    android:textSize="@dimen/sp_11" />
+            </LinearLayout>
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/image_view"
+                android:layout_width="@dimen/dp_52"
+                android:layout_height="@dimen/dp_52"
+                android:layout_marginEnd="@dimen/dp_14"
+                android:src="@drawable/default_img_bg"
+                app:riv_corner_radius="@dimen/dp_3" />
+        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
+    </LinearLayout>
+
+
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
         android:id="@+id/mask_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:qmui_backgroundColor="#B3FFFFFF"
         android:visibility="gone"
+        app:qmui_backgroundColor="#B3FFFFFF"
         app:qmui_borderWidth="@dimen/dp_0"
-        app:qmui_radius="@dimen/dp_5"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:qmui_radius="@dimen/dp_5" />
+
+    <ImageView
+        android:id="@+id/status_view"
+        android:layout_width="@dimen/dp_57"
+        android:layout_height="@dimen/dp_45"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_5"
+        android:src="@drawable/ic_coupon_expired"
+        android:visibility="gone" />
+</RelativeLayout>

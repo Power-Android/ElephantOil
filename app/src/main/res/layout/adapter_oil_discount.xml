@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:src="@drawable/oil_desc_iv"
-        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginStart="@dimen/dp_2"
         app:layout_constraintStart_toEndOf="@+id/item_title_tv"
         app:layout_constraintTop_toTopOf="parent"/>
