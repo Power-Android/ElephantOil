@@ -45,7 +45,7 @@
                     android:layout_toRightOf="@+id/money_tag"
                     android:text="0"
                     android:textColor="@color/color_6431"
-                    android:textSize="@dimen/sp_25"
+                    android:textSize="@dimen/sp_23"
                     android:textStyle="bold" />
             </RelativeLayout>
 
@@ -53,7 +53,6 @@
                 android:id="@+id/item_use_range_tv"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_6"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="1"

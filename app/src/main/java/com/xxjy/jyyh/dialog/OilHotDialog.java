@@ -44,7 +44,6 @@ public class OilHotDialog extends QMUIFullScreenPopup {
         addView(mBinding.getRoot());
         closeBtn(false);
         skinManager(QMUISkinManager.defaultInstance(mContext));
-
         mBinding.closeIv.setOnClickListener(view -> {
             dismiss();
         });

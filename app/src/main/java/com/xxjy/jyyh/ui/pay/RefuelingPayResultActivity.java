@@ -118,7 +118,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
             @Override
             public void run() {
                 while (!isStop) {
-                    SystemClock.sleep(1000);
+                    SystemClock.sleep(500);
                     runOnUiThread(new Runnable() {
 
                         @Override

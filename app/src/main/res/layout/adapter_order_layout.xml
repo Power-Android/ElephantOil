@@ -25,9 +25,8 @@
         android:layout_marginBottom="@dimen/dp_5"
         android:orientation="vertical"
         android:paddingLeft="@dimen/dp_14"
-        android:paddingTop="@dimen/dp_17"
-
-        android:paddingBottom="@dimen/dp_17"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         app:qmui_backgroundColor="@color/white"
         app:qmui_borderWidth="0dp"
         app:qmui_radius="7dp">
@@ -59,13 +58,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginTop="@dimen/dp_13"
+            android:layout_marginTop="13dp"
             android:background="@color/color_E8" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_13"
+            android:layout_marginTop="13dp"
             android:layout_marginRight="@dimen/dp_14"
             >
 
