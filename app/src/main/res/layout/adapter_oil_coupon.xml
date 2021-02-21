@@ -5,6 +5,7 @@
     android:layout_height="@dimen/dp_80"
     android:layout_marginTop="@dimen/dp_3"
     android:layout_marginBottom="@dimen/dp_3"
+    android:id="@+id/rootView"
     android:background="@color/color_F5">
 
     <LinearLayout
