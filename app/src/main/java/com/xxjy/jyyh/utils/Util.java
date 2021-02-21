@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -178,5 +180,13 @@ public class Util {
 	public static String getVersionName() {
 		String appVersionName = AppUtils.getAppVersionName();
 		return TextUtils.isDigitsOnly(appVersionName) ? "" : appVersionName;
+	}
+	public static String formatDouble(double d) {
+		BigDecimal bg = new BigDecimal(d).setScale(2, RoundingMode.DOWN);
+		double num = bg.doubleValue();
+		if (Math.round(num) - num == 0) {
+			return String.valueOf((long) num);
+		}
+		return String.valueOf(num);
 	}
 }

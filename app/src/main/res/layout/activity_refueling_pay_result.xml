@@ -72,6 +72,7 @@
                     android:paddingTop="@dimen/dp_10"
                     android:paddingLeft="@dimen/dp_10"
                     android:paddingRight="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_20"
                     android:orientation="vertical">
                     <LinearLayout
                         android:id="@+id/top_bg_layout"
@@ -79,7 +80,7 @@
                         android:layout_height="@dimen/dp_260"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:background="@drawable/pay_top_bg">
+                        >
                         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_230"
@@ -154,7 +155,6 @@
                     android:id="@+id/check_bt_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/dp_20"
                     android:paddingBottom="@dimen/dp_20"
                     android:background="@color/white"
                     android:gravity="center"
@@ -194,7 +194,7 @@
                     android:gravity="center"
                     android:visibility="gone"
                     android:orientation="horizontal"
-                    android:paddingTop="@dimen/dp_20"
+
                     android:paddingBottom="@dimen/dp_20">
 
                     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton

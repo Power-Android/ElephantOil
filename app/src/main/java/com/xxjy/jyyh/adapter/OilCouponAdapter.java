@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.utils.GlideUtils;
+import com.xxjy.jyyh.utils.Util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,9 +32,9 @@ public class OilCouponAdapter extends BaseQuickAdapter<CouponBean, BaseViewHolde
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, CouponBean item) {
-        helper.setText(R.id.item_coupon_amount, formatDouble(Double.parseDouble(item.getAmountReduce())))
+        helper.setText(R.id.item_coupon_amount, Util.formatDouble(Double.parseDouble(item.getAmountReduce())))
                 .setText(R.id.item_use_range_tv, TextUtils.isEmpty(item.getAmount()) ||
-                        Double.parseDouble(item.getAmount()) == 0 ? "无门槛" : String.format("满%s元可用", item.getAmount()))
+                        Double.parseDouble(item.getAmount()) == 0 ? "无门槛" : String.format("满%s元可用", Util.formatDouble(Double.parseDouble(item.getAmount()))))
                 .setText(R.id.item_title_tv, item.getName())
                 .setText(R.id.item_coupon_date, String.format("%s - %s", item.getStartTime(), item.getEndTime()))
                 .addOnClickListener(R.id.rootView);
@@ -67,12 +68,4 @@ public class OilCouponAdapter extends BaseQuickAdapter<CouponBean, BaseViewHolde
         }
     }
 
-    private String formatDouble(double d) {
-        BigDecimal bg = new BigDecimal(d).setScale(2, RoundingMode.UP);
-        double num = bg.doubleValue();
-        if (Math.round(num) - num == 0) {
-            return String.valueOf((long) num);
-        }
-        return String.valueOf(num);
-    }
 }
