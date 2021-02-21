@@ -42,6 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/item_status_view"
                 android:layout_marginRight="@dimen/dp_10"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:text=""
                 android:textColor="@color/color_34"
                 android:textStyle="bold"
