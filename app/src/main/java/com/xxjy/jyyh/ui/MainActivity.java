@@ -77,6 +77,8 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                 UserConstants.setGoneIntegral(true);
                 mBinding.navView.getMenu().removeItem(R.id.navigation_home);
                 mBinding.navView.getMenu().removeItem(R.id.navigation_integral);
+            }else{
+                UserConstants.setGoneIntegral(false);
             }
         });
         //新老用户展示tab判断

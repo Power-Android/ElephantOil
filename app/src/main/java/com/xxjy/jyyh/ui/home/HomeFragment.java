@@ -161,7 +161,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             if (UserConstants.getIsLogin()) {
                 mViewModel.getOftenOils();
             }
-            mBinding.oftenOilRecyclerView.setVisibility(UserConstants.getIsLogin() ? View.VISIBLE :View.GONE);
+//            mBinding.oftenOilRecyclerView.setVisibility(UserConstants.getIsLogin() ? View.VISIBLE :View.GONE);
         }
     }
 

@@ -25,6 +25,7 @@ public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, Abo
         mBinding.titleLayout.tvTitle.setText("关于我们");
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
+        mBinding.versionNameView.setText(Util.getVersionName());
     }
 
     @Override
