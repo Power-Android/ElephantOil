@@ -11,6 +11,7 @@ import com.xxjy.jyyh.dialog.CheckVersionDialog;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.Util;
+import com.xxjy.jyyh.utils.toastlib.Toasty;
 
 public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, AboutUsViewModel> {
 
@@ -25,7 +26,7 @@ public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, Abo
         mBinding.titleLayout.tvTitle.setText("关于我们");
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
-        mBinding.versionNameView.setText(Util.getVersionName());
+        mBinding.versionNameView.setText("V"+Util.getVersionName());
     }
 
     @Override
@@ -66,6 +67,8 @@ public class AboutUsActivity extends BindingActivity<ActivityAboutUsBinding, Abo
                 //是否强制更新，0：否，1：是
                 CheckVersionDialog checkVersionDialog = new CheckVersionDialog(this,data);
                 checkVersionDialog.show();
+            }else{
+                Toasty.info(this,"已是最新版本").show();
             }
 
         });

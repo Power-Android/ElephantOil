@@ -165,7 +165,7 @@ public class VersionUpDialog extends BaseDialog {
             }
         }
         lineProgress.setVisibility(View.VISIBLE);
-        String destPath = sdPath + "/runElephant.apk";
+        String destPath = sdPath + "/elephantoil.apk";
         RxHttp.get(version.getUrl())
                 .asDownload(destPath, AndroidSchedulers.mainThread(), progress -> {
                     //下载进度回调,0-100，仅在进度有更新时才会回调，最多回调101次，最后一次回调文件存储路径
@@ -192,7 +192,7 @@ public class VersionUpDialog extends BaseDialog {
 
 
     private void install() {
-        File file = new File(sdPath, "runElephant.apk");
+        File file = new File(sdPath, "elephantoil.apk");
         AppUtils.installApp(file);
     }
 }
