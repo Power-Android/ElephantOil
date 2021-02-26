@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp_12"
+    android:layout_marginRight="@dimen/dp_12"
+    android:layout_marginBottom="@dimen/dp_8">
+
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp_100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:qmui_backgroundColor="@color/white"
+        app:qmui_borderWidth="@dimen/dp_0"
+        app:qmui_radius="@dimen/dp_8">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dp_15"
+            >
+
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/item_oil_img"
+                android:layout_width="@dimen/dp_77"
+                android:layout_height="@dimen/dp_77"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_img_bg"
+                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:riv_corner_radius="@dimen/dp_5" />
+
+            <TextView
+                android:id="@+id/item_name_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/common_margin"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="商铺名称"
+                android:textColor="@color/color_35"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/item_oil_img"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/item_address_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/common_margin"
+                android:layout_marginTop="@dimen/dp_4"
+                android:layout_marginEnd="@dimen/common_margin"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="商铺地址"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/sp_11"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_oil_img"
+                app:layout_constraintTop_toBottomOf="@+id/item_name_tv" />
+
+            <LinearLayout
+                android:id="@+id/navigation_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/common_margin"
+                android:paddingTop="@dimen/common_margin"
+                android:paddingEnd="@dimen/common_margin"
+                app:layout_constraintTop_toTopOf="@+id/float_layout"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_13"
+                    android:layout_height="@dimen/dp_13"
+                    android:src="@drawable/navigation_iv" />
+
+                <TextView
+                    android:id="@+id/item_navigation_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="end"
+                    android:singleLine="true"
+                    android:includeFontPadding="false"
+                    android:text="0.00KM"
+                    android:textColor="@color/color_55"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
+
+            <com.qmuiteam.qmui.widget.QMUIFloatLayout
+                android:id="@+id/float_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/common_margin"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginEnd="@dimen/common_margin"
+                android:gravity="left"
+                app:qmui_maxNumber="4"
+                app:qmui_childHorizontalSpacing="@dimen/dp_5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_oil_img"
+                app:layout_constraintTop_toBottomOf="@+id/item_address_tv" />
+
+            <ImageView
+                android:id="@+id/type_view"
+                android:layout_width="@dimen/dp_51"
+                android:layout_height="@dimen/dp_22"
+                android:src="@drawable/ic_xx_yx"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

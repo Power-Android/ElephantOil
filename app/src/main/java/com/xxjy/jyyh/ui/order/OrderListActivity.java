@@ -50,11 +50,14 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
 
     private View refuelOrderLayout;
     private View integralOrderLayout;
+    private View localLifeOrderLayout;
 
     private RecyclerView mRefuelOrderRecyclerView;
     private RecyclerView mIntegralOrderRecyclerView;
+    private RecyclerView mLifeOrderRecyclerView;
     private SmartRefreshLayout mRefuelOrderRefreshView;
     private SmartRefreshLayout mIntegralOrderRefreshView;
+    private SmartRefreshLayout mLifeOrderRefreshView;
 
     private OrderDetailsViewModel orderDetailsViewModel;
 
@@ -79,8 +82,10 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
         initTab();
         refuelOrderLayout = View.inflate(this, R.layout.refuel_order_list, null);
         integralOrderLayout = View.inflate(this, R.layout.refuel_order_list, null);
+        localLifeOrderLayout = View.inflate(this, R.layout.refuel_order_list, null);
         mViewList.add(refuelOrderLayout);
         mViewList.add(integralOrderLayout);
+        mViewList.add(localLifeOrderLayout);
         MyViewPagerAdapter viewPagerAdapter = new MyViewPagerAdapter(titles, mViewList);
         mBinding.viewPager.setOffscreenPageLimit(1);
         mBinding.viewPager.setAdapter(viewPagerAdapter);
@@ -108,6 +113,7 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
     protected void initListener() {
         mBinding.interestsBt.setOnClickListener(this::onViewClicked);
         mBinding.oilBt.setOnClickListener(this::onViewClicked);
+        mBinding.lifeBt.setOnClickListener(this::onViewClicked);
         mBinding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -116,11 +122,12 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 0) {
-                    isOilOrder = true;
-                } else {
-                    isOilOrder = false;
-                }
+//                if (position == 0) {
+//                    isOilOrder = true;
+//                } else {
+//                    isOilOrder = false;
+//                }
+                type =position;
                 changeBt();
             }
 
@@ -200,16 +207,22 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
     protected void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.oil_bt:
-                isOilOrder = true;
+//                isOilOrder = true;
+                type = 0;
                 changeBt();
 //                loadData();
                 mBinding.viewPager.setCurrentItem(0);
                 break;
             case R.id.interests_bt:
-                isOilOrder = false;
+//                isOilOrder = false;
+                type = 1;
                 changeBt();
 //                loadData();
                 mBinding.viewPager.setCurrentItem(1);
+                break;
+            case R.id.life_bt:
+                type = 2;
+                changeBt();
                 break;
         }
 
@@ -324,16 +337,31 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
     }
 
     private void changeBt() {
-        if (isOilOrder) {
-            mBinding.oilBt.setBackgroundColor(Color.parseColor("#1676FF"));
-            mBinding.oilBt.setTextColor(Color.parseColor("#FFFFFF"));
-            mBinding.interestsBt.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            mBinding.interestsBt.setTextColor(Color.parseColor("#1676FF"));
-        } else {
-            mBinding.oilBt.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            mBinding.oilBt.setTextColor(Color.parseColor("#1676FF"));
-            mBinding.interestsBt.setBackgroundColor(Color.parseColor("#1676FF"));
-            mBinding.interestsBt.setTextColor(Color.parseColor("#FFFFFF"));
+        switch (type){
+            case 0:
+                mBinding.oilBt.setBackgroundColor(Color.parseColor("#1676FF"));
+                mBinding.oilBt.setTextColor(Color.parseColor("#FFFFFF"));
+                mBinding.interestsBt.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                mBinding.interestsBt.setTextColor(Color.parseColor("#1676FF"));
+                mBinding.lifeBt.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                mBinding.lifeBt.setTextColor(Color.parseColor("#1676FF"));
+                break;
+            case 1:
+                mBinding.oilBt.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                mBinding.oilBt.setTextColor(Color.parseColor("#1676FF"));
+                mBinding.interestsBt.setBackgroundColor(Color.parseColor("#1676FF"));
+                mBinding.interestsBt.setTextColor(Color.parseColor("#FFFFFF"));
+                mBinding.lifeBt.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                mBinding.lifeBt.setTextColor(Color.parseColor("#1676FF"));
+                break;
+            case 2:
+                mBinding.oilBt.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                mBinding.oilBt.setTextColor(Color.parseColor("#1676FF"));
+                mBinding.interestsBt.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                mBinding.interestsBt.setTextColor(Color.parseColor("#1676FF"));
+                mBinding.lifeBt.setBackgroundColor(Color.parseColor("#1676FF"));
+                mBinding.lifeBt.setTextColor(Color.parseColor("#FFFFFF"));
+                break;
         }
     }
 

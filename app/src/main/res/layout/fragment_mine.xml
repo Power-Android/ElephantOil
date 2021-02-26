@@ -299,6 +299,32 @@
                                 android:textColor="@color/color_34"
                                 android:textSize="@dimen/sp_12" />
                         </LinearLayout>
+                        <View
+                            android:layout_width="@dimen/dp_0_5"
+                            android:layout_height="@dimen/dp_35"
+                            android:background="@color/color_EE" />
+
+                        <LinearLayout
+                            android:id="@+id/local_life_order_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/dp_23"
+                                android:layout_height="@dimen/dp_20"
+                                android:src="@drawable/ic_local_life" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_9"
+                                android:text="生活订单"
+                                android:textColor="@color/color_34"
+                                android:textSize="@dimen/sp_12" />
+                        </LinearLayout>
                     </LinearLayout>
 
                 </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>

@@ -39,6 +39,7 @@ import com.tencent.smtt.sdk.WebViewClient;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.HomeOftenAdapter;
+import com.xxjy.jyyh.adapter.LocalLifeListAdapter;
 import com.xxjy.jyyh.adapter.OilGunAdapter;
 import com.xxjy.jyyh.adapter.OilNumAdapter;
 import com.xxjy.jyyh.adapter.OilStationFlexAdapter;
@@ -123,6 +124,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     private int mOilNoPosition, mOilGunPosition;
     private boolean isShowAmount = false;
+
+    private LocalLifeListAdapter localLifeListAdapter;//本地生活
 
 
     /**
@@ -230,6 +233,21 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.getHomeProduct();
         loadBanner();
         initWebViewClient();
+        loadLocalLife();
+    }
+
+    private void loadLocalLife() {
+        mBinding.localLifeRecyclerView.setLayoutManager( new LinearLayoutManager(getActivity()));
+        List<String> data = new ArrayList<>();
+        data.add("aaaaaaaaaaaa");
+        data.add("aaaaaaaaaaaa");
+        data.add("aaaaaaaaaaaa");
+        data.add("aaaaaaaaaaaa");
+        data.add("aaaaaaaaaaaa");
+        localLifeListAdapter = new LocalLifeListAdapter(R.layout.adapter_local_life_list,data);
+        mBinding.localLifeRecyclerView.setAdapter(localLifeListAdapter);
+
+
     }
 
     private void loadBanner() {

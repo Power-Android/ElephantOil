@@ -108,6 +108,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     protected void initListener() {
         mBinding.equityOrderLayout.setOnClickListener(this::onViewClicked);
         mBinding.refuelingOrderLayout.setOnClickListener(this::onViewClicked);
+        mBinding.localLifeOrderLayout.setOnClickListener(this::onViewClicked);
         mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
         mBinding.customerServiceView.setOnClickListener(this::onViewClicked);
         mBinding.settingView.setOnClickListener(this::onViewClicked);
@@ -116,7 +117,6 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.myCouponLayout.setOnClickListener(this::onViewClicked);
         mBinding.balanceLayout.setOnClickListener(this::onViewClicked);
         mBinding.integralLayout.setOnClickListener(this::onViewClicked);
-
     }
 
     @Override
@@ -130,6 +130,9 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                         break;
                     case R.id.refueling_order_layout:
                         getActivity().startActivity(new Intent(getContext(), OrderListActivity.class).putExtra("type",0));
+                        break;
+                    case R.id.local_life_order_layout:
+                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class).putExtra("type",2));
                         break;
                     case R.id.customer_service_view:
                         if(customerServiceDialog==null){
