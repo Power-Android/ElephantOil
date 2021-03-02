@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F5"
+    tools:context=".ui.oil.OilDetailActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.youth.banner.Banner
+                android:id="@+id/top_banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_180"
+                app:banner_auto_loop="true"
+                app:banner_indicator_height="@dimen/dp_3"
+                app:banner_indicator_margin="@dimen/dp_3"
+                app:banner_indicator_marginBottom="@dimen/dp_25"
+                app:banner_indicator_normal_color="@color/color_9A"
+                app:banner_indicator_normal_width="@dimen/dp_6"
+                app:banner_indicator_selected_color="@color/white"
+                app:banner_indicator_selected_width="@dimen/dp_6"
+                app:banner_loop_time="5000"
+                app:banner_radius="@dimen/dp_8"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.tencent.smtt.sdk.WebView
+                android:id="@+id/pay_web_view"
+                android:layout_width="0.1px"
+                android:layout_height="0.1px"
+                android:background="@color/transparent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/back_iv"
+                android:layout_width="@dimen/dp_38"
+                android:layout_height="@dimen/dp_35"
+                android:paddingStart="@dimen/common_margin"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingEnd="@dimen/common_margin"
+                android:paddingBottom="@dimen/dp_10"
+                android:src="@drawable/arrow_back_white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_banner"
+                android:layout_marginTop="-20dp"
+                android:background="@drawable/shape_white_top_17radius">
+
+                <TextView
+                    android:id="@+id/hotel_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_13"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="耙斗机丶湘菜馆"
+                    android:textColor="@color/color_1111"
+                    android:textSize="@dimen/sp_18"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/address_cl"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_56"
+                    android:layout_marginTop="@dimen/dp_13"
+                    android:background="@drawable/restaurant_navigation_bg"
+                    app:layout_constraintTop_toBottomOf="@+id/hotel_name">
+
+                    <TextView
+                        android:id="@+id/address_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:singleLine="true"
+                        android:text="北京市朝阳区十八里店"
+                        android:textColor="@color/color_1111"
+                        android:textSize="@dimen/sp_12"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/distance_tv"
+                        app:layout_constraintEnd_toStartOf="@+id/navigation_rl"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <TextView
+                        android:id="@+id/distance_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:includeFontPadding="false"
+                        android:text="距离您10.96km"
+                        android:textColor="@color/color_70"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/address_tv"
+                        app:layout_constraintTop_toBottomOf="@id/address_tv" />
+
+                    <RelativeLayout
+                        android:id="@+id/navigation_rl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingStart="@dimen/sp_20"
+                        android:paddingEnd="@dimen/dp_20"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <View
+                            android:layout_width="@dimen/dp_45"
+                            android:layout_height="@dimen/dp_14"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/navigation_hotel_bg" />
+                    </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/tel_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/common_margin"
+                    android:paddingBottom="@dimen/common_margin"
+                    app:layout_constraintTop_toBottomOf="@+id/address_cl">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/tel_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_5"
+                            android:layout_marginEnd="@dimen/dp_5"
+                            android:text="联系电话：17666663333"
+                            android:textColor="@color/color_34"
+                            android:textSize="@dimen/sp_12" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/arrow_right_gray_light" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_15"
+                            android:src="@drawable/time_icom" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_5"
+                            android:layout_marginEnd="@dimen/dp_5"
+                            android:text="营业时间：09:00-22:00"
+                            android:textColor="@color/color_34"
+                            android:textSize="@dimen/sp_12" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tag_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/dp_20"
+                    android:paddingEnd="@dimen/dp_20"
+                    app:layout_constraintTop_toBottomOf="@+id/tel_ll" />
+
+                <LinearLayout
+                    android:id="@+id/expand_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10"
+                    app:layout_constraintTop_toBottomOf="@+id/tag_recycler_view">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="展开全部"
+                        android:textColor="@color/color_99"
+                        android:textSize="@dimen/sp_10" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_8"
+                        android:layout_height="@dimen/dp_5"
+                        android:layout_marginStart="@dimen/dp_3"
+                        android:src="@drawable/arrow_down_gray" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/layout_1"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/dp_65"
+                android:background="@color/color_F0"
+                android:minHeight="@dimen/dp_500">
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:text="输入消费金额"
+                    android:textColor="@color/color_76FF"
+                    android:textSize="@dimen/sp_16"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:text="请您务必与服务员确认后在店内支付"
+                    android:textColor="@color/color_6431"
+                    android:textSize="@dimen/sp_11"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv1" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/amount_input_cl"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:background="@drawable/shape_stroke_blue_4radius"
+                    app:layout_constraintTop_toBottomOf="@+id/tv4">
+
+                    <EditText
+                        android:id="@+id/amount_et"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_3"
+                        android:layout_marginEnd="@dimen/dp_12"
+                        android:background="@null"
+                        android:hint="消费总额"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal|number"
+                        android:maxLength="5"
+                        android:paddingLeft="@dimen/dp_13"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/color_34"
+                        android:textColorHint="@color/color_34"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/liter_tv"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/liter_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dp_12"
+                        android:gravity="center"
+                        android:text="询问服务员后输入"
+                        android:textColor="@color/color_B1"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/discount_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:background="@drawable/shape_white_4raduis"
+                    android:paddingTop="@dimen/dp_5"
+                    android:paddingBottom="@dimen/dp_5"
+                    app:layout_constraintTop_toBottomOf="@+id/amount_input_cl" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_65"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/current_price_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:text="实付：¥0.00"
+            android:textColor="@color/color_34"
+            android:textSize="@dimen/sp_18"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/discount_price_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/discount_price_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:includeFontPadding="false"
+            android:text="已优惠：¥0.00"
+            android:textColor="@color/color_070D"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/current_price_tv"
+            app:layout_constraintTop_toBottomOf="@+id/current_price_tv" />
+
+        <TextView
+            android:id="@+id/create_order_tv"
+            android:layout_width="@dimen/dp_135"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:background="@drawable/selector_query_check_bg"
+            android:enabled="false"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="确认支付"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

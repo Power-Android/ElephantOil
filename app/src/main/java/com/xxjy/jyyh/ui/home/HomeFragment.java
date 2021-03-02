@@ -74,6 +74,7 @@ import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.pay.PayQueryActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
+import com.xxjy.jyyh.ui.restaurant.RestaurantActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
@@ -247,7 +248,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         localLifeListAdapter = new LocalLifeListAdapter(R.layout.adapter_local_life_list,data);
         mBinding.localLifeRecyclerView.setAdapter(localLifeListAdapter);
 
-
+        localLifeListAdapter.setOnItemClickListener((adapter, view, position) ->
+                startActivity(new Intent(mContext, RestaurantActivity.class)));
     }
 
     private void loadBanner() {

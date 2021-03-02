@@ -55,7 +55,9 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.restaurant.RestaurantActivity"></activity>
         <activity android:name=".ui.order.LifeOrderDetailsActivity"></activity>
+
         <activity
             android:name=".ui.WelcomeActivity"
             android:screenOrientation="portrait"
