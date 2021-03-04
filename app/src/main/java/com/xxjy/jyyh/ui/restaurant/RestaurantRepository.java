@@ -65,7 +65,7 @@ public class RestaurantRepository extends BaseRepository {
     }
 
     public void getBusinessCoupon(String amount, String gasId, String oilNo, MutableLiveData<List<CouponBean>> couponLiveData) {
-        addDisposable(RxHttp.postForm(ApiService.PLATFORM_COUPON)
+        addDisposable(RxHttp.postForm(ApiService.BUSINESS_COUPON)
                 .add("canUse", "1")
                 .add("amount", amount)
                 .add(Constants.GAS_STATION_ID, gasId)

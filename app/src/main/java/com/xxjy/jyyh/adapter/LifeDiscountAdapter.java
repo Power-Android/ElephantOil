@@ -43,7 +43,7 @@ public class LifeDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Bas
                         .setTextColor(R.id.item_discount_tv, item.getFallAmount() > 0 ?
                                 mContext.getResources().getColor(R.color.color_27) :
                                 mContext.getResources().getColor(R.color.color_B1))
-                        .setText(R.id.item_title_tv, "优惠合计");
+                        .setText(R.id.item_title_tv, "直降优惠");
                 discountTv.setCompoundDrawables(null, null, null, null);
                 helper.addOnClickListener(R.id.item_title_desc);
                 break;

@@ -36,6 +36,10 @@ public class OilPayTypeAdapter extends BaseQuickAdapter<OilPayTypeEntity, BaseVi
                 helper.setImageResource(R.id.item_pay_type_iv, R.drawable.wechat_icon)
                         .setText(R.id.item_title_tv, "微信支付");
                 break;
+            case "wxapp"://微信H5
+                helper.setImageResource(R.id.item_pay_type_iv, R.drawable.wechat_icon)
+                        .setText(R.id.item_title_tv, "微信支付");
+                break;
             case "wxjsapi"://微信公众号
                 helper.setImageResource(R.id.item_pay_type_iv, R.drawable.wechat_icon)
                         .setText(R.id.item_title_tv, "微信支付");

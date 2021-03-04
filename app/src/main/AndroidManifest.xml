@@ -55,9 +55,10 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.restaurant.RestaurantActivity"
+        <activity
+            android:name=".ui.restaurant.RestaurantActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateUnspecified|adjustPan"></activity>
+            android:windowSoftInputMode="stateUnspecified|adjustPan"/>
 
         <activity
             android:name=".ui.WelcomeActivity"

@@ -1,6 +1,5 @@
 package com.xxjy.jyyh.ui.restaurant;
 
-import android.content.Context;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,10 +17,6 @@ import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIFloatLayout;
 import com.xxjy.jyyh.R;
@@ -64,7 +59,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
     private LifeDiscountAdapter mDiscountAdapter;
     private String mGasId;
     private String mOilNo;
-    private String mGunNoPosition;
+    private String mGunNo;
     private OilEntity.StationsBean mStationsBean;
     private OilEntity.StationsBean.OilPriceListBean mOilPriceListBean;
     List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBeanList;
@@ -107,6 +102,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
     public void onStart() {
         super.onStart();
         showJump(mPayOrderEntity);
+        refreshData();
     }
     @Override
     public void onDestroy() {
@@ -196,7 +192,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
             if (platformCoupons.size() > 0 && position == 1 ||
                     businessCoupons.size() > 0 && position == 2) {
                 UiUtils.canClickViewStateDelayed(view, 1000);
-                showCouponDialog(mStationsBean, mBinding.amountEt.getText().toString(), mOilNo, mGunNoPosition, position == 1);
+                showCouponDialog(mStationsBean, mBinding.amountEt.getText().toString(), "0", "0", position == 1);
             }
         });
 
@@ -347,7 +343,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
                         mMultiplePriceBean.getDuePrice(),
                         mMultiplePriceBean.getBalancePrice(),
                         mGasId,
-                        mGunNoPosition,
+                        mGunNo,
                         mOilNo,
                         mOilPriceListBean.getOilName(),
                         mStationsBean.getGasName(),
@@ -382,6 +378,13 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
 
     @Override
     protected void dataObservable() {
+        mViewModel.loadingView().observe(this, aBoolean -> {
+            if (aBoolean) {
+                showLoadingDialog();
+            } else {
+                dismissLoadingDialog();
+            }
+        });
         mViewModel.storeLiveData.observe(this, data -> {
             if (data != null) {
                 mStationsBean = data;
@@ -393,7 +396,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
                     //再次进来时需要刷新数据
                     getMultiplePrice(platId, businessAmount);
                     if (mStationsBean.getOilPriceList().get(0).getGunNos().size() > 0) {
-                        mGunNoPosition = String.valueOf(mStationsBean.getOilPriceList().get(0).getGunNos().get(0).getGunNo());
+                        mGunNo = String.valueOf(mStationsBean.getOilPriceList().get(0).getGunNos().get(0).getGunNo());
                     }
                 }
                 mBinding.hotelName.setText(data.getGasName());
@@ -500,7 +503,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
             mDiscountAdapter.notifyDataSetChanged();
         });
 
-        mViewModel.platformLiveData.observe(this, couponBeans -> {
+        mViewModel.businessCouponLiveData.observe(this, couponBeans -> {
             if (couponBeans != null && couponBeans.size() > 0) {
                 businessCoupons = couponBeans;
                 mDiscountAdapter.getData().get(2).setBusinessDesc("请选择优惠券");
@@ -510,7 +513,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
             mDiscountAdapter.notifyDataSetChanged();
         });
         mViewModel.createOrderLiveData.observe(this, orderId -> {
-            showPayDialog(mStationsBean, oilPriceListBeanList, Integer.valueOf(mOilNo), Integer.valueOf(mGunNoPosition), orderId, mMultiplePriceBean.getDuePrice());
+            showPayDialog(mStationsBean, oilPriceListBeanList, 0, 0, orderId, mMultiplePriceBean.getDuePrice());
         });
         //支付结果回调
         mHomeViewModel.payOrderLiveData.observe(this, payOrderEntity -> {
@@ -518,6 +521,9 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
                 switch (payOrderEntity.getPayType()) {
                     case PayTypeConstants.PAY_TYPE_WEIXIN://微信H5
                         WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
+                        break;
+                    case PayTypeConstants.PAY_TYPE_WEIXIN_APP://微信原生
+//                        WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
                         break;
                     case PayTypeConstants.PAY_TYPE_WEIXIN_XCX://微信小程序
                         WXSdkManager.newInstance().useWXLaunchMiniProgramToPay(this, payOrderEntity.getOrderNo());
