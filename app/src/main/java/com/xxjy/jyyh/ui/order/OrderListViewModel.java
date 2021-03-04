@@ -19,10 +19,14 @@ public class OrderListViewModel extends BaseViewModel<OrderListRepository> {
 
     public MutableLiveData<List<RefuelOrderBean>> refuelOrderListLiveData = new MutableLiveData<>();
     public MutableLiveData<List<IntegralOrderBean>> integralOrderListLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<RefuelOrderBean>> lifeOrderListLiveData = new MutableLiveData<>();
     public void refuelOrderList(int status,int pageNum,int pageSize) {
         mRespository.refuelOrderList(refuelOrderListLiveData, status, pageNum, pageSize);
     }
     public void integralOrderList(int status,int pageNum,int pageSize) {
         mRespository.integralOrderList(integralOrderListLiveData, status, pageNum, pageSize);
+    }
+    public void lifeOrderList(int status,int pageNum,int pageSize) {
+        mRespository.lifeOrderList(lifeOrderListLiveData, status, pageNum, pageSize);
     }
 }

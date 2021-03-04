@@ -146,4 +146,14 @@ public class HomeRepository extends BaseRepository {
                 .subscribe(oilDistanceEntity -> distanceLiveData.postValue(oilDistanceEntity))
         );
     }
+    public void getStoreList(int pageNum,int pageSize, MutableLiveData<List<OilEntity.StationsBean>> storeLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.GET_STORE_LIST)
+                .add("pageNum",pageNum)
+                .add("pageSize",pageSize)
+                .add(Constants.LATITUDE, UserConstants.getLatitude())
+                .add(Constants.LONGTIDUE, UserConstants.getLongitude())
+                .asResponseList(OilEntity.StationsBean.class)
+                .subscribe(data -> storeLiveData.postValue(data))
+        );
+    }
 }

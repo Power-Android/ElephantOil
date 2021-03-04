@@ -118,4 +118,12 @@ public class ApiService {
     public static final String IS_NEW_USER = "api/gasPublic/isNewUser";
     //极光ID
     public static final String GET_JPUSH_ID_URL =  "api/v1/user/getJPushId";
+
+    //本地生活 门店列表
+    public static final String GET_STORE_LIST =  "api/localLife/getStoreList";
+    //本地生活 门店详情
+    public static final String GET_STORE_INFO =  "api/localLife/getStoreInfo";
+    //本地生活 订单列表
+    public static final String GET_STORE_ORDER_LIST =  "api/localLife/orderList";
+
 }

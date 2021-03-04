@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.blankj.utilcode.util.AdaptScreenUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -25,16 +26,16 @@ import com.xxjy.jyyh.entity.OilEntity;
 import java.util.List;
 
 
-public class LocalLifeListAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class LocalLifeListAdapter extends BaseQuickAdapter<OilEntity.StationsBean, BaseViewHolder> {
 
-    public LocalLifeListAdapter(int layoutResId, @Nullable List<String> data) {
+    public LocalLifeListAdapter(int layoutResId, @Nullable List<OilEntity.StationsBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, String item) {
+    protected void convert(@NonNull BaseViewHolder helper, OilEntity.StationsBean item) {
 
-
+//
 //        if (!item.isIsSign()) {
 //            helper.setTextColor(R.id.item_name_tv, Color.parseColor("#323334"))
 //                    .setTextColor(R.id.item_address_tv, Color.parseColor("#A0A0A0"))
@@ -56,40 +57,39 @@ public class LocalLifeListAdapter extends BaseQuickAdapter<String, BaseViewHolde
 //            helper.getView(R.id.type_view).setVisibility(View.VISIBLE);
 //
 //        }
-//
+
 //        ((TextView) helper.getView(R.id.item_original_tv)).getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-//        Glide.with(mContext)
-//                .load(item.getGasTypeImg())
-//                .override(AdaptScreenUtils.pt2Px(67),AdaptScreenUtils.pt2Px(67))
-//                .skipMemoryCache(true)
-//                .diskCacheStrategy(DiskCacheStrategy.DATA)
-//                .apply(new RequestOptions()
-//                        .error(R.drawable.default_img_bg)
-//                )
-//                .into((ImageView) helper.getView(R.id.item_oil_img));
-//        helper.setText(R.id.item_name_tv, item.getGasName())
-//                .setText(R.id.item_address_tv, item.getGasAddress())
-//                .setText(R.id.item_navigation_tv, item.getDistance() + "KM")
+        Glide.with(mContext)
+                .load(item.getGasTypeImg())
+                .override(AdaptScreenUtils.pt2Px(67),AdaptScreenUtils.pt2Px(67))
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .apply(new RequestOptions()
+                        .error(R.drawable.default_img_bg)
+                )
+                .into((ImageView) helper.getView(R.id.item_oil_img));
+        helper.setText(R.id.item_name_tv, item.getGasName())
+                .setText(R.id.item_address_tv, item.getGasAddress())
+                .setText(R.id.item_navigation_tv, item.getDistance() + "KM")
 //                .setText(R.id.item_actual_tv, item.getPriceYfq())
 //                .setText(R.id.oil_num_view, item.getOilName())
 //                .setText(R.id.item_original_tv, "¥" + item.getPriceGun())
-//                .addOnClickListener(R.id.navigation_ll);
+                .addOnClickListener(R.id.navigation_ll);
 
 
         ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
-//        if (item.getCzbLabels() != null&&item.getCzbLabels().size()>0) {
-//            for (OilEntity.StationsBean.CzbLabelsBean lab :
-//                    item.getCzbLabels()) {
-//                addTagView(mContext, lab.getTagIndexDescription(),
-//                        (QMUIFloatLayout) helper.getView(R.id.float_layout));
-//            }
-//            helper.getView(R.id.float_layout).setVisibility(View.VISIBLE);
-//        }else{
-        helper.getView(R.id.float_layout).setVisibility(View.VISIBLE);
-//        }
+        if (item.getCzbLabels() != null&&item.getCzbLabels().size()>0) {
+            for (OilEntity.StationsBean.CzbLabelsBean lab :
+                    item.getCzbLabels()) {
+                addTagView(mContext, lab.getTagIndexDescription(),
+                        (QMUIFloatLayout) helper.getView(R.id.float_layout));
+            }
+            helper.getView(R.id.float_layout).setVisibility(View.VISIBLE);
+        }else{
+        helper.getView(R.id.float_layout).setVisibility(View.GONE);
+        }
         helper.addOnClickListener(R.id.navigation_ll);
 
-        addTagView(mContext, "11111111111111", (QMUIFloatLayout) helper.getView(R.id.float_layout));
     }
 
     private void addTagView(Context context, String content, QMUIFloatLayout floatLayout) {

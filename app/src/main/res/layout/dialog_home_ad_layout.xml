@@ -8,7 +8,7 @@
         android:id="@+id/content_layout"
         android:layout_width="@dimen/dp_320"
         android:layout_height="@dimen/dp_400"
-        android:background="@drawable/shape_white_6raduis"
+        android:background="@drawable/shape_transparent_6raduis"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

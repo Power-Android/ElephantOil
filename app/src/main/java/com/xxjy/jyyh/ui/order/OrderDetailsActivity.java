@@ -151,6 +151,14 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             mBinding.serviceChargeView.setText("+¥"+data.getServiceChargeAmount());
             mBinding.timeView.setText(data.getBuyTime());
 
+           switch (data.getType()){
+               case 1:
+                   mBinding.numLayout.setVisibility(View.VISIBLE);
+                   break;
+               case 2:
+                   mBinding.numLayout.setVisibility(View.GONE);
+                   break;
+           }
             switch (data.getStatus()) {
                 case 0:
                     mBinding.orderManageLayout.setVisibility(View.GONE);

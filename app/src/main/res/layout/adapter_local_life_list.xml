@@ -117,6 +117,7 @@
                 android:gravity="left"
                 app:qmui_maxNumber="4"
                 app:qmui_childHorizontalSpacing="@dimen/dp_5"
+                app:qmui_childVerticalSpacing="@dimen/dp_5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_oil_img"
                 app:layout_constraintTop_toBottomOf="@+id/item_address_tv" />

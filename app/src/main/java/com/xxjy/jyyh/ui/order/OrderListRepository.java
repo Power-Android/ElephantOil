@@ -30,4 +30,13 @@ public class OrderListRepository extends BaseRepository {
                 .subscribe(data -> integralOrderListLiveData.postValue(data))
         );
     }
+    public void lifeOrderList(MutableLiveData<List<RefuelOrderBean>> lifeOrderListLiveData, int status, int pageNum, int pageSize){
+        addDisposable(RxHttp.postForm(ApiService.GET_STORE_ORDER_LIST)
+                .add("status",status==-1?"":status)
+                .add("pageNum",pageNum)
+                .add("pageSize",pageSize)
+                .asResponseList(RefuelOrderBean.class)
+                .subscribe(data -> lifeOrderListLiveData.postValue(data))
+        );
+    }
 }

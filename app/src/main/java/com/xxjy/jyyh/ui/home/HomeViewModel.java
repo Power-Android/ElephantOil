@@ -29,6 +29,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<List<HomeProductEntity.FirmProductsVoBean>> productLiveData = new MutableLiveData<>();
     public MutableLiveData<PayOrderEntity> payOrderLiveData = new MutableLiveData<>();
     public MutableLiveData<OilDistanceEntity> distanceLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<OilEntity.StationsBean>> storeLiveData = new MutableLiveData<>();
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -60,5 +61,9 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void checkDistance(String gasId) {
         mRespository.checkDistance(gasId, distanceLiveData);
+    }
+
+    public void getStoreList(int pageNum,int pageSize){
+        mRespository.getStoreList( pageNum, pageSize,storeLiveData);
     }
 }

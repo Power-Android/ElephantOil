@@ -1,11 +1,15 @@
 package com.xxjy.jyyh.utils;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.xxjy.jyyh.base.BaseActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -188,5 +192,28 @@ public class Util {
 			return String.valueOf((long) num);
 		}
 		return String.valueOf(num);
+	}
+	/**
+	 * 跳转拨打电话界面
+	 *
+	 * @param activity
+	 * @param phoneNumber
+	 * @return
+	 */
+	public static boolean toDialPhoneAct(Context activity, String phoneNumber) {
+		if (TextUtils.isEmpty(phoneNumber)) {
+			return false;
+		}
+		try {
+			Uri phoneUri = Uri.parse("tel:" + phoneNumber);
+			Intent intent = new Intent(Intent.ACTION_DIAL, phoneUri);
+			if (intent.resolveActivity(activity.getPackageManager()) != null) {
+				activity.startActivity(intent);
+				return true;
+			}
+		} catch (Exception e) {
+		}
+		((BaseActivity)activity).showToastWarning("您的设备无法拨打电话");
+		return false;
 	}
 }

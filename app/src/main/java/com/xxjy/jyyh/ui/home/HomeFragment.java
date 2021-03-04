@@ -127,7 +127,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private boolean isShowAmount = false;
 
     private LocalLifeListAdapter localLifeListAdapter;//本地生活
-
+    private List<OilEntity.StationsBean> data = new ArrayList<>();
+    private int pageNum = 1;
+    private int pageSize = 10;
 
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
@@ -159,7 +161,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         if (!hidden) {
             getBaseActivity().setTransparentStatusBar();
             mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
-            if(mStationsBean!=null){
+            if (mStationsBean != null) {
                 mViewModel.getRefuelJob(mStationsBean.getGasId());
             }
             if (UserConstants.getIsLogin()) {
@@ -172,7 +174,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     @Override
     protected void onVisible() {
         super.onVisible();
-        if(mStationsBean!=null){
+        if (mStationsBean != null) {
             mViewModel.getRefuelJob(mStationsBean.getGasId());
         }
     }
@@ -234,22 +236,57 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.getHomeProduct();
         loadBanner();
         initWebViewClient();
-        loadLocalLife();
+        initLocalLife();
     }
 
-    private void loadLocalLife() {
-        mBinding.localLifeRecyclerView.setLayoutManager( new LinearLayoutManager(getActivity()));
-        List<String> data = new ArrayList<>();
-        data.add("aaaaaaaaaaaa");
-        data.add("aaaaaaaaaaaa");
-        data.add("aaaaaaaaaaaa");
-        data.add("aaaaaaaaaaaa");
-        data.add("aaaaaaaaaaaa");
-        localLifeListAdapter = new LocalLifeListAdapter(R.layout.adapter_local_life_list,data);
+    private void initLocalLife() {
+        mBinding.localLifeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        localLifeListAdapter = new LocalLifeListAdapter(R.layout.adapter_local_life_list, data);
         mBinding.localLifeRecyclerView.setAdapter(localLifeListAdapter);
 
-        localLifeListAdapter.setOnItemClickListener((adapter, view, position) ->
-                startActivity(new Intent(mContext, RestaurantActivity.class)));
+        localLifeListAdapter.setOnItemClickListener((adapter, view, position) -> {
+            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                @Override
+                public void onLogin() {
+                    startActivity(new Intent(mContext, RestaurantActivity.class).putExtra(Constants.GAS_STATION_ID, ((OilEntity.StationsBean) adapter.getItem(position)).getGasId()));
+                }
+            });
+
+        });
+        localLifeListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                List<OilEntity.StationsBean> data = adapter.getData();
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        switch (view.getId()) {
+                            case R.id.navigation_ll:
+                                if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                                    NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
+                                            data.get(position).getStationLatitude(), data.get(position).getStationLongitude(),
+                                            data.get(position).getGasName());
+                                    navigationDialog.show();
+                                } else {
+                                    showToastWarning("您当前未安装地图软件，请先安装");
+                                }
+                                break;
+                        }
+
+                    }
+                });
+            }
+        });
+        loadLocalLife(false);
+    }
+
+    private void loadLocalLife(boolean isLoadMore) {
+        if (isLoadMore) {
+            pageNum++;
+        } else {
+            pageNum = 1;
+        }
+        mViewModel.getStoreList(pageNum, pageSize);
     }
 
     private void loadBanner() {
@@ -332,7 +369,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.addressTv.setOnClickListener(this::onViewClicked);
 
         ClickUtils.applySingleDebouncing(new View[]{mBinding.quickOilTv, mBinding.oilNumTv}, this::onViewClicked);
-
+        mBinding.refreshView.setEnableLoadMore(false);
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
         mBinding.goIntegralView.setOnClickListener(this::onViewClicked);
     }
@@ -359,7 +396,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     if (mStationsBean != null) {
                         Intent intent = new Intent(mContext, OilDetailActivity.class);
                         intent.putExtra(Constants.GAS_STATION_ID, mStationsBean.getGasId());
-                        intent.putExtra(Constants.OIL_NUMBER_ID, mStationsBean.getOilPriceList().get(0).getOilNo()+"");
+                        intent.putExtra(Constants.OIL_NUMBER_ID, mStationsBean.getOilPriceList().get(0).getOilNo() + "");
                         startActivity(intent);
                     }
                 });
@@ -476,7 +513,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
                 oftenAdapter.setOnItemClickListener((adapter, view, position) ->
                         startActivity(new Intent(getContext(), OilDetailActivity.class)
-                        .putExtra(Constants.GAS_STATION_ID, ((OfentEntity) adapter.getItem(position)).getGasId())));
+                                .putExtra(Constants.GAS_STATION_ID, ((OfentEntity) adapter.getItem(position)).getGasId())));
             } else {
                 mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
             }
@@ -561,10 +598,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                             .create();
                     GlideUtils.loadImage(getContext(), dataBean.getSpImg(), mBinding.integralIv);
                     mBinding.progress.setMax(100);
-                    if(Double.parseDouble(dataBean.getProgress())==0d){
+                    if (Double.parseDouble(dataBean.getProgress()) == 0d) {
                         mBinding.progress.setProgress(0);
-                    }else{
-                        mBinding.progress.setProgress(Integer.parseInt(NumberUtils.format(Double.parseDouble(dataBean.getProgress())*100,0)));
+                    } else {
+                        mBinding.progress.setProgress(Integer.parseInt(NumberUtils.format(Double.parseDouble(dataBean.getProgress()) * 100, 0)));
                     }
                     if (dataBean.isStatus()) {
                         mBinding.awardTv.setEnabled(true);
@@ -593,6 +630,28 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             } else {
                 isFar = true;
             }
+        });
+
+        //本地生活
+        mViewModel.storeLiveData.observe(this, dataStore -> {
+            if (dataStore != null && dataStore.size() > 0) {
+                if (pageNum == 1) {
+                    localLifeListAdapter.setNewData(dataStore);
+                    mBinding.refreshView.setEnableLoadMore(true);
+                    mBinding.refreshView.finishRefresh(true);
+                } else {
+                    localLifeListAdapter.addData(dataStore);
+                    mBinding.refreshView.finishLoadMore(true);
+                }
+
+            } else {
+                if(pageNum==1){
+                    mBinding.localLifeLayout.setVisibility(View.GONE);
+                }
+                mBinding.refreshView.finishLoadMoreWithNoMoreData();
+
+            }
+
         });
 
     }
@@ -665,16 +724,16 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             public void onQuickClick(View view, OilNumAdapter oilNumAdapter, OilGunAdapter oilGunAdapter) {
                 if (isFar) {
                     showChoiceOil(mStationsBean.getGasName(), view);
-                }else {
+                } else {
                     for (int i = 0; i < oilGunAdapter.getData().size(); i++) {
-                        if (oilGunAdapter.getData().get(i).isSelected()){
+                        if (oilGunAdapter.getData().get(i).isSelected()) {
                             isShowAmount = true;
                         }
                     }
-                    if (isShowAmount){
+                    if (isShowAmount) {
                         showAmountDialog(mStationsBean, oilNumAdapter.getData(),
                                 mOilNoPosition, mOilGunPosition);
-                    }else {
+                    } else {
                         showToastInfo("请选择枪号");
                     }
                 }
@@ -834,7 +893,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
+        loadLocalLife(true);
     }
 
     @Override
@@ -848,6 +907,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.getHomeProduct();
 
         loadBanner();
+        loadLocalLife(false);
         refreshLayout.finishRefresh();
     }
 

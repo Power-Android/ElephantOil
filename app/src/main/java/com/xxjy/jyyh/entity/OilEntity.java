@@ -43,9 +43,35 @@ public class OilEntity implements Serializable {
         private Double saveAmount;
         private Double stationLatitude;
         private Double stationLongitude;
+        private PhoneTimeMapBean phoneTimeMap;
         private List<CzbLabelsBean> czbLabels;
         private List<GunNosBean> gunNos;
         private List<OilPriceListBean> oilPriceList;
+        private List<String> topImgList;
+
+        public boolean isSign() {
+            return isSign;
+        }
+
+        public void setSign(boolean sign) {
+            isSign = sign;
+        }
+
+        public PhoneTimeMapBean getPhoneTimeMap() {
+            return phoneTimeMap;
+        }
+
+        public void setPhoneTimeMap(PhoneTimeMapBean phoneTimeMap) {
+            this.phoneTimeMap = phoneTimeMap;
+        }
+
+        public List<String> getTopImgList() {
+            return topImgList;
+        }
+
+        public void setTopImgList(List<String> topImgList) {
+            this.topImgList = topImgList;
+        }
 
         public String getCityName() {
             return cityName;
@@ -238,7 +264,26 @@ public class OilEntity implements Serializable {
         public void setOilPriceList(List<OilPriceListBean> oilPriceList) {
             this.oilPriceList = oilPriceList;
         }
+        public static class PhoneTimeMapBean {
+            private String hours;
+            private String phone;
 
+            public String getHours() {
+                return hours;
+            }
+
+            public void setHours(String hours) {
+                this.hours = hours;
+            }
+
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+        }
         public static class CzbLabelsBean {
             private String tagDescription;
             private String tagImageName;

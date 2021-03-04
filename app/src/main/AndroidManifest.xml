@@ -55,8 +55,9 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.restaurant.RestaurantActivity"></activity>
-        <activity android:name=".ui.order.LifeOrderDetailsActivity"></activity>
+        <activity android:name=".ui.restaurant.RestaurantActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateUnspecified|adjustPan"></activity>
 
         <activity
             android:name=".ui.WelcomeActivity"
@@ -147,7 +148,16 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider" />
-        </provider> <!-- 微信结果回调界面 -->
+        </provider>
+        <!--微信支付结果回调 -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="${applicationId}"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 微信结果回调界面 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

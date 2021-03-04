@@ -50,6 +50,8 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
     private Thread changeBgThread;
 
+    private boolean isLocalLife=false;
+
     @Override
     protected void initView() {
         mBinding.tbToolbar.setNavigationOnClickListener(v -> finish());
@@ -59,8 +61,11 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 //        mCountDownTime2 = MyCountDownTime.getInstence(3 * 1000, 1000);
         mOrderNo = getIntent().getStringExtra("orderNo");
         mOrderPayNo = getIntent().getStringExtra("orderPayNo");
-
-        mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        isLocalLife = getIntent().getBooleanExtra("isLocalLife",false);
+if(isLocalLife){
+    mBinding.decView.setText("请和店员核实您的支付金额");
+    mBinding.numView.setVisibility(View.GONE);
+}       mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         payResultBannerAdapter = new PayResultBannerAdapter(R.layout.item_pay_result_banner, data);
         mBinding.bannerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -192,11 +197,21 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     mBinding.queryStatusView.setVisibility(View.GONE);
                     mBinding.btLayout.setVisibility(View.VISIBLE);
                     mBinding.tvTitle.setText("支付成功");
-                    mBinding.decView.setText("支付成功，请和加油员确认您的油机金额");
+                    if(isLocalLife){
+                        mBinding.decView.setText("支付成功，请和店员核实您的支付金额");
+                    }else{
+                        mBinding.decView.setText("支付成功，请和加油员确认您的油机金额");
+                    }
+
                     mBinding.fallMoney.setText("¥" + resultEntity.getDiscountAmount());
                     if (resultEntity.getGasParams() != null) {
                         mBinding.numView.setText(resultEntity.getGasParams().getGunNo() + "号枪" + " | " + resultEntity.getGasParams().getOilName());
-                        mBinding.stationNameView.setText("加油油站："+resultEntity.getGasParams().getGasName());
+                        if(isLocalLife){
+                            mBinding.stationNameView.setText("消费商户："+resultEntity.getGasParams().getGasName());
+                        }else {
+                            mBinding.stationNameView.setText("加油油站："+resultEntity.getGasParams().getGasName());
+                        }
+
                     }
                     mBinding.tagView.setText("本单预计获得");
                     mBinding.payAmountView.setText("¥" + resultEntity.getGasParams().getAmount() + "");
@@ -257,6 +272,13 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
         Intent intent = new Intent(activity, RefuelingPayResultActivity.class);
         intent.putExtra("orderNo", orderNo);
         intent.putExtra("orderPayNo", orderPayNo);
+        activity.startActivity(intent);
+    }
+    public static void openPayResultPage(Activity activity, String orderNo, String orderPayNo,boolean isLocalLife) {
+        Intent intent = new Intent(activity, RefuelingPayResultActivity.class);
+        intent.putExtra("orderNo", orderNo);
+        intent.putExtra("orderPayNo", orderPayNo);
+        intent.putExtra("isLocalLife", isLocalLife);
         activity.startActivity(intent);
     }
 }
