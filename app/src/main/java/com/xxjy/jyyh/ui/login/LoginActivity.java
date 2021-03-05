@@ -112,10 +112,10 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 
         });
 
-        mViewModel.specStationLiveData.observe(this ,gasId->{
+        mViewModel.specStationLiveData.observe(this ,data->{
 
-            if(!TextUtils.isEmpty(gasId)){
-               startActivity(new Intent(this,OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID,gasId));
+            if(!TextUtils.isEmpty(data.getData())){
+               startActivity(new Intent(this,OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID,data.getData()));
             }
             ActivityUtils.finishActivity(LoginActivity.class);
             ActivityUtils.finishActivity(MobileLoginActivity.class);
