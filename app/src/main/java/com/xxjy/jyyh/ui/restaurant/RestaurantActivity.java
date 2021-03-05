@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -52,6 +53,7 @@ import com.xxjy.jyyh.utils.pay.PayHelper;
 import com.xxjy.jyyh.utils.pay.PayListenerUtils;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 import com.youth.banner.adapter.BannerImageAdapter;
+import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.RectangleIndicator;
 
@@ -82,6 +84,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
     private boolean shouldJump = false;
     private PayOrderEntity mPayOrderEntity;
     private String phone;
+    private float maxAmount = 50000f;
 
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
@@ -203,12 +206,12 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
                     // no hint, text is visible
                     hint = false;
                     mBinding.amountEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                mBinding.moneyTag.setVisibility(s.toString().trim().length() > 0 ? View.VISIBLE : View.INVISIBLE);
             }
         });
         KeyboardUtils.registerSoftInputChangedListener(this, height -> {
@@ -357,7 +360,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
     }
     private void addTagView(String content, QMUIFloatLayout floatLayout) {
         TextView textView = new TextView(this);
-        int textViewPadding = QMUIDisplayHelper.dp2px(this, 2);
+        int textViewPadding = QMUIDisplayHelper.dp2px(this, 4);
         int textViewPadding2 = QMUIDisplayHelper.dp2px(this, 2);
         textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
@@ -371,6 +374,10 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
     protected void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.create_order_tv:
+                if (Float.parseFloat(mBinding.amountEt.getText().toString().trim()) > maxAmount){
+                    showToastWarning("单笔消费金额不可超过" + maxAmount + "元");
+                    return;
+                }
                 mViewModel.createOrder(mBinding.amountEt.getText().toString(),
                         mMultiplePriceBean.getDuePrice(),
                         mMultiplePriceBean.getBalancePrice(),
@@ -468,7 +475,9 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
                                 .into(holder.imageView);
                     }
                 }).addBannerLifecycleObserver(this)
-                        .setIndicator(new RectangleIndicator(this));
+                        .setIndicator(new RectangleIndicator(this))
+                        .setIndicatorMargins(new IndicatorConfig.Margins(0, 0, 0, SizeUtils.dp2px(25)));
+
                 getPlatformCoupon();//平台优惠券
 
             }

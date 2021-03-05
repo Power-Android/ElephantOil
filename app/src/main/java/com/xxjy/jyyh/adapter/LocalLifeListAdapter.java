@@ -61,7 +61,7 @@ public class LocalLifeListAdapter extends BaseQuickAdapter<OilEntity.StationsBea
 //        ((TextView) helper.getView(R.id.item_original_tv)).getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         Glide.with(mContext)
                 .load(item.getGasTypeImg())
-                .override(AdaptScreenUtils.pt2Px(67),AdaptScreenUtils.pt2Px(67))
+                .override(AdaptScreenUtils.pt2Px(67), AdaptScreenUtils.pt2Px(67))
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .apply(new RequestOptions()
@@ -78,15 +78,15 @@ public class LocalLifeListAdapter extends BaseQuickAdapter<OilEntity.StationsBea
 
 
         ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
-        if (item.getCzbLabels() != null&&item.getCzbLabels().size()>0) {
+        if (item.getCzbLabels() != null && item.getCzbLabels().size() > 0) {
             for (OilEntity.StationsBean.CzbLabelsBean lab :
                     item.getCzbLabels()) {
                 addTagView(mContext, lab.getTagIndexDescription(),
                         (QMUIFloatLayout) helper.getView(R.id.float_layout));
             }
             helper.getView(R.id.float_layout).setVisibility(View.VISIBLE);
-        }else{
-        helper.getView(R.id.float_layout).setVisibility(View.GONE);
+        } else {
+            helper.getView(R.id.float_layout).setVisibility(View.GONE);
         }
         helper.addOnClickListener(R.id.navigation_ll);
 
@@ -94,7 +94,7 @@ public class LocalLifeListAdapter extends BaseQuickAdapter<OilEntity.StationsBea
 
     private void addTagView(Context context, String content, QMUIFloatLayout floatLayout) {
         TextView textView = new TextView(context);
-        int textViewPadding = QMUIDisplayHelper.dp2px(context, 2);
+        int textViewPadding = QMUIDisplayHelper.dp2px(context, 4);
         int textViewPadding2 = QMUIDisplayHelper.dp2px(context, 2);
         textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
