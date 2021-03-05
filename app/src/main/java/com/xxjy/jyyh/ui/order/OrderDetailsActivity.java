@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.alipay.sdk.app.PayTask;
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.ClickUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
@@ -80,6 +81,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
 
     @Override
     protected void initListener() {
+        ClickUtils.applySingleDebouncing(mBinding.continuePayView,this::onViewClicked);
         mBinding.continuePayView.setOnClickListener(this::onViewClicked);
         mBinding.orderManageLayout.setOnClickListener(this::onViewClicked);
         mBinding.cancelView.setOnClickListener(this::onViewClicked);
@@ -128,6 +130,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
 
                 break;
             case R.id.continue_pay_view:
+
+
                 if (refuelOrderBean != null) {
                     showPayDialog(refuelOrderBean.getProductName(), refuelOrderBean.getOrderId(), refuelOrderBean.getPayAmount());
                 }

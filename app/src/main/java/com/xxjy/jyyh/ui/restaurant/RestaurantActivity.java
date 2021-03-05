@@ -2,6 +2,7 @@ package com.xxjy.jyyh.ui.restaurant;
 
 import android.content.Intent;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.blankj.utilcode.util.BusUtils;
+import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SizeUtils;
@@ -44,6 +46,8 @@ import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
+import com.xxjy.jyyh.utils.InputFilterMinMax;
+import com.xxjy.jyyh.utils.MoneyValueFilter;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.Util;
 import com.xxjy.jyyh.utils.WXSdkManager;
@@ -101,7 +105,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
 //            PayQueryActivity.openPayQueryActivity(this,
 //                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
             RefuelingPayResultActivity.openPayResultPage(this,
-                    orderEntity.getOrderNo(), orderEntity.getOrderPayNo(),true);
+                    orderEntity.getOrderNo(), orderEntity.getOrderPayNo(), true);
             closeDialog();
         }
     }
@@ -113,6 +117,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
         showJump(mPayOrderEntity);
 
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -135,7 +140,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
         mBinding.discountRecyclerView.setAdapter(mDiscountAdapter);
         mGasId = getIntent().getStringExtra(Constants.GAS_STATION_ID);
         mViewModel.getStoreInfo(mGasId);
-
+        mBinding.amountEt.setFilters(new InputFilter[]{new MoneyValueFilter(),new InputFilterMinMax(0d,50000d)});
         //标签列表
 //        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
 //        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
@@ -182,6 +187,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
 
     @Override
     protected void initListener() {
+        ClickUtils.applySingleDebouncing(mBinding.createOrderTv, this::onViewClicked);
         mBinding.createOrderTv.setOnClickListener(this::onViewClicked);
         mBinding.backIv.setOnClickListener(this::onViewClicked);
         mBinding.navigationRl.setOnClickListener(this::onViewClicked);
@@ -194,11 +200,14 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
         });
         mBinding.amountEt.addTextChangedListener(new TextWatcher() {
             boolean hint;
+
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() == 0) {
+                if (s.length() == 0) {
                     // no text, hint is visible
                     hint = true;
                     mBinding.amountEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
@@ -346,6 +355,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
 //        mViewModel.getStoreInfo(mGasId);
         refreshData();
     }
+
     private void jumpToPayResultAct(String orderPayNo, String orderNo) {
         if (TextUtils.isEmpty(orderPayNo) && TextUtils.isEmpty(orderNo)) {
             return;
@@ -355,9 +365,10 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
 //        intent.putExtra("orderNo", orderNo);
 //        startActivity(intent);
         RefuelingPayResultActivity.openPayResultPage(this,
-                orderNo, orderPayNo,true);
+                orderNo, orderPayNo, true);
         closeDialog();
     }
+
     private void addTagView(String content, QMUIFloatLayout floatLayout) {
         TextView textView = new TextView(this);
         int textViewPadding = QMUIDisplayHelper.dp2px(this, 4);
@@ -370,11 +381,12 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
         textView.setText(content);
         floatLayout.addView(textView);
     }
+
     @Override
     protected void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.create_order_tv:
-                if (Float.parseFloat(mBinding.amountEt.getText().toString().trim()) > maxAmount){
+                if (Float.parseFloat(mBinding.amountEt.getText().toString().trim()) > maxAmount) {
                     showToastWarning("单笔消费金额不可超过" + maxAmount + "元");
                     return;
                 }
@@ -406,7 +418,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
                 }
                 break;
             case R.id.phone_view:
-                Util.toDialPhoneAct(this,phone);
+                Util.toDialPhoneAct(this, phone);
                 break;
             case R.id.back_iv:
                 finish();
@@ -448,18 +460,18 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
 //                    mBinding.tagRecyclerView.setVisibility(View.VISIBLE);
                     for (OilEntity.StationsBean.CzbLabelsBean lab :
                             mStationsBean.getCzbLabels()) {
-                        addTagView( lab.getTagName(),
+                        addTagView(lab.getTagName(),
                                 mBinding.floatLayout);
                     }
                     mBinding.floatLayout.setVisibility(View.VISIBLE);
-                } else{
-                        mBinding.floatLayout.setVisibility(View.INVISIBLE);
+                } else {
+                    mBinding.floatLayout.setVisibility(View.INVISIBLE);
 
                 }
 
                 if (data.getPhoneTimeMap() != null) {
                     phone = data.getPhoneTimeMap().getPhone();
-                    mBinding.phoneView.setText("联系电话："+data.getPhoneTimeMap().getPhone());
+                    mBinding.phoneView.setText("联系电话：" + data.getPhoneTimeMap().getPhone());
                     mBinding.timeView.setText(data.getPhoneTimeMap().getHours());
                 }
 
@@ -596,7 +608,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
                         break;
                     case PayTypeConstants.PAY_TYPE_ZHIFUBAO_APP:
                         PayListenerUtils.getInstance().addListener(this);
-                        PayHelper.getInstance().AliPay(this,payOrderEntity.getStringPayParams());
+                        PayHelper.getInstance().AliPay(this, payOrderEntity.getStringPayParams());
 
                         break;
                 }
@@ -614,7 +626,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
     @Override
     public void onSuccess() {
         RefuelingPayResultActivity.openPayResultPage(this,
-                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),true,true);
+                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), true, true);
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
     }
@@ -622,14 +634,14 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
     @Override
     public void onFail() {
         RefuelingPayResultActivity.openPayResultPage(this,
-                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),true,true);
+                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), true, true);
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
     }
 
     @Override
     public void onCancel() {
-        Toasty.info(this,"支付取消").show();
+        Toasty.info(this, "支付取消").show();
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
     }
