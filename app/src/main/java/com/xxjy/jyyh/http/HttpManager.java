@@ -80,7 +80,10 @@ public class HttpManager {
             if (!TextUtils.isEmpty(token)) {
                 //添加公共请求头
                 p.addHeader("Authorization", "Bearer " + token);
+
             }
+            p.removeAllHeader("User-Agent");
+            p.addHeader("User-Agent","android");
             //添加公共参数
             p.addAll(getCommonParams(p));
             return p;
