@@ -24,7 +24,7 @@
             android:id="@+id/parent_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/dp_11"
+            android:paddingBottom="@dimen/dp_10"
             >
 
 
@@ -35,7 +35,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/default_img_bg"
                 android:layout_marginLeft="@dimen/dp_11"
-                android:layout_marginTop="@dimen/dp_11"
+                android:layout_marginTop="@dimen/dp_12"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:riv_corner_radius="@dimen/dp_5" />
