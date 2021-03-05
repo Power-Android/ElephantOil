@@ -85,4 +85,5 @@ public class OilRepository extends BaseRepository {
                 .subscribe(stationsBean -> oilLiveData.postValue(stationsBean))
         );
     }
+
 }

@@ -25,6 +25,7 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
     public MutableLiveData<String> mLoginLiveData = new MutableLiveData<>();
     public MutableLiveData<WeChatLoginBean> mWechatLoginLiveData = new MutableLiveData<>();
     public MutableLiveData<String> mBindPhoneLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> specStationLiveData = new MutableLiveData<>();
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -63,5 +64,8 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
     }
     public void appBindPhone(String phone,String validCode, String openId,String unionId,String invitationCode,String jpushId){
         mRespository.appBindPhone(mBindPhoneLiveData,phone,validCode,openId,unionId,invitationCode,jpushId);
+    }
+    public void getSpecOil(String inviteCode) {
+        mRespository.getSpecOil(inviteCode, specStationLiveData);
     }
 }

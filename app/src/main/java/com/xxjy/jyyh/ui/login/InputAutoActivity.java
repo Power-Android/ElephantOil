@@ -8,14 +8,18 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityInputAutoBinding;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.oil.OilDetailActivity;
+import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 import com.xxjy.jyyh.wight.MyCountDownTime;
@@ -100,10 +104,17 @@ public class InputAutoActivity extends BindingActivity<ActivityInputAutoBinding,
                 if (!TextUtils.isEmpty(TAG_LOGIN_WXOPENID)) {
                     UserConstants.setOpenId(TAG_LOGIN_WXOPENID);
                 }
-                UserConstants.setToken(data);UserConstants.setIsLogin(true);
+                UserConstants.setToken(data);
+                UserConstants.setIsLogin(true);
                 UMengManager.onProfileSignIn("userID");
 //        Tool.postJPushdata();
-                MainActivity.openMainActAndClearTask(InputAutoActivity.this);
+                if(TextUtils.isEmpty(INVITE_CODE)){
+                    MainActivity.openMainActAndClearTask(InputAutoActivity.this);
+                }else{
+                    mViewModel.getSpecOil(INVITE_CODE);
+                }
+
+
 
             } else {
                 mBinding.inputAutoCodeText.clearAllText();
@@ -118,6 +129,16 @@ public class InputAutoActivity extends BindingActivity<ActivityInputAutoBinding,
             } else {
                 showToastWarning("发送失败");
             }
+        });
+
+        mViewModel.specStationLiveData.observe(this ,gasId->{
+            ActivityUtils.finishActivity(WeChatBindingPhoneActivity.class);
+            MainActivity.openMainActAndClearTask(InputAutoActivity.this);
+            if(!TextUtils.isEmpty(gasId)){
+                startActivity(new Intent(this, OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID,gasId));
+            }
+            ActivityUtils.finishActivity(InputAutoActivity.class);
+
         });
     }
 

@@ -126,5 +126,7 @@ public class ApiService {
     public static final String GET_STORE_INFO =  "api/localLife/getStoreInfo";
     //本地生活 订单列表
     public static final String GET_STORE_ORDER_LIST =  "api/localLife/orderList";
+    //获取油站邀请人专属油站
+    public static final String GET_SPEC_GAS_ID =  "api/gasPublic/specGasId";
 
 }

@@ -101,4 +101,15 @@ public class LoginRepository extends BaseRepository {
                 .subscribe(s -> mBindPhoneLiveData.postValue(s))
         );
     }
+    public void getSpecOil(String inviteCode,
+                           MutableLiveData<String> specStationLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.GET_SPEC_GAS_ID)
+                .add("invitePhone", inviteCode,!TextUtils.isEmpty(inviteCode)&&inviteCode.length()==11)
+                .add("inviteCode", inviteCode, !TextUtils.isEmpty(inviteCode)&&inviteCode.length()==4)
+                .asResponse(String.class)
+                .doOnSubscribe(disposable -> showLoading(true))
+                .doFinally(() -> showLoading(false))
+                .subscribe(stationsBean -> specStationLiveData.postValue(stationsBean))
+        );
+    }
 }
