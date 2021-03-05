@@ -51,6 +51,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
     private Thread changeBgThread;
 
     private boolean isLocalLife = false;
+    private boolean isAppPay = false;
 
     @Override
     protected void initView() {
@@ -62,10 +63,16 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
         mOrderNo = getIntent().getStringExtra("orderNo");
         mOrderPayNo = getIntent().getStringExtra("orderPayNo");
         isLocalLife = getIntent().getBooleanExtra("isLocalLife", false);
+        isAppPay = getIntent().getBooleanExtra("isAppPay", false);
         if (isLocalLife) {
             mBinding.decView.setText("请和店员核实您的支付金额");
             mBinding.numView.setVisibility(View.GONE);
             mBinding.stationNameView.setText("消费商户：--");
+        }
+        if(isAppPay){
+            mBinding.checkBtLayout.setVisibility(View.GONE);
+            mCountDownTime.start();
+
         }
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
@@ -287,6 +294,14 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
         intent.putExtra("orderNo", orderNo);
         intent.putExtra("orderPayNo", orderPayNo);
         intent.putExtra("isLocalLife", isLocalLife);
+        activity.startActivity(intent);
+    }
+    public static void openPayResultPage(Activity activity, String orderNo, String orderPayNo, boolean isLocalLife,boolean isAppPay) {
+        Intent intent = new Intent(activity, RefuelingPayResultActivity.class);
+        intent.putExtra("orderNo", orderNo);
+        intent.putExtra("orderPayNo", orderPayNo);
+        intent.putExtra("isLocalLife", isLocalLife);
+        intent.putExtra("isAppPay", isAppPay);
         activity.startActivity(intent);
     }
 }

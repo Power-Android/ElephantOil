@@ -3,6 +3,7 @@ package com.xxjy.jyyh.ui.restaurant;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
@@ -46,6 +47,10 @@ import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.Util;
 import com.xxjy.jyyh.utils.WXSdkManager;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
+import com.xxjy.jyyh.utils.pay.IPayListener;
+import com.xxjy.jyyh.utils.pay.PayHelper;
+import com.xxjy.jyyh.utils.pay.PayListenerUtils;
+import com.xxjy.jyyh.utils.toastlib.Toasty;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.RectangleIndicator;
@@ -53,7 +58,7 @@ import com.youth.banner.indicator.RectangleIndicator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestaurantActivity extends BindingActivity<ActivityRestaurantBinding, RestaurantViewModel> {
+public class RestaurantActivity extends BindingActivity<ActivityRestaurantBinding, RestaurantViewModel> implements IPayListener {
     private HomeViewModel mHomeViewModel;
     private List<OilDiscountEntity> mDiscountList = new ArrayList<>(4);
     private LifeDiscountAdapter mDiscountAdapter;
@@ -101,13 +106,15 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
     @Override
     public void onStart() {
         super.onStart();
-        showJump(mPayOrderEntity);
         refreshData();
+        showJump(mPayOrderEntity);
+
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
         BusUtils.removeSticky(EventConstants.EVENT_JUMP_PAY_QUERY);
+        PayListenerUtils.getInstance().removeListener(this);
     }
 
     @Override
@@ -167,6 +174,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
         getBusinessCoupon();
         //刷新价格互斥
         getMultiplePrice(platId, businessAmount);
+        getBalance();//余额
     }
 
     @Override
@@ -181,7 +189,28 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
 
             }
         });
+        mBinding.amountEt.addTextChangedListener(new TextWatcher() {
+            boolean hint;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() == 0) {
+                    // no text, hint is visible
+                    hint = true;
+                    mBinding.amountEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                } else {
+                    // no hint, text is visible
+                    hint = false;
+                    mBinding.amountEt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
         KeyboardUtils.registerSoftInputChangedListener(this, height -> {
             if (height == 0) {
                 //刷新价格互斥
@@ -311,16 +340,19 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
             mOilPayDialog = null;
         }
         //关掉以后重新刷新数据,否则再次打开时上下选中不一致
-        mViewModel.getStoreInfo(mGasId);
+//        mViewModel.getStoreInfo(mGasId);
+        refreshData();
     }
     private void jumpToPayResultAct(String orderPayNo, String orderNo) {
         if (TextUtils.isEmpty(orderPayNo) && TextUtils.isEmpty(orderNo)) {
             return;
         }
-        Intent intent = new Intent(this, RefuelingPayResultActivity.class);
-        intent.putExtra("orderPayNo", orderPayNo);
-        intent.putExtra("orderNo", orderNo);
-        startActivity(intent);
+//        Intent intent = new Intent(this, RefuelingPayResultActivity.class);
+//        intent.putExtra("orderPayNo", orderPayNo);
+//        intent.putExtra("orderNo", orderNo);
+//        startActivity(intent);
+        RefuelingPayResultActivity.openPayResultPage(this,
+                orderNo, orderPayNo,true);
         closeDialog();
     }
     private void addTagView(String content, QMUIFloatLayout floatLayout) {
@@ -409,7 +441,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
 //                    mBinding.tagRecyclerView.setVisibility(View.VISIBLE);
                     for (OilEntity.StationsBean.CzbLabelsBean lab :
                             mStationsBean.getCzbLabels()) {
-                        addTagView( lab.getTagIndexDescription(),
+                        addTagView( lab.getTagName(),
                                 mBinding.floatLayout);
                     }
                     mBinding.floatLayout.setVisibility(View.VISIBLE);
@@ -517,16 +549,22 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
         });
         //支付结果回调
         mHomeViewModel.payOrderLiveData.observe(this, payOrderEntity -> {
+
             if (payOrderEntity.getResult() == 0) {//支付未完成
                 switch (payOrderEntity.getPayType()) {
                     case PayTypeConstants.PAY_TYPE_WEIXIN://微信H5
                         WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
+                        shouldJump = true;
                         break;
                     case PayTypeConstants.PAY_TYPE_WEIXIN_APP://微信原生
 //                        WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
+                        PayListenerUtils.getInstance().addListener(this);
+                        PayHelper.getInstance().WexPay(payOrderEntity.getPayParams());
+
                         break;
                     case PayTypeConstants.PAY_TYPE_WEIXIN_XCX://微信小程序
                         WXSdkManager.newInstance().useWXLaunchMiniProgramToPay(this, payOrderEntity.getOrderNo());
+                        shouldJump = true;
                         break;
                     case PayTypeConstants.PAY_TYPE_ZHIFUBAO://支付宝H5
                         boolean urlCanUse = UiUtils.checkZhifubaoSdkCanPayUrl(this,
@@ -545,11 +583,17 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
                                 }
                             });
                         }
+                        shouldJump = true;
+                        break;
+                    case PayTypeConstants.PAY_TYPE_ZHIFUBAO_APP:
+                        PayListenerUtils.getInstance().addListener(this);
+                        PayHelper.getInstance().AliPay(this,payOrderEntity.getStringPayParams());
+
                         break;
                 }
                 //                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
                 mPayOrderEntity = payOrderEntity;
-                shouldJump = true;
+
             } else if (payOrderEntity.getResult() == 1) {//支付成功
                 jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
             } else {
@@ -558,4 +602,26 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
         });
     }
 
+    @Override
+    public void onSuccess() {
+        RefuelingPayResultActivity.openPayResultPage(this,
+                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),true,true);
+        PayListenerUtils.getInstance().removeListener(this);
+        closeDialog();
+    }
+
+    @Override
+    public void onFail() {
+        RefuelingPayResultActivity.openPayResultPage(this,
+                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),true,true);
+        PayListenerUtils.getInstance().removeListener(this);
+        closeDialog();
+    }
+
+    @Override
+    public void onCancel() {
+        Toasty.info(this,"支付取消").show();
+        PayListenerUtils.getInstance().removeListener(this);
+        closeDialog();
+    }
 }

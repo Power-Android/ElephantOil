@@ -13,6 +13,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.entity.PayParamsBean;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class PayHelper {
 
     IWXAPI msgApi = null;
 
-    public void WexPay(String data) {
+    public void WexPay(PayParamsBean data) {
         if (msgApi == null) {
             msgApi = WXAPIFactory.createWXAPI(App.getContext(), null);
             msgApi.registerApp(Constants.WX_APP_ID);// 将该app注册到微信
@@ -47,13 +48,13 @@ public class PayHelper {
         }
         if (data != null) {
 
-//            req.appId = data.getAppid();
-//            req.partnerId = data.getPartnerid();
-//            req.prepayId = data.getPrepayid();
-//            req.nonceStr = data.getNoncestr();
-//            req.timeStamp = data.getTimestamp() + "";
-//            req.packageValue = data.getPackageX();
-//            req.sign = data.getSign();
+            req.appId = data.getAppId();
+            req.partnerId = data.getPartnerId();
+            req.prepayId = data.getPrepayId();
+            req.nonceStr = data.getNonceStr();
+            req.timeStamp = data.getTimeStamp();
+            req.packageValue = data.getPackageX();
+            req.sign = data.getSign();
             msgApi.sendReq(req);
         }
     }

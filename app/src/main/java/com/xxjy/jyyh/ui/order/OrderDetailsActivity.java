@@ -35,12 +35,16 @@ import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
+import com.xxjy.jyyh.utils.pay.IPayListener;
+import com.xxjy.jyyh.utils.pay.PayHelper;
+import com.xxjy.jyyh.utils.pay.PayListenerUtils;
+import com.xxjy.jyyh.utils.toastlib.Toasty;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBinding, OrderDetailsViewModel> {
+public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBinding, OrderDetailsViewModel> implements IPayListener {
 
     public static final String ORDER_ID = "order_id";
     public static final String CONTINUE_PAY = "continue_pay";
@@ -232,9 +236,17 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                 switch (payOrderEntity.getPayType()) {
                     case PayTypeConstants.PAY_TYPE_WEIXIN://微信H5
                         WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
+                        shouldJump = true;
+                        break;
+                    case PayTypeConstants.PAY_TYPE_WEIXIN_APP://微信原生
+//                        WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
+                        PayListenerUtils.getInstance().addListener(this);
+                        PayHelper.getInstance().WexPay(payOrderEntity.getPayParams());
+
                         break;
                     case PayTypeConstants.PAY_TYPE_WEIXIN_XCX://微信小程序
                         WXSdkManager.newInstance().useWXLaunchMiniProgramToPay(this, payOrderEntity.getOrderNo());
+                        shouldJump = true;
                         break;
                     case PayTypeConstants.PAY_TYPE_ZHIFUBAO://支付宝H5
                         boolean urlCanUse = UiUtils.checkZhifubaoSdkCanPayUrl(this,
@@ -253,11 +265,17 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                                 }
                             });
                         }
+                        shouldJump = true;
+                        break;
+                    case PayTypeConstants.PAY_TYPE_ZHIFUBAO_APP:
+                        PayListenerUtils.getInstance().addListener(this);
+                        PayHelper.getInstance().AliPay(this,payOrderEntity.getStringPayParams());
+
                         break;
                 }
 //                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
                 mPayOrderEntity = payOrderEntity;
-                shouldJump = true;
+
             } else if (payOrderEntity.getResult() == 1) {//支付成功
                 jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
             } else {
@@ -397,4 +415,37 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
         activity.startActivity(intent);
     }
 
+    @Override
+    public void onSuccess() {
+        if(orderType==1){
+            RefuelingPayResultActivity.openPayResultPage(this,
+                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),false,true);
+        }else{
+            RefuelingPayResultActivity.openPayResultPage(this,
+                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),true,true);
+        }
+
+        PayListenerUtils.getInstance().removeListener(this);
+        closeDialog();
+    }
+
+    @Override
+    public void onFail() {
+        if(orderType==1){
+            RefuelingPayResultActivity.openPayResultPage(this,
+                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),false,true);
+        }else{
+            RefuelingPayResultActivity.openPayResultPage(this,
+                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),true,true);
+        }
+        PayListenerUtils.getInstance().removeListener(this);
+        closeDialog();
+    }
+
+    @Override
+    public void onCancel() {
+        Toasty.info(this,"支付取消").show();
+        PayListenerUtils.getInstance().removeListener(this);
+        closeDialog();
+    }
 }

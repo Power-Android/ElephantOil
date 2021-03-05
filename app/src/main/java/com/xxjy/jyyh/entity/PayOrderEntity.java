@@ -19,6 +19,24 @@ public class PayOrderEntity {
     private Integer result;
     private String type;
     private String url;
+    private PayParamsBean payParams;
+    private String stringPayParams;
+
+    public String getStringPayParams() {
+        return stringPayParams;
+    }
+
+    public void setStringPayParams(String stringPayParams) {
+        this.stringPayParams = stringPayParams;
+    }
+
+    public PayParamsBean getPayParams() {
+        return payParams;
+    }
+
+    public void setPayParams(PayParamsBean payParams) {
+        this.payParams = payParams;
+    }
 
     public Integer getDiscountAmount() {
         return discountAmount;
@@ -106,5 +124,9 @@ public class PayOrderEntity {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public static class PayParams{
+
     }
 }

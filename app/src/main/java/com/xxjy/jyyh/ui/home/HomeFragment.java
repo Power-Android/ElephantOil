@@ -84,6 +84,10 @@ import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
+import com.xxjy.jyyh.utils.pay.IPayListener;
+import com.xxjy.jyyh.utils.pay.PayHelper;
+import com.xxjy.jyyh.utils.pay.PayListenerUtils;
+import com.xxjy.jyyh.utils.toastlib.Toasty;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.RectangleIndicator;
@@ -99,7 +103,7 @@ import static com.blankj.utilcode.util.ThreadUtils.runOnUiThread;
  * @project ElephantOil
  * @description:
  */
-public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> implements OnRefreshLoadMoreListener {
+public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> implements OnRefreshLoadMoreListener , IPayListener {
     private List<OilEntity.StationsBean.CzbLabelsBean> mOilTagList = new ArrayList<>();
     private List<OfentEntity> mOftenList = new ArrayList<>();
     private List<HomeProductEntity.FirmProductsVoBean> mExchangeList = new ArrayList<>();
@@ -465,6 +469,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     oilEntity.getStations().size() <= 0 || oilEntity.getStations().get(0).getOilPriceList() == null) {
                 return;
             }
+            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
             mStationsBean = oilEntity.getStations().get(0);
             Glide.with(mContext).load(mStationsBean.getGasTypeImg()).into(mBinding.oilImgIv);
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
@@ -532,9 +537,17 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 switch (payOrderEntity.getPayType()) {
                     case PayTypeConstants.PAY_TYPE_WEIXIN://微信H5
                         WeChatWebPayActivity.openWebPayAct(getActivity(), payOrderEntity.getUrl());
+                        shouldJump = true;
+                        break;
+                    case PayTypeConstants.PAY_TYPE_WEIXIN_APP://微信原生
+//                        WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
+                        PayListenerUtils.getInstance().addListener(this);
+                        PayHelper.getInstance().WexPay(payOrderEntity.getPayParams());
+
                         break;
                     case PayTypeConstants.PAY_TYPE_WEIXIN_XCX://微信小程序
                         WXSdkManager.newInstance().useWXLaunchMiniProgramToPay(getBaseActivity(), payOrderEntity.getOrderNo());
+                        shouldJump = true;
                         break;
                     case PayTypeConstants.PAY_TYPE_ZHIFUBAO://支付宝H5
                         boolean urlCanUse = UiUtils.checkZhifubaoSdkCanPayUrl(getActivity(),
@@ -553,11 +566,17 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                 }
                             });
                         }
+                        shouldJump = true;
+                        break;
+                    case PayTypeConstants.PAY_TYPE_ZHIFUBAO_APP:
+                        PayListenerUtils.getInstance().addListener(this);
+                        PayHelper.getInstance().AliPay(getActivity(),payOrderEntity.getStringPayParams());
+
                         break;
                 }
 //                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
                 mPayOrderEntity = payOrderEntity;
-                shouldJump = true;
+
             } else if (payOrderEntity.getResult() == 1) {//支付成功
                 jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
             } else {
@@ -634,8 +653,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
         //本地生活
         mViewModel.storeLiveData.observe(this, dataStore -> {
+
             if (dataStore != null && dataStore.size() > 0) {
                 if (pageNum == 1) {
+                    mBinding.localLifeLayout.setVisibility(View.VISIBLE);
                     localLifeListAdapter.setNewData(dataStore);
                     mBinding.refreshView.setEnableLoadMore(true);
                     mBinding.refreshView.finishRefresh(true);
@@ -1002,4 +1023,26 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         });
     }
 
+    @Override
+    public void onSuccess() {
+        RefuelingPayResultActivity.openPayResultPage(getActivity(),
+                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),false,true);
+        PayListenerUtils.getInstance().removeListener(this);
+        closeDialog();
+    }
+
+    @Override
+    public void onFail() {
+        RefuelingPayResultActivity.openPayResultPage(getActivity(),
+                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),false,true);
+        PayListenerUtils.getInstance().removeListener(this);
+        closeDialog();
+    }
+
+    @Override
+    public void onCancel() {
+        Toasty.info(getActivity(),"支付取消").show();
+        PayListenerUtils.getInstance().removeListener(this);
+        closeDialog();
+    }
 }

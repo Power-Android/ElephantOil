@@ -94,6 +94,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_6"
                 android:orientation="vertical">
+<LinearLayout
+    android:id="@+id/recommend_station_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:orientation="vertical">
+
 
                 <TextView
                     android:id="@+id/desc_tv"
@@ -295,7 +302,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:riv_oval="true" />
                 </RelativeLayout>
-
+</LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/often_oil_recycler_view"
                     android:layout_width="match_parent"

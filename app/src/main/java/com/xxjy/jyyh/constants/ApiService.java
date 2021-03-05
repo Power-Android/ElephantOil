@@ -15,6 +15,7 @@ public class ApiService {
     public static final String RELEASE_URL = CONFIG_RELEASE_URL+"server/";
     //默认测试服务器url
     public static final String CONFIG_DEBUG_URL = "https://tcore.qqgyhk.com/";
+//    public static final String CONFIG_DEBUG_URL = "https://ccore.qqgyhk.com/";
     public static final String DEBUG_URL = CONFIG_DEBUG_URL+"server/";
 
     @DefaultDomain //默认域名

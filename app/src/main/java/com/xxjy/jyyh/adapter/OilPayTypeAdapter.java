@@ -51,6 +51,9 @@ public class OilPayTypeAdapter extends BaseQuickAdapter<OilPayTypeEntity, BaseVi
             case "aliwappay"://支付宝支付
                 helper.setImageResource(R.id.item_pay_type_iv, R.drawable.alipay_icon)
                         .setText(R.id.item_title_tv, "支付宝支付");
+            case "aliapppay"://支付宝支付
+                helper.setImageResource(R.id.item_pay_type_iv, R.drawable.alipay_icon)
+                        .setText(R.id.item_title_tv, "支付宝支付");
                 break;
         }
         if (selectPosition == helper.getAdapterPosition()) {
