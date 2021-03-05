@@ -668,6 +668,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             } else {
                 if(pageNum==1){
                     mBinding.localLifeLayout.setVisibility(View.GONE);
+                    localLifeListAdapter.setNewData(null);
                 }
                 mBinding.refreshView.finishLoadMoreWithNoMoreData();
 
