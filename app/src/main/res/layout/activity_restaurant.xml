@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_20"
-                    android:layout_marginTop="@dimen/dp_13"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginEnd="@dimen/dp_20"
                     android:ellipsize="end"
                     android:singleLine="true"
@@ -68,8 +68,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/address_cl"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_56"
-                    android:layout_marginTop="@dimen/dp_13"
+                    android:layout_height="@dimen/dp_58"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:background="@drawable/restaurant_navigation_bg"
                     app:layout_constraintTop_toBottomOf="@+id/hotel_name">
 
@@ -130,8 +130,8 @@
                     android:layout_marginEnd="@dimen/dp_20"
                     android:baselineAligned="false"
                     android:orientation="horizontal"
-                    android:paddingTop="@dimen/common_margin"
-                    android:paddingBottom="@dimen/common_margin"
+                    android:paddingTop="@dimen/dp_12"
+                    android:paddingBottom="@dimen/dp_12"
                     app:layout_constraintTop_toBottomOf="@+id/address_cl">
 
                     <LinearLayout
@@ -297,7 +297,7 @@
                         android:textStyle="bold"
                         android:textSize="@dimen/sp_15"
                         android:textColor="@color/color_34"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         app:layout_constraintStart_toEndOf="@+id/liter_tv"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"/>

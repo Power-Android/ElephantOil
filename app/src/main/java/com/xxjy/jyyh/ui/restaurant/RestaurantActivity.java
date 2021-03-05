@@ -220,7 +220,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
 
             @Override
             public void afterTextChanged(Editable s) {
-                mBinding.moneyTag.setVisibility(s.toString().trim().length() > 0 ? View.VISIBLE : View.INVISIBLE);
+                mBinding.moneyTag.setVisibility(s.toString().trim().length() > 0 ? View.VISIBLE : View.GONE);
             }
         });
         KeyboardUtils.registerSoftInputChangedListener(this, height -> {
