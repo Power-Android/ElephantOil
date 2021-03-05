@@ -386,10 +386,13 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
         if (TextUtils.isEmpty(orderPayNo) && TextUtils.isEmpty(orderNo)) {
             return;
         }
-        Intent intent = new Intent(this, RefuelingPayResultActivity.class);
-        intent.putExtra("orderPayNo", orderPayNo);
-        intent.putExtra("orderNo", orderNo);
-        startActivity(intent);
+        if(orderType==1){
+            RefuelingPayResultActivity.openPayResultPage(this,
+                    orderNo, orderPayNo,false);
+        }else{
+            RefuelingPayResultActivity.openPayResultPage(this,
+                    orderNo, orderPayNo,true);
+        }
         closeDialog();
     }
 
