@@ -11,6 +11,7 @@ import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.entity.WeChatLoginBean;
+import com.xxjy.jyyh.http.Response;
 
 import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
@@ -99,6 +100,17 @@ public class LoginRepository extends BaseRepository {
                 .add("jpushId", jpushId)
                 .asResponse(String.class)
                 .subscribe(s -> mBindPhoneLiveData.postValue(s))
+        );
+    }
+    public void getSpecOil(String inviteCode,
+                           MutableLiveData<Response<String>> specStationLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.GET_SPEC_GAS_ID)
+                .add("invitePhone", inviteCode,!TextUtils.isEmpty(inviteCode)&&inviteCode.length()==11)
+                .add("inviteCode", inviteCode, !TextUtils.isEmpty(inviteCode)&&inviteCode.length()==4)
+                .asCodeResponse(String.class)
+                .doOnSubscribe(disposable -> showLoading(true))
+                .doFinally(() -> showLoading(false))
+                .subscribe(stationsBean -> specStationLiveData.postValue(stationsBean))
         );
     }
 }

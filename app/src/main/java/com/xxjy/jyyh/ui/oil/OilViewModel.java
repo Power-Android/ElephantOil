@@ -32,6 +32,7 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public MutableLiveData<List<BannerBean>> bannersLiveData = new MutableLiveData<>();
     public MutableLiveData<OilEntity.StationsBean> oilLiveData = new MutableLiveData<>();
 
+
     public void getOrderNews() {
         mRespository.getOrderNews(orderNewsLiveData);
     }
@@ -58,4 +59,5 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public void getOilDetail(String gasId, double lat, double lng) {
         mRespository.getOilDetail(gasId, lat, lng, oilLiveData);
     }
+
 }

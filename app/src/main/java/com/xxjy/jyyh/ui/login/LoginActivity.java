@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.lifecycle.ViewModelProvider;
+
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
@@ -22,6 +25,8 @@ import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityLoginBinding;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.oil.OilDetailActivity;
+import com.xxjy.jyyh.ui.oil.OilViewModel;
 import com.xxjy.jyyh.utils.GsonTool;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
@@ -38,6 +43,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
     private boolean isOpenAuth = false;     //是否已经调起了登录
     public static int loginState = -1;
     private boolean isDown = false;
+    private boolean isInputHunterCode=false;//食肉输入猎人码
     @Override
     protected void initView() {
         StatusBarUtil.setHeightAndPadding(this, mBinding.toolbar);
@@ -56,7 +62,20 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 
     @Override
     protected void dataObservable() {
-        mViewModel.mVerifyLoginLiveData.observe(this, s -> mViewModel.setLoginSuccess(s, ""));
+        mViewModel.mVerifyLoginLiveData.observe(this, s ->{
+            if(isInputHunterCode){
+                UserConstants.setToken(s);
+                UserConstants.setIsLogin(true);
+                UMengManager.onProfileSignIn("userID");
+                ShanYanManager.finishAuthActivity();
+                mViewModel.getSpecOil(SYConfigUtils.inviteCode);
+
+            }else{
+                mViewModel.setLoginSuccess(s, "");
+            }
+
+
+        } );
         mViewModel.mWechatLoginLiveData.observe(this, data -> {
             if (data == null) {
                 showToastWarning("登录失败,请使用其他登录方式");
@@ -91,6 +110,15 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
                 showToastWarning("登录失败,请使用其他登录方式");
             }
 
+        });
+
+        mViewModel.specStationLiveData.observe(this ,data->{
+
+            if(!TextUtils.isEmpty(data.getData())){
+               startActivity(new Intent(this,OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID,data.getData()));
+            }
+            ActivityUtils.finishActivity(LoginActivity.class);
+            ActivityUtils.finishActivity(MobileLoginActivity.class);
         });
     }
 
@@ -192,10 +220,10 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 
     private void verifyNormal(String token) {
 
-
+        isInputHunterCode =false;
         if (!TextUtils.isEmpty(SYConfigUtils.inviteCode)) {
             if (SYConfigUtils.inviteCode.length() == 4 || SYConfigUtils.inviteCode.length() == 11) {
-
+                isInputHunterCode =true;
             } else {
                 showToastWarning("请输入正确邀请人");
                 OneKeyLoginManager.getInstance().setLoadingVisibility(false);

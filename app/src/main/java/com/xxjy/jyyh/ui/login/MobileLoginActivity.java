@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.ui.login;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextPaint;
@@ -9,6 +10,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SpanUtils;
@@ -21,8 +23,11 @@ import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMobileLoginBinding;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.UiUtils;
+import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
+import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
 import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 import com.xxjy.jyyh.wight.MyCountDownTime;
@@ -41,6 +46,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
     private boolean isDown = false;
     private String wxOpenId;
     private String wxUnionId;
+    private boolean isInputHunterCode = false;//食肉输入猎人码
 
     @Override
     protected void initView() {
@@ -56,6 +62,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                     public void onClick(@NonNull View widget) {
                         WebViewActivity.openRealUrlWebActivity(MobileLoginActivity.this, Constants.USER_XIE_YI);
                     }
+
                     @Override
                     public void updateDrawState(@NonNull TextPaint ds) {
 //                        super.updateDrawState(ds);
@@ -201,10 +208,12 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                 }
 
                 String inviteNumber = mBinding.invitationEt.getText().toString().trim();
+                isInputHunterCode = false;
                 if (!TextUtils.isEmpty(inviteNumber)) {
                     if (inviteNumber.length() == 4 || inviteNumber.length() == 11) {
-
+                        isInputHunterCode = true;
                     } else {
+
                         showToastWarning("请输入正确邀请人");
                         return;
                     }
@@ -295,8 +304,16 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
             mCountDownTime.stopCountDown();
             mCountDownTime.cancel();
             mCountDownTime = null;
+            if (isInputHunterCode) {
+                UserConstants.setToken(s);
+                UserConstants.setIsLogin(true);
+                UMengManager.onProfileSignIn("userID");
+                ShanYanManager.finishAuthActivity();
+                mViewModel.getSpecOil( mBinding.invitationEt.getText().toString().trim());
+            }else{
+                mViewModel.setLoginSuccess(s, mPhoneNumber);
+            }
 
-            mViewModel.setLoginSuccess(s, mPhoneNumber);
         });
         mViewModel.mWechatLoginLiveData.observe(this, data -> {
             if (data == null) {
@@ -330,6 +347,14 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
                 showToastWarning("登录失败,请使用其他登录方式");
             }
 
+        });
+        mViewModel.specStationLiveData.observe(this ,data->{
+
+            if(!TextUtils.isEmpty(data.getData())){
+                startActivity(new Intent(this, OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID,data.getData()));
+            }
+            ActivityUtils.finishActivity(LoginActivity.class);
+            ActivityUtils.finishActivity(MobileLoginActivity.class);
         });
     }
 }

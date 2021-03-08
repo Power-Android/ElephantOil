@@ -9,7 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.constants.UserConstants;
+import com.xxjy.jyyh.entity.RespEntity;
 import com.xxjy.jyyh.entity.WeChatLoginBean;
+import com.xxjy.jyyh.http.Response;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 
@@ -25,6 +27,7 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
     public MutableLiveData<String> mLoginLiveData = new MutableLiveData<>();
     public MutableLiveData<WeChatLoginBean> mWechatLoginLiveData = new MutableLiveData<>();
     public MutableLiveData<String> mBindPhoneLiveData = new MutableLiveData<>();
+    public MutableLiveData<Response<String>> specStationLiveData = new MutableLiveData<>();
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -63,5 +66,8 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
     }
     public void appBindPhone(String phone,String validCode, String openId,String unionId,String invitationCode,String jpushId){
         mRespository.appBindPhone(mBindPhoneLiveData,phone,validCode,openId,unionId,invitationCode,jpushId);
+    }
+    public void getSpecOil(String inviteCode) {
+        mRespository.getSpecOil(inviteCode, specStationLiveData);
     }
 }
