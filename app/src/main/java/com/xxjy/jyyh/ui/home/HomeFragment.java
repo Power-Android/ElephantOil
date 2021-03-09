@@ -103,7 +103,7 @@ import static com.blankj.utilcode.util.ThreadUtils.runOnUiThread;
  * @project ElephantOil
  * @description:
  */
-public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> implements OnRefreshLoadMoreListener , IPayListener {
+public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> implements OnRefreshLoadMoreListener, IPayListener {
     private List<OilEntity.StationsBean.CzbLabelsBean> mOilTagList = new ArrayList<>();
     private List<OfentEntity> mOftenList = new ArrayList<>();
     private List<HomeProductEntity.FirmProductsVoBean> mExchangeList = new ArrayList<>();
@@ -570,8 +570,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         break;
                     case PayTypeConstants.PAY_TYPE_ZHIFUBAO_APP:
                         PayListenerUtils.getInstance().addListener(this);
-                        PayHelper.getInstance().AliPay(getActivity(),payOrderEntity.getStringPayParams());
+                        PayHelper.getInstance().AliPay(getActivity(), payOrderEntity.getStringPayParams());
 
+                        break;
+                    case PayTypeConstants.PAY_TYPE_UNIONPAY:
+                        PayListenerUtils.getInstance().addListener(this);
+                        PayHelper.getInstance().unionPay(getActivity(), payOrderEntity.getPayNo());
                         break;
                 }
 //                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
@@ -666,7 +670,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 }
 
             } else {
-                if(pageNum==1){
+                if (pageNum == 1) {
                     mBinding.localLifeLayout.setVisibility(View.GONE);
                     localLifeListAdapter.setNewData(null);
                 }
@@ -1025,9 +1029,46 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*
+         * 支付控件返回字符串:success、fail、cancel 分别代表支付成功，支付失败，支付取消
+         */
+
+        if (data == null) {
+            return;
+        }
+        String str = data.getExtras().getString("pay_result");
+        if (!TextUtils.isEmpty(str)) {
+            if (str.equalsIgnoreCase("success")) {
+                //如果想对结果数据校验确认，直接去商户后台查询交易结果，
+                //校验支付结果需要用到的参数有sign、data、mode(测试或生产)，sign和data可以在result_data获取到
+                /**
+                 * result_data参数说明：
+                 * sign —— 签名后做Base64的数据
+                 * data —— 用于签名的原始数据
+                 *      data中原始数据结构：
+                 *      pay_result —— 支付结果success，fail，cancel
+                 *      tn —— 订单号
+                 */
+//            msg = "云闪付支付成功";
+                PayListenerUtils.getInstance().addSuccess();
+            } else if (str.equalsIgnoreCase("fail")) {
+//            msg = "云闪付支付失败！";
+                PayListenerUtils.getInstance().addFail();
+            } else if (str.equalsIgnoreCase("cancel")) {
+//            msg = "用户取消了云闪付支付";
+                PayListenerUtils.getInstance().addCancel();
+
+            }
+        }
+
+    }
+
+    @Override
     public void onSuccess() {
         RefuelingPayResultActivity.openPayResultPage(getActivity(),
-                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),false,true);
+                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
     }
@@ -1035,14 +1076,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     @Override
     public void onFail() {
         RefuelingPayResultActivity.openPayResultPage(getActivity(),
-                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),false,true);
+                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
     }
 
     @Override
     public void onCancel() {
-        Toasty.info(getActivity(),"支付取消").show();
+        Toasty.info(getActivity(), "支付取消").show();
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
     }

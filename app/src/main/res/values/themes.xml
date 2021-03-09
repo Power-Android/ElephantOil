@@ -1,14 +1,13 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/color_F5</item>
-        <item name="QMUITopBarStyle">@style/QDTopBar</item>
-    </style>
-
+<!--    <style name="AppTheme_NoActionBar" parent="QMUI.Compat.NoActionBar">-->
+<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+<!--        <item name="colorAccent">@color/colorAccent</item>-->
+<!--        <item name="android:windowBackground">@color/color_F5</item>-->
+<!--&lt;!&ndash;        <item name="QMUITopBarStyle">@style/QDTopBar</item>&ndash;&gt;-->
+<!--    </style>-->
     <style name="QDTopBar" parent="QMUI.TopBar">
         <item name="qmui_topbar_height">48dp</item>
         <item name="qmui_topbar_image_btn_height">30dp</item>
@@ -19,13 +18,13 @@
     </style>
 
     <!-- Base application theme. -->
-<!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
-<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
-<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-<!--        <item name="colorAccent">@color/colorAccent</item>-->
-<!--        <item name="android:windowBackground">@color/color_F5</item>-->
-<!--    </style>-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/color_F5</item>
+    </style>
     <!-- Base application theme. -->
     <style name="SplashActivityTheme" parent="AppTheme">
         <!-- Customize your theme here. -->

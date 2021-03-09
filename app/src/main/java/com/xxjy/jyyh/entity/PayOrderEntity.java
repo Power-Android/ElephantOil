@@ -21,6 +21,15 @@ public class PayOrderEntity {
     private String url;
     private PayParamsBean payParams;
     private String stringPayParams;
+    private String payNo;
+
+    public String getPayNo() {
+        return payNo;
+    }
+
+    public void setPayNo(String payNo) {
+        this.payNo = payNo;
+    }
 
     public String getStringPayParams() {
         return stringPayParams;

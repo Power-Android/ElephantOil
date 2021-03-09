@@ -81,7 +81,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
 
     @Override
     protected void initListener() {
-        ClickUtils.applySingleDebouncing(mBinding.continuePayView,this::onViewClicked);
+        ClickUtils.applySingleDebouncing(mBinding.continuePayView, this::onViewClicked);
         mBinding.continuePayView.setOnClickListener(this::onViewClicked);
         mBinding.orderManageLayout.setOnClickListener(this::onViewClicked);
         mBinding.cancelView.setOnClickListener(this::onViewClicked);
@@ -157,17 +157,17 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             mBinding.orderIdView.setText(data.getOrderId());
             mBinding.payTypeView.setText(data.getPayTypeName());
             mBinding.payAmountView.setText("¥" + data.getPayAmount());
-            mBinding.serviceChargeView.setText("+¥"+data.getServiceChargeAmount());
+            mBinding.serviceChargeView.setText("+¥" + data.getServiceChargeAmount());
             mBinding.timeView.setText(data.getBuyTime());
             orderType = data.getType();
-           switch (data.getType()){
-               case 1:
-                   mBinding.numLayout.setVisibility(View.VISIBLE);
-                   break;
-               case 2:
-                   mBinding.numLayout.setVisibility(View.GONE);
-                   break;
-           }
+            switch (data.getType()) {
+                case 1:
+                    mBinding.numLayout.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    mBinding.numLayout.setVisibility(View.GONE);
+                    break;
+            }
             switch (data.getStatus()) {
                 case 0:
                     mBinding.orderManageLayout.setVisibility(View.GONE);
@@ -218,7 +218,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             }
 
             if (isContinuePay && data.getStatus() == 0) {
-                isContinuePay=false;
+                isContinuePay = false;
                 showPayDialog(refuelOrderBean.getProductName(), refuelOrderBean.getOrderId(), refuelOrderBean.getPayAmount());
             }
         });
@@ -273,8 +273,12 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                         break;
                     case PayTypeConstants.PAY_TYPE_ZHIFUBAO_APP:
                         PayListenerUtils.getInstance().addListener(this);
-                        PayHelper.getInstance().AliPay(this,payOrderEntity.getStringPayParams());
+                        PayHelper.getInstance().AliPay(this, payOrderEntity.getStringPayParams());
 
+                        break;
+                    case PayTypeConstants.PAY_TYPE_UNIONPAY:
+                        PayListenerUtils.getInstance().addListener(this);
+                        PayHelper.getInstance().unionPay(this, payOrderEntity.getPayNo());
                         break;
                 }
 //                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
@@ -367,12 +371,12 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             shouldJump = false;
 //            PayQueryActivity.openPayQueryActivity(this,
 //                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
-            if(orderType==1){
+            if (orderType == 1) {
                 RefuelingPayResultActivity.openPayResultPage(this,
                         orderEntity.getOrderNo(), orderEntity.getOrderPayNo());
-            }else{
+            } else {
                 RefuelingPayResultActivity.openPayResultPage(this,
-                        orderEntity.getOrderNo(), orderEntity.getOrderPayNo(),true);
+                        orderEntity.getOrderNo(), orderEntity.getOrderPayNo(), true);
             }
 
             closeDialog();
@@ -390,12 +394,12 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
         if (TextUtils.isEmpty(orderPayNo) && TextUtils.isEmpty(orderNo)) {
             return;
         }
-        if(orderType==1){
+        if (orderType == 1) {
             RefuelingPayResultActivity.openPayResultPage(this,
-                    orderNo, orderPayNo,false);
-        }else{
+                    orderNo, orderPayNo, false);
+        } else {
             RefuelingPayResultActivity.openPayResultPage(this,
-                    orderNo, orderPayNo,true);
+                    orderNo, orderPayNo, true);
         }
         closeDialog();
     }
@@ -423,13 +427,51 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*
+         * 支付控件返回字符串:success、fail、cancel 分别代表支付成功，支付失败，支付取消
+         */
+
+        if (data == null) {
+            return;
+        }
+        String str = data.getExtras().getString("pay_result");
+        if (!TextUtils.isEmpty(str)) {
+            if (str.equalsIgnoreCase("success")) {
+                //如果想对结果数据校验确认，直接去商户后台查询交易结果，
+                //校验支付结果需要用到的参数有sign、data、mode(测试或生产)，sign和data可以在result_data获取到
+                /**
+                 * result_data参数说明：
+                 * sign —— 签名后做Base64的数据
+                 * data —— 用于签名的原始数据
+                 *      data中原始数据结构：
+                 *      pay_result —— 支付结果success，fail，cancel
+                 *      tn —— 订单号
+                 */
+//            msg = "云闪付支付成功";
+                PayListenerUtils.getInstance().addSuccess();
+            } else if (str.equalsIgnoreCase("fail")) {
+//            msg = "云闪付支付失败！";
+                PayListenerUtils.getInstance().addFail();
+
+            } else if (str.equalsIgnoreCase("cancel")) {
+//            msg = "用户取消了云闪付支付";
+                PayListenerUtils.getInstance().addCancel();
+
+            }
+        }
+
+    }
+
+    @Override
     public void onSuccess() {
-        if(orderType==1){
+        if (orderType == 1) {
             RefuelingPayResultActivity.openPayResultPage(this,
-                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),false,true);
-        }else{
+                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
+        } else {
             RefuelingPayResultActivity.openPayResultPage(this,
-                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),true,true);
+                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), true, true);
         }
 
         PayListenerUtils.getInstance().removeListener(this);
@@ -438,12 +480,12 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
 
     @Override
     public void onFail() {
-        if(orderType==1){
+        if (orderType == 1) {
             RefuelingPayResultActivity.openPayResultPage(this,
-                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),false,true);
-        }else{
+                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
+        } else {
             RefuelingPayResultActivity.openPayResultPage(this,
-                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(),true,true);
+                    mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), true, true);
         }
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
@@ -451,7 +493,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
 
     @Override
     public void onCancel() {
-        Toasty.info(this,"支付取消").show();
+        Toasty.info(this, "支付取消").show();
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
     }

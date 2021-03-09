@@ -35,6 +35,9 @@ private BannerBean mBannerBean;
                 .skinManager(QMUISkinManager.defaultInstance(mContext));
 
         mBinding.closeIv.setOnClickListener(v ->{
+            if(mOnItemClickedListener!=null){
+                mOnItemClickedListener.onCloseClick(v);
+            }
             dismiss();
         });
         GlideUtils.loadImage(mContext,mBannerBean.getImgUrl(),mBinding.adImg);
@@ -59,7 +62,7 @@ private BannerBean mBannerBean;
     }
 
     public interface OnItemClickedListener{
-        void onQueryClick(View view);
+        void onCloseClick(View view);
     }
 
     private OnItemClickedListener mOnItemClickedListener;

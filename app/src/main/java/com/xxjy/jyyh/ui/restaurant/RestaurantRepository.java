@@ -3,6 +3,7 @@ package com.xxjy.jyyh.ui.restaurant;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.annotation.UiThread;
 import androidx.lifecycle.MutableLiveData;
 
 import com.blankj.utilcode.util.SPUtils;

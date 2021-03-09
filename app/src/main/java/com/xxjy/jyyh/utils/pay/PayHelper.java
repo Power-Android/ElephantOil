@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.utils.pay;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import com.alipay.sdk.app.PayTask;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.unionpay.UPPayAssistEx;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.entity.PayParamsBean;
@@ -58,6 +60,9 @@ public class PayHelper {
             msgApi.sendReq(req);
         }
     }
+public void unionPay(Context context,String payNo){
+    UPPayAssistEx.startPay(context, null, null, payNo, "00");
+}
 
     public void AliPay(Activity activity, final String orderInfo) {
         MyHandler myHandler = new MyHandler(activity);

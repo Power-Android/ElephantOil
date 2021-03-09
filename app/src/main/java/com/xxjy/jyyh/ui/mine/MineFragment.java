@@ -22,6 +22,7 @@ import com.xxjy.jyyh.ui.setting.SettingActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
+import com.xxjy.jyyh.utils.NotificationsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,11 +71,20 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             mBinding.equityOrderLayout.setVisibility(View.VISIBLE);
             mBinding.moreServiceLayout.setVisibility(View.VISIBLE);
         }
+        if(UserConstants.getNotificationRemindUserCenter()){
+            mBinding.noticeLayout.setVisibility(View.VISIBLE);
+            BarUtils.addMarginTopEqualStatusBarHeight(mBinding.noticeLayout);
+        }else{
+            mBinding.noticeLayout.setVisibility(View.GONE);
+            BarUtils.addMarginTopEqualStatusBarHeight(mBinding.settingLayout);
+        }
+
     }
 
     @Override
     protected void initView() {
-        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.topLayout);
+//        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.settingLayout);
+
 
         boolean b = UserConstants.getGoneIntegral();
         if (b){
@@ -117,6 +127,8 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.myCouponLayout.setOnClickListener(this::onViewClicked);
         mBinding.balanceLayout.setOnClickListener(this::onViewClicked);
         mBinding.integralLayout.setOnClickListener(this::onViewClicked);
+        mBinding.closeNoticeView.setOnClickListener(this::onViewClicked);
+        mBinding.openView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -170,6 +182,15 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                         }
                         WebViewActivity.openRealUrlWebActivity(getBaseActivity(),userBean.getWalletUrl());
 
+                        break;
+                    case R.id.close_notice_view:
+                        UserConstants.setNotificationRemindUserCenter(false);
+                        mBinding.noticeLayout.setVisibility(View.GONE);
+                        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.settingLayout);
+
+                        break;
+                    case R.id.open_view:
+                        NotificationsUtils.requestNotify(getContext());
                         break;
                 }
             }

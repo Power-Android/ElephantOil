@@ -1,15 +1,15 @@
 package com.xxjy.jyyh.constants;
 
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 
-import com.bigkoo.pickerview.listener.ISelectTimeCallback;
+import android.text.TextUtils;
+
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
-import com.xxjy.jyyh.app.App;
+import com.blankj.utilcode.util.TimeUtils;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
+
+import java.util.Date;
 
 /**
  * @author power
@@ -56,11 +56,11 @@ public class UserConstants {
         return uniqueDeviceId;
     }
 
-    public static void setOpenId(String openId){
+    public static void setOpenId(String openId) {
         SPUtils.getInstance().put(SPConstants.OPEN_ID, "");
     }
 
-    public static String getOpenId(){
+    public static String getOpenId() {
         return SPUtils.getInstance().getString(SPConstants.OPEN_ID);
     }
 
@@ -87,31 +87,59 @@ public class UserConstants {
     public static void setLatitude(String latitude) {
         SPUtils.getInstance().put(SPConstants.LATITUDE, latitude);
     }
-    public static void setFirstOpen(boolean firstOpen){
+
+    public static void setFirstOpen(boolean firstOpen) {
         SPUtils.getInstance().put(SPConstants.FIRST_OPEN, firstOpen);
     }
-    public static boolean getFirstOpen(){
-       return SPUtils.getInstance().getBoolean(SPConstants.FIRST_OPEN);
-    }
-    public static void setAgreePrivacy(boolean isAgree){
-        SPUtils.getInstance().put(SPConstants.AGREE_PRIVACY, isAgree);
-    }
-    public static boolean getAgreePrivacy(){
-       return SPUtils.getInstance().getBoolean(SPConstants.AGREE_PRIVACY);
-    }
-    public static void setAppChannel(String appChannel){
-        SPUtils.getInstance().put(SPConstants.APP_CHANNEL_KEY, appChannel);
-    }
-    public static String getAppChannel(){
-       return SPUtils.getInstance().getString(SPConstants.APP_CHANNEL_KEY);
+
+    public static boolean getFirstOpen() {
+        return SPUtils.getInstance().getBoolean(SPConstants.FIRST_OPEN);
     }
 
-    public static void setGoneIntegral(boolean b){
+    public static void setAgreePrivacy(boolean isAgree) {
+        SPUtils.getInstance().put(SPConstants.AGREE_PRIVACY, isAgree);
+    }
+
+    public static boolean getAgreePrivacy() {
+        return SPUtils.getInstance().getBoolean(SPConstants.AGREE_PRIVACY);
+    }
+
+    public static void setAppChannel(String appChannel) {
+        SPUtils.getInstance().put(SPConstants.APP_CHANNEL_KEY, appChannel);
+    }
+
+    public static String getAppChannel() {
+        return SPUtils.getInstance().getString(SPConstants.APP_CHANNEL_KEY);
+    }
+
+    public static void setGoneIntegral(boolean b) {
         SPUtils.getInstance().put(SPConstants.GONE_INTEGRAL, b);
     }
 
-    public static boolean getGoneIntegral(){
+    public static boolean getGoneIntegral() {
         return SPUtils.getInstance().getBoolean(SPConstants.GONE_INTEGRAL, false);
+    }
+
+    public static void setNotificationRemind(boolean b) {
+        String str = TimeUtils.date2String(new Date(), "yyyy-MM-dd") + "@_@" + b;
+        SPUtils.getInstance().put(SPConstants.NOTIFICATION_REMIND, str);
+    }
+
+    public static boolean getNotificationRemind() {
+        String content = SPUtils.getInstance().getString(SPConstants.NOTIFICATION_REMIND);
+        if (TextUtils.equals(content, TimeUtils.date2String(new Date(), "yyyy-MM-dd") + "@_@" + true)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static void setNotificationRemindUserCenter(boolean b) {
+        SPUtils.getInstance().put(SPConstants.NOTIFICATION_REMIND_USER_CENTER, b);
+    }
+
+    public static boolean getNotificationRemindUserCenter() {
+        return SPUtils.getInstance().getBoolean(SPConstants.NOTIFICATION_REMIND_USER_CENTER,false);
     }
 
 

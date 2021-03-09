@@ -54,7 +54,10 @@
         android:networkSecurityConfig="@xml/net_security_config"
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:theme"
+        android:usesCleartextTraffic="true"
+       >
         <activity
             android:name=".ui.restaurant.RestaurantActivity"
             android:screenOrientation="portrait"

@@ -52,6 +52,11 @@ android {
 
     buildTypes {
         release {
+            //在这里添加：
+//            lintOptions {
+//                checkReleaseBuilds false
+//                abortOnError false
+//            }
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
@@ -71,8 +76,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    viewBinding {
-        enabled = true
+//    viewBinding {
+//        enabled = true
+//    }
+    buildFeatures {
+        viewBinding = true
     }
 
 }
@@ -141,4 +149,8 @@ dependencies {
     api files('libs/alipaySdk-15.7.9-20200727142846.aar')
     //闪验
     api files('libs/shanyan_sdk_v2.3.2.2.aar')
+    //云闪付
+    implementation files('libs/UPPayPluginExPro.jar')
+    implementation files('libs/UPPayAssistEx.jar')
+    api files('libs/qmf-ppplugin-android-3.1.1.aar')
 }

@@ -63,4 +63,10 @@ public class SPConstants {
      * 隐藏权益相关内容
      */
     public static final String GONE_INTEGRAL = "gone_integral";
+
+    /**
+     * 通知弹窗提醒
+     */
+    public static final String NOTIFICATION_REMIND = "notification_remind";
+    public static final String NOTIFICATION_REMIND_USER_CENTER = "notification_remind_user_center";
 }
