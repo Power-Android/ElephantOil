@@ -49,6 +49,9 @@ public class NoticeTipsDialog extends QMUIFullScreenPopup {
         mBinding.noOpenView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mOnItemClickedListener != null) {
+                    mOnItemClickedListener.onNoOpen();
+                }
                 dismiss();
             }
         });
@@ -58,6 +61,7 @@ public class NoticeTipsDialog extends QMUIFullScreenPopup {
 
     public interface OnItemClickedListener {
         void onQueryClick();
+        void onNoOpen();
     }
 
     private OnItemClickedListener mOnItemClickedListener;

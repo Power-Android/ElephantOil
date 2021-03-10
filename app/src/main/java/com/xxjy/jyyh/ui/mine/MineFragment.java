@@ -2,6 +2,7 @@ package com.xxjy.jyyh.ui.mine;
 
 import android.content.Intent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -39,7 +40,6 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     private UserBean userBean;
     private CustomerServiceDialog customerServiceDialog;
 
-
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -73,17 +73,20 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         }
         if(UserConstants.getNotificationRemindUserCenter()){
             mBinding.noticeLayout.setVisibility(View.VISIBLE);
-            BarUtils.addMarginTopEqualStatusBarHeight(mBinding.noticeLayout);
+            mBinding.noticeLayout.setAnimation(AnimationUtils.makeInAnimation(getContext(), true));
+
         }else{
             mBinding.noticeLayout.setVisibility(View.GONE);
-            BarUtils.addMarginTopEqualStatusBarHeight(mBinding.settingLayout);
+            mBinding.noticeLayout.setAnimation(AnimationUtils.makeOutAnimation(getContext(), true));
+
         }
 
     }
 
     @Override
     protected void initView() {
-//        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.settingLayout);
+        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.topLayout);
+        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.noticeLayout);
 
 
         boolean b = UserConstants.getGoneIntegral();
@@ -186,8 +189,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                     case R.id.close_notice_view:
                         UserConstants.setNotificationRemindUserCenter(false);
                         mBinding.noticeLayout.setVisibility(View.GONE);
-                        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.settingLayout);
-
+                        mBinding.noticeLayout.setAnimation(AnimationUtils.makeOutAnimation(getContext(), true));
                         break;
                     case R.id.open_view:
                         NotificationsUtils.requestNotify(getContext());

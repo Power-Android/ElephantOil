@@ -7,6 +7,7 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.xxjy.jyyh.utils.Util;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 
 import java.util.Date;
@@ -128,6 +129,19 @@ public class UserConstants {
     public static boolean getNotificationRemind() {
         String content = SPUtils.getInstance().getString(SPConstants.NOTIFICATION_REMIND);
         if (TextUtils.equals(content, TimeUtils.date2String(new Date(), "yyyy-MM-dd") + "@_@" + true)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public static void setNotificationRemindVersion(boolean b) {
+        String str = Util.getVersionName() + "@_@" + b;
+        SPUtils.getInstance().put(SPConstants.NOTIFICATION_REMIND_VERSION, str);
+    }
+
+    public static boolean getNotificationRemindVersion() {
+        String content = SPUtils.getInstance().getString(SPConstants.NOTIFICATION_REMIND_VERSION);
+        if (TextUtils.equals(content, Util.getVersionName() + "@_@" + true)) {
             return true;
         } else {
             return false;

@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -34,6 +35,7 @@ import com.xxjy.jyyh.ui.setting.AboutUsViewModel;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.NotificationsUtils;
 import com.xxjy.jyyh.utils.Util;
+import com.xxjy.jyyh.utils.pay.PayListenerUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 
 import org.jetbrains.annotations.NotNull;
@@ -106,9 +108,9 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
         checkVersion();
 
-        if(NotificationsUtils.isNotificationEnabled(this)){
+        if (NotificationsUtils.isNotificationEnabled(this)) {
             UserConstants.setNotificationRemindUserCenter(false);
-        }else{
+        } else {
             UserConstants.setNotificationRemindUserCenter(true);
         }
     }
@@ -293,18 +295,24 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     }
 
     private void showNotification() {
-        if (!UserConstants.getNotificationRemind()) {
+        if (!UserConstants.getNotificationRemindVersion()) {
+            if (!UserConstants.getNotificationRemind()) {
+                if (!NotificationsUtils.isNotificationEnabled(this)) {
+                    NoticeTipsDialog noticeTipsDialog = new NoticeTipsDialog(this);
+                    noticeTipsDialog.show(mBinding.fragmentGroup);
+                    noticeTipsDialog.setOnItemClickedListener(new NoticeTipsDialog.OnItemClickedListener() {
+                        @Override
+                        public void onQueryClick() {
+                            NotificationsUtils.requestNotify(MainActivity.this);
+                        }
 
-            if (!NotificationsUtils.isNotificationEnabled(this)) {
-                NoticeTipsDialog noticeTipsDialog = new NoticeTipsDialog(this);
-                noticeTipsDialog.show(mBinding.fragmentGroup);
-                noticeTipsDialog.setOnItemClickedListener(new NoticeTipsDialog.OnItemClickedListener() {
-                    @Override
-                    public void onQueryClick() {
-                        NotificationsUtils.requestNotify(MainActivity.this);
-                    }
-                });
-                UserConstants.setNotificationRemind(true);
+                        @Override
+                        public void onNoOpen() {
+                            UserConstants.setNotificationRemindVersion(true);
+                        }
+                    });
+                    UserConstants.setNotificationRemind(true);
+                }
             }
         }
 
@@ -352,4 +360,39 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         aboutUsViewModel.checkVersion();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*
+         * 支付控件返回字符串:success、fail、cancel 分别代表支付成功，支付失败，支付取消
+         */
+
+        if (data == null) {
+            return;
+        }
+        String str = data.getExtras().getString("pay_result");
+        if (!TextUtils.isEmpty(str)) {
+            if (str.equalsIgnoreCase("success")) {
+                //如果想对结果数据校验确认，直接去商户后台查询交易结果，
+                //校验支付结果需要用到的参数有sign、data、mode(测试或生产)，sign和data可以在result_data获取到
+                /**
+                 * result_data参数说明：
+                 * sign —— 签名后做Base64的数据
+                 * data —— 用于签名的原始数据
+                 *      data中原始数据结构：
+                 *      pay_result —— 支付结果success，fail，cancel
+                 *      tn —— 订单号
+                 */
+//            msg = "云闪付支付成功";
+                PayListenerUtils.getInstance().addSuccess();
+            } else if (str.equalsIgnoreCase("fail")) {
+//            msg = "云闪付支付失败！";
+                PayListenerUtils.getInstance().addFail();
+            } else if (str.equalsIgnoreCase("cancel")) {
+//            msg = "用户取消了云闪付支付";
+                PayListenerUtils.getInstance().addCancel();
+
+            }
+        }
+    }
 }
