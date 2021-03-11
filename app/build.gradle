@@ -30,10 +30,14 @@ android {
         }
 
         ndk {
-            abiFilters "armeabi-v7a"
+            abiFilters  "armeabi-v7a"
         }
     }
-
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
     signingConfigs {
         release {
             storeFile file('../yfq.jks')

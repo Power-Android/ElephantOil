@@ -103,6 +103,8 @@ public class ApiService {
     public static final String GET_NOTICES = "api/user/getNotices";
     //获取加油收银台
     public static final String GET_PAY_TYPE = "api/gasPublic/refuelCashierDesk";
+    //收银台优惠标签
+    public static final String GET_PAY_TAG = "api/gasPublic/payTag";
     //加油支付
     public static final String PAY_ORDER = "api/gasPublic/refuelPayOrder";
     //加油支付结果回调数据

@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.adapter;
 
 import android.text.TextUtils;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,15 +59,22 @@ public class OilPayTypeAdapter extends BaseQuickAdapter<OilPayTypeEntity, BaseVi
                 break;
             case PayTypeConstants.PAY_TYPE_UNIONPAY:
                 helper.setImageResource(R.id.item_pay_type_iv, R.drawable.quick_pass_icon)
-                        .setText(R.id.item_title_tv, "云闪付");
+                        .setText(R.id.item_title_tv, "银联云闪付");
                 break;
+        }
+        if (!TextUtils.isEmpty(item.getActMes())) {
+            helper.getView(R.id.dec_view).setVisibility(View.VISIBLE);
+            helper.setText(R.id.dec_view, item.getActMes());
+        } else {
+            helper.getView(R.id.dec_view).setVisibility(View.INVISIBLE);
+
         }
         if (selectPosition == helper.getAdapterPosition()) {
             item.setSelect(true);
             helper.setImageResource(R.id.item_check_box, R.drawable.ic_checked);
         } else {
             item.setSelect(false);
-            helper.setImageResource(R.id.item_check_box,  R.drawable.ic_uncheck);
+            helper.setImageResource(R.id.item_check_box, R.drawable.ic_uncheck);
         }
 
     }

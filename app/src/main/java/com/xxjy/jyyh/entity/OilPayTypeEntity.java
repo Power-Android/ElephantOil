@@ -9,8 +9,17 @@ package com.xxjy.jyyh.entity;
 public class OilPayTypeEntity {
     private String title;
     private String id;
+    private String actMes;//活动介绍
     private int img;
     private boolean isSelect;
+
+    public String getActMes() {
+        return actMes;
+    }
+
+    public void setActMes(String actMes) {
+        this.actMes = actMes;
+    }
 
     public boolean isSelect() {
         return isSelect;

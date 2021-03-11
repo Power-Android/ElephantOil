@@ -29,6 +29,7 @@ public class RefuelOrderBean {
 //        "usedBalance": "0.00"
 //}
     private String amount;
+    private String amountUpright;
     private String buyTime;
     private String orderId;
     private String payAmount;
@@ -46,6 +47,14 @@ public class RefuelOrderBean {
     private String payTypeName;
     private String serviceChargeAmount;
     private int type;
+
+    public String getAmountUpright() {
+        return amountUpright;
+    }
+
+    public void setAmountUpright(String amountUpright) {
+        this.amountUpright = amountUpright;
+    }
 
     public int getType() {
         return type;

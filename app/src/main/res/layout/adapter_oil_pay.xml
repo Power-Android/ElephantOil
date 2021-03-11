@@ -22,6 +22,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_pay_type_iv"/>
+    <TextView
+        android:id="@+id/dec_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_stroke_red_3raduis"
+        android:textSize="@dimen/sp_10"
+        android:gravity="center_vertical"
+        android:textColor="#FE1300"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingBottom="@dimen/dp_2"
+        android:paddingLeft="5dp"
+        android:paddingRight="@dimen/dp_5"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_40"
+        android:text=""
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_title_tv"/>
     <ImageView
         android:id="@+id/item_check_box"
         android:layout_width="@dimen/dp_16"

@@ -363,6 +363,35 @@
             android:launchMode="singleTop"
             android:screenOrientation="behind"
             android:theme="@style/syDialogStyle" />
+
+
+        <!--   云闪付     -->
+        <meta-data
+            android:name="CurrentEnvironment"
+            android:value="PROD"> <!-- PROD or TEST -->
+        </meta-data>
+        <meta-data
+            android:name="PPPaySDK"
+            android:value="true" />
+
+        <uses-library
+            android:name="org.simalliance.openmobileapi"
+            android:required="false" />
+
+        <activity
+            android:name="com.unionpay.uppay.PayActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.unionpay.UPPayWapActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

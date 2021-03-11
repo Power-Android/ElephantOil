@@ -476,7 +476,36 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/color_E8" />
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/amount_upright_layout"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="@dimen/dp_45">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="支付立减"
+                        android:textColor="@color/color_34"
+                        android:textSize="@dimen/sp_14" />
+
+                    <TextView
+                        android:id="@+id/amount_upright_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="-¥0"
+                        android:textColor="@color/color_30"
+                        android:textSize="@dimen/sp_14" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/color_E8" />
+                </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/pay_amount_layout"
                     android:layout_width="match_parent"

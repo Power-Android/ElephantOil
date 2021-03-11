@@ -17,6 +17,7 @@ import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.databinding.DialogOilPayLayoutBinding;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
+import com.xxjy.jyyh.entity.PayTypeBean;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
@@ -113,13 +114,26 @@ public class OilPayDialog extends BottomSheetDialog {
     }
 
     private void getPayType() {
-        RxHttp.postForm(ApiService.GET_PAY_TYPE)
-                .asResponseList(String.class)
+//        RxHttp.postForm(ApiService.GET_PAY_TYPE)
+//                .asResponseList(String.class)
+//                .to(RxLife.toMain(mActivity))
+//                .subscribe(strings -> {
+//                    for (int i = 0; i < strings.size(); i++) {
+//                        OilPayTypeEntity oilPayTypeEntity = new OilPayTypeEntity();
+//                        oilPayTypeEntity.setId(strings.get(i));
+//                        mPayTypeList.add(i, oilPayTypeEntity);
+//                    }
+//                    mPayTypeList.get(0).setSelect(true);
+//                    mOilPayTypeAdapter.setNewData(mPayTypeList);
+//                });
+        RxHttp.postForm(ApiService.GET_PAY_TAG)
+                .asResponseList(PayTypeBean.class)
                 .to(RxLife.toMain(mActivity))
                 .subscribe(strings -> {
                     for (int i = 0; i < strings.size(); i++) {
                         OilPayTypeEntity oilPayTypeEntity = new OilPayTypeEntity();
-                        oilPayTypeEntity.setId(strings.get(i));
+                        oilPayTypeEntity.setId(strings.get(i).getName());
+                        oilPayTypeEntity.setActMes(strings.get(i).getActMes());
                         mPayTypeList.add(i, oilPayTypeEntity);
                     }
                     mPayTypeList.get(0).setSelect(true);

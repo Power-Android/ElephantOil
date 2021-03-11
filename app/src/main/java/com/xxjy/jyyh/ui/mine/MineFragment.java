@@ -71,6 +71,11 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             mBinding.equityOrderLayout.setVisibility(View.VISIBLE);
             mBinding.moreServiceLayout.setVisibility(View.VISIBLE);
         }
+        if (NotificationsUtils.isNotificationEnabled(getContext())) {
+            UserConstants.setNotificationRemindUserCenter(false);
+        } else {
+            UserConstants.setNotificationRemindUserCenter(true);
+        }
         if(UserConstants.getNotificationRemindUserCenter()){
             mBinding.noticeLayout.setVisibility(View.VISIBLE);
             mBinding.noticeLayout.setAnimation(AnimationUtils.makeInAnimation(getContext(), true));

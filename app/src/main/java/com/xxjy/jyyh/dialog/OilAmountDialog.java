@@ -195,6 +195,7 @@ public class OilAmountDialog extends BottomSheetDialog {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
+                    mBinding.discountRecyclerView.setVisibility(View.VISIBLE);
                     //刷新快捷价格的选中状态
                     List<OilDefaultPriceEntity.DefaultAmountBean> data = mOilAmountAdapter.getData();
                     for (int i = 0; i < data.size(); i++) {
@@ -206,6 +207,8 @@ public class OilAmountDialog extends BottomSheetDialog {
                         }
                     }
                     mOilAmountAdapter.notifyDataSetChanged();
+                }else{
+                    mBinding.discountRecyclerView.setVisibility(View.GONE);
                 }
             }
         });

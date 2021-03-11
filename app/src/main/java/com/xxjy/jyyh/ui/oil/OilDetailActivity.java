@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alipay.sdk.app.PayTask;
 import com.amap.api.location.CoordinateConverter;
@@ -20,6 +22,7 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.xxjy.jyyh.R;
@@ -42,6 +45,7 @@ import com.xxjy.jyyh.dialog.OilCouponDialog;
 import com.xxjy.jyyh.dialog.OilGunDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
+import com.xxjy.jyyh.dialog.PriceDescriptionDialog;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
@@ -99,6 +103,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
     private boolean isShowAmount = false;
 
+    private PriceDescriptionDialog priceDescriptionDialog;
+
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
      */
@@ -127,7 +133,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
     @Override
     protected void initView() {
-        setTransparentStatusBar(mBinding.backIv, false);
+        setTransparentStatusBar(mBinding.backIv, true);
         BusUtils.register(this);
 
         mGasId = getIntent().getStringExtra(Constants.GAS_STATION_ID);
@@ -146,21 +152,24 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         requestPermission();
 
         //标签列表
-        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
-        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
-        flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
-        flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
-        mBinding.oilTagRecyclerView.setLayoutManager(flexboxLayoutManager);
-        mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_detail_tag, mTagList);
+//        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
+//        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+//        flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
+//        flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
+//        mBinding.oilTagRecyclerView.setLayoutManager(flexboxLayoutManager);
+//        mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_detail_tag, mTagList);
+//        mBinding.oilTagRecyclerView.setAdapter(mFlexAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mBinding.oilTagRecyclerView.setLayoutManager(linearLayoutManager);
+        mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_detail_tag_2, mTagList);
         mBinding.oilTagRecyclerView.setAdapter(mFlexAdapter);
-
         //已选择列表
         FlexboxLayoutManager flexboxLayoutManager1 = new FlexboxLayoutManager(this);
         flexboxLayoutManager1.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager1.setJustifyContent(JustifyContent.FLEX_START);
         flexboxLayoutManager1.setAlignItems(AlignItems.FLEX_START);
         mBinding.oilCheckRecyclerView.setLayoutManager(flexboxLayoutManager1);
-        mOilCheckedAdapter = new OilCheckedAdapter(R.layout.adapter_oil_checked, mOilCheckedList);
+        mOilCheckedAdapter = new OilCheckedAdapter(R.layout.adapter_oil_checked_2, mOilCheckedList);
         mBinding.oilCheckRecyclerView.setAdapter(mOilCheckedAdapter);
 
         //油类型列表
@@ -196,10 +205,11 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
             mOilGunAdapter.setNewData(oilPriceList.get(mOilGunPosition).getGunNos());
 
-            mBinding.oilLiterTv.setText("¥" + oilPriceList.get(0).getPriceYfq() + "/L");
+            mBinding.oilLiterTv.setText("" + oilPriceList.get(0).getPriceYfq());
             mBinding.oilNumTv.setText(oilPriceList.get(0).getOilName());
-            mBinding.oilPriceTv.setText("油站价：￥" + oilPriceList.get(0).getPriceGun());
-            mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+            mBinding.oilPriceTv.setText("" + oilPriceList.get(0).getPriceGun());
+            mBinding.oilNationalPriceTv.setText("" + oilPriceList.get(0).getPriceOfficial());
+//            mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
             mOilCheckedList.add(0, getOilKind(oilPriceList.get(0).getOilType() + ""));
             mOilCheckedList.add(1, oilPriceList.get(0).getOilName());
             mOilCheckedAdapter.notifyDataSetChanged();
@@ -227,10 +237,11 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mOilCheckedList.clear();
             mOilCheckedAdapter.notifyDataSetChanged();
 
-            mBinding.oilLiterTv.setText("¥" + data.get(position).getPriceYfq() + "/L");
+            mBinding.oilLiterTv.setText("" + data.get(position).getPriceYfq());
             mBinding.oilNumTv.setText(data.get(position).getOilName());
-            mBinding.oilPriceTv.setText("油站价：￥" + data.get(position).getPriceGun());
-            mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+            mBinding.oilPriceTv.setText("" + data.get(position).getPriceGun());
+            mBinding.oilNationalPriceTv.setText("" + data.get(position).getPriceOfficial());
+//            mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
             mOilCheckedList.add(0, getOilKind(data.get(position).getOilType() + ""));
             mOilCheckedList.add(1, data.get(position).getOilName());
             mOilCheckedAdapter.notifyDataSetChanged();
@@ -290,6 +301,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mBinding.backIv.setOnClickListener(this::onViewClicked);
         mBinding.oilNavigationTv.setOnClickListener(this::onViewClicked);
         mBinding.queryTv.setOnClickListener(this::onViewClicked);
+        mBinding.priceDescriptionLayout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -324,6 +336,12 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                         showToastInfo("请选择枪号");
                     }
                 }
+                break;
+            case R.id.price_description_layout:
+                if (priceDescriptionDialog == null) {
+                    priceDescriptionDialog = new PriceDescriptionDialog(this);
+                }
+                priceDescriptionDialog.show(mBinding.priceDescriptionLayout);
                 break;
         }
     }
@@ -369,11 +387,19 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mBinding.invokeTv.setVisibility(mStationsBean.getIsInvoice() == 0 ? View.VISIBLE : View.GONE);
 
             if (mStationsBean.getCzbLabels() != null && mStationsBean.getCzbLabels().size() > 0) {
+                mBinding.oilTagLayout.setVisibility(View.VISIBLE);
                 mTagList = mStationsBean.getCzbLabels();
                 mFlexAdapter.setNewData(mTagList);
                 mBinding.oilTagRecyclerView.setVisibility(View.VISIBLE);
+                if(mStationsBean.getCzbLabels().size()>3){
+                    ViewGroup.LayoutParams lp;
+                    lp= mBinding.oilTagLayout.getLayoutParams();
+                    lp.height= QMUIDisplayHelper.dpToPx(99);
+                    mBinding.oilTagLayout.setLayoutParams(lp);
+                }
             } else {
                 mBinding.oilTagRecyclerView.setVisibility(View.INVISIBLE);
+                mBinding.oilTagLayout.setVisibility(View.GONE);
             }
             //分发数据
             dispatchOilData(stationsBean);
@@ -490,9 +516,10 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                 for (int j = 0; j < oilPriceList.size(); j++) {
                     if (String.valueOf(oilPriceList.get(j).getOilNo()).equals(mOilNo)) {
                         mBinding.oilNumTv.setText(oilPriceList.get(j).getOilName());
-                        mBinding.oilLiterTv.setText("¥" + oilPriceList.get(j).getPriceYfq() + "/L");
-                        mBinding.oilPriceTv.setText("油站价：￥" + oilPriceList.get(j).getPriceGun());
-                        mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+                        mBinding.oilLiterTv.setText("" + oilPriceList.get(j).getPriceYfq());
+                        mBinding.oilPriceTv.setText("" + oilPriceList.get(j).getPriceGun());
+                        mBinding.oilNationalPriceTv.setText("" + oilPriceList.get(j).getPriceOfficial());
+//                        mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
                         mOilCheckedList.add(getOilKind(oilPriceList.get(j).getOilType() + ""));
                         mOilCheckedList.add(oilPriceList.get(j).getOilName());
                     }
