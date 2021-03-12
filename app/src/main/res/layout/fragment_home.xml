@@ -260,22 +260,21 @@
                                 android:layout_marginEnd="@dimen/common_margin"
                                 android:background="@drawable/home_oil_bg"
                                 android:gravity="center_horizontal"
-                                android:paddingTop="10dp"
+                                android:paddingTop="11dp"
                                 android:text="一键加油"
                                 android:textColor="@color/color_34"
                                 android:textSize="17sp"
                                 android:textStyle="bold"
-                                app:layout_constraintBottom_toTopOf="@+id/other_oil_tv"
                                 app:layout_constraintTop_toBottomOf="@+id/tag_recycler_view" />
 
                             <TextView
-                                android:id="@+id/other_oil_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/dp_15"
                                 android:text="选其他加油站"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/sp_12"
+                                android:visibility="gone"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -322,7 +321,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <!--轮播图-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/integral_rl"
                     android:layout_width="match_parent"
@@ -333,17 +331,21 @@
                     android:layout_marginEnd="@dimen/dp_12"
                     android:background="@drawable/shape_white_6raduis"
                     android:padding="@dimen/dp_10"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         android:id="@+id/integral_desc"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:text="还需加油0.00元立即领取"
                         android:textColor="@color/color_34"
                         android:textSize="@dimen/sp_12"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        app:layout_constraintStart_toStartOf="@+id/progress"
+                        app:layout_constraintEnd_toStartOf="@+id/integral_iv"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ProgressBar
@@ -352,11 +354,11 @@
                         android:layout_width="@dimen/dp_200"
                         android:layout_height="@dimen/dp_8"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_5"
                         android:progressDrawable="@drawable/progress_bar_bg"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/integral_desc" />
+                        app:layout_constraintTop_toBottomOf="@+id/order_num_dec_view" />
 
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/integral_iv"
@@ -365,7 +367,8 @@
                         android:layout_marginEnd="@dimen/dp_12"
                         android:src="@drawable/default_img_bg"
                         app:layout_constraintEnd_toStartOf="@+id/award_tv"
-                        app:layout_constraintTop_toTopOf="@id/progress"
+                        app:layout_constraintTop_toTopOf="@id/award_tv"
+                        app:layout_constraintBottom_toBottomOf="@+id/award_tv"
                         app:riv_border_color="@color/color_D8"
                         app:riv_border_width="@dimen/dp_0_5"
                         app:riv_corner_radius="@dimen/dp_4" />
@@ -380,8 +383,9 @@
                         android:text="领取奖励"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_13"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/integral_iv" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/order_num_dec_view"
@@ -389,14 +393,42 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_10"
                         android:includeFontPadding="false"
-                        android:text="(约需1500单，已完成100单，限光华路加油站)"
+                        android:text="(价值300积分)"
                         android:textColor="@color/color_9A"
                         android:textSize="@dimen/sp_10"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toStartOf="@+id/integral_iv"
                         app:layout_constraintStart_toStartOf="@id/progress"
-                        app:layout_constraintTop_toBottomOf="@id/progress" />
+                        app:layout_constraintTop_toBottomOf="@id/integral_desc" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/other_oil_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_65"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_12"
+                    android:background="@drawable/shape_white_6raduis">
+                    <ImageView
+                        android:layout_width="@dimen/dp_172"
+                        android:layout_height="@dimen/dp_47"
+                        android:src="@drawable/often_oil_iv"
+                        android:scaleType="fitXY"
+                        android:layout_marginStart="@dimen/dp_12"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="更多周边优惠油站>>"
+                        android:textColor="@color/color_76FF"
+                        android:textSize="@dimen/sp_13"
+                        android:layout_marginEnd="@dimen/dp_32"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 <com.youth.banner.Banner
                     android:id="@+id/banner"
                     android:layout_width="match_parent"

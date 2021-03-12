@@ -152,17 +152,17 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         requestPermission();
 
         //标签列表
-//        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
-//        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
-//        flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
-//        flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
-//        mBinding.oilTagRecyclerView.setLayoutManager(flexboxLayoutManager);
-//        mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_detail_tag, mTagList);
-//        mBinding.oilTagRecyclerView.setAdapter(mFlexAdapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mBinding.oilTagRecyclerView.setLayoutManager(linearLayoutManager);
-        mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_detail_tag_2, mTagList);
+        FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
+        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
+        mBinding.oilTagRecyclerView.setLayoutManager(flexboxLayoutManager);
+        mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_detail_tag, mTagList);
         mBinding.oilTagRecyclerView.setAdapter(mFlexAdapter);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        mBinding.oilTagRecyclerView.setLayoutManager(linearLayoutManager);
+//        mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_detail_tag_2, mTagList);
+//        mBinding.oilTagRecyclerView.setAdapter(mFlexAdapter);
         //已选择列表
         FlexboxLayoutManager flexboxLayoutManager1 = new FlexboxLayoutManager(this);
         flexboxLayoutManager1.setFlexDirection(FlexDirection.ROW);
@@ -206,7 +206,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mOilGunAdapter.setNewData(oilPriceList.get(mOilGunPosition).getGunNos());
 
             mBinding.oilLiterTv.setText("" + oilPriceList.get(0).getPriceYfq());
-            mBinding.oilNumTv.setText(oilPriceList.get(0).getOilName());
+            mBinding.oilNumTv.setText(oilPriceList.get(0).getOilName()+ " :");
             mBinding.oilPriceTv.setText("" + oilPriceList.get(0).getPriceGun());
             mBinding.oilNationalPriceTv.setText("" + oilPriceList.get(0).getPriceOfficial());
 //            mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
@@ -238,7 +238,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mOilCheckedAdapter.notifyDataSetChanged();
 
             mBinding.oilLiterTv.setText("" + data.get(position).getPriceYfq());
-            mBinding.oilNumTv.setText(data.get(position).getOilName());
+            mBinding.oilNumTv.setText(data.get(position).getOilName() + " :");
             mBinding.oilPriceTv.setText("" + data.get(position).getPriceGun());
             mBinding.oilNationalPriceTv.setText("" + data.get(position).getPriceOfficial());
 //            mBinding.oilPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
@@ -247,6 +247,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mOilCheckedAdapter.notifyDataSetChanged();
             mOilNoPosition = position;
             mOilGunPosition = 0;
+            isShowAmount = false;
             mOilGunAdapter.setNewData(data.get(position).getGunNos());
             mOilGunAdapter.notifyDataSetChanged();
         });
@@ -394,7 +395,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                 if(mStationsBean.getCzbLabels().size()>3){
                     ViewGroup.LayoutParams lp;
                     lp= mBinding.oilTagLayout.getLayoutParams();
-                    lp.height= QMUIDisplayHelper.dpToPx(99);
+                    lp.height= QMUIDisplayHelper.dpToPx(100);
                     mBinding.oilTagLayout.setLayoutParams(lp);
                 }
             } else {
@@ -515,7 +516,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                 List<OilEntity.StationsBean.OilPriceListBean> oilPriceList = mOilTypeList.get(i).getOilPriceList();
                 for (int j = 0; j < oilPriceList.size(); j++) {
                     if (String.valueOf(oilPriceList.get(j).getOilNo()).equals(mOilNo)) {
-                        mBinding.oilNumTv.setText(oilPriceList.get(j).getOilName());
+                        mBinding.oilNumTv.setText(oilPriceList.get(j).getOilName() + " :");
                         mBinding.oilLiterTv.setText("" + oilPriceList.get(j).getPriceYfq());
                         mBinding.oilPriceTv.setText("" + oilPriceList.get(j).getPriceGun());
                         mBinding.oilNationalPriceTv.setText("" + oilPriceList.get(j).getPriceOfficial());
@@ -536,6 +537,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         for (int k = 0; k < mOilNumList.size(); k++) {
             if (TextUtils.equals(String.valueOf(mOilNumList.get(k).getOilNo()), String.valueOf(mOilNo))) {
                 mOilNumList.get(k).setSelected(true);
+                mOilNoPosition = k;
                 //更新油枪列表
                 mOilGunList = mOilNumList.get(k).getGunNos();
                 mOilGunAdapter.setNewData(mOilGunList);

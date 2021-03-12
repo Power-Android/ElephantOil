@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 	<dimen name="common_margin">@dimen/dp_15</dimen>
-	<dimen name="design_bottom_navigation_active_text_size">@dimen/sp_10</dimen>
-	<dimen name="design_bottom_navigation_text_size">@dimen/sp_10</dimen>
+	<dimen name="design_bottom_navigation_active_text_size">17.6533sp</dimen>
+	<dimen name="design_bottom_navigation_text_size">17.6533sp</dimen>
+	<dimen name="design_bottom_navigation_margin">21.1840dp</dimen>
 	<dimen name="dp_0">0.0000dp</dimen>
 	<dimen name="dp_0_1">0.1765dp</dimen>
 	<dimen name="dp_0_5">0.8827dp</dimen>
@@ -380,6 +381,7 @@
 	<dimen name="dp_422">744.9707dp</dimen>
 	<dimen name="dp_472">833.2373dp</dimen>
 	<dimen name="dp_500">882.6667dp</dimen>
+	<dimen name="dp_550">970.9333dp</dimen>
 	<dimen name="dp_600">1059.2000dp</dimen>
 	<dimen name="dp_640">1129.8133dp</dimen>
 	<dimen name="dp_720">1271.0400dp</dimen>

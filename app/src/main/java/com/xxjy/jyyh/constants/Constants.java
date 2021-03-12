@@ -13,22 +13,21 @@ import static com.xxjy.jyyh.constants.ApiService.CONFIG_BASE_URL;
  */
 public class Constants {
 
-
-    public static final String USER_XIE_YI = CONFIG_BASE_URL+"found/articles/400221";
-    public static final String YINSI_ZHENG_CE =CONFIG_BASE_URL+"found/articles/400222";
-    public static final String INTEGRAL_EXPLANATION_URL=CONFIG_BASE_URL+"mall/introduction";
+    public static final String USER_XIE_YI = CONFIG_BASE_URL + "found/articles/400221";
+    public static final String YINSI_ZHENG_CE = CONFIG_BASE_URL + "found/articles/400222";
+    public static final String INTEGRAL_EXPLANATION_URL = CONFIG_BASE_URL + "mall/introduction";
 
     /**
      * release服务器
      */
-    public static final boolean URL_IS_DEBUG = true;   //测试用这个
-//    public static final boolean URL_IS_DEBUG = false;   //正式上线用这个
+//    public static final boolean URL_IS_DEBUG = true;   //测试用这个
+    public static final boolean URL_IS_DEBUG = false;   //正式上线用这个
 
     /**
      * 配置debug模式
      */
-    public static final boolean IS_DEBUG = true;  //测试用这个
-//    public static final boolean IS_DEBUG = false;   //正式上线用这个
+//    public static final boolean IS_DEBUG = true;  //测试用这个
+    public static final boolean IS_DEBUG = false;   //正式上线用这个
 
     //微信配置
     public static final String WX_APP_ID = "wx3704434db8357ec1";
@@ -59,16 +58,15 @@ public class Constants {
     public static final String GAS_STATION_ID = "gasId";    //油站id
     public static final String OIL_NUMBER_ID = "oilNo";     //油号
     public static final String TYPE = "type";
-    public static final String NICK_NAME="nickName";
-    public static final String NICK_NAME_2="nickname";
-    public static final String IMG_URL="imgUrl";
-    public static final String SEX="sex";
-    public static final String BIRTHDAY="birthday";
-    public static final String WX_ACCOUNT="wxAccount";
-    public static final String FILE="file";
+    public static final String NICK_NAME = "nickName";
+    public static final String NICK_NAME_2 = "nickname";
+    public static final String IMG_URL = "imgUrl";
+    public static final String SEX = "sex";
+    public static final String BIRTHDAY = "birthday";
+    public static final String WX_ACCOUNT = "wxAccount";
+    public static final String FILE = "file";
 
     //eventBus
-
 
 
 }

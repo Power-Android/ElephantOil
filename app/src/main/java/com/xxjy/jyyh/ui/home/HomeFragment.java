@@ -235,7 +235,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //                }
 //            });
         });
-        mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+//        mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         mViewModel.getHomeProduct();
         loadBanner();
@@ -596,29 +596,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     RefuelOilEntity.DataBean dataBean = refuelOilEntity.getData().get(0);
 
                     SpanUtils.with(mBinding.integralDesc)
-                            .append("• 还需加油")
+                            .append("还需加油")
                             .append(dataBean.getNOrderAmount() + "")
                             .setForegroundColor(getResources().getColor(R.color.color_1300))
                             .append("元 可立即领取")
                             .append(dataBean.getSpName())
                             .setForegroundColor(getResources().getColor(R.color.color_1300))
-                            .append("(价值" + dataBean.getRedeemPoint() + "积分)")
-                            .setFontSize(10, true)
-                            .setForegroundColor(getResources().getColor(R.color.color_1300))
                             .create();
-
-                    SpanUtils.with(mBinding.orderNumDecView)
-                            .append("(约需")
-                            .append(dataBean.getTOrderNum() + "")
-                            .setForegroundColor(getResources().getColor(R.color.color_34))
-                            .append("单，还约需完成")
-                            .append(dataBean.getNOrderNum() + "")
-                            .setForegroundColor(getResources().getColor(R.color.color_34))
-                            .append("单，限")
-                            .append(dataBean.getGasName())
-                            .setForegroundColor(getResources().getColor(R.color.color_34))
-                            .append(")")
-                            .create();
+                    mBinding.orderNumDecView.setText("   (价值" + dataBean.getRedeemPoint() + "积分)");
                     GlideUtils.loadImage(getContext(), dataBean.getSpImg(), mBinding.integralIv);
                     mBinding.progress.setMax(100);
                     if (Double.parseDouble(dataBean.getProgress()) == 0d) {
@@ -635,12 +620,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         mBinding.awardTv.setBackgroundResource(R.drawable.shape_no_receive_6radius);
                         mBinding.awardTv.setAlpha(0.5f);
                     }
-                    mBinding.awardTv.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), dataBean.getLink());
-                        }
-                    });
+                    mBinding.awardTv.setOnClickListener(v ->
+                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), dataBean.getLink()));
                 }
             } else {
                 mBinding.integralRl.setVisibility(View.GONE);
@@ -675,11 +656,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     localLifeListAdapter.setNewData(null);
                 }
                 mBinding.refreshView.finishLoadMoreWithNoMoreData();
-
             }
-
         });
-
     }
 
     private void showNumDialog(OilEntity.StationsBean stationsBean) {
@@ -690,6 +668,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             public void onOilTypeClick(BaseQuickAdapter adapter, View view, int position,
                                        OilNumAdapter oilNumAdapter, OilGunAdapter oilGunAdapter) {
                 List<OilTypeEntity> data = adapter.getData();
+                isShowAmount = false;
                 for (int i = 0; i < data.size(); i++) {
                     data.get(i).setSelect(false);
                 }
@@ -729,6 +708,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 }
                 mOilNoPosition = position;
                 mOilGunPosition = 0;
+                isShowAmount = false;
                 oilGunAdapter.setNewData(data.get(position).getGunNos());
                 mBinding.oilCurrentPriceTv.setText(data.get(position).getPriceYfq());
                 mBinding.oilOriginalPriceTv.setText("油站价¥" + data.get(position).getPriceGun());
@@ -979,7 +959,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         if (mGasStationTipsDialog != null) {
             mGasStationTipsDialog = null;
         }
-
+        isShowAmount = false;
         //关掉以后重新刷新数据,否则再次打开时上下选中不一致
         mViewModel.getHomeOil(mLat, mLng);
     }

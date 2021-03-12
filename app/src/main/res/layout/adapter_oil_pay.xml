@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_44"
+    android:layout_height="@dimen/dp_50"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:id="@+id/item_pay_type_iv"
@@ -52,4 +52,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/selector_checkbox"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/color_F0"
+        app:layout_constraintStart_toStartOf="@+id/item_title_tv"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

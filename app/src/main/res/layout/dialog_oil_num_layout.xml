@@ -40,73 +40,79 @@
         app:layout_constraintTop_toBottomOf="@+id/tv1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-    <androidx.core.widget.NestedScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_8"
-        app:layout_constraintTop_toBottomOf="@+id/tv2">
-        <LinearLayout
+        app:layout_constraintTop_toBottomOf="@+id/tv2"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/tv3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="选择商品"
-                android:textSize="@dimen/sp_13"
-                android:textColor="@color/color_34"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginStart="@dimen/dp_20"
-                app:layout_constraintTop_toBottomOf="@+id/tv2"
-                app:layout_constraintStart_toStartOf="parent"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/oil_type_recycler_view"
+            android:layout_marginTop="@dimen/dp_8">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_17"
-                android:layout_marginEnd="@dimen/dp_17"
-                android:layout_marginTop="@dimen/dp_7"
-                app:layout_constraintTop_toBottomOf="@+id/tv3" />
-            <TextView
-                android:id="@+id/tv4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="选择油号"
-                android:textSize="@dimen/sp_13"
-                android:textColor="@color/color_34"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/dp_15"
-                android:layout_marginStart="@dimen/dp_20"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="选择商品"
+                    android:textSize="@dimen/sp_13"
+                    android:textColor="@color/color_34"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginStart="@dimen/dp_20"
+                    app:layout_constraintTop_toBottomOf="@+id/tv2"
+                    app:layout_constraintStart_toStartOf="parent"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/oil_type_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_17"
+                    android:layout_marginEnd="@dimen/dp_17"
+                    android:layout_marginTop="@dimen/dp_7"
+                    app:layout_constraintTop_toBottomOf="@+id/tv3" />
+                <TextView
+                    android:id="@+id/tv4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="选择油号"
+                    android:textSize="@dimen/sp_13"
+                    android:textColor="@color/color_34"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginStart="@dimen/dp_20"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/oil_num_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_17"
-                android:layout_marginTop="@dimen/dp_7"
-                android:layout_marginEnd="@dimen/dp_17" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/oil_num_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_17"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:layout_marginEnd="@dimen/dp_17" />
 
-            <TextView
-                android:id="@+id/tv5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="选择油枪"
-                android:textSize="@dimen/sp_13"
-                android:textColor="@color/color_34"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/dp_15"
-                android:layout_marginStart="@dimen/dp_20"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/oil_gun_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_17"
-                android:layout_marginEnd="@dimen/dp_17"
-                android:layout_marginTop="@dimen/dp_7" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                <TextView
+                    android:id="@+id/tv5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="选择油枪"
+                    android:textSize="@dimen/sp_13"
+                    android:textColor="@color/color_34"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginStart="@dimen/dp_20"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/oil_gun_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_17"
+                    android:layout_marginEnd="@dimen/dp_17"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:layout_marginBottom="@dimen/dp_70"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
     <TextView
         android:id="@+id/query_tv"
         android:layout_width="match_parent"

@@ -26,6 +26,15 @@ public class OilDefaultPriceEntity {
         private String depreciateAmount;
         private String liter;
         private boolean isSelected;
+        private String totalDiscountAmount;
+
+        public String getTotalDiscountAmount() {
+            return totalDiscountAmount;
+        }
+
+        public void setTotalDiscountAmount(String totalDiscountAmount) {
+            this.totalDiscountAmount = totalDiscountAmount;
+        }
 
         public boolean isSelected() {
             return isSelected;

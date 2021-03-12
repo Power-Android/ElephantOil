@@ -116,7 +116,7 @@
             android:drawableStart="@drawable/fapiao"
             android:drawablePadding="@dimen/dp_5"
             android:text="站内开票"
-            android:textColor="@color/color_34"
+            android:textColor="@color/color_82"
             android:textSize="@dimen/sp_12"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/oil_address_tv" />
@@ -144,7 +144,8 @@
                 android:layout_weight="2"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="92#"
+                android:text="92# :"
+                android:textStyle="bold"
                 android:textColor="@color/color_2C"
                 android:textSize="@dimen/sp_15" />
 
@@ -361,30 +362,22 @@
         android:background="@color/white"
         android:adjustViewBounds="true"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
+        android:paddingTop="@dimen/dp_4"
+        android:paddingBottom="@dimen/dp_4"
         app:layout_constraintTop_toBottomOf="@+id/layout_1">
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="@dimen/dp_6"
             android:background="@color/color_F5" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="13dp"
-            android:text="小象公告"
-            android:textColor="@color/color_2C"
-            android:textSize="@dimen/sp_13"
-            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/oil_tag_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_0"
+            android:layout_marginTop="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_20"
             android:layout_marginBottom="@dimen/dp_5" />
 
@@ -394,7 +387,6 @@
         android:id="@+id/layout_2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
-        android:layout_marginTop="@dimen/dp_5"
         android:background="@color/color_F5"
         app:layout_constraintTop_toBottomOf="@id/oil_tag_layout">
 
@@ -406,6 +398,7 @@
             android:text="已选："
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/sp_14"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -428,14 +421,16 @@
         android:background="@color/color_E9"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_2">
+        app:layout_constraintTop_toBottomOf="@+id/layout_2"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
 
         <TextView
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_22"
             android:text="请选择油号/油枪"
             android:textColor="@color/color_76FF"
             android:textSize="@dimen/sp_16"
@@ -479,7 +474,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_17"
-                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_5"
                     android:layout_marginEnd="@dimen/dp_17"
                     android:nestedScrollingEnabled="false"
                     app:layout_constraintTop_toBottomOf="@+id/tv3" />
@@ -500,9 +495,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_17"
-                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_5"
                     android:layout_marginEnd="@dimen/dp_17"
-                    android:nestedScrollingEnabled="false"/>
+                    android:nestedScrollingEnabled="false" />
 
                 <TextView
                     android:id="@+id/tv5"
@@ -520,10 +515,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_17"
-                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_5"
                     android:layout_marginEnd="@dimen/dp_17"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_marginBottom="@dimen/dp_70" />
+                    android:layout_marginBottom="@dimen/dp_70"
+                    android:nestedScrollingEnabled="false" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
@@ -531,7 +526,7 @@
     <TextView
         android:id="@+id/query_tv"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_44"
+        android:layout_height="@dimen/dp_50"
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_20"
         android:layout_marginBottom="@dimen/dp_15"
