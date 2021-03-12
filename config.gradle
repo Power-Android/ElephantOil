@@ -7,8 +7,8 @@ ext {
             applicationId    : "com.xxjy.jyyh",
             minSdkVersion    : 21,
             targetSdkVersion : 28,
-            versionCode      : 43,
-            versionName      : "6.0.3",
+            versionCode      : 44,
+            versionName      : "6.0.4",
     ]
 
     //support配置
