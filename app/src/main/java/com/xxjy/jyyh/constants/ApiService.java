@@ -117,6 +117,8 @@ public class ApiService {
     public static final String GET_OIL_DISTANCE = "api/gasPublic/getDistance";
     //是否隐藏权益相关内容
     public static final String GET_OS_OVERALL = "api/v1/common/getOsOverall";
+    //是否隐藏余额
+    public static final String GET_OS_BALANCE = "api/v1/common/getOsBalanceShow";
     //加油新老用户区分
     public static final String IS_NEW_USER = "api/gasPublic/isNewUser";
     //极光ID

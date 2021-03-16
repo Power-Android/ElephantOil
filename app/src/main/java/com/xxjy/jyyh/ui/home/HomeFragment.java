@@ -960,6 +960,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             mGasStationTipsDialog = null;
         }
         isShowAmount = false;
+        mOilNoPosition = 0;
         //关掉以后重新刷新数据,否则再次打开时上下选中不一致
         mViewModel.getHomeOil(mLat, mLng);
     }

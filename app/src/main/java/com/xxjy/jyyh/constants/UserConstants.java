@@ -121,6 +121,14 @@ public class UserConstants {
         return SPUtils.getInstance().getBoolean(SPConstants.GONE_INTEGRAL, false);
     }
 
+    public static void setGoneBalance(boolean b) {
+        SPUtils.getInstance().put(SPConstants.GONE_BALANCE, b);
+    }
+
+    public static boolean getGoneBalance() {
+        return SPUtils.getInstance().getBoolean(SPConstants.GONE_BALANCE, false);
+    }
+
     public static void setNotificationRemind(boolean b) {
         String str = TimeUtils.date2String(new Date(), "yyyy-MM-dd") + "@_@" + b;
         SPUtils.getInstance().put(SPConstants.NOTIFICATION_REMIND, str);

@@ -35,4 +35,14 @@ public class MineRepository extends BaseRepository {
                 .subscribe(data -> bannersLiveData.postValue(data))
         );
     }
+
+
+    public void getOsBalance(MutableLiveData<Boolean> os1LiveData) {
+        addDisposable(RxHttp.postForm(ApiService.GET_OS_BALANCE)
+                .asResponse(Boolean.class)
+                .subscribe(b -> {
+                    os1LiveData.postValue(b);
+                })
+        );
+    }
 }

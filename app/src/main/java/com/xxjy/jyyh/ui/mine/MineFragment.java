@@ -97,11 +97,20 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         boolean b = UserConstants.getGoneIntegral();
         if (b){
             mBinding.integralLayout.setVisibility(View.INVISIBLE);
-            mBinding.balanceLayout.setVisibility(View.INVISIBLE);
         }else {
             mBinding.integralLayout.setVisibility(View.VISIBLE);
-            mBinding.balanceLayout.setVisibility(View.VISIBLE);
         }
+
+        //是否隐藏余额
+        mViewModel.getOsBalance().observe(this, aBoolean -> {
+            if (!aBoolean) {
+                UserConstants.setGoneBalance(true);
+                mBinding.balanceLayout.setVisibility(View.INVISIBLE);
+            } else {
+                UserConstants.setGoneBalance(false);
+                mBinding.balanceLayout.setVisibility(View.VISIBLE);
+            }
+        });
 
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
         mineTabAdapter = new MineTabAdapter(R.layout.adapter_mine_tab, tabs);

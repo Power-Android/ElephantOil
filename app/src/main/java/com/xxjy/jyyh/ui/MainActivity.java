@@ -11,9 +11,13 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.BusUtils;
+import com.xxjy.jyyh.PrivacyActivity;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
@@ -85,6 +89,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                 UserConstants.setGoneIntegral(false);
             }
         });
+
         //新老用户展示tab判断
         mViewModel.getIsNewUser().observe(this, aBoolean -> {
             if (aBoolean) {
@@ -94,6 +99,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             }
             showDiffFragment(isNewUser);
         });
+
         initNavigationView();
         new Handler().postDelayed(() -> {
             if (!UserConstants.getIsLogin()) {

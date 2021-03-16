@@ -65,6 +65,11 @@ public class SPConstants {
     public static final String GONE_INTEGRAL = "gone_integral";
 
     /**
+     * 隐藏余额
+     */
+    public static final String GONE_BALANCE = "gone_balance";
+
+    /**
      * 通知弹窗提醒
      */
     public static final String NOTIFICATION_REMIND = "notification_remind";

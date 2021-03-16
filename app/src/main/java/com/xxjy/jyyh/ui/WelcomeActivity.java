@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.xxjy.jyyh.PrivacyActivity;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
@@ -157,7 +158,12 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
         if (isShownYSXY) {
             getAdInfo();
         } else {
-            showYSXYDialog();
+            new Handler().postDelayed(() -> {
+                startActivity(new Intent(WelcomeActivity.this, PrivacyActivity.class));
+                finish();
+            }, 2500);
+//            isShownYSXY = true;
+//            showYSXYDialog();
         }
     }
 
