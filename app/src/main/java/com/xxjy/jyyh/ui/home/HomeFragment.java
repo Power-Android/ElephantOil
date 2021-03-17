@@ -165,6 +165,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         if (!hidden) {
             getBaseActivity().setTransparentStatusBar();
             mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
+
+            requestPermission();
+            
             if (mStationsBean != null) {
                 mViewModel.getRefuelJob(mStationsBean.getGasId());
             }

@@ -42,8 +42,8 @@ public class OilRepository extends BaseRepository {
                                String appLongitude, String oilNo, String orderBy, String distance,
                                String pageNum, String pageSize, String gasName, String method) {
         addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS)
-                .add("appLatitude", TextUtils.equals(appLatitude, "0") ? null : appLatitude)
-                .add("appLongitude", TextUtils.equals(appLongitude, "0") ? null : appLongitude)
+                .add("appLatitude", appLatitude, Float.parseFloat(appLatitude) != 0)
+                .add("appLongitude", appLongitude, Float.parseFloat(appLongitude) != 0)
                 .add("oilNo", oilNo, !TextUtils.isEmpty(oilNo))
                 .add("orderBy", orderBy)
                 .add("distance",distance)
@@ -59,8 +59,8 @@ public class OilRepository extends BaseRepository {
     public void getSignOilStations(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
                                    String appLongitude) {
         addDisposable(RxHttp.postForm(ApiService.SIGN_OIL_STATIONS)
-                .add("appLatitude", TextUtils.equals(appLatitude, "0") ? null : appLatitude)
-                .add("appLongitude", TextUtils.equals(appLongitude, "0") ? null : appLongitude)
+                .add("appLatitude", appLatitude, Float.parseFloat(appLatitude) > 0)
+                .add("appLongitude", appLongitude, Float.parseFloat(appLongitude) > 0)
                 .asResponse(OilEntity.class)
                 .subscribe(data -> oilStationLiveData.postValue(data))
         );
@@ -77,8 +77,8 @@ public class OilRepository extends BaseRepository {
                              MutableLiveData<OilEntity.StationsBean> oilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.OIL_DETAIL)
                 .add(Constants.GAS_STATION_ID, gasId)
-                .add(Constants.LATITUDE, lat)
-                .add(Constants.LONGTIDUE, lng)
+                .add(Constants.LATITUDE, lat+"", lat != 0)
+                .add(Constants.LONGTIDUE, lng+"", lng != 0)
                 .asResponse(OilEntity.StationsBean.class)
                 .doOnSubscribe(disposable -> showLoading(true))
                 .doFinally(() -> showLoading(false))

@@ -18,6 +18,7 @@ import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.PayResultBannerAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityRefuelingPayResultBinding;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.PayResultEntity;
@@ -182,7 +183,11 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                 finish();
                 break;
             case R.id.go_home_view:
-                UiUtils.jumpToHome(this, Constants.TYPE_HOME);
+                if (UserConstants.getGoneIntegral()){
+                    UiUtils.jumpToHome(this, Constants.TYPE_OIL);
+                }else {
+                    UiUtils.jumpToHome(this, Constants.TYPE_HOME);
+                }
                 finish();
             case R.id.tv1:
             case R.id.tv2:

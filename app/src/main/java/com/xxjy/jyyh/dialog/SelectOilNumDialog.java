@@ -41,20 +41,23 @@ public class SelectOilNumDialog {
     private SelectOilNoAdapter mOilNumAdapter;
     private View mView;
     private String mCheckOilGasId = "92";           //当前选中的油号id
-    public SelectOilNumDialog(Context context,String checkOilGasId, View view, ViewGroup rootView) {
+
+    public SelectOilNumDialog(Context context, String checkOilGasId, View view, ViewGroup rootView) {
         this.mContext = context;
         this.mView = view;
         this.mCheckOilGasId = checkOilGasId;
 //        mBinding = DialogSelectOilNumBinding.bind(
 //                View.inflate(mContext,R.layout.dialog_select_oil_num, null));
         mBinding = DialogSelectOilNumBinding.bind(
-                LayoutInflater.from(mContext).inflate(R.layout.dialog_select_oil_num, rootView,false));
+                LayoutInflater.from(mContext).inflate(R.layout.dialog_select_oil_num, rootView, false));
         init();
 //        initData();
     }
-public void setCheckData(String checkOilGasId){
-        this.mCheckOilGasId=checkOilGasId;
-}
+
+    public void setCheckData(String checkOilGasId) {
+        this.mCheckOilGasId = checkOilGasId;
+    }
+
     private void init() {
         if (mOilNumDialog == null) {
             mOilNumDialog = AnyLayer.popup(mView)
@@ -100,12 +103,12 @@ public void setCheckData(String checkOilGasId){
 
     }
 
-    public void setData(List<OilNumBean> oilNumBeans){
+    public void setData(List<OilNumBean> oilNumBeans) {
         dispatchData(oilNumBeans);
     }
+
     /**
-     * @param oilNumBeans
-     * 初始化油号筛选列表
+     * @param oilNumBeans 初始化油号筛选列表
      */
     private void dispatchData(List<OilNumBean> oilNumBeans) {
         final List<OilNumCheckEntity> listBeen = getList(oilNumBeans);
@@ -124,15 +127,16 @@ public void setCheckData(String checkOilGasId){
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(oilNoAdapter);
         oilNoAdapter.setOnItemClickListener((adapter, view, position) -> {
-            if (listBeen.get(position).getItemType() == SelectOilNoAdapter.TYPECONTENT){
+            if (listBeen.get(position).getItemType() == SelectOilNoAdapter.TYPECONTENT) {
                 mCheckOilGasId = listBeen.get(position).getOilListBeen().getId();
-                if (mOnItemClickedListener != null){
-                    mOnItemClickedListener.onOilNumClick(adapter, view, position,listBeen.get(position).getOilListBeen().getOilNum(),mCheckOilGasId);
+                if (mOnItemClickedListener != null) {
+                    mOnItemClickedListener.onOilNumClick(adapter, view, position, listBeen.get(position).getOilListBeen().getOilNum(), mCheckOilGasId);
                 }
                 mOilNumDialog.dismiss();
             }
         });
     }
+
     /**
      * @param oilNumBeans
      * @return 油号筛选列表的list
@@ -159,17 +163,17 @@ public void setCheckData(String checkOilGasId){
         return list;
     }
 
-    public void show(){
+    public void show() {
         mOilNumDialog.show();
     }
 
-    public interface OnItemClickedListener{
-        void onOilNumClick(BaseQuickAdapter adapter, View view, int position,String oilNum,String mCheckOilGasId);
+    public interface OnItemClickedListener {
+        void onOilNumClick(BaseQuickAdapter adapter, View view, int position, String oilNum, String mCheckOilGasId);
     }
 
     private OnItemClickedListener mOnItemClickedListener;
 
-    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener){
+    public void setOnItemClickedListener(OnItemClickedListener onItemClickedListener) {
         this.mOnItemClickedListener = onItemClickedListener;
     }
 }

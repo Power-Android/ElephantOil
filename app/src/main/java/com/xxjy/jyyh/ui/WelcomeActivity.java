@@ -161,7 +161,7 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
             new Handler().postDelayed(() -> {
                 startActivity(new Intent(WelcomeActivity.this, PrivacyActivity.class));
                 finish();
-            }, 2500);
+            }, 2000);
 //            isShownYSXY = true;
 //            showYSXYDialog();
         }

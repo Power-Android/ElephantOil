@@ -5,6 +5,38 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/dp_3"
+        android:layout_marginTop="@dimen/common_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/all_tv"
+                android:textSize="@dimen/sp_12"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/dp_75"
+                android:layout_height="@dimen/dp_30"
+                android:gravity="center"
+                android:background="@drawable/selector_gas_station_check_oil_info"
+                android:text="全部"
+                android:textColor="@color/selector_red_black_color" />
+        </FrameLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3" />
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/no_recyclerView"
         android:layout_width="match_parent"
@@ -14,6 +46,6 @@
         android:layout_marginTop="@dimen/dp_6"
         android:overScrollMode="never"
         android:paddingBottom="@dimen/dp_14"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view1"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
     android:background="@color/color_F0"
-    android:minHeight="@dimen/dp_500">
+    android:minHeight="@dimen/dp_600">
 
     <ImageView
         android:id="@+id/back_iv"
@@ -52,7 +52,6 @@
         android:text="请您务必与加油员确认后在站内支付"
         android:textSize="@dimen/sp_12"
         android:textColor="@color/color_1300"
-        android:layout_marginTop="@dimen/dp_7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/back_iv"
@@ -127,6 +126,95 @@
         android:layout_marginEnd="@dimen/dp_18"
         app:layout_constraintTop_toBottomOf="@+id/amount_input_cl" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/month_red_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/dp_18"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_5"
+        android:background="@drawable/selector_month_red"
+        app:layout_constraintTop_toBottomOf="@+id/amount_recycler_view">
+        <ImageView
+            android:id="@+id/view1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/month_red_text"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/common_margin"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+            android:id="@+id/month_red_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8.8元享18元立减红包，本单立减7元"
+            android:textSize="@dimen/sp_11"
+            android:textColor="@color/color_1300"
+            android:layout_marginTop="@dimen/dp_5"
+            app:layout_constraintTop_toBottomOf="@+id/view1"
+            app:layout_constraintStart_toStartOf="@+id/view1"/>
+        <ImageView
+            android:id="@+id/month_red_rule"
+            android:layout_width="@dimen/dp_56"
+            android:layout_height="@dimen/dp_11"
+            android:src="@drawable/month_red_rule"
+            android:layout_marginEnd="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view1"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/month_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@+id/month_red_desc"
+            app:layout_constraintStart_toStartOf="@+id/view1" />
+        <TextView
+            android:id="@+id/view2"
+            android:layout_width="@dimen/dp_53"
+            android:layout_height="@dimen/dp_13"
+            android:text="超值单单减"
+            android:textSize="@dimen/sp_9"
+            android:textColor="#FF4B33"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:background="@drawable/shape_stroke_red_3raduis"
+            app:layout_constraintTop_toTopOf="@+id/month_recycler_view"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:id="@+id/month_red_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥8.8"
+            android:textSize="@dimen/sp_20"
+            android:textColor="@color/color_1300"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:includeFontPadding="false"
+            app:layout_constraintTop_toBottomOf="@+id/view2"
+            app:layout_constraintEnd_toStartOf="@+id/month_red_check" />
+        <CheckBox
+            android:id="@+id/month_red_check"
+            android:layout_width="@dimen/common_margin"
+            android:layout_height="@dimen/common_margin"
+            android:background="@drawable/selector_checkbox"
+            android:button="@null"
+            android:layout_marginEnd="@dimen/dp_10"
+            app:layout_constraintTop_toTopOf="@+id/month_red_money"
+            app:layout_constraintBottom_toBottomOf="@+id/month_red_money"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请您购买前仔细阅读月度红包活动规则"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/common_margin"
+            app:layout_constraintTop_toBottomOf="@+id/month_recycler_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/view1"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/discount_recycler_view"
         android:layout_width="match_parent"
@@ -138,7 +226,7 @@
         android:paddingBottom="@dimen/dp_5"
         android:visibility="gone"
         android:background="@drawable/shape_white_4raduis"
-        app:layout_constraintTop_toBottomOf="@+id/amount_recycler_view" />
+        app:layout_constraintTop_toBottomOf="@+id/month_red_cl" />
     <TextView
         android:id="@+id/hot_iv"
         android:layout_width="wrap_content"

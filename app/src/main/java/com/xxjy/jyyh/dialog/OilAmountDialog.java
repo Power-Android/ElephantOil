@@ -25,6 +25,7 @@ import com.rxjava.rxlife.RxLife;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilAmountAdapter;
 import com.xxjy.jyyh.adapter.OilDiscountAdapter;
+import com.xxjy.jyyh.adapter.OilMonthAdapter;
 import com.xxjy.jyyh.adapter.TextWatcherAdapter;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BaseRepository;
@@ -78,6 +79,7 @@ public class OilAmountDialog extends BottomSheetDialog {
     private String platId = "", businessAmount = "";//平台优惠券id， 商机优惠金额 每次刷新价格是要清空
     private OilHotDialog mOilHotDialog;
     private OilServiceDialog mOilServiceDialog;
+    private List<String> mOilMonthList = new ArrayList<>();
 
     public OilAmountDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
                            List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBeans,
@@ -131,6 +133,10 @@ public class OilAmountDialog extends BottomSheetDialog {
             //刷新价格互斥
             refreshData();
         });
+
+        //月度红包
+        mBinding.monthRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        OilMonthAdapter oilMonthAdapter = new OilMonthAdapter(R.layout.adapter_oil_month, mOilMonthList);
 
         //优惠列表
         for (int i = 0; i < 4; i++) {

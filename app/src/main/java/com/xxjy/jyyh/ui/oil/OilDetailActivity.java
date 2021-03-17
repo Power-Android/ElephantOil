@@ -141,15 +141,15 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
-            mLat = Double.parseDouble(UserConstants.getLatitude());
-            mLng = Double.parseDouble(UserConstants.getLongitude());
+//        if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
+//            mLat = Double.parseDouble(UserConstants.getLatitude());
+//            mLng = Double.parseDouble(UserConstants.getLongitude());
             //首页油站
             mViewModel.getOilDetail(mGasId, mLat, mLng);
-        }
+//        }
 
         //请求定位权限
-        requestPermission();
+//        requestPermission();
 
         //标签列表
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
@@ -213,6 +213,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             mOilCheckedList.add(0, getOilKind(oilPriceList.get(0).getOilType() + ""));
             mOilCheckedList.add(1, oilPriceList.get(0).getOilName());
             mOilCheckedAdapter.notifyDataSetChanged();
+            isShowAmount = false;
+            mOilNoPosition = 0;
         });
 
         //油号列表
@@ -290,7 +292,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
                     @Override
                     public void onDenied() {
-                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
+                        mViewModel.getOilDetail(mGasId, mLat, mLng);
+//                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
                     }
                 })
                 .request();
@@ -375,7 +378,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                 mLat = 0;
                 mLng = 0;
                 mViewModel.getOilDetail(mGasId, mLat, mLng);
-                showFailLocation();
+//                showFailLocation();
             }
         });
 
@@ -769,7 +772,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         if (mGasStationTipsDialog != null) {
             mGasStationTipsDialog = null;
         }
-
+        isShowAmount = false;
+        mOilNoPosition = 0;
         //关掉以后重新刷新数据,否则再次打开时上下选中不一致
         mViewModel.getOilDetail(mGasId, mLat, mLng);
     }

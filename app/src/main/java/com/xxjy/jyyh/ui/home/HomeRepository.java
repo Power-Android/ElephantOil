@@ -63,7 +63,6 @@ public class HomeRepository extends BaseRepository {
                 public void locationFiler() {
                     locationEntity.setSuccess(false);
                     locationLiveData.postValue(locationEntity);
-                    MyToast.showWarning(App.getContext(),"请去设置里开启定位权限!");
                 }
             });
         }
@@ -78,8 +77,8 @@ public class HomeRepository extends BaseRepository {
     public void getHomeOil(double lat, double lng,
                            MutableLiveData<OilEntity> homeOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.HOME_OIL)
-                .add(Constants.LATITUDE, lat)
-                .add(Constants.LONGTIDUE, lng)
+                .add(Constants.LATITUDE, lat, lat != 0)
+                .add(Constants.LONGTIDUE, lng, lng != 0)
                 .asResponse(OilEntity.class)
                 .subscribe(oilEntity -> homeOilLiveData.postValue(oilEntity))
         );
