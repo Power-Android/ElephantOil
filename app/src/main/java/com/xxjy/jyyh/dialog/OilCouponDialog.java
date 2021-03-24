@@ -23,8 +23,6 @@ import com.xxjy.jyyh.utils.UiUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
 
 /**
@@ -43,10 +41,10 @@ public class OilCouponDialog extends BottomSheetDialog {
     private final DialogOilCouponBinding mBinding;
     private List<CouponBean> mList = new ArrayList<>();
     private OilCouponAdapter mOilCouponAdapter;
-    private String amount;
+    private String amount, oilNo;
 
     public OilCouponDialog(Context context, BaseActivity activity, String amount, OilEntity.StationsBean stationsBean,
-                           int oilNoPosition, int gunNoPosition, boolean isPlat) {
+                           int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat) {
         super(context, R.style.bottom_sheet_dialog);
         this.mContext = context;
         this.mActivity = activity;
@@ -54,6 +52,7 @@ public class OilCouponDialog extends BottomSheetDialog {
         this.mStationsBean = stationsBean;
         this.oilNoPosition = oilNoPosition;
         this.gunNoPosition = gunNoPosition;
+        this.oilNo = oilNo;
         this.isPlat = isPlat;
         mBinding = DialogOilCouponBinding.bind(
                 View.inflate(context, R.layout.dialog_oil_coupon, null));
@@ -105,6 +104,7 @@ public class OilCouponDialog extends BottomSheetDialog {
                 .add("canUse", "1")
                 .add("rangeType", "2")
                 .add("amount", TextUtils.isEmpty(amount) ? "0" : amount)
+                .add(Constants.OIL_NUMBER_ID, oilNo)
                 .add(Constants.GAS_STATION_ID, mStationsBean.getGasId())
                 .asResponseList(CouponBean.class)
                 .to(RxLife.toMain(mActivity))
@@ -117,8 +117,7 @@ public class OilCouponDialog extends BottomSheetDialog {
         RxHttp.postForm(ApiService.BUSINESS_COUPON)
                 .add("canUse", "1")
                 .add("amount", amount)
-                .add(Constants.OIL_NUMBER_ID, String.valueOf(
-                        mStationsBean.getOilPriceList().get(oilNoPosition).getOilNo()))
+                .add(Constants.OIL_NUMBER_ID, oilNo)
                 .add(Constants.GAS_STATION_ID, mStationsBean.getGasId())
                 .asResponseList(CouponBean.class)
                 .to(RxLife.toMain(mActivity))

@@ -13,12 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilDistanceAdapter;
-import com.xxjy.jyyh.adapter.SelectOilNoAdapter;
 import com.xxjy.jyyh.databinding.DialogOilDistanceCheckedBinding;
-import com.xxjy.jyyh.databinding.DialogSelectOilNumBinding;
 import com.xxjy.jyyh.entity.DistanceEntity;
-import com.xxjy.jyyh.entity.OilNumBean;
-import com.xxjy.jyyh.entity.OilNumCheckEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,24 +26,22 @@ import per.goweii.anylayer.popup.PopupLayer;
 
 /**
  * @author power
- * @date 1/21/21 8:26 PM
+ * @date 3/20/21 5:07 PM
  * @project ElephantOil
  * @description:
  */
-public class SelectDistanceDialog {
+public class SelectSortDialog {
     private Context mContext;
     private DialogLayer mOilNumDialog;
     private DialogOilDistanceCheckedBinding mBinding;
     private List<DistanceEntity> mList = new ArrayList<>();
     private OilDistanceAdapter oilDistanceAdapter;
-    private int lastPosition = 4;
+    private int lastPosition = 0;
     private View mView;
-    private boolean isOilList;
 
-    public SelectDistanceDialog(Context context, View view, ViewGroup rootView, boolean isOilList) {
+    public SelectSortDialog(Context context, View view, ViewGroup rootView) {
         this.mContext = context;
         this.mView = view;
-        this.isOilList = isOilList;
         mBinding = DialogOilDistanceCheckedBinding.bind(
                 LayoutInflater.from(mContext).inflate(R.layout.dialog_oil_distance_checked, rootView, false));
         init();
@@ -88,15 +82,9 @@ public class SelectDistanceDialog {
     }
 
     private void initData() {
-//    5km内、10km内、15km内、20km内、50km内、不限距离
-        mList.add(new DistanceEntity("5km内", 5, false));
-        mList.add(new DistanceEntity("10km内", 10, false));
-        mList.add(new DistanceEntity("15km内", 15, false));
-        mList.add(new DistanceEntity("20km内", 20, false));
-        mList.add(new DistanceEntity("50km内", 50, true));
-        if (!isOilList) {
-            mList.add(new DistanceEntity("不限距离", -1, false));
-        }
+        mList.add(new DistanceEntity("综合排序", 0, true));
+        mList.add(new DistanceEntity("距离优先", 1, false));
+        mList.add(new DistanceEntity("价格优先", 2, false));
         initView();
     }
 

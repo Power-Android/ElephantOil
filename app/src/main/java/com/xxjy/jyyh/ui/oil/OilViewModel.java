@@ -28,7 +28,7 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public MutableLiveData<List<OrderNewsEntity>> orderNewsLiveData = new MutableLiveData<>();
     public MutableLiveData<List<OilNumBean>> oilNumLiveData = new MutableLiveData<>();
     public MutableLiveData<OilEntity> oilStationLiveData = new MutableLiveData<>();
-    public MutableLiveData<OilEntity> signOilStationLiveData = new MutableLiveData<>();
+    public MutableLiveData<OilEntity> oilStationLiveData1 = new MutableLiveData<>();
     public MutableLiveData<List<BannerBean>> bannersLiveData = new MutableLiveData<>();
     public MutableLiveData<OilEntity.StationsBean> oilLiveData = new MutableLiveData<>();
 
@@ -47,9 +47,10 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
                 appLongitude, oilNo, orderBy, distance, pageNum, pageSize, gasName, method);
     }
 
-    public void getSignOilStations(String appLatitude,
-                                   String appLongitude) {
-        mRespository.getSignOilStations(signOilStationLiveData, appLatitude, appLongitude);
+    public void getOilStations1(String appLatitude, String appLongitude, String oilNo, String orderBy,
+                               String distance, String pageNum, String pageSize, String gasName, String method) {
+        mRespository.getOilStations1(oilStationLiveData1, appLatitude,
+                appLongitude, oilNo, orderBy, distance, pageNum, pageSize, gasName, method);
     }
 
     public void getBanners() {

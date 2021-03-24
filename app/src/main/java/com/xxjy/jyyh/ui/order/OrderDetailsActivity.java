@@ -154,6 +154,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             mBinding.businessDiscountView.setText("-¥" + data.getCzbCouponAmount());
             mBinding.balanceView.setText("-¥" + data.getUsedBalance());
             mBinding.platformDiscountView.setText("-¥" + data.getAmountCoupon());
+            mBinding.monthDiscountView.setText("-¥" + data.getAmountMonthCoupon());
             mBinding.orderIdView.setText(data.getOrderId());
             mBinding.payTypeView.setText(data.getPayTypeName());
             mBinding.payAmountView.setText("¥" + data.getPayAmount());
@@ -177,6 +178,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.businessDirectDiscountLayout.setVisibility(View.VISIBLE);
                     mBinding.businessDiscountLayout.setVisibility(View.VISIBLE);
                     mBinding.platformDiscountLayout.setVisibility(View.VISIBLE);
+                    mBinding.monthDiscountLayout.setVisibility(View.VISIBLE);
                     mBinding.balanceLayout.setVisibility(View.VISIBLE);
                     mBinding.payTypeLayout.setVisibility(View.GONE);
                     mBinding.payAmountLayout.setVisibility(View.GONE);
@@ -189,6 +191,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.businessDirectDiscountLayout.setVisibility(View.VISIBLE);
                     mBinding.businessDiscountLayout.setVisibility(View.VISIBLE);
                     mBinding.platformDiscountLayout.setVisibility(View.VISIBLE);
+                    mBinding.monthDiscountLayout.setVisibility(View.VISIBLE);
                     mBinding.balanceLayout.setVisibility(View.VISIBLE);
                     mBinding.payTypeLayout.setVisibility(View.VISIBLE);
                     mBinding.payAmountLayout.setVisibility(View.VISIBLE);
@@ -212,6 +215,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.businessDirectDiscountLayout.setVisibility(View.GONE);
                     mBinding.businessDiscountLayout.setVisibility(View.GONE);
                     mBinding.platformDiscountLayout.setVisibility(View.GONE);
+                    mBinding.monthDiscountLayout.setVisibility(View.GONE);
                     mBinding.balanceLayout.setVisibility(View.GONE);
                     mBinding.payTypeLayout.setVisibility(View.GONE);
                     mBinding.payAmountLayout.setVisibility(View.GONE);
@@ -225,6 +229,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.businessDirectDiscountLayout.setVisibility(View.GONE);
                     mBinding.businessDiscountLayout.setVisibility(View.GONE);
                     mBinding.platformDiscountLayout.setVisibility(View.GONE);
+                    mBinding.monthDiscountLayout.setVisibility(View.GONE);
                     mBinding.balanceLayout.setVisibility(View.GONE);
                     mBinding.payTypeLayout.setVisibility(View.GONE);
                     mBinding.payAmountLayout.setVisibility(View.GONE);

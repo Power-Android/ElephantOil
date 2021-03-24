@@ -233,7 +233,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
             if (platformCoupons.size() > 0 && position == 1 ||
                     businessCoupons.size() > 0 && position == 2) {
                 UiUtils.canClickViewStateDelayed(view, 1000);
-                showCouponDialog(mStationsBean, mBinding.amountEt.getText().toString(), "0", "0", position == 1);
+                showCouponDialog(mStationsBean, mBinding.amountEt.getText().toString(), "0", "0", "0",  position == 1);
             }
         });
 
@@ -296,10 +296,10 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
     }
 
     private void showCouponDialog(OilEntity.StationsBean stationsBean, String amount,
-                                  String oilNoPosition, String gunNoPosition, boolean isPlat) {
+                                  String oilNoPosition, String gunNoPosition, String oilNo, boolean isPlat) {
         //优惠券dialog
         mOilCouponDialog = new OilCouponDialog(this, this, amount, stationsBean,
-                Integer.valueOf(oilNoPosition), Integer.valueOf(gunNoPosition), isPlat);
+                Integer.valueOf(oilNoPosition), Integer.valueOf(gunNoPosition), oilNo, isPlat);
         mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
             @Override
             public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat) {
@@ -509,14 +509,16 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
 
         mViewModel.multiplePriceLiveData.observe(this, multiplePriceBean -> {
             this.mMultiplePriceBean = multiplePriceBean;
-            //直降金额
+            //直降金额            //服务费
             if (Float.parseFloat(multiplePriceBean.getTotalDiscountAmount()) > 0) {
                 mDiscountAdapter.getData().get(0).setFallAmount(
                         Float.parseFloat(multiplePriceBean.getTotalDiscountAmount()));
+                mDiscountList.get(0).setService(true);
             } else {
                 mDiscountAdapter.getData().get(0).setFallAmount(
                         Float.parseFloat(multiplePriceBean.getTotalDiscountAmount()));
                 mDiscountAdapter.getData().get(0).setFallDesc("暂无优惠");
+                mDiscountList.get(0).setService(false);
             }
             //升数
 //            mBinding.literTv.setText(String.format("约%sL",
@@ -527,13 +529,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
             //优惠金额
             mBinding.discountPriceTv.setText(String.format("已优惠：¥%s",
                     multiplePriceBean.getSumDiscountPrice()));
-            //服务费
-            if (!TextUtils.isEmpty(multiplePriceBean.getServiceChargeAmount()) &&
-                    Float.parseFloat(multiplePriceBean.getServiceChargeAmount()) > 0) {
-                mDiscountList.get(0).setService(true);
-            } else {
-                mDiscountList.get(0).setService(false);
-            }
+
             //抵扣余额
             mDiscountAdapter.getData().get(3).setBalanceDiscount(
                     Float.parseFloat(multiplePriceBean.getBalancePrice()));

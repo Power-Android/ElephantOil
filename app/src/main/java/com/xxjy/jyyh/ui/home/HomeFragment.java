@@ -1,10 +1,14 @@
 package com.xxjy.jyyh.ui.home;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -25,6 +29,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SpanUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -43,6 +48,7 @@ import com.xxjy.jyyh.adapter.LocalLifeListAdapter;
 import com.xxjy.jyyh.adapter.OilGunAdapter;
 import com.xxjy.jyyh.adapter.OilNumAdapter;
 import com.xxjy.jyyh.adapter.OilStationFlexAdapter;
+import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
@@ -72,7 +78,6 @@ import com.xxjy.jyyh.entity.RefuelOilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
-import com.xxjy.jyyh.ui.pay.PayQueryActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.restaurant.RestaurantActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
@@ -167,7 +172,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
 
             requestPermission();
-            
+
             if (mStationsBean != null) {
                 mViewModel.getRefuelJob(mStationsBean.getGasId());
             }
@@ -318,8 +323,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             } else {
                 mBinding.banner.setVisibility(View.GONE);
             }
-
-
         });
     }
 
@@ -328,22 +331,58 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         PermissionUtils.permission(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION)
-                .callback(new PermissionUtils.SimpleCallback() {
+                .callback(new PermissionUtils.FullCallback() {
                     @Override
-                    public void onGranted() {
+                    public void onGranted(@NonNull List<String> granted) {
                         mViewModel.getLocation();
                     }
 
                     @Override
-                    public void onDenied() {
-                        mLat = 0;
-                        mLng = 0;
-                        mViewModel.getHomeOil(mLat, mLng);
-                        showFailLocation();
+                    public void onDenied(@NonNull List<String> deniedForever, @NonNull List<String> denied) {
+                        if (deniedForever.size() > 0) {
+                            //添加确定按钮
+                            //添加返回按钮
+                            //dialog消失后重新查询权限
+                            new AlertDialog.Builder(mContext).setTitle("定位权限被拒绝")//设置对话框标题
+                                    .setMessage("定位权限被拒绝，将导致部分功能无法正常使用，需要到设置页面手动授权")
+                                    .setPositiveButton("去授权", (dialog, which) -> {//确定按钮的响应事件
+                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        Uri uri = Uri.fromParts("package", App.getContext().getPackageName(), null);
+                                        intent.setData(uri);
+                                        startActivity(intent);
+                                        dialog.dismiss();
+                                    }).setNegativeButton("取消", (dialog, which) -> {//响应事件
+                                        // TODO Auto-generated method stub
+                                        dialog.dismiss();
+                                    })
+                                    .setOnCancelListener(dialog -> {
+                                    }).show();//在按键响应事件中显示此对话框
+                        } else {
+                            mLat = 0;
+                            mLng = 0;
+                            mViewModel.getHomeOil(mLat, mLng);
+                            showFailLocation();
 //                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
+                        }
                     }
                 })
                 .request();
+
+//        new PermissionUtils.SimpleCallback() {
+//            @Override
+//            public void onGranted() {
+//
+//            }
+//
+//            @Override
+//            public void onDenied() {
+//                mLat = 0;
+//                mLng = 0;
+//                mViewModel.getHomeOil(mLat, mLng);
+//                showFailLocation();
+////                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
+//            }
+//        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -768,7 +807,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
                                            String amount, String oilNo) {
                 if (position == 1 || position == 2) {
-                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, position == 1);
+                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, oilNo, position == 1);
                 }
             }
 
@@ -788,21 +827,21 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     }
 
     private void showCouponDialog(OilEntity.StationsBean stationsBean, String amount,
-                                  int oilNoPosition, int gunNoPosition, boolean isPlat) {
+                                  int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat) {
         //优惠券dialog
         mOilCouponDialog = new OilCouponDialog(mContext, getBaseActivity(), amount, stationsBean,
-                oilNoPosition, gunNoPosition, isPlat);
+                oilNoPosition, gunNoPosition, oilNo, isPlat);
         mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
             @Override
             public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat) {
                 List<CouponBean> data = adapter.getData();
-                mOilAmountDialog.setCouponInfo(data.get(position), isPlat);
+                mOilAmountDialog.setCouponInfo(data.get(position), isPlat, data.get(position).getExcludeType());
                 mOilCouponDialog.dismiss();
             }
 
             @Override
             public void onNoCouponClick(boolean isPlat) {
-                mOilAmountDialog.setCouponInfo(null, isPlat);
+                mOilAmountDialog.setCouponInfo(null, isPlat, "");
                 mOilCouponDialog.dismiss();
             }
         });

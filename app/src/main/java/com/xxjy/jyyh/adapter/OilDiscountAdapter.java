@@ -55,15 +55,19 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                         .setText(R.id.item_title_tv, "平台优惠券");
                 if (item.getPlatformDesc().equals("请选择优惠券")) {
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
+                            .setEnabled(R.id.item_view, true)
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
                 } else if (item.getPlatformDesc().equals("暂无可用优惠券")) {
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
+                            .setEnabled(R.id.item_view, false)
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
                 } else if (item.getPlatformDesc().equals("请选择加油金额")) {
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
+                            .setEnabled(R.id.item_view, false)
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
                 } else {
                     helper.setText(R.id.item_discount_tv, item.getPlatformDesc())
+                            .setEnabled(R.id.item_view, true)
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
                 }
                 setDrawable(discountTv, R.drawable.arrow_right_icon);
@@ -74,15 +78,19 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                         .setText(R.id.item_title_tv, "商家优惠券(与直降优惠不同享)");
                 if (item.getBusinessDesc().equals("请选择优惠券")) {
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
+                            .setEnabled(R.id.item_view, true)
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
                 } else if (item.getBusinessDesc().equals("暂无可用优惠券")) {
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
+                            .setEnabled(R.id.item_view, false)
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
                 } else if (item.getBusinessDesc().equals("请选择加油金额")) {
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
+                            .setEnabled(R.id.item_view, false)
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_B1));
                 } else {
                     helper.setText(R.id.item_discount_tv, item.getBusinessDesc())
+                            .setEnabled(R.id.item_view, true)
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
                 }
                 setDrawable(discountTv, R.drawable.arrow_right_icon);

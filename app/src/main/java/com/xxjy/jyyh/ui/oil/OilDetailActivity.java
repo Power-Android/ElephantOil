@@ -583,7 +583,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
             public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
                                            String amount, String oilNo) {
                 if (position == 1 || position == 2) {
-                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, position == 1);
+                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, oilNo, position == 1);
                 }
             }
 
@@ -603,21 +603,21 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     }
 
     private void showCouponDialog(OilEntity.StationsBean stationsBean, String amount,
-                                  int oilNoPosition, int gunNoPosition, boolean isPlat) {
+                                  int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat) {
         //优惠券dialog
         mOilCouponDialog = new OilCouponDialog(this, this, amount, stationsBean,
-                oilNoPosition, gunNoPosition, isPlat);
+                oilNoPosition, gunNoPosition, oilNo, isPlat);
         mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
             @Override
             public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat) {
                 List<CouponBean> data = adapter.getData();
-                mOilAmountDialog.setCouponInfo(data.get(position), isPlat);
+                mOilAmountDialog.setCouponInfo(data.get(position), isPlat, data.get(position).getExcludeType());
                 mOilCouponDialog.dismiss();
             }
 
             @Override
             public void onNoCouponClick(boolean isPlat) {
-                mOilAmountDialog.setCouponInfo(null, isPlat);
+                mOilAmountDialog.setCouponInfo(null, isPlat, "");
                 mOilCouponDialog.dismiss();
             }
         });

@@ -40,7 +40,7 @@ public class SelectOilNumDialog {
     private List<OilNumCheckEntity> mList = new ArrayList<>();
     private SelectOilNoAdapter mOilNumAdapter;
     private View mView;
-    private String mCheckOilGasId = "92";           //当前选中的油号id
+    private String mCheckOilGasId = "全部";           //当前选中的油号id
 
     public SelectOilNumDialog(Context context, String checkOilGasId, View view, ViewGroup rootView) {
         this.mContext = context;
@@ -104,6 +104,11 @@ public class SelectOilNumDialog {
     }
 
     public void setData(List<OilNumBean> oilNumBeans) {
+        if ("全部".equals(mCheckOilGasId)){
+            mBinding.allTv.setSelected(true);
+        }else {
+            mBinding.allTv.setSelected(false);
+        }
         dispatchData(oilNumBeans);
     }
 
@@ -134,6 +139,14 @@ public class SelectOilNumDialog {
                 }
                 mOilNumDialog.dismiss();
             }
+        });
+        mBinding.allTv.setOnClickListener(view -> {
+            mCheckOilGasId = "全部";
+            mBinding.allTv.setSelected(true);
+            if (mOnItemClickedListener != null){
+                mOnItemClickedListener.onOilNumAllClick(oilNoAdapter, view, mCheckOilGasId);
+            }
+            mOilNumDialog.dismiss();
         });
     }
 
@@ -169,6 +182,7 @@ public class SelectOilNumDialog {
 
     public interface OnItemClickedListener {
         void onOilNumClick(BaseQuickAdapter adapter, View view, int position, String oilNum, String mCheckOilGasId);
+        void onOilNumAllClick(BaseQuickAdapter adapter, View view, String mCheckOilGasId);
     }
 
     private OnItemClickedListener mOnItemClickedListener;

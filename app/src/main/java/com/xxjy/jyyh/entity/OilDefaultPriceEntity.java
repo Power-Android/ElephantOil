@@ -27,6 +27,15 @@ public class OilDefaultPriceEntity {
         private String liter;
         private boolean isSelected;
         private String totalDiscountAmount;
+        private String alltotalDiscountAmount;//这是互斥所有的优惠价格
+
+        public String getAlltotalDiscountAmount() {
+            return alltotalDiscountAmount;
+        }
+
+        public void setAlltotalDiscountAmount(String alltotalDiscountAmount) {
+            this.alltotalDiscountAmount = alltotalDiscountAmount;
+        }
 
         public String getTotalDiscountAmount() {
             return totalDiscountAmount;

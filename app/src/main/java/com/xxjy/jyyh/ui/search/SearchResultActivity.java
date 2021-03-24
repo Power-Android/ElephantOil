@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
@@ -20,6 +21,7 @@ import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivitySearchResultBinding;
 import com.xxjy.jyyh.dialog.SelectDistanceDialog;
 import com.xxjy.jyyh.dialog.SelectOilNumDialog;
+import com.xxjy.jyyh.dialog.SelectSortDialog;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.room.DBInstance;
@@ -48,7 +50,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
     private int pageNum = 1;
     private int pageSize = 10;
     private boolean firstDistanceOrPrice = true;
-    private String mCheckOilGasId = "";
+    private String mCheckOilGasId = "全部";
     private OilStationListAdapter mOilListAdapter;
     private String integralType = "1";//权益type 1 是 综合  2 是价格 3 是销量
     private SearchIntegralAdapter mIntegralAdapter;
@@ -66,7 +68,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
 
         if (TextUtils.equals("1", mType)) {
             mBinding.tab1Tv.setText("距离不限");
-            mBinding.tab2Tv.setText("油号不限");
+            mBinding.tab2Tv.setText("全部");
             mBinding.tab3Tv.setText("距离优先");
             mBinding.searchEt.setHint("搜索油站名称");
             mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -90,7 +92,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     String.valueOf(pageNum), String.valueOf(pageSize), mContent, "sb");
 
             selectDistanceDialog = new SelectDistanceDialog(
-                    this, mBinding.tabLayout, mBinding.getRoot());
+                    this, mBinding.tabLayout, mBinding.getRoot(), false);
             selectDistanceDialog.setSelectPosition(5);
 
             selectOilNumDialog = new SelectOilNumDialog(getContext(), mCheckOilGasId, mBinding.tabLayout, mBinding.getRoot());
@@ -146,7 +148,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 if (TextUtils.equals("1", mType)) {
                     if (selectDistanceDialog == null) {
                         selectDistanceDialog = new SelectDistanceDialog(
-                                this, mBinding.tabLayout, mBinding.getRoot());
+                                this, mBinding.tabLayout, mBinding.getRoot(), false);
                     }
                     selectDistanceDialog.show();
                     selectDistanceDialog.setOnItemClickedListener((adapter, view1, position, distanceEntity) -> {
@@ -184,9 +186,9 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 if (TextUtils.equals("1", mType)) {
                     if (firstDistanceOrPrice) {
                         firstDistanceOrPrice = false;
-                        mBinding.tab2Tv.setText("92#");
-                        selectOilNumDialog.setCheckData("92");
-                        mCheckOilGasId = "92";
+//                        mBinding.tab2Tv.setText("92#");
+//                        selectOilNumDialog.setCheckData("92");
+//                        mCheckOilGasId = "92";
                         mBinding.tab3Tv.setText("价格优先");
                     } else {
                         firstDistanceOrPrice = true;
@@ -233,7 +235,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
 
     private void getOilStations(String appLatitude, String appLongitude, String oilNo, String orderBy,
                                 String distance, String pageNum, String pageSize, String gasName, String method) {
-        mOilViewModel.getOilStations(appLatitude, appLongitude, oilNo, orderBy, distance, pageNum, pageSize, gasName, method);
+        mOilViewModel.getOilStations1(appLatitude, appLongitude, oilNo, orderBy, distance, pageNum, pageSize, gasName, method);
     }
 
     private void getIntegrals(String name, String type, String pageNum, String pageSize) {
@@ -246,17 +248,29 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             if (selectOilNumDialog == null) {
                 selectOilNumDialog = new SelectOilNumDialog(getContext(), mCheckOilGasId, mBinding.tabLayout, mBinding.getRoot());
             }
+            selectOilNumDialog.setCheckData(mCheckOilGasId);
             selectOilNumDialog.setData(oilNumBeans);
             selectOilNumDialog.show();
-            selectOilNumDialog.setOnItemClickedListener((adapter, view, position, oilNum, checkOilGasId) -> {
-                mCheckOilGasId = checkOilGasId;
-                mBinding.tab2Tv.setText(oilNum);
-                selectOilNumDialog.setCheckData(mCheckOilGasId);
-                loadData(false);
+            selectOilNumDialog.setOnItemClickedListener(new SelectOilNumDialog.OnItemClickedListener() {
+                @Override
+                public void onOilNumClick(BaseQuickAdapter adapter, View view, int position, String oilNum, String checkOilGasId) {
+                    mCheckOilGasId = checkOilGasId;
+                    mBinding.tab2Tv.setText(oilNum);
+                    selectOilNumDialog.setCheckData(mCheckOilGasId);
+                    loadData(false);
+                }
+
+                @Override
+                public void onOilNumAllClick(BaseQuickAdapter adapter, View view, String checkOilGasId) {
+                    mCheckOilGasId = checkOilGasId;
+                    mBinding.tab2Tv.setText("全部");
+                    selectOilNumDialog.setCheckData(mCheckOilGasId);
+                    loadData(false);
+                }
             });
         });
 
-        mOilViewModel.oilStationLiveData.observe(this, dataStations -> {
+        mOilViewModel.oilStationLiveData1.observe(this, dataStations -> {
             if (dataStations != null && dataStations.getStations() != null) {
                 mBinding.noResultLayout.setVisibility(View.GONE);
                 if (pageNum == 1) {

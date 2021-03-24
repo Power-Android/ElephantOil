@@ -41,10 +41,10 @@ public class OilRepository extends BaseRepository {
     public void getOilStations(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
                                String appLongitude, String oilNo, String orderBy, String distance,
                                String pageNum, String pageSize, String gasName, String method) {
-        addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS)
+        addDisposable(RxHttp.postForm(ApiService.OIL_AND_SIGN_STATIONS)
                 .add("appLatitude", appLatitude, Float.parseFloat(appLatitude) != 0)
                 .add("appLongitude", appLongitude, Float.parseFloat(appLongitude) != 0)
-                .add("oilNo", oilNo, !TextUtils.isEmpty(oilNo))
+                .add("oilNo", oilNo, !TextUtils.equals("全部", oilNo))
                 .add("orderBy", orderBy)
                 .add("distance",distance)
                 .add("pageNum", pageNum)
@@ -56,11 +56,19 @@ public class OilRepository extends BaseRepository {
         );
     }
 
-    public void getSignOilStations(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
-                                   String appLongitude) {
-        addDisposable(RxHttp.postForm(ApiService.SIGN_OIL_STATIONS)
-                .add("appLatitude", appLatitude, Float.parseFloat(appLatitude) > 0)
-                .add("appLongitude", appLongitude, Float.parseFloat(appLongitude) > 0)
+    public void getOilStations1(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
+                               String appLongitude, String oilNo, String orderBy, String distance,
+                               String pageNum, String pageSize, String gasName, String method) {
+        addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS)
+                .add("appLatitude", appLatitude, Float.parseFloat(appLatitude) != 0)
+                .add("appLongitude", appLongitude, Float.parseFloat(appLongitude) != 0)
+                .add("oilNo", oilNo, !TextUtils.equals("全部", oilNo))
+                .add("orderBy", orderBy)
+                .add("distance",distance)
+                .add("pageNum", pageNum)
+                .add("pageSize", pageSize)
+                .add("gasName", gasName, !TextUtils.isEmpty(gasName))
+                .add("isShowSign", method, !TextUtils.isEmpty(method))
                 .asResponse(OilEntity.class)
                 .subscribe(data -> oilStationLiveData.postValue(data))
         );

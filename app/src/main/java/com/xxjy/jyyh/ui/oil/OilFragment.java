@@ -31,6 +31,7 @@ import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.dialog.SelectDistanceDialog;
 import com.xxjy.jyyh.dialog.SelectOilNumDialog;
+import com.xxjy.jyyh.dialog.SelectSortDialog;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
@@ -66,9 +67,10 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     private List<OilEntity.StationsBean> data = new ArrayList<>();
     private SelectOilNumDialog selectOilNumDialog;
     private SelectDistanceDialog selectDistanceDialog;
-    private String mCheckOilGasId = "92";
+    private SelectSortDialog mSelectSortDialog;
+    private String mCheckOilGasId = "全部";
     private int distance = 50;
-    private boolean firstDistanceOrPrice = true;
+    private String firstDistanceOrPrice = "0";
     private int pageNum = 1;
     private int pageSize = 10;
     private double mLng, mLat;
@@ -207,7 +209,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 break;
             case R.id.oil_select_layout:
                 if (selectDistanceDialog == null) {
-                    selectDistanceDialog = new SelectDistanceDialog(getContext(), mBinding.popupLayout, mBinding.getRoot());
+                    selectDistanceDialog = new SelectDistanceDialog(getContext(), mBinding.popupLayout, mBinding.getRoot(), true);
                 }
                 selectDistanceDialog.show();
                 selectDistanceDialog.setOnItemClickedListener((adapter, view1, position, distanceEntity) -> {
@@ -218,16 +220,16 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 });
                 break;
             case R.id.oil_distance_price_layout:
-                if (firstDistanceOrPrice) {
-                    firstDistanceOrPrice = false;
-                    mBinding.oilSelectDistanceFirstTv.setText("价格优先");
-                } else {
-                    firstDistanceOrPrice = true;
-                    mBinding.oilSelectDistanceFirstTv.setText("距离优先");
-
+                if (mSelectSortDialog == null) {
+                    mSelectSortDialog = new SelectSortDialog(getContext(), mBinding.popupLayout, mBinding.getRoot());
                 }
-
-                loadData(false);
+                mSelectSortDialog.show();
+                mSelectSortDialog.setOnItemClickedListener((adapter, view1, position, distanceEntity) -> {
+                    firstDistanceOrPrice = distanceEntity.getDistance()+"";
+                    mBinding.oilSelectDistanceFirstTv.setText(distanceEntity.getTitle());
+                    mSelectSortDialog.setSelectPosition(position);
+                    loadData(false);
+                });
                 break;
             case R.id.customer_service_view:
                 LoginHelper.login(getContext(), new LoginHelper.CallBack() {
@@ -307,11 +309,22 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             }
             selectOilNumDialog.setData(data);
             selectOilNumDialog.show();
-            selectOilNumDialog.setOnItemClickedListener((adapter, view, position, oilNum, checkOilGasId) -> {
-                mCheckOilGasId = checkOilGasId;
-                mBinding.oilSortOilNumTv.setText(oilNum);
-                selectOilNumDialog.setCheckData(mCheckOilGasId);
-                loadData(false);
+            selectOilNumDialog.setOnItemClickedListener(new SelectOilNumDialog.OnItemClickedListener() {
+                @Override
+                public void onOilNumClick(BaseQuickAdapter adapter, View view, int position, String oilNum, String checkOilGasId) {
+                    mCheckOilGasId = checkOilGasId;
+                    mBinding.oilSortOilNumTv.setText(oilNum);
+                    selectOilNumDialog.setCheckData(mCheckOilGasId);
+                    loadData(false);
+                }
+
+                @Override
+                public void onOilNumAllClick(BaseQuickAdapter adapter, View view, String checkOilGasId) {
+                    mCheckOilGasId = checkOilGasId;
+                    mBinding.oilSortOilNumTv.setText("全部");
+                    selectOilNumDialog.setCheckData(mCheckOilGasId);
+                    loadData(false);
+                }
             });
         });
         mViewModel.bannersLiveData.observe(this, data -> {
@@ -346,30 +359,23 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 
         });
 
-        mViewModel.signOilStationLiveData.observe(this, signStations -> {
-            adapter.setNewData(signStations.getStations());
-            mBinding.recyclerView.scrollToPosition(0);
-            mBinding.refreshview.setEnableRefresh(true);
-            mBinding.refreshview.setEnableLoadMore(false);
-            mBinding.refreshview.setNoMoreData(false);
-            getOilStations();
-        });
         mViewModel.oilStationLiveData.observe(this, dataStations -> {
             if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0) {
                 if (pageNum == 1) {
-                    adapter.addData(dataStations.getStations());
+                    adapter.setNewData(dataStations.getStations());
                     mBinding.refreshview.setEnableLoadMore(true);
                     mBinding.refreshview.finishRefresh(true);
                 } else {
                     adapter.addData(dataStations.getStations());
                     mBinding.refreshview.finishLoadMore(true);
                 }
-
-
+                mBinding.noResultLayout.setVisibility(View.GONE);
+            } else if (pageNum == 1) {
+                mBinding.refreshview.finishLoadMoreWithNoMoreData();
+                mBinding.noResultLayout.setVisibility(View.VISIBLE);
             } else {
                 mBinding.refreshview.finishLoadMoreWithNoMoreData();
             }
-
         });
     }
 
@@ -381,7 +387,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 
         } else {
             pageNum = 1;
-            getSignOilStations();
+            getOilStations();
 
         }
 
@@ -397,13 +403,9 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 
     private void getOilStations() {
         mViewModel.getOilStations(UserConstants.getLatitude(), UserConstants.getLongitude(),
-                mCheckOilGasId, firstDistanceOrPrice ? "1" : "2",
+                mCheckOilGasId, firstDistanceOrPrice,
                 distance == -1 ? null : String.valueOf(distance * 1000),
                 String.valueOf(pageNum), String.valueOf(pageSize), null, null);
-    }
-
-    private void getSignOilStations() {
-        mViewModel.getSignOilStations(UserConstants.getLatitude(), UserConstants.getLongitude());
     }
 
     private void getBanners() {

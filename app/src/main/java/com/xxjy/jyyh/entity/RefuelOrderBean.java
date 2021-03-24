@@ -47,6 +47,15 @@ public class RefuelOrderBean {
     private String payTypeName;
     private String serviceChargeAmount;
     private int type;
+    private String amountMonthCoupon;
+
+    public String getAmountMonthCoupon() {
+        return amountMonthCoupon;
+    }
+
+    public void setAmountMonthCoupon(String amountMonthCoupon) {
+        this.amountMonthCoupon = amountMonthCoupon;
+    }
 
     public String getAmountUpright() {
         return amountUpright;

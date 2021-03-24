@@ -34,7 +34,15 @@ public class CouponBean implements MultiItemEntity {
     private String startTime;
     private int status;
     private String validTime;
+    private String excludeType;//0:不互斥; 1:与直降互斥; 2:与商家优惠券互斥; 3:与直降和商家优惠券互斥
 
+    public String getExcludeType() {
+        return excludeType;
+    }
+
+    public void setExcludeType(String excludeType) {
+        this.excludeType = excludeType;
+    }
 
     public String getAmount() {
         return amount;

@@ -111,8 +111,18 @@ public class MyCouponAdapter extends BaseMultiItemQuickAdapter<CouponBean, BaseV
 
                 break;
         }
+        helper.setGone(R.id.desc_tv, !TextUtils.isEmpty(item.getDescription()));
+        helper.setText(R.id.desc_content, item.getDescription());
 
-
+        helper.getView(R.id.desc_ll).setVisibility(View.GONE);
+        helper.getView(R.id.desc_tv).setOnClickListener(view -> {
+            int visibility = helper.getView(R.id.desc_ll).getVisibility();
+            if (visibility == 0){
+                helper.getView(R.id.desc_ll).setVisibility(View.GONE);
+            }else if (visibility == 8){
+                helper.getView(R.id.desc_ll).setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 

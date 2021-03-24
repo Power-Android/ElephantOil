@@ -41,8 +41,10 @@ public class ApiService {
     public static final String OIL_NUMS = "api/gasPublic/getOilNums";
     //油站筛选
     public static final String OIL_STATIONS = "api/gasPublic/getOilStations";
-    //加油首页签约油站列表
+    //加油签约油站列表
     public static final String SIGN_OIL_STATIONS = "api/gasPublic/getSignOilStations";
+    //油站列表
+    public static final String OIL_AND_SIGN_STATIONS = "api/gasPublic/getOilAndSignStations";
     //加油首页banner
     public static final String OIL_STATIONS_BANNERS = "api/gasPublic/getBanners";
     //获取商品分类列表
@@ -132,5 +134,7 @@ public class ApiService {
     public static final String GET_STORE_ORDER_LIST =  "api/localLife/orderList";
     //获取油站邀请人专属油站
     public static final String GET_SPEC_GAS_ID =  "api/gasPublic/specGasId";
+    //获取月度红包列表
+    public static final String GET_MONTH_COUPON  = "api/coupon/v1/getPlatformMonthCouponVOs";
 
 }
