@@ -418,6 +418,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.refreshView.setEnableLoadMore(false);
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
         mBinding.goIntegralView.setOnClickListener(this::onViewClicked);
+        mBinding.signInIv.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -481,6 +482,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 requestPermission();
                 break;
             case R.id.go_integral_view:
+            case R.id.sign_in_iv:
                 BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
                         new EventEntity(EventConstants.EVENT_TO_INTEGRAL_FRAGMENT));
                 break;
