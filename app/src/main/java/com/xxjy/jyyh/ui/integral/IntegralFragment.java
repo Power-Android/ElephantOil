@@ -33,6 +33,8 @@ import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentIntegralBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.dialog.LocationTipsDialog;
+import com.xxjy.jyyh.dialog.OilMonthRuleDialog;
+import com.xxjy.jyyh.dialog.SignInSuccessDialog;
 import com.xxjy.jyyh.dialog.WithdrawalTipsDialog;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.ProductBean;
@@ -60,6 +62,7 @@ import java.util.List;
 public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, IntegralViewModel> {
 
     private SignInAdapter mSignInAdapter;
+    private SignInSuccessDialog mSignInSuccessDialog;
 
     public static IntegralFragment getInstance() {
         return new IntegralFragment();
@@ -80,6 +83,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 
     private CustomerServiceDialog customerServiceDialog;
     private List<String> mSignInList = new ArrayList<>();
+    private OilMonthRuleDialog mOilMonthRuleDialog;
 
 
     @Override
@@ -194,6 +198,22 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 break;
             case R.id.search_bar:
                 startActivity(new Intent(mContext, SearchActivity.class).putExtra("type", "integral"));
+                break;
+            case R.id.sign_in_rule://签到规则
+                if (mOilMonthRuleDialog == null) {
+                    mOilMonthRuleDialog = new OilMonthRuleDialog(mContext, getBaseActivity(), "");
+                    mOilMonthRuleDialog.show(view);
+                } else {
+                    mOilMonthRuleDialog.show(view);
+                }
+                break;
+            case R.id.sign_in_tv://签到
+                if (mSignInSuccessDialog == null){
+                    mSignInSuccessDialog = new SignInSuccessDialog(mContext, getBaseActivity());
+                    mSignInSuccessDialog.show(view);
+                }else {
+                    mSignInSuccessDialog.show(view);
+                }
                 break;
         }
     }
