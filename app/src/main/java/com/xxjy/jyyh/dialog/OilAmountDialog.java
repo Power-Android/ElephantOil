@@ -328,7 +328,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                                 mMonthAmount = Float.parseFloat(monthCouponEntity.getMonthCouponTemplates().get(i).getAmount());
                                 mAmountReduce = monthCouponEntity.getMonthCouponTemplates().get(i).getAmountReduce();
                             }
-                            totalMoney = totalMoney + Float.parseFloat(monthCouponEntity.getMonthCouponTemplates().get(i).getAmount());
+                            totalMoney = totalMoney + Float.parseFloat(monthCouponEntity.getMonthCouponTemplates().get(i).getAmountReduce());
                         }
                         SpanUtils.with(mBinding.monthRedDesc)
                                 .append(monthCouponEntity.getMonthCouponAmount() + "元")
@@ -339,7 +339,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                                 .setForegroundColor(mContext.getResources().getColor(R.color.color_1300))
                                 .append("立减红包，本单立减")
                                 .setForegroundColor(mContext.getResources().getColor(R.color.color_34))
-                                .append(mMonthAmount + "元")
+                                .append(mAmountReduce + "元")
                                 .setForegroundColor(mContext.getResources().getColor(R.color.color_1300))
                                 .create();
 

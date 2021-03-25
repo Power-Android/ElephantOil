@@ -79,6 +79,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         mMineFragment = null;
 
         disPathIntentMessage(getIntent());
+
         //积分权益隐藏判断
         mViewModel.getOsOverAll().observe(this, b -> {
             if (!b) {
@@ -95,7 +96,11 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             if (aBoolean) {
                 isNewUser = 1;
             } else {
-                isNewUser = 0;
+                if (UserConstants.getGoneIntegral()){
+                    isNewUser = 1;
+                }else {
+                    isNewUser = 0;
+                }
             }
             showDiffFragment(isNewUser);
         });
