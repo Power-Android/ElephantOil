@@ -106,19 +106,18 @@
                     <!--必须在layout_scrollFlags中添加scroll属性
                     代表着这个布局是可以被收纳的
                     -->
-
-
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/top_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#00000000"
+                        android:background="@color/color_F5"
                         android:orientation="vertical"
                         app:layout_scrollFlags="scroll">
 
                         <LinearLayout
+                            android:id="@+id/view1"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/dp_250"
                             android:background="@drawable/ic_intergral_top_bg"
                             android:orientation="vertical">
 
@@ -148,37 +147,87 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dp_10"
                                 android:layout_marginBottom="@dimen/dp_35"
                                 android:gravity="center"
+                                android:layout_gravity="center"
                                 android:orientation="horizontal">
-
+                                <ImageView
+                                    android:layout_width="@dimen/dp_18"
+                                    android:layout_height="@dimen/dp_18"
+                                    android:src="@drawable/ic_coin" />
                                 <TextView
                                     android:id="@+id/integral_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/dp_5"
                                     android:gravity="center"
                                     android:textStyle="bold"
                                     android:text="0"
                                     android:textColor="@color/white"
                                     android:textSize="26sp" />
-
-                                <ImageView
-                                    android:layout_width="@dimen/dp_18"
-                                    android:layout_height="@dimen/dp_18"
-                                    android:layout_marginLeft="@dimen/dp_5"
-                                    android:src="@drawable/ic_coin" />
                             </LinearLayout>
 
                         </LinearLayout>
 
+                        <RelativeLayout
+                            android:id="@+id/view3"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_241"
+                            android:background="@drawable/sign_in_bg"
+                            android:layout_marginTop="@dimen/dp_90"
+                            android:layout_marginStart="@dimen/dp_8"
+                            android:layout_marginEnd="@dimen/dp_8">
+                            <TextView
+                                android:id="@+id/signin_desc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="已连续签到2天，额外获得10元加油券"
+                                android:textSize="@dimen/sp_13"
+                                android:textColor="@color/color_34"
+                                android:textStyle="bold"
+                                android:drawableLeft="@drawable/ic_coin"
+                                android:drawablePadding="@dimen/dp_3"
+                                android:layout_marginTop="@dimen/dp_20"
+                                android:layout_marginStart="@dimen/dp_20"/>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/sign_in_recycler"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_3"
+                                android:layout_below="@+id/signin_desc"
+                                android:layout_marginStart="@dimen/sp_18"
+                                android:layout_marginEnd="@dimen/dp_18"
+                                android:layout_above="@+id/sign_in_tv"/>
+                            <TextView
+                                android:id="@+id/sign_in_tv"
+                                android:layout_width="@dimen/dp_294"
+                                android:layout_height="@dimen/dp_42"
+                                android:background="@drawable/selector_sign_in_button"
+                                android:text="立即签到领积分"
+                                android:textSize="@dimen/sp_16"
+                                android:textColor="@color/white"
+                                android:gravity="center"
+                                android:layout_marginBottom="@dimen/dp_12"
+                                android:layout_above="@+id/sign_in_rule"
+                                android:layout_centerHorizontal="true"/>
+                            <ImageView
+                                android:id="@+id/sign_in_rule"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/sign_in_rule_icon"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:paddingBottom="@dimen/dp_25"/>
+                        </RelativeLayout>
 
                         <LinearLayout
+                            android:id="@+id/view2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
+                            android:visibility="gone"
                             android:background="@color/color_F5"
                             android:orientation="vertical"
+                            android:layout_below="@+id/view3"
                             android:paddingLeft="@dimen/dp_12"
                             android:paddingTop="@dimen/dp_10"
                             android:paddingRight="@dimen/dp_12">
@@ -224,7 +273,7 @@
                                 app:banner_radius="@dimen/dp_8" />
                         </LinearLayout>
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:id="@+id/popup_layout"
@@ -243,9 +292,7 @@
 
                     </LinearLayout>
 
-
                 </com.google.android.material.appbar.AppBarLayout>
-
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
@@ -255,7 +302,6 @@
                     android:paddingLeft="@dimen/dp_8"
                     android:paddingRight="@dimen/dp_8"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

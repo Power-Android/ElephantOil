@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.PermissionUtils;
@@ -24,6 +25,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.IntegralExchangeAdapter;
+import com.xxjy.jyyh.adapter.SignInAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
@@ -56,6 +58,9 @@ import java.util.List;
  * @description:
  */
 public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, IntegralViewModel> {
+
+    private SignInAdapter mSignInAdapter;
+
     public static IntegralFragment getInstance() {
         return new IntegralFragment();
     }
@@ -74,19 +79,21 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     private BannerViewModel bannerViewModel2;
 
     private CustomerServiceDialog customerServiceDialog;
+    private List<String> mSignInList = new ArrayList<>();
 
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
             if (UserConstants.getIsLogin()) {
                 queryIntegralBalance();
-            }else{
+            } else {
                 mBinding.integralView.setText("0");
             }
         }
     }
+
     @Override
     protected void initView() {
         mBinding.topBarLayout.updateBottomDivider(0, 0, 0, 0);
@@ -97,17 +104,25 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         adapter = new IntegralExchangeAdapter(R.layout.adapter_integral_exchange, productData);
         mBinding.recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener((adapter, view, position) ->{
+        adapter.setOnItemClickListener((adapter, view, position) -> {
 //            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
 //                @Override
 //                public void onLogin() {
-                    WebViewActivity.openWebActivity((MainActivity) getActivity(), ((ProductBean) (adapter.getData().get(position))).getLink());
+            WebViewActivity.openWebActivity((MainActivity) getActivity(), ((ProductBean) (adapter.getData().get(position))).getLink());
 //                }
 //            });
 
 
         });
         adapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
+
+        //签到
+        for (int i = 0; i < 7; i++) {
+            mSignInList.add("");
+        }
+        mBinding.signInRecycler.setLayoutManager(new GridLayoutManager(mContext, 7));
+        mSignInAdapter = new SignInAdapter(R.layout.adapter_sign_in_layout, mSignInList);
+        mBinding.signInRecycler.setAdapter(mSignInAdapter);
 
         mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -126,13 +141,13 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 }
             }
         });
-            getBannerOfPostion();
-            queryProductCategorys();
-            if (UserConstants.getIsLogin()) {
-                queryIntegralBalance();
-            }else{
-                mBinding.integralView.setText("0");
-            }
+        getBannerOfPostion();
+        queryProductCategorys();
+        if (UserConstants.getIsLogin()) {
+            queryIntegralBalance();
+        } else {
+            mBinding.integralView.setText("0");
+        }
     }
 
     @Override
@@ -142,6 +157,8 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
         mBinding.explanationView.setOnClickListener(this::onViewClicked);
         mBinding.searchBar.setOnClickListener(this::onViewClicked);
+        mBinding.signInTv.setOnClickListener(this::onViewClicked);
+        mBinding.signInRule.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -153,12 +170,13 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 //                    withdrawalTipsDialog = new WithdrawalTipsDialog(getContext(), mBinding.getRoot());
 //                }
 //                withdrawalTipsDialog.show();
-                LoginHelper.login(getContext(), () -> {  });
+                LoginHelper.login(getContext(), () -> {
+                });
 
                 break;
             case R.id.customer_service_view:
                 LoginHelper.login(getContext(), () -> {
-                    if(customerServiceDialog==null){
+                    if (customerServiceDialog == null) {
                         customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
                     }
                     customerServiceDialog.show(view);
@@ -208,7 +226,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         });
 
         mViewModel.integralBalanceLiveData.observe(this, data -> {
-            mBinding.integralView.setText(NumberUtils.format(Double.parseDouble(data),0));
+            mBinding.integralView.setText(NumberUtils.format(Double.parseDouble(data), 0));
         });
     }
 
@@ -295,7 +313,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                     mBinding.bannerLeftView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.get(0).getLink());
+                            NaviActivityInfo.disPathIntentFromUrl((MainActivity) getActivity(), data.get(0).getLink());
                         }
                     });
                 } else if (data.size() == 2) {
@@ -307,7 +325,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 //                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
 //                                @Override
 //                                public void onLogin() {
-                                    NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.get(0).getLink());
+                            NaviActivityInfo.disPathIntentFromUrl((MainActivity) getActivity(), data.get(0).getLink());
 //                                }
 //                            });
 //                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(0).getLink());
@@ -319,7 +337,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 //                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
 //                                @Override
 //                                public void onLogin() {
-                                    NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.get(1).getLink());
+                            NaviActivityInfo.disPathIntentFromUrl((MainActivity) getActivity(), data.get(1).getLink());
 //                                }
 //                            });
                         }
@@ -332,7 +350,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         });
         bannerViewModel2.getBannerOfPostion(BannerPositionConstants.INTEGRAL_HOME_BANNER).observe(this, data -> {
             mBinding.refreshview.finishRefresh(true);
-            if(data!=null&&data.size()>0){
+            if (data != null && data.size() > 0) {
                 mBinding.banner.setVisibility(View.VISIBLE);
                 //banner
                 mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
@@ -347,7 +365,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 //                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
 //                                @Override
 //                                public void onLogin() {
-                                    NaviActivityInfo.disPathIntentFromUrl((MainActivity)getActivity(),data.getLink());
+                            NaviActivityInfo.disPathIntentFromUrl((MainActivity) getActivity(), data.getLink());
 //                                }
 //                            });
 //                            WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
@@ -355,7 +373,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                     }
                 }).addBannerLifecycleObserver(this)
                         .setIndicator(new RectangleIndicator(mContext));
-            }  else{
+            } else {
                 mBinding.banner.setVisibility(View.GONE);
 
             }
