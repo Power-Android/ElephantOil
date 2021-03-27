@@ -64,6 +64,7 @@ public class HomeRepository extends BaseRepository {
                 @Override
                 public void locationFiler() {
                     locationEntity.setSuccess(false);
+                    locationEntity.setAddress("暂无定位");
                     locationLiveData.postValue(locationEntity);
                 }
             });
