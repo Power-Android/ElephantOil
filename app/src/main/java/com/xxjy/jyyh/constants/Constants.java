@@ -35,6 +35,7 @@ public class Constants {
 
     //微信支付回调地址
     public static final String HTTP_CALL_BACK_URL = Constants.URL_IS_DEBUG ? "https://tcore.qqgyhk.com" : "https://core.qqgyhk.com";
+
     //fragment
     public static final String CURRENT_FRAGMENT_KEY = "current_fragment";
     public static final int TYPE_HOME = 0;
