@@ -74,7 +74,6 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 
     private IntegralExchangeAdapter adapter;
     private List<ProductBean> productData = new ArrayList<>();
-    private WithdrawalTipsDialog withdrawalTipsDialog;
     private List<ProductClassBean> classData = new ArrayList<>();
     private List<String> integralInfoList = new ArrayList<>();
     private QMUITabBuilder tabBuilder;
