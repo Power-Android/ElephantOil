@@ -106,6 +106,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
             }
         }
+        loadData(false);
     }
 
     @Override
