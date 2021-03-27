@@ -3,6 +3,8 @@ package com.xxjy.jyyh.ui.oil;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.Settings;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilStationListAdapter;
 import com.xxjy.jyyh.adapter.TopLineAdapter;
+import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
@@ -87,8 +90,31 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)){
+            mBinding.locationView.setVisibility(View.GONE);
+            BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
+        }else{
+            if(Constants.OPEN_LOCATION_VISIBLE){
+                mBinding.locationView.setVisibility(View.VISIBLE);
+            }else{
+                mBinding.locationView.setVisibility(View.GONE);
+                BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
+            }
+        }
+    }
+
+    @Override
     protected void initView() {
-        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
+        if(PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)){
+            mBinding.locationView.setVisibility(View.GONE);
+            BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
+        }else{
+            mBinding.locationView.setVisibility(View.VISIBLE);
+        }
+
+
         mBinding.refreshview.setEnableLoadMore(false);
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, data);
@@ -193,6 +219,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
         mBinding.topSearchLayout.setOnClickListener(this::onViewClicked);
         mBinding.searchLayout.setOnClickListener(this::onViewClicked);
+        mBinding.closeView.setOnClickListener(this::onViewClicked);
+        mBinding.openView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -251,6 +279,17 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                     }
                 });
 
+                break;
+            case R.id.close_view:
+                mBinding.locationView.setVisibility(View.GONE);
+                BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
+                Constants.OPEN_LOCATION_VISIBLE=false;
+                break;
+            case R.id.open_view:
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", App.getContext().getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
                 break;
         }
     }

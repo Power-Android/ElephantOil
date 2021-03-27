@@ -117,7 +117,7 @@
                         <LinearLayout
                             android:id="@+id/view1"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_250"
+                            android:layout_height="@dimen/dp_200"
                             android:background="@drawable/ic_intergral_top_bg"
                             android:orientation="vertical">
 
@@ -172,9 +172,9 @@
                         <LinearLayout
                             android:id="@+id/view3"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_257"
+                            android:layout_height="0dp"
                             android:background="@drawable/sign_in_bg"
-                            android:layout_marginTop="@dimen/dp_90"
+                            android:layout_marginTop="@dimen/dp_120"
                             android:orientation="vertical"
                             android:layout_marginStart="@dimen/dp_8"
                             android:layout_marginEnd="@dimen/dp_8">

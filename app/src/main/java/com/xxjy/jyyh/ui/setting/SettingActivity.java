@@ -10,6 +10,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivitySettingBinding;
+import com.xxjy.jyyh.dialog.CancelAccountDialog;
 import com.xxjy.jyyh.utils.DataCleanManager;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
@@ -49,6 +50,7 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
         mBinding.aboutUsLayout.setOnClickListener(this::onViewClicked);
         mBinding.clearCacheLayout.setOnClickListener(this::onViewClicked);
         mBinding.logoutView.setOnClickListener(this::onViewClicked);
+        mBinding.cancellationView.setOnClickListener(this::onViewClicked);
 
     }
 
@@ -84,6 +86,11 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
                     }
                 });
                 finish();
+                break;
+            case R.id.cancellation_view:
+
+                CancelAccountDialog cancelAccountDialog = new CancelAccountDialog(this);
+                cancelAccountDialog.show(view);
                 break;
         }
 

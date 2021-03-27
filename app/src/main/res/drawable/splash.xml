@@ -13,7 +13,7 @@
     <!--logo下的文字图片-->
     <item
         android:gravity="center_horizontal"
-        android:top="100dp">
+        android:top="105dp">
         <bitmap
             android:gravity="top"
             android:src="@drawable/splash_window_content_bg"/>

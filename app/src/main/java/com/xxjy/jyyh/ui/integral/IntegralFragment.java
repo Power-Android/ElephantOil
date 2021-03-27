@@ -129,9 +129,9 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         adapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
 
         //签到
-        mBinding.signInRecycler.setLayoutManager(new GridLayoutManager(mContext, 7));
-        mSignInAdapter = new SignInAdapter(R.layout.adapter_sign_in_layout, mSignInList);
-        mBinding.signInRecycler.setAdapter(mSignInAdapter);
+//        mBinding.signInRecycler.setLayoutManager(new GridLayoutManager(mContext, 7));
+//        mSignInAdapter = new SignInAdapter(R.layout.adapter_sign_in_layout, mSignInList);
+//        mBinding.signInRecycler.setAdapter(mSignInAdapter);
 
         mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -466,7 +466,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     }
 
     private void getIntegralInfo() {
-        mViewModel.getIntegralInfo();
+//        mViewModel.getIntegralInfo();
     }
 
     private void integralSign(int dayOfWeek, int integral, String couponId) {

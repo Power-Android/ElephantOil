@@ -48,8 +48,11 @@ public class Constants {
 
     //登录处理
     public static int LOGIN_FINISH = 1;         //finish掉
-    //
+    //猎人码油站id
     public static String HUNTER_GAS_ID ;         //finish掉
+    //是否点击关闭定位权限授权
+    public static boolean OPEN_LOCATION_VISIBLE =true;         //finish掉
+
     //h5链接
 
 

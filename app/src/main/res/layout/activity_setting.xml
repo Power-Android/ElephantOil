@@ -92,14 +92,23 @@
         android:layout_marginRight="@dimen/dp_43"
         android:gravity="center"
         app:qmui_radius="@dimen/dp_6"
-        app:qmui_borderWidth="@dimen/dp_1"
+        app:qmui_borderWidth="@dimen/dp_0"
         app:qmui_borderColor="@color/color_E5"
         app:qmui_backgroundColor="@color/white"
         android:layout_marginTop="@dimen/dp_30"
         android:textColor="@color/color_34"
+        android:textSize="@dimen/sp_15"
         android:text="退出登录"
         />
 
-
+<TextView
+    android:id="@+id/cancellation_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:textColor="#1676FF"
+    android:textSize="@dimen/sp_14"
+    android:layout_marginTop="@dimen/dp_18"
+    android:text="注销账号"/>
 </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
