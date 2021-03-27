@@ -148,6 +148,20 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         showJump(orderEntity);
     }
 
+    //猎人码跳转
+    @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_HUNTER_CODE, sticky = true)
+    public void onHunterEvent(String oilId) {
+        if(!TextUtils.isEmpty(oilId)){
+            Constants.HUNTER_GAS_ID = oilId;
+        }
+
+        LogUtils.e("2222222222",Constants.HUNTER_GAS_ID);
+//        if (UserConstants.getIsLogin()) {
+            getHomeOil();
+//        }
+
+    }
+
     private void showJump(PayOrderEntity orderEntity) {
         if (orderEntity == null) return;
         if (shouldJump) {
@@ -203,12 +217,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         BusUtils.register(this);
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
-        if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
-            mLat = Double.parseDouble(UserConstants.getLatitude());
-            mLng = Double.parseDouble(UserConstants.getLongitude());
-            //首页油站
-            mViewModel.getHomeOil(mLat, mLng);
-        }
+        LogUtils.e("2222211111",Constants.HUNTER_GAS_ID);
+        getHomeOil();
         //请求定位权限
         requestPermission();
 
@@ -250,7 +260,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         initWebViewClient();
         initLocalLife();
     }
-
+private void getHomeOil(){
+    if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
+        mLat = Double.parseDouble(UserConstants.getLatitude());
+        mLng = Double.parseDouble(UserConstants.getLongitude());
+        //首页油站
+        mViewModel.getHomeOil(mLat, mLng,Constants.HUNTER_GAS_ID);
+    }
+}
     private void initLocalLife() {
         mBinding.localLifeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         localLifeListAdapter = new LocalLifeListAdapter(R.layout.adapter_local_life_list, data);
@@ -360,7 +377,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         } else {
                             mLat = 0;
                             mLng = 0;
-                            mViewModel.getHomeOil(mLat, mLng);
+                            mViewModel.getHomeOil(mLat, mLng,Constants.HUNTER_GAS_ID);
                             showFailLocation();
 //                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
                         }
@@ -503,7 +520,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mLat = locationEntity.getLat();
                 LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
                 //首页油站
-                mViewModel.getHomeOil(mLat, mLng);
+                mViewModel.getHomeOil(mLat, mLng,Constants.HUNTER_GAS_ID);
             }
         });
 
@@ -948,7 +965,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getHomeOil(mLat, mLng);
+        mViewModel.getHomeOil(mLat, mLng,Constants.HUNTER_GAS_ID);
         mViewModel.getOftenOils();
         if (mStationsBean != null) {
             mViewModel.getRefuelJob(mStationsBean.getGasId());
@@ -1006,13 +1023,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         isShowAmount = false;
         mOilNoPosition = 0;
         //关掉以后重新刷新数据,否则再次打开时上下选中不一致
-        mViewModel.getHomeOil(mLat, mLng);
+        mViewModel.getHomeOil(mLat, mLng,Constants.HUNTER_GAS_ID);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         BusUtils.removeSticky(EventConstants.EVENT_JUMP_PAY_QUERY);
+        BusUtils.removeSticky(EventConstants.EVENT_JUMP_HUNTER_CODE);
     }
 
     protected void initWebViewClient() {

@@ -11,10 +11,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author power

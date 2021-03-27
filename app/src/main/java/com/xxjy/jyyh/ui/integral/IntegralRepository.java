@@ -1,5 +1,7 @@
 package com.xxjy.jyyh.ui.integral;
 
+import android.text.TextUtils;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseRepository;
@@ -8,6 +10,7 @@ import com.xxjy.jyyh.constants.ProductMapKeyConstants;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.ProductClassBean;
+import com.xxjy.jyyh.entity.SignInBean;
 
 import java.util.List;
 
@@ -48,6 +51,21 @@ public class IntegralRepository extends BaseRepository {
                 .add("pageSize",pageSize)
                 .asResponseList(ProductBean.class)
                 .subscribe(data -> productLiveData.postValue(data))
+        );
+    }
+    public void getIntegralInfo(MutableLiveData<SignInBean> liveData){
+        addDisposable(RxHttp.postForm(ApiService.GET_INTEGRAL_INFO)
+                .asResponse(SignInBean.class)
+                .subscribe(data -> liveData.postValue(data))
+        );
+    }
+    public void integralSign(int dayOfWeek,int integral,String couponId,MutableLiveData<String> liveData){
+        addDisposable(RxHttp.postForm(ApiService.INTEGRAL_SIGN)
+                .add("dayOfWeek",dayOfWeek)
+                .add("integral",integral)
+                .add("couponId",couponId, !TextUtils.isEmpty(couponId))
+                .asResponse(String.class)
+                .subscribe(data -> liveData.postValue(data))
         );
     }
 }

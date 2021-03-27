@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.SpanUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
@@ -34,11 +35,14 @@ import com.xxjy.jyyh.databinding.FragmentIntegralBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.dialog.LocationTipsDialog;
 import com.xxjy.jyyh.dialog.OilMonthRuleDialog;
+import com.xxjy.jyyh.dialog.SignInRuleDialog;
 import com.xxjy.jyyh.dialog.SignInSuccessDialog;
 import com.xxjy.jyyh.dialog.WithdrawalTipsDialog;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.ProductClassBean;
+import com.xxjy.jyyh.entity.SignInBean;
+import com.xxjy.jyyh.entity.SignInDayBean;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
@@ -72,6 +76,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     private List<ProductBean> productData = new ArrayList<>();
     private WithdrawalTipsDialog withdrawalTipsDialog;
     private List<ProductClassBean> classData = new ArrayList<>();
+    private List<String> integralInfoList = new ArrayList<>();
     private QMUITabBuilder tabBuilder;
 
     private int categoryId;
@@ -82,16 +87,20 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     private BannerViewModel bannerViewModel2;
 
     private CustomerServiceDialog customerServiceDialog;
-    private List<String> mSignInList = new ArrayList<>();
-    private OilMonthRuleDialog mOilMonthRuleDialog;
+    private List<SignInDayBean> mSignInList = new ArrayList<>();
+    private SignInRuleDialog mSignInRuleDialog;
+    private String signInRuleStr;
+    private SignInDayBean todaySignInDayBean;
 
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
+            getIntegralInfo();
             if (UserConstants.getIsLogin()) {
                 queryIntegralBalance();
+
             } else {
                 mBinding.integralView.setText("0");
             }
@@ -121,9 +130,6 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         adapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
 
         //签到
-        for (int i = 0; i < 7; i++) {
-            mSignInList.add("");
-        }
         mBinding.signInRecycler.setLayoutManager(new GridLayoutManager(mContext, 7));
         mSignInAdapter = new SignInAdapter(R.layout.adapter_sign_in_layout, mSignInList);
         mBinding.signInRecycler.setAdapter(mSignInAdapter);
@@ -140,13 +146,17 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 pageNum = 1;
                 getBannerOfPostion();
                 queryProductCategorys();
+                getIntegralInfo();
                 if (UserConstants.getIsLogin()) {
                     queryIntegralBalance();
+
                 }
+
             }
         });
         getBannerOfPostion();
         queryProductCategorys();
+        getIntegralInfo();
         if (UserConstants.getIsLogin()) {
             queryIntegralBalance();
         } else {
@@ -200,20 +210,25 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 startActivity(new Intent(mContext, SearchActivity.class).putExtra("type", "integral"));
                 break;
             case R.id.sign_in_rule://签到规则
-                if (mOilMonthRuleDialog == null) {
-                    mOilMonthRuleDialog = new OilMonthRuleDialog(mContext, getBaseActivity(), "");
-                    mOilMonthRuleDialog.show(view);
+                if (mSignInRuleDialog == null) {
+                    mSignInRuleDialog = new SignInRuleDialog(mContext, signInRuleStr);
+                    mSignInRuleDialog.show(view);
                 } else {
-                    mOilMonthRuleDialog.show(view);
+                    mSignInRuleDialog.show(view);
                 }
                 break;
             case R.id.sign_in_tv://签到
-                if (mSignInSuccessDialog == null){
-                    mSignInSuccessDialog = new SignInSuccessDialog(mContext, getBaseActivity());
-                    mSignInSuccessDialog.show(view);
-                }else {
-                    mSignInSuccessDialog.show(view);
+//                if (mSignInSuccessDialog == null) {
+//                    mSignInSuccessDialog = new SignInSuccessDialog(mContext, getBaseActivity());
+//                    mSignInSuccessDialog.show(view);
+//                } else {
+//                    mSignInSuccessDialog.show(view);
+//                }
+                if (todaySignInDayBean == null) {
+                    return;
                 }
+                integralSign(todaySignInDayBean.getDayOfWeek(), todaySignInDayBean.getIntelgral(), todaySignInDayBean.getCouponId());
+
                 break;
         }
     }
@@ -399,7 +414,42 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
             }
 
         });
-
+        mViewModel.integralInfoLiveData.observe(this, data -> {
+            mSignInList.clear();
+            mSignInList.addAll(data.getList());
+            mSignInAdapter.refresh();
+            mSignInAdapter.notifyDataSetChanged();
+            signInRuleStr = data.getSignRule();
+            for (SignInDayBean bean : mSignInList) {
+                if (bean.isCurrentDayFlag()) {
+                    todaySignInDayBean = bean;
+                    break;
+                }
+            }
+            if (todaySignInDayBean.isSignFlag()) {
+                mBinding.signInTv.setEnabled(false);
+                mBinding.signInTv.setTextColor(Color.parseColor("#A0A0A0"));
+            } else {
+                mBinding.signInTv.setEnabled(true);
+                mBinding.signInTv.setTextColor(Color.parseColor("#FFFFFF"));
+            }
+            SpanUtils.with(mBinding.signinDesc)
+                    .append("已连续签到")
+                    .setForegroundColor(Color.parseColor("#002800"))
+                    .append(data.getSignDays() + "")
+                    .append("天，额外获取")
+                    .setForegroundColor(Color.parseColor("#002800"))
+                    .append(data.getCouponAmount() + "元加油券")
+                    .create();
+        });
+        mViewModel.integralSignLiveData.observe(this, data -> {
+            if (mSignInSuccessDialog == null) {
+                mSignInSuccessDialog = new SignInSuccessDialog(mContext, getBaseActivity());
+                mSignInSuccessDialog.show(mBinding.signInTv);
+            } else {
+                mSignInSuccessDialog.show(mBinding.signInTv);
+            }
+        });
 
     }
 
@@ -414,6 +464,14 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 
     private void queryIntegralBalance() {
         mViewModel.queryIntegralBalance();
+    }
+
+    private void getIntegralInfo() {
+        mViewModel.getIntegralInfo();
+    }
+
+    private void integralSign(int dayOfWeek, int integral, String couponId) {
+        mViewModel.integralSign(dayOfWeek, integral, couponId);
     }
 
 }

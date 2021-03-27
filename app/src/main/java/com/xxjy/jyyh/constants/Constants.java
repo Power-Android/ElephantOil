@@ -47,6 +47,8 @@ public class Constants {
 
     //登录处理
     public static int LOGIN_FINISH = 1;         //finish掉
+    //
+    public static String HUNTER_GAS_ID ;         //finish掉
     //h5链接
 
 

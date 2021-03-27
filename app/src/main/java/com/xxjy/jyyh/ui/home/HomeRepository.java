@@ -1,5 +1,7 @@
 package com.xxjy.jyyh.ui.home;
 
+import android.text.TextUtils;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.amap.api.location.AMapLocation;
@@ -74,11 +76,12 @@ public class HomeRepository extends BaseRepository {
      * @param homeOilLiveData
      * 首页油站
      */
-    public void getHomeOil(double lat, double lng,
+    public void getHomeOil(double lat, double lng,String gasId,
                            MutableLiveData<OilEntity> homeOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.HOME_OIL)
                 .add(Constants.LATITUDE, lat, lat != 0)
                 .add(Constants.LONGTIDUE, lng, lng != 0)
+                .add(Constants.GAS_STATION_ID, gasId, !TextUtils.isEmpty(gasId))
                 .asResponse(OilEntity.class)
                 .subscribe(oilEntity -> homeOilLiveData.postValue(oilEntity))
         );

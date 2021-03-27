@@ -169,12 +169,13 @@
 
                         </LinearLayout>
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:id="@+id/view3"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_241"
+                            android:layout_height="@dimen/dp_257"
                             android:background="@drawable/sign_in_bg"
                             android:layout_marginTop="@dimen/dp_90"
+                            android:orientation="vertical"
                             android:layout_marginStart="@dimen/dp_8"
                             android:layout_marginEnd="@dimen/dp_8">
                             <TextView
@@ -194,10 +195,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/dp_3"
-                                android:layout_below="@+id/signin_desc"
                                 android:layout_marginStart="@dimen/sp_18"
                                 android:layout_marginEnd="@dimen/dp_18"
-                                android:layout_above="@+id/sign_in_tv"/>
+                               />
                             <TextView
                                 android:id="@+id/sign_in_tv"
                                 android:layout_width="@dimen/dp_294"
@@ -206,19 +206,19 @@
                                 android:text="立即签到领积分"
                                 android:textSize="@dimen/sp_16"
                                 android:textColor="@color/white"
+                                android:layout_gravity="center_horizontal"
                                 android:gravity="center"
+                                android:layout_marginTop="@dimen/dp_13"
                                 android:layout_marginBottom="@dimen/dp_12"
-                                android:layout_above="@+id/sign_in_rule"
-                                android:layout_centerHorizontal="true"/>
+                                />
                             <ImageView
                                 android:id="@+id/sign_in_rule"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="@dimen/dp_60"
+                                android:layout_height="@dimen/dp_11"
+                                android:layout_gravity="center_horizontal"
                                 android:src="@drawable/sign_in_rule_icon"
-                                android:layout_alignParentBottom="true"
-                                android:layout_centerHorizontal="true"
-                                android:paddingBottom="@dimen/dp_25"/>
-                        </RelativeLayout>
+                               android:layout_marginBottom="@dimen/dp_25"/>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/view2"

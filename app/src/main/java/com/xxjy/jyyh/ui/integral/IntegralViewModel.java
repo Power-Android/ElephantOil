@@ -9,6 +9,7 @@ import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.ProductClassBean;
+import com.xxjy.jyyh.entity.SignInBean;
 
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class IntegralViewModel extends BaseViewModel<IntegralRepository> {
     public MutableLiveData<List<ProductClassBean>> productCategorysLiveData = new MutableLiveData<>();
     public MutableLiveData<List<ProductBean>> productLiveData = new MutableLiveData<>();
     public MutableLiveData<String> integralBalanceLiveData = new MutableLiveData<>();
+    public MutableLiveData<SignInBean> integralInfoLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> integralSignLiveData = new MutableLiveData<>();
 
     public void getBannerOfPostion() {
         mRespository.getBannerOfPostion(bannersLiveData);
@@ -40,5 +43,11 @@ public class IntegralViewModel extends BaseViewModel<IntegralRepository> {
     }
     public void queryIntegralBalance() {
         mRespository.queryIntegralBalance(integralBalanceLiveData);
+    }
+    public void getIntegralInfo() {
+        mRespository.getIntegralInfo(integralInfoLiveData);
+    }
+    public void integralSign(int dayOfWeek,int integral,String couponId) {
+        mRespository.integralSign( dayOfWeek, integral, couponId,integralSignLiveData);
     }
 }

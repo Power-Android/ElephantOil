@@ -59,7 +59,7 @@
         tools:replace="android:theme">
         <activity android:name=".PrivacyActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/splash_theme"/>
+            android:theme="@style/FullTheme"/>
         <activity
             android:name=".ui.restaurant.RestaurantActivity"
             android:screenOrientation="portrait"
@@ -67,7 +67,7 @@
         <activity
             android:name=".ui.WelcomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/splash_theme">
+            android:theme="@style/SplashActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

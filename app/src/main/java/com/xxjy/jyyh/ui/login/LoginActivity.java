@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.chuanglan.shanyan_sdk.OneKeyLoginManager;
@@ -22,6 +23,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityLoginBinding;
 import com.xxjy.jyyh.ui.MainActivity;
@@ -43,7 +45,8 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
     private boolean isOpenAuth = false;     //是否已经调起了登录
     public static int loginState = -1;
     private boolean isDown = false;
-    private boolean isInputHunterCode=false;//食肉输入猎人码
+    private boolean isInputHunterCode = false;//食肉输入猎人码
+
     @Override
     protected void initView() {
         StatusBarUtil.setHeightAndPadding(this, mBinding.toolbar);
@@ -62,20 +65,20 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 
     @Override
     protected void dataObservable() {
-        mViewModel.mVerifyLoginLiveData.observe(this, s ->{
-            if(isInputHunterCode){
+        mViewModel.mVerifyLoginLiveData.observe(this, s -> {
+            if (isInputHunterCode) {
                 UserConstants.setToken(s);
                 UserConstants.setIsLogin(true);
                 UMengManager.onProfileSignIn("userID");
                 ShanYanManager.finishAuthActivity();
                 mViewModel.getSpecOil(SYConfigUtils.inviteCode);
 
-            }else{
+            } else {
                 mViewModel.setLoginSuccess(s, "");
             }
 
 
-        } );
+        });
         mViewModel.mWechatLoginLiveData.observe(this, data -> {
             if (data == null) {
                 showToastWarning("登录失败,请使用其他登录方式");
@@ -112,10 +115,12 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 
         });
 
-        mViewModel.specStationLiveData.observe(this ,data->{
+        mViewModel.specStationLiveData.observe(this, data -> {
 
-            if(!TextUtils.isEmpty(data.getData())){
-               startActivity(new Intent(this,OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID,data.getData()));
+            if (!TextUtils.isEmpty(data.getData())) {
+//               startActivity(new Intent(this,OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID,data.getData()));
+                MainActivity.openMainActAndClearTaskJump(this, 0);
+                BusUtils.postSticky(EventConstants.EVENT_JUMP_HUNTER_CODE,data.getData());
             }
             ActivityUtils.finishActivity(LoginActivity.class);
             ActivityUtils.finishActivity(MobileLoginActivity.class);
@@ -137,18 +142,18 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
                                 loginForWx();
                             }
                         }
-                    },new ShanYanCustomInterface(){
+                    }, new ShanYanCustomInterface() {
                         @Override
                         public void onClick(Context context, View view) {
                             ImageView iv = view.findViewById(R.id.iv1);
                             View iv2 = view.findViewById(R.id.iv2);
                             EditText et = view.findViewById(R.id.invitation_et);
-                            view.findViewById(R.id.parent_layout).setOnClickListener(v ->{
-                                if (isDown){
+                            view.findViewById(R.id.parent_layout).setOnClickListener(v -> {
+                                if (isDown) {
                                     iv.animate().setDuration(200).rotation(90).start();
                                     et.setVisibility(View.VISIBLE);
                                     iv2.setVisibility(View.VISIBLE);
-                                }else {
+                                } else {
                                     iv.animate().setDuration(200).rotation(0).start();
                                     et.setVisibility(View.GONE);
                                     iv2.setVisibility(View.GONE);
@@ -220,10 +225,10 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 
     private void verifyNormal(String token) {
 
-        isInputHunterCode =false;
+        isInputHunterCode = false;
         if (!TextUtils.isEmpty(SYConfigUtils.inviteCode)) {
             if (SYConfigUtils.inviteCode.length() == 4 || SYConfigUtils.inviteCode.length() == 11) {
-                isInputHunterCode =true;
+                isInputHunterCode = true;
             } else {
                 showToastWarning("请输入正确邀请人");
                 OneKeyLoginManager.getInstance().setLoadingVisibility(false);

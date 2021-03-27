@@ -13,9 +13,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
         <TextView
+            android:id="@+id/integral_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+2"
+            android:text="+0"
             android:textSize="@dimen/sp_11"
             android:textColor="@color/color_1300"
             android:layout_marginTop="@dimen/dp_6"
@@ -39,9 +40,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
+        android:id="@+id/day_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1天"
+        android:text="0天"
         android:textSize="@dimen/sp_11"
         android:textColor="#909090"
         android:layout_marginTop="@dimen/dp_5"

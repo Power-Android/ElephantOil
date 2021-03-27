@@ -20,4 +20,6 @@ public class EventConstants {
 
     //支付确认页回调
     public static final String EVENT_JUMP_PAY_QUERY = "event_jump_pay_query";
+    //登录填写猎人码跳转
+    public static final String EVENT_JUMP_HUNTER_CODE = "event_jump_hunter_code";
 }

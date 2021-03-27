@@ -348,6 +348,18 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         activity.startActivity(intent);
 //        ActivityUtils.startHomeActivity();
     }
+    /**
+     * 打开首页并清空栈
+     *
+     * @param activity
+     */
+    public static void openMainActAndClearTaskJump(BaseActivity activity,int jumpCode) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        intent.putExtra("jumpState",jumpCode);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+//        ActivityUtils.startHomeActivity();
+    }
 
     private void jump(Intent intent) {
         if (intent == null) {

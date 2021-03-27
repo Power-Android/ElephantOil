@@ -136,5 +136,9 @@ public class ApiService {
     public static final String GET_SPEC_GAS_ID =  "api/gasPublic/specGasId";
     //获取月度红包列表
     public static final String GET_MONTH_COUPON  = "api/coupon/v1/getPlatformMonthCouponVOs";
+    //获取每周积分签到列表信息
+    public static final String GET_INTEGRAL_INFO  = "api/product/v1/getIntegralInfo";
+    //每周积分签到
+    public static final String INTEGRAL_SIGN  = "api/product/v1/integralSign";
 
 }

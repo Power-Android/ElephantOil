@@ -39,8 +39,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         mRespository.getLocation(locationLiveData);
     }
 
-    public void getHomeOil(double lat, double lng) {
-        mRespository.getHomeOil(lat, lng, homeOilLiveData);
+    public void getHomeOil(double lat, double lng,String gasId) {
+        mRespository.getHomeOil(lat, lng, gasId,homeOilLiveData);
     }
 
     public void getOftenOils() {

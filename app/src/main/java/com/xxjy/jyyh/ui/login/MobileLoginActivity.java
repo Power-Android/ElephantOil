@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SpanUtils;
@@ -20,6 +21,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.TextWatcherAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMobileLoginBinding;
 import com.xxjy.jyyh.ui.MainActivity;
@@ -351,7 +353,9 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
         mViewModel.specStationLiveData.observe(this ,data->{
 
             if(!TextUtils.isEmpty(data.getData())){
-                startActivity(new Intent(this, OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID,data.getData()));
+//                startActivity(new Intent(this, OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID,data.getData()));
+                MainActivity.openMainActAndClearTaskJump(this, 0);
+                BusUtils.postSticky(EventConstants.EVENT_JUMP_HUNTER_CODE,data.getData());
             }
             ActivityUtils.finishActivity(LoginActivity.class);
             ActivityUtils.finishActivity(MobileLoginActivity.class);
