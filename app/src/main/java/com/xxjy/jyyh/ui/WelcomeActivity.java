@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
@@ -158,12 +159,12 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
         if (isShownYSXY) {
             getAdInfo();
         } else {
-            new Handler().postDelayed(() -> {
-                startActivity(new Intent(WelcomeActivity.this, PrivacyActivity.class));
-                finish();
-            }, 2000);
+//            new Handler().postDelayed(() -> {
+//                startActivity(new Intent(WelcomeActivity.this, PrivacyActivity.class));
+//                finish();
+//            }, 2000);
 //            isShownYSXY = true;
-//            showYSXYDialog();
+            showYSXYDialog();
         }
     }
 
@@ -188,7 +189,7 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                finish();
+                AppUtils.exitApp();
             }
         });
         dialog.getConfirm().setOnClickListener(new View.OnClickListener() {
@@ -242,7 +243,8 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
     protected void onStart() {
         super.onStart();
         if (isShownYSXY) {
-            requestPermission();
+//            requestPermission();
+            next();
         }
     }
 
@@ -268,7 +270,7 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
             return;
         }
         MapLocationHelper.refreshLocation();
-        handler.sendEmptyMessageDelayed(MSG_WHAT_TRY_SHOW_GUIDE, 2000);
+        handler.sendEmptyMessageDelayed(MSG_WHAT_TRY_SHOW_GUIDE, 1500);
     }
 
     @Override

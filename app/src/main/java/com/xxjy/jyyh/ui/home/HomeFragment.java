@@ -151,13 +151,13 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     //猎人码跳转
     @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_HUNTER_CODE, sticky = true)
     public void onHunterEvent(String oilId) {
-        if(!TextUtils.isEmpty(oilId)){
+        if (!TextUtils.isEmpty(oilId)) {
             Constants.HUNTER_GAS_ID = oilId;
         }
 
-        LogUtils.e("2222222222",Constants.HUNTER_GAS_ID);
+        LogUtils.e("2222222222", Constants.HUNTER_GAS_ID);
 //        if (UserConstants.getIsLogin()) {
-            getHomeOil();
+        getHomeOil();
 //        }
 
     }
@@ -185,7 +185,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             getBaseActivity().setTransparentStatusBar();
             mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
 
-            requestPermission();
+//            requestPermission();
 
             if (mStationsBean != null) {
                 mViewModel.getRefuelJob(mStationsBean.getGasId());
@@ -217,10 +217,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         BusUtils.register(this);
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
-        LogUtils.e("2222211111",Constants.HUNTER_GAS_ID);
+        LogUtils.e("2222211111", Constants.HUNTER_GAS_ID);
         getHomeOil();
         //请求定位权限
-        requestPermission();
+//        requestPermission();
 
         //油站标签
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
@@ -260,14 +260,16 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         initWebViewClient();
         initLocalLife();
     }
-private void getHomeOil(){
-    if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
-        mLat = Double.parseDouble(UserConstants.getLatitude());
-        mLng = Double.parseDouble(UserConstants.getLongitude());
+
+    private void getHomeOil() {
+//    if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
+//        mLat = Double.parseDouble(UserConstants.getLatitude());
+//        mLng = Double.parseDouble(UserConstants.getLongitude());
         //首页油站
-        mViewModel.getHomeOil(mLat, mLng,Constants.HUNTER_GAS_ID);
+        mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+//    }
     }
-}
+
     private void initLocalLife() {
         mBinding.localLifeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         localLifeListAdapter = new LocalLifeListAdapter(R.layout.adapter_local_life_list, data);
@@ -369,15 +371,15 @@ private void getHomeOil(){
                                         startActivity(intent);
                                         dialog.dismiss();
                                     }).setNegativeButton("取消", (dialog, which) -> {//响应事件
-                                        // TODO Auto-generated method stub
-                                        dialog.dismiss();
-                                    })
+                                // TODO Auto-generated method stub
+                                dialog.dismiss();
+                            })
                                     .setOnCancelListener(dialog -> {
                                     }).show();//在按键响应事件中显示此对话框
                         } else {
                             mLat = 0;
                             mLng = 0;
-                            mViewModel.getHomeOil(mLat, mLng,Constants.HUNTER_GAS_ID);
+                            mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
                             showFailLocation();
 //                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
                         }
@@ -496,7 +498,7 @@ private void getHomeOil(){
                 break;
             case R.id.location_iv:
             case R.id.address_tv:
-                requestPermission();
+//                requestPermission();
                 break;
             case R.id.go_integral_view:
             case R.id.sign_in_iv:
@@ -520,7 +522,7 @@ private void getHomeOil(){
                 mLat = locationEntity.getLat();
                 LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
                 //首页油站
-                mViewModel.getHomeOil(mLat, mLng,Constants.HUNTER_GAS_ID);
+                mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
             }
         });
 
@@ -920,7 +922,7 @@ private void getHomeOil(){
         mLocationTipsDialog.setOnClickListener(view -> {
             switch (view.getId()) {
                 case R.id.location_agin:
-                    requestPermission();
+//                    requestPermission();
                     break;
                 case R.id.all_oil:
                     BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
@@ -965,7 +967,7 @@ private void getHomeOil(){
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getHomeOil(mLat, mLng,Constants.HUNTER_GAS_ID);
+        mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
         mViewModel.getOftenOils();
         if (mStationsBean != null) {
             mViewModel.getRefuelJob(mStationsBean.getGasId());
@@ -1023,7 +1025,7 @@ private void getHomeOil(){
         isShowAmount = false;
         mOilNoPosition = 0;
         //关掉以后重新刷新数据,否则再次打开时上下选中不一致
-        mViewModel.getHomeOil(mLat, mLng,Constants.HUNTER_GAS_ID);
+        mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
     }
 
     @Override

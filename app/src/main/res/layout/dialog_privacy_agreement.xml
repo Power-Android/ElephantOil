@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/transparent">
 
         <FrameLayout
             android:layout_width="@dimen/dp_302"
             android:layout_height="@dimen/dp_472"
+            android:visibility="gone"
             android:layout_gravity="center"
             android:paddingTop="@dimen/dp_2"
             android:paddingBottom="@dimen/dp_3">
@@ -54,4 +55,61 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginBottom="@dimen/dp_21" />
         </FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/dp_270"
+            android:layout_height="450dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_white_15radius">
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="温馨提示"
+                android:textSize="@dimen/sp_16"
+                android:textColor="@color/color_34"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/common_margin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                android:id="@+id/content_tv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/color_34"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_13"
+                android:layout_marginEnd="@dimen/dp_13"
+                android:layout_marginBottom="@dimen/common_margin"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/refuse_tv"/>
+            <TextView
+                android:id="@+id/refuse_tv"
+                android:layout_width="@dimen/dp_117"
+                android:layout_height="@dimen/dp_38"
+                android:text="拒绝"
+                android:textColor="@color/color_34"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/dp_12"
+                android:background="@drawable/shape_d0_6radius"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/agree_tv"/>
+            <TextView
+                android:id="@+id/agree_tv"
+                android:layout_width="@dimen/dp_117"
+                android:layout_height="@dimen/dp_38"
+                android:text="同意"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/dp_12"
+                android:background="@drawable/shape_pay_6radius"
+                app:layout_constraintStart_toEndOf="@+id/refuse_tv"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
