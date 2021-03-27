@@ -98,6 +98,9 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         }else{
             if(Constants.OPEN_LOCATION_VISIBLE){
                 mBinding.locationView.setVisibility(View.VISIBLE);
+                BarUtils.addMarginTopEqualStatusBarHeight(mBinding.locationImageView);
+                BarUtils.addMarginTopEqualStatusBarHeight(mBinding.closeView);
+                BarUtils.addMarginTopEqualStatusBarHeight(mBinding.openView);
             }else{
                 mBinding.locationView.setVisibility(View.GONE);
                 BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
@@ -112,6 +115,9 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
         }else{
             mBinding.locationView.setVisibility(View.VISIBLE);
+            BarUtils.addMarginTopEqualStatusBarHeight(mBinding.locationImageView);
+            BarUtils.addMarginTopEqualStatusBarHeight(mBinding.closeView);
+            BarUtils.addMarginTopEqualStatusBarHeight(mBinding.openView);
         }
 
 

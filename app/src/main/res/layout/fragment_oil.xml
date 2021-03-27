@@ -9,10 +9,15 @@
     <RelativeLayout
         android:id="@+id/location_view"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@drawable/bg_location"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
         android:visibility="gone">
-
+<ImageView
+    android:id="@+id/location_image_view"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:src="@drawable/bg_location"
+    android:scaleType="centerCrop"/>
         <View
             android:id="@+id/close_view"
             android:layout_width="30dp"
