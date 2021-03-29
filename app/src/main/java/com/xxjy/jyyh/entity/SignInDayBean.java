@@ -14,6 +14,15 @@ public class SignInDayBean {
     private int dayOfWeek;
     private int intelgral;
     private boolean signFlag;
+    private String weekStr;
+
+    public String getWeekStr() {
+        return weekStr;
+    }
+
+    public void setWeekStr(String weekStr) {
+        this.weekStr = weekStr;
+    }
 
     public String getCouponId() {
         return couponId;

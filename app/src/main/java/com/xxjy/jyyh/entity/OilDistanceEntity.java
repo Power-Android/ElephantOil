@@ -13,6 +13,15 @@ public class OilDistanceEntity {
     private String latitude;
     private String longitude;
     private boolean here;
+    private boolean pay;
+
+    public boolean isPay() {
+        return pay;
+    }
+
+    public void setPay(boolean pay) {
+        this.pay = pay;
+    }
 
     public String getDistance() {
         return distance;

@@ -51,6 +51,7 @@ import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.OilTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
+import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
 import com.xxjy.jyyh.ui.pay.PayQueryActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
@@ -93,6 +94,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     private boolean shouldJump = false;
     private PayOrderEntity mPayOrderEntity;
     private boolean isFar = false;//油站是否在距离内
+    private boolean isPay = false;//油站是否在距离内 是否显示继续支付按钮
     private GasStationLocationTipsDialog mGasStationTipsDialog;
     private LocationTipsDialog mLocationTipsDialog;
     private String mOilNo;
@@ -468,6 +470,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         });
 
         mHomeViewModel.distanceLiveData.observe(this, oilDistanceEntity -> {
+            isPay = oilDistanceEntity.isPay();
             if (oilDistanceEntity.isHere()) {
                 isFar = false;
             } else {
@@ -686,10 +689,13 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
     private void showChoiceOil(String stationName, View view) {
         mGasStationTipsDialog = new GasStationLocationTipsDialog(this, view, stationName);
+        mGasStationTipsDialog.showPayBt(isPay);
         mGasStationTipsDialog.setOnClickListener(view1 -> {
             switch (view1.getId()) {
                 case R.id.select_agin://重新选择
                     closeDialog();
+                    startActivity(new Intent(this,MainActivity.class));
+                    finish();
                     break;
                 case R.id.navigation_tv://导航过去
                     if (MapIntentUtils.isPhoneHasMapNavigation()) {

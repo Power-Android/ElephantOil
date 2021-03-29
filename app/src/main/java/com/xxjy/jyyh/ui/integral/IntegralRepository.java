@@ -11,6 +11,7 @@ import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.ProductClassBean;
 import com.xxjy.jyyh.entity.SignInBean;
+import com.xxjy.jyyh.entity.SignInResultBean;
 
 import java.util.List;
 
@@ -59,12 +60,12 @@ public class IntegralRepository extends BaseRepository {
                 .subscribe(data -> liveData.postValue(data))
         );
     }
-    public void integralSign(int dayOfWeek,int integral,String couponId,MutableLiveData<String> liveData){
+    public void integralSign(int dayOfWeek,int integral,String couponId,MutableLiveData<SignInResultBean> liveData){
         addDisposable(RxHttp.postForm(ApiService.INTEGRAL_SIGN)
                 .add("dayOfWeek",dayOfWeek)
                 .add("integral",integral)
                 .add("couponId",couponId, !TextUtils.isEmpty(couponId))
-                .asResponse(String.class)
+                .asResponse(SignInResultBean.class)
                 .subscribe(data -> liveData.postValue(data))
         );
     }

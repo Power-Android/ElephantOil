@@ -15,6 +15,7 @@ public class EventConstants {
     public static final String EVENT_TO_OIL_FRAGMENT = "event_to_oilFragment";
 
     public static final String EVENT_TO_INTEGRAL_FRAGMENT = "event_to_integralFragment";
+    public static final String EVENT_TO_HOME_FRAGMENT = "event_to_homeFragment";
 
     public static final String EVENT_CHANGE_FRAGMENT = "event_change_fragment";
 

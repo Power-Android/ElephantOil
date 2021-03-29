@@ -60,12 +60,15 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     private BannerViewModel bannerViewModel;
 
 
-    @BusUtils.Bus(tag = EventConstants.EVENT_CHANGE_FRAGMENT)
+    @BusUtils.Bus(tag = EventConstants.EVENT_CHANGE_FRAGMENT,sticky = true)
     public void onEvent(@NotNull EventEntity event) {
         if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_CHANGE_FRAGMENT)) {
             mBinding.navView.setSelectedItemId(R.id.navigation_oil);
         } else if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_TO_INTEGRAL_FRAGMENT)) {
             mBinding.navView.setSelectedItemId(R.id.navigation_integral);
+        } else if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_TO_HOME_FRAGMENT)) {
+            mBinding.navView.setSelectedItemId(R.id.navigation_home);
+            showDiffFragment(0);
         }
     }
 

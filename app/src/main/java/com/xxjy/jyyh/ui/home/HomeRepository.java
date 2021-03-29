@@ -140,7 +140,7 @@ public class HomeRepository extends BaseRepository {
     }
 
     public void checkDistance(String gasId, MutableLiveData<OilDistanceEntity> distanceLiveData) {
-        addDisposable(RxHttp.postForm(ApiService.GET_OIL_DISTANCE)
+        addDisposable(RxHttp.postForm(ApiService.GET_PAY_DISTANCE)
                 .add("gasId",gasId)
                 .add(Constants.LATITUDE, UserConstants.getLatitude())
                 .add(Constants.LONGTIDUE, UserConstants.getLongitude())

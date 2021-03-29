@@ -127,6 +127,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private boolean shouldJump = false;
     private PayOrderEntity mPayOrderEntity;
     private boolean isFar = false;//油站是否在距离内
+    private boolean isPay = false;//油站是否在距离内 是否显示继续支付按钮
     private GasStationLocationTipsDialog mGasStationTipsDialog;
     private LocationTipsDialog mLocationTipsDialog;
 
@@ -692,6 +693,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         });
 
         mViewModel.distanceLiveData.observe(this, oilDistanceEntity -> {
+            isPay = oilDistanceEntity.isPay();
             if (oilDistanceEntity.isHere()) {
                 isFar = false;
             } else {
@@ -935,6 +937,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     private void showChoiceOil(String stationName, View view) {
         mGasStationTipsDialog = new GasStationLocationTipsDialog(mContext, view, stationName);
+        mGasStationTipsDialog.showPayBt(isPay);
         mGasStationTipsDialog.setOnClickListener(view1 -> {
             switch (view1.getId()) {
                 case R.id.select_agin://重新选择

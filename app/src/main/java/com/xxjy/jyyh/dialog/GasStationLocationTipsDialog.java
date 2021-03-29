@@ -27,9 +27,11 @@ public class GasStationLocationTipsDialog {
         this.mContext = context;
         this.mView = view;
         this.mStationName = stationName;
-        mBinding = DialogGasStationLocationTipsBinding.bind(
-                View.inflate(mContext, R.layout.dialog_gas_station_location_tips, null));
+        mBinding = DialogGasStationLocationTipsBinding.bind(View.inflate(mContext, R.layout.dialog_gas_station_location_tips, null));
         init();
+    }
+    public void showPayBt(boolean isShow){
+        mBinding.continueView.setVisibility(isShow?View.VISIBLE:View.GONE);
     }
 
     private void init() {

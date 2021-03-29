@@ -10,6 +10,7 @@ import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.entity.ProductClassBean;
 import com.xxjy.jyyh.entity.SignInBean;
+import com.xxjy.jyyh.entity.SignInResultBean;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class IntegralViewModel extends BaseViewModel<IntegralRepository> {
     public MutableLiveData<List<ProductBean>> productLiveData = new MutableLiveData<>();
     public MutableLiveData<String> integralBalanceLiveData = new MutableLiveData<>();
     public MutableLiveData<SignInBean> integralInfoLiveData = new MutableLiveData<>();
-    public MutableLiveData<String> integralSignLiveData = new MutableLiveData<>();
+    public MutableLiveData<SignInResultBean> integralSignLiveData = new MutableLiveData<>();
 
     public void getBannerOfPostion() {
         mRespository.getBannerOfPostion(bannersLiveData);

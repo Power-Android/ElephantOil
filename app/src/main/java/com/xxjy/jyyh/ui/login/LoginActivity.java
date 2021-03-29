@@ -26,6 +26,7 @@ import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityLoginBinding;
+import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.oil.OilViewModel;
@@ -119,8 +120,13 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 
             if (!TextUtils.isEmpty(data.getData())) {
 //               startActivity(new Intent(this,OilDetailActivity.class).putExtra(Constants.GAS_STATION_ID,data.getData()));
-                MainActivity.openMainActAndClearTaskJump(this, 0);
+//                MainActivity.openMainActAndClearTaskJump(this, 0);
+//                BusUtils.postSticky(EventConstants.EVENT_JUMP_HUNTER_CODE,data.getData());
+
+
+                BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT, new EventEntity(EventConstants.EVENT_TO_HOME_FRAGMENT));
                 BusUtils.postSticky(EventConstants.EVENT_JUMP_HUNTER_CODE,data.getData());
+                startActivity(new Intent(this,MainActivity.class));
             }
             ActivityUtils.finishActivity(LoginActivity.class);
             ActivityUtils.finishActivity(MobileLoginActivity.class);

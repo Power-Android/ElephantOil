@@ -140,5 +140,7 @@ public class ApiService {
     public static final String GET_INTEGRAL_INFO  = "api/product/v1/getIntegralInfo";
     //每周积分签到
     public static final String INTEGRAL_SIGN  = "api/product/v1/integralSign";
+    //电子围栏新接口
+    public static final String GET_PAY_DISTANCE  = "api/gasPublic/getPayDistance";
 
 }

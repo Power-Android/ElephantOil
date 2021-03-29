@@ -10,7 +10,7 @@
       "{ desc: com.xxjy.jyyh.ui.home.HomeFragment#onHunterEvent(java.lang.String oilId), sticky: true }"
     ],
     "event_change_fragment": [
-      "{ desc: com.xxjy.jyyh.ui.MainActivity#onEvent(com.xxjy.jyyh.entity.EventEntity event) }"
+      "{ desc: com.xxjy.jyyh.ui.MainActivity#onEvent(com.xxjy.jyyh.entity.EventEntity event), sticky: true }"
     ]
   },
   "wrongBus": {}
