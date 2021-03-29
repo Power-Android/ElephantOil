@@ -20,14 +20,14 @@ public class Constants {
     /**
      * release服务器
      */
-    public static final boolean URL_IS_DEBUG = true;   //测试用这个
-//    public static final boolean URL_IS_DEBUG = false;   //正式上线用这个
+//    public static final boolean URL_IS_DEBUG = true;   //测试用这个
+    public static final boolean URL_IS_DEBUG = false;   //正式上线用这个
 
     /**
      * 配置debug模式
      */
-    public static final boolean IS_DEBUG = true;  //测试用这个
-//    public static final boolean IS_DEBUG = false;   //正式上线用这个
+//    public static final boolean IS_DEBUG = true;  //测试用这个
+    public static final boolean IS_DEBUG = false;   //正式上线用这个
 
     //微信配置
     public static final String WX_APP_ID = "wx3704434db8357ec1";

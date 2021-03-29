@@ -108,7 +108,8 @@ import static com.blankj.utilcode.util.ThreadUtils.runOnUiThread;
  * @project ElephantOil
  * @description:
  */
-public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> implements OnRefreshLoadMoreListener, IPayListener {
+public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> implements
+        OnRefreshLoadMoreListener, IPayListener {
     private List<OilEntity.StationsBean.CzbLabelsBean> mOilTagList = new ArrayList<>();
     private List<OfentEntity> mOftenList = new ArrayList<>();
     private List<HomeProductEntity.FirmProductsVoBean> mExchangeList = new ArrayList<>();
@@ -187,6 +188,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
 
 //            requestPermission();
+            mViewModel.getLocation();
 
             if (mStationsBean != null) {
                 mViewModel.getRefuelJob(mStationsBean.getGasId());
@@ -219,6 +221,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         BusUtils.register(this);
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
         LogUtils.e("2222211111", Constants.HUNTER_GAS_ID);
+
+        mViewModel.getLocation();
         getHomeOil();
         //请求定位权限
 //        requestPermission();
