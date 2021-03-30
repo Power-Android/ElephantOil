@@ -81,6 +81,7 @@ import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.restaurant.RestaurantActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
+import com.xxjy.jyyh.ui.setting.SettingActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
@@ -217,7 +218,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         getBaseActivity().setTransparentStatusBar();
         mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         BusUtils.register(this);
@@ -476,6 +477,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 break;
             case R.id.search_iv:
                 startActivity(new Intent(mContext, SearchActivity.class));
+//                startActivity(new Intent(mContext, SettingActivity.class));
                 break;
 //            case R.id.award_tv:
 //                ReceiveRewardDialog receiveRewardDialog = new ReceiveRewardDialog(getContext());

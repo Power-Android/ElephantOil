@@ -111,7 +111,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         if(PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)){
             mBinding.locationView.setVisibility(View.GONE);
             BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);

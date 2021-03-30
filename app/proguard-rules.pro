@@ -545,7 +545,7 @@
 -keep class com.ta.utdid2.device.**{*;}
 #防止inline
 -dontoptimize
--keepclassmembers class com.my.pkg.MyRealApplication {
+-keepclassmembers class com.xxjy.jyyh.app.App {
     public <init>();
 }
--keep class com.my.pkg.SophixStubApplication$RealApplicationStub
+-keep class com.xxjy.jyyh.app.SophixStubApplication$RealApplicationStub

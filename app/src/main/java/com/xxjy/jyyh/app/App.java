@@ -54,7 +54,10 @@ public class App extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         init();
+
     }
+
+
 
     private void init() {
         //QMUI

@@ -89,7 +89,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.topLayout);
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.noticeLayout);
 

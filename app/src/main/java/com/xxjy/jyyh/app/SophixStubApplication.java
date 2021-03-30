@@ -34,7 +34,7 @@ public class SophixStubApplication extends SophixApplication {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
 //         如果需要使用MultiDex，需要在此处调用。
-         MultiDex.install(this);
+//         MultiDex.install(this);
         initSophix();
     }
     private void initSophix() {
@@ -67,6 +67,6 @@ public class SophixStubApplication extends SophixApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        SophixManager.getInstance().queryAndLoadNewPatch();
+//        SophixManager.getInstance().queryAndLoadNewPatch();
     }
 }

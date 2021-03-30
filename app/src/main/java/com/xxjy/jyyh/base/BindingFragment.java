@@ -141,23 +141,29 @@ public abstract class BindingFragment<V extends ViewBinding, VM extends BaseView
     /**
      * 页面数据初始化方法
      */
-    protected abstract void initView();
+    protected void initView(){}
 
     /**
      * 初始化监听
      */
-    protected abstract void initListener();
+    protected void initListener(){
+
+    };
 
     /**
      * @param view
      * 处理点击事件
      */
-    protected abstract void onViewClicked(View view);
+    protected  void onViewClicked(View view){
+
+    };
 
     /**
      * 处理网络请求回调
      */
-    protected abstract void dataObservable();
+    protected  void dataObservable(){
+
+    };
 
     @Override
     public void onDestroyView() {

@@ -107,7 +107,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         mBinding.topBarLayout.updateBottomDivider(0, 0, 0, 0);
         initTab();
         bannerViewModel1 = new ViewModelProvider(getActivity()).get(BannerViewModel.class);
