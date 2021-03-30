@@ -190,12 +190,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //            requestPermission();
             mViewModel.getLocation();
 
+
             if (mStationsBean != null) {
                 mViewModel.getRefuelJob(mStationsBean.getGasId());
             }
             if (UserConstants.getIsLogin()) {
                 mViewModel.getOftenOils();
             }
+            initLocalLife();
 //            mBinding.oftenOilRecyclerView.setVisibility(UserConstants.getIsLogin() ? View.VISIBLE :View.GONE);
         }
     }
@@ -798,7 +800,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             @Override
             public void onQuickClick(View view, OilNumAdapter oilNumAdapter, OilGunAdapter oilGunAdapter) {
                 if (isFar) {
-                    showChoiceOil(mStationsBean.getGasName(), view);
+                    showChoiceOil( oilNumAdapter,mStationsBean.getGasName(), view);
                 } else {
                     for (int i = 0; i < oilGunAdapter.getData().size(); i++) {
                         if (oilGunAdapter.getData().get(i).isSelected()) {
@@ -939,7 +941,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mLocationTipsDialog.show();
     }
 
-    private void showChoiceOil(String stationName, View view) {
+    private void showChoiceOil(OilNumAdapter oilNumAdapter,String stationName, View view) {
         mGasStationTipsDialog = new GasStationLocationTipsDialog(mContext, view, stationName);
         mGasStationTipsDialog.showPayBt(isPay);
         mGasStationTipsDialog.setOnClickListener(view1 -> {
@@ -960,6 +962,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     break;
                 case R.id.continue_view://继续支付
                     isFar = false;
+                    showAmountDialog(mStationsBean, oilNumAdapter.getData(),
+                            mOilNoPosition, mOilGunPosition);
                     break;
             }
 

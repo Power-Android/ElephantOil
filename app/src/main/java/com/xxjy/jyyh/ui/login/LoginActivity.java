@@ -124,9 +124,8 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 //                BusUtils.postSticky(EventConstants.EVENT_JUMP_HUNTER_CODE,data.getData());
 
 
-                BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT, new EventEntity(EventConstants.EVENT_TO_HOME_FRAGMENT));
+                MainActivity.openMainActAndClearTaskJump(this,0);
                 BusUtils.postSticky(EventConstants.EVENT_JUMP_HUNTER_CODE,data.getData());
-                startActivity(new Intent(this,MainActivity.class));
             }
             ActivityUtils.finishActivity(LoginActivity.class);
             ActivityUtils.finishActivity(MobileLoginActivity.class);

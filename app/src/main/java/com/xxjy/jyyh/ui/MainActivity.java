@@ -66,9 +66,6 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             mBinding.navView.setSelectedItemId(R.id.navigation_oil);
         } else if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_TO_INTEGRAL_FRAGMENT)) {
             mBinding.navView.setSelectedItemId(R.id.navigation_integral);
-        } else if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_TO_HOME_FRAGMENT)) {
-            mBinding.navView.setSelectedItemId(R.id.navigation_home);
-            showDiffFragment(0);
         }
     }
 
@@ -105,7 +102,10 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                     isNewUser = 0;
                 }
             }
-            showDiffFragment(isNewUser);
+            if(TextUtils.isEmpty(Constants.HUNTER_GAS_ID)){//猎人码绑定油站
+                showDiffFragment(isNewUser);
+            }
+
         });
 
         initNavigationView();
