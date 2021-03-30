@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.BusUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.xxjy.jyyh.PrivacyActivity;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BaseActivity;

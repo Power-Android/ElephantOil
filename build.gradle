@@ -10,10 +10,14 @@ buildscript {
             url "https://jitpack.io"
         }
         maven { url 'https://dl.bintray.com/umsdk/release' }
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/repositories/releases/'
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.1"
         classpath 'com.blankj:bus-gradle-plugin:2.6'
+        classpath 'com.aliyun.ams:emas-services:1.0.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -28,6 +32,9 @@ allprojects {
             url "https://jitpack.io"
         }
         maven { url 'https://dl.bintray.com/umsdk/release' }
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/repositories/releases/'
+        }
 
         flatDir {
             dirs 'libs'

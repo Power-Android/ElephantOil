@@ -416,6 +416,7 @@
                     android:id="@+id/other_oil_tv"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_65"
+                    android:visibility="visible"
                     android:layout_marginStart="@dimen/dp_12"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginEnd="@dimen/dp_12"
