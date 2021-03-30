@@ -4,7 +4,6 @@ plugins {
 
 apply {
     apply plugin: "com.blankj.bus"
-    apply plugin: 'com.aliyun.ams.emas-services'
 }
 
 android {
@@ -139,7 +138,6 @@ dependencies {
     implementation rootProject.ext.dependencies["fragment"]
     implementation rootProject.ext.dependencies["eventbus"]
     implementation rootProject.ext.dependencies["wechat"]
-    api ("com.aliyun.ams:alicloud-android-hotfix:3.2.18")
     implementation rootProject.ext.dependencies["qmui"]
     implementation rootProject.ext.dependencies["qmui_arch"]
     annotationProcessor rootProject.ext.dependencies["qmui_arch_compiler"]
@@ -154,7 +152,7 @@ dependencies {
     //极光推送依赖jar包
     implementation fileTree(include: ['*.jar'], dir: 'libs/jpush')
     //支付宝依赖
-    api files('libs/alipaysdk-noutdid-15.8.02.210308182128.aar')
+    api files('libs/alipaySdk-15.7.9-20200727142846.aar')
     //闪验
     api files('libs/shanyan_sdk_v2.3.2.2.aar')
     //云闪付

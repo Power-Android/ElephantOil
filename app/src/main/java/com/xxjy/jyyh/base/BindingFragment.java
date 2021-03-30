@@ -141,14 +141,12 @@ public abstract class BindingFragment<V extends ViewBinding, VM extends BaseView
     /**
      * 页面数据初始化方法
      */
-    protected void initView(){}
+    protected abstract void initView();
 
     /**
      * 初始化监听
      */
-    protected void initListener(){
-
-    };
+    protected abstract void initListener();
 
     /**
      * @param view
