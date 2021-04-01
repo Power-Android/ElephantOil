@@ -3,9 +3,11 @@ package com.xxjy.jyyh.ui.setting;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CleanUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
@@ -59,6 +61,7 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
         switch (view.getId()){
             case R.id.about_us_layout:
                 startActivity(new Intent(this,AboutUsActivity.class));
+
                 break;
             case R.id.clear_cache_layout:
                 observableDisposable=  Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {

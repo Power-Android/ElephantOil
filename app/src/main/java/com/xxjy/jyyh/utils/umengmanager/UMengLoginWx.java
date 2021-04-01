@@ -6,12 +6,19 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.base.BaseActivity;
 
 public class UMengLoginWx {
 
     public static void loginFormWx(BaseActivity activity, UMAuthAdapter umAuthAdapter) {
+        UMShareAPI.get(activity).getPlatformInfo(activity, SHARE_MEDIA.WEIXIN, umAuthAdapter);
+    }
+    public static void getOpenIdForWX(BaseActivity activity, UMAuthAdapter umAuthAdapter) {
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(activity).setShareConfig(config);
         UMShareAPI.get(activity).getPlatformInfo(activity, SHARE_MEDIA.WEIXIN, umAuthAdapter);
     }
 

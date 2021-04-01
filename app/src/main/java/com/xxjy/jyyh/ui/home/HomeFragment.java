@@ -189,7 +189,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
 
 //            requestPermission();
-            mViewModel.getLocation();
+//            mViewModel.getLocation();
+            getLocation();
 
 
             if (mStationsBean != null) {
@@ -209,7 +210,19 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         if (mStationsBean != null) {
             mViewModel.getRefuelJob(mStationsBean.getGasId());
         }
+        if (PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)) {
+//            mBinding.noLocationLayout.setVisibility(View.GONE);
+//            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
+//            mViewModel.getLocation();
+            getLocation();
+
+        } else {
+            mBinding.noLocationLayout.setVisibility(View.VISIBLE);
+            mBinding.recommendStationLayout.setVisibility(View.GONE);
+        }
     }
+
 
     @Override
     public void onStart() {
@@ -225,7 +238,18 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
         LogUtils.e("2222211111", Constants.HUNTER_GAS_ID);
 
-        mViewModel.getLocation();
+//        mViewModel.getLocation();
+//        getLocation();
+        if (PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)) {
+//            mBinding.noLocationLayout.setVisibility(View.GONE);
+//            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
+//            mViewModel.getLocation();
+            getLocation();
+        } else {
+            mBinding.noLocationLayout.setVisibility(View.VISIBLE);
+            mBinding.recommendStationLayout.setVisibility(View.GONE);
+        }
         getHomeOil();
         //请求定位权限
 //        requestPermission();
@@ -273,8 +297,18 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //    if (Double.parseDouble(UserConstants.getLongitude()) != 0 && Double.parseDouble(UserConstants.getLatitude()) != 0) {
 //        mLat = Double.parseDouble(UserConstants.getLatitude());
 //        mLng = Double.parseDouble(UserConstants.getLongitude());
-        //首页油站
-        mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+
+        if ((mLng == 0d || mLat == 0d)&&TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
+            LogUtils.e("2222", "GONE");
+            mBinding.recommendStationLayout.setVisibility(View.GONE);
+            mBinding.noLocationLayout.setVisibility(View.VISIBLE);
+        } else {
+            LogUtils.e("2222", "VISIBLE");
+//            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
+//            mBinding.noLocationLayout.setVisibility(View.GONE);
+            //首页油站
+            mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+        }
 //    }
     }
 
@@ -361,7 +395,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 .callback(new PermissionUtils.FullCallback() {
                     @Override
                     public void onGranted(@NonNull List<String> granted) {
-                        mViewModel.getLocation();
+//                        mViewModel.getLocation();
+                        getLocation();
                     }
 
                     @Override
@@ -387,7 +422,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         } else {
                             mLat = 0;
                             mLng = 0;
-                            mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+//                            mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+                            getHomeOil();
                             showFailLocation();
 //                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
                         }
@@ -446,6 +482,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
         mBinding.goIntegralView.setOnClickListener(this::onViewClicked);
         mBinding.signInIv.setOnClickListener(this::onViewClicked);
+        mBinding.goMoreOilView.setOnClickListener(this::onViewClicked);
+        mBinding.goLocationView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -514,6 +552,16 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
                         new EventEntity(EventConstants.EVENT_TO_INTEGRAL_FRAGMENT));
                 break;
+            case R.id.go_more_oil_view:
+                BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
+                        new EventEntity(EventConstants.EVENT_CHANGE_FRAGMENT));
+                break;
+            case R.id.go_location_view:
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", App.getContext().getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+                break;
         }
     }
 
@@ -530,8 +578,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mLng = locationEntity.getLng();
                 mLat = locationEntity.getLat();
                 LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
-                //首页油站
-                mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+//                    //首页油站
+//                    mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+                getHomeOil();
+
             }
         });
 
@@ -541,7 +591,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     oilEntity.getStations().size() <= 0 || oilEntity.getStations().get(0).getOilPriceList() == null) {
                 return;
             }
+            mBinding.noLocationLayout.setVisibility(View.GONE);
             mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
+
             mStationsBean = oilEntity.getStations().get(0);
             Glide.with(mContext).load(mStationsBean.getGasTypeImg()).into(mBinding.oilImgIv);
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
@@ -732,7 +784,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
     }
-
+    private void getLocation(){
+        mViewModel.getLocation();
+    }
     private void showNumDialog(OilEntity.StationsBean stationsBean) {
         //油号dialog
         mOilNumDialog = new OilNumDialog(mContext, stationsBean);
@@ -802,7 +856,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             @Override
             public void onQuickClick(View view, OilNumAdapter oilNumAdapter, OilGunAdapter oilGunAdapter) {
                 if (isFar) {
-                    showChoiceOil( oilNumAdapter,mStationsBean.getGasName(), view);
+                    showChoiceOil(oilNumAdapter, mStationsBean.getGasName(), view);
                 } else {
                     for (int i = 0; i < oilGunAdapter.getData().size(); i++) {
                         if (oilGunAdapter.getData().get(i).isSelected()) {
@@ -943,7 +997,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mLocationTipsDialog.show();
     }
 
-    private void showChoiceOil(OilNumAdapter oilNumAdapter,String stationName, View view) {
+    private void showChoiceOil(OilNumAdapter oilNumAdapter, String stationName, View view) {
         mGasStationTipsDialog = new GasStationLocationTipsDialog(mContext, view, stationName);
         mGasStationTipsDialog.showPayBt(isPay);
         mGasStationTipsDialog.setOnClickListener(view1 -> {
@@ -980,8 +1034,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+//        mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+        getHomeOil();
         mViewModel.getOftenOils();
+
         if (mStationsBean != null) {
             mViewModel.getRefuelJob(mStationsBean.getGasId());
             mViewModel.checkDistance(mStationsBean.getGasId());
@@ -1038,7 +1094,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         isShowAmount = false;
         mOilNoPosition = 0;
         //关掉以后重新刷新数据,否则再次打开时上下选中不一致
-        mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+//        mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+        getHomeOil();
     }
 
     @Override

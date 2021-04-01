@@ -206,4 +206,10 @@ public interface JsOperationMethods {
      */
     void toIntegralHomePage();
 
+    /**
+     * 获取openid
+     * @return
+     */
+    void getOpenId();
+
 }

@@ -11,6 +11,8 @@ import com.amap.api.location.AMapLocation;
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.google.gson.Gson;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.SPConstants;
@@ -25,6 +27,7 @@ import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
+import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
 
 import org.json.JSONObject;
 
@@ -346,6 +349,32 @@ public class JsOperation implements JsOperationMethods {
             });
         }
     }
+
+    @Override
+    @JavascriptInterface
+    public void getOpenId() {
+        UMengLoginWx.getOpenIdForWX(mActivity, new UMengLoginWx.UMAuthAdapter() {
+            @Override
+            public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                LogUtils.e(new Gson().toJson(map));
+                if (map != null && map.containsKey("openid") ) {
+                    String openId = map.get("openid");
+//                    String accessToken = map.get("accessToken");
+                    if(mActivity instanceof WebViewActivity){
+                        mActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                WebViewActivity webViewActivity = (WebViewActivity) mActivity;
+                                webViewActivity.setOpenId(openId);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+
 
     @Override
     @JavascriptInterface

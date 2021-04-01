@@ -128,6 +128,13 @@ public class UserConstants {
     public static boolean getGoneBalance() {
         return SPUtils.getInstance().getBoolean(SPConstants.GONE_BALANCE, false);
     }
+    public static void setBackgroundTime(long b) {
+        SPUtils.getInstance().put(SPConstants.BACKGROUND_TIME, b);
+    }
+
+    public static long getBackgroundTime() {
+        return SPUtils.getInstance().getLong(SPConstants.BACKGROUND_TIME);
+    }
 
     public static void setNotificationRemind(boolean b) {
         String str = TimeUtils.date2String(new Date(), "yyyy-MM-dd") + "@_@" + b;

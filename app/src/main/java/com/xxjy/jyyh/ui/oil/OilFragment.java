@@ -88,13 +88,27 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-
+            if(PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)){
+                mBinding.locationView.setVisibility(View.GONE);
+                BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
+            }else{
+                if(Constants.OPEN_LOCATION_VISIBLE){
+                    mBinding.locationView.setVisibility(View.VISIBLE);
+                    BarUtils.addMarginTopEqualStatusBarHeight(mBinding.locationImageView);
+                    BarUtils.addMarginTopEqualStatusBarHeight(mBinding.closeView);
+                    BarUtils.addMarginTopEqualStatusBarHeight(mBinding.openView);
+                }else{
+                    mBinding.locationView.setVisibility(View.GONE);
+                    BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);
+                }
+            }
         }
     }
 
+
     @Override
-    public void onResume() {
-        super.onResume();
+    protected void onVisible() {
+        super.onVisible();
         if(PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)){
             mBinding.locationView.setVisibility(View.GONE);
             BarUtils.addMarginTopEqualStatusBarHeight(mBinding.parentLayout);

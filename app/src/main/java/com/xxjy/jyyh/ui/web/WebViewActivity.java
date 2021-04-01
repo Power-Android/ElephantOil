@@ -355,6 +355,14 @@ public class WebViewActivity extends BindingActivity<ActivityWebviewBinding,WebV
         });
     }
 
+    public void setOpenId(String openId){
+        // 无参数调用
+        if(webView==null){
+            return;
+        }
+        webView.loadUrl("javascript:setOpenId('"+openId+"')");
+    }
+
 //    private void disPathPayOrderInfo(PayOrderResponse.DataBean data) {
 //        mOrderNo = data.getOrderPayNo();
 //        mIsOpenVip = data.isOpeningVip();

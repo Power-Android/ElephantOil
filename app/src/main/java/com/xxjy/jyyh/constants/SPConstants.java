@@ -69,6 +69,11 @@ public class SPConstants {
      */
     public static final String GONE_BALANCE = "gone_balance";
 
+    /*
+    *后台时间
+     */
+    public static final String BACKGROUND_TIME = "background_time";
+
     /**
      * 通知弹窗提醒
      */

@@ -2,17 +2,27 @@ package com.xxjy.jyyh.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.CrashUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.http.HttpManager;
 import com.xxjy.jyyh.utils.AppManager;
+import com.xxjy.jyyh.utils.ForegroundCallbacks;
 import com.xxjy.jyyh.utils.JPushManager;
 import com.xxjy.jyyh.utils.X5WebManager;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
@@ -54,10 +64,32 @@ public class App extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         init();
-
+        initAppStatusListener();
     }
+    private void initAppStatusListener() {
 
+        ForegroundCallbacks.init(this).addListener(new ForegroundCallbacks.Listener() {
+            @Override
+            public void onBecameForeground() {
+//                LogUtils.e("前台");
+                if(!TextUtils.isEmpty(Constants.HUNTER_GAS_ID)){
+                    long backgroundTime = UserConstants.getBackgroundTime();
+                    if(System.currentTimeMillis()-backgroundTime>300000){
+                        Constants.HUNTER_GAS_ID="";
+                        BusUtils.postSticky(EventConstants.EVENT_JUMP_HUNTER_CODE,Constants.HUNTER_GAS_ID);
+                    }
+                }
+            }
 
+            @Override
+            public void onBecameBackground() {
+//                LogUtils.e("后台");
+                if(!TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
+                    UserConstants.setBackgroundTime(System.currentTimeMillis());
+                }
+            }
+        });
+    }
 
     private void init() {
         //QMUI
