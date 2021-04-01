@@ -78,9 +78,12 @@ public class OilCouponDialog extends BottomSheetDialog {
         mBinding.recyclerView.setAdapter(mOilCouponAdapter);
         mOilCouponAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             if (mOnItemClickedListener != null) {
-                UiUtils.canClickViewStateDelayed(view, 1000);
-                mOnItemClickedListener.onOilCouponClick(adapter, view, position, isPlat);
-                dismiss();
+                if(((CouponBean)adapter.getData().get(position)).getStatus()==0){
+                    UiUtils.canClickViewStateDelayed(view, 1000);
+                    mOnItemClickedListener.onOilCouponClick(adapter, view, position, isPlat);
+                    dismiss();
+                }
+
             }
         });
         mBinding.noCouponTv.setOnClickListener(view -> {

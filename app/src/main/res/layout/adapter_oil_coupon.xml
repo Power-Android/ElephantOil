@@ -121,12 +121,12 @@
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
         android:id="@+id/mask_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/dp_80"
         android:visibility="gone"
         app:qmui_backgroundColor="#B3FFFFFF"
         app:qmui_borderWidth="@dimen/dp_0"
         app:qmui_radius="@dimen/dp_5" />
-
+<!--    B3FFFFFF-->
     <ImageView
         android:id="@+id/status_view"
         android:layout_width="@dimen/dp_57"

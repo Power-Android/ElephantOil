@@ -59,8 +59,15 @@ public class OilCouponAdapter extends BaseQuickAdapter<CouponBean, BaseViewHolde
                 ((ImageView) helper.getView(R.id.status_view)).setImageResource(R.drawable.ic_coupon_expired);
                 helper.getView(R.id.rootView).setEnabled(false);
                 break;
+
             case 3:
             case 4:
+            case 5:
+                helper.getView(R.id.mask_view).setVisibility(View.VISIBLE);
+                helper.getView(R.id.status_view).setVisibility(View.GONE);
+                helper.getView(R.id.rootView).setEnabled(false);
+                break;
+            default:
                 helper.getView(R.id.mask_view).setVisibility(View.VISIBLE);
                 helper.getView(R.id.status_view).setVisibility(View.GONE);
                 helper.getView(R.id.rootView).setEnabled(false);

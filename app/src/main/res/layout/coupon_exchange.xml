@@ -101,6 +101,7 @@
                         android:layout_marginLeft="@dimen/dp_44"
                         android:layout_marginTop="@dimen/dp_72"
                         android:layout_marginRight="@dimen/dp_44"
+                        android:gravity="center"
                         android:enabled="true"
                         android:text="立即兑换"
                         android:textColor="@color/white"
