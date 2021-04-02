@@ -50,7 +50,7 @@
     </queries>
 
     <application
-        android:name=".app.App"
+        android:name=".app.SophixStubApplication"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -393,6 +393,17 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog"
             android:windowSoftInputMode="adjustResize" />
+
+<!-- 热修复-->
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="333406789" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="73bf885657ee4966ab9c83df864eb738" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCFd9P36XLlPqE6tnagEQTEYqiG06bBkguZ5p1UxlL7WMdDltnqQMtva/ikeRqq4wElaq9OBv2R7AuaCAyMrYzYxGO1OxLhYlzM3f1r2HWJdcnzwoT5PCPafuNW7U1Y0qHfF4hzjlV0SXZG0pSgkpMYlYW6v3iEMg6czbbj7/NQDwr82Mg4AOjxDmDnKUhKVdgnfsiyIFYb0gMB1cImutydJp3EVezHQ/f6DtZBKd6CjQutOSWbTfnZjvjxd/+eI8I7qpKHMh1/spVuhF52gLd11jMqOrJcYtkfZns9jm8nWveY6cCBxRg+k8dbSTiEmXdN/yt+7LcRIMDHOig6YUujAgMBAAECggEAJLRSd8Acl8zEfCgHsXdcr0FOhV2ZY2xtglJ4fALaeULt8bl/jjtpdufjhh/D5LDu9MJFGZk0jLe0bRS/lsR3knlXzlRDmfX5/WEjO1BY6oeZFU8uUHhoh8MTdClodv/eAkMvhE/lUkiNnWZ19z638y/Tigrz8q7tc9Pi8wZfDGnf2G0QHvpUIlSVgdtCLjitdAAYBCW5G3V6qlAPNhWBkPog9IlmT9Vjb1vyJhGHQvOkWsvA+dMpqgUM6RMYOnkmCo/g17MY0QGDbq/s3VbftUDNl/IUAa0gJsRQpRgePFcOFnhQTT6gXIPZS9xGbP8hWHPy4Chf/qfiGHEgAuZvmQKBgQDWh2y/Heh/QGhBFKuQJYKpnWvQRwG6ly4zQ8GDuyxHdNKIMkSeYQL74DNpnIiLYUaItsGhOcYHg6TG8Yju4m1zcEOc5XY6BF/Yv9xvkSzBj/vfMKIg48eQYyqzilHVl3OvfMSYwzgUvebZRlpwkApv0Db+RNjF88HKn7TJqlkqLwKBgQCfRN+xCT4xsC8nPqTsCekEoLGEGQ1YjrsMLwxIOAr1XnqMwv7fG3H8KVHoVPpzWioDi8dN/EEIbz6nWh2NDa2xXFd4p/hrRW2iIcoD3xiZ3izmArg61Gt5xO8Zw/VRsnx5pXNAotqaF5rhGnbWe3JnN++zsf/TpA5B7bFsigC8zQKBgA3wKo6YQNzTsHJaB3OMHFss0S5tDp2y6NuH0XDfnlbeLjePHIo1v13iCTUZaH21ykFjrlztRgKC+Re75auvpnDToHD3L6FBW4DXpljRU9kXo8OygzYj1nl5F/MmT37TIj8KmjNaq7AdTnxbZ9DcavEs1AXdL0BdQAAMNFDN8pEdAoGBAJnVx45TFCygNVtdqaSHife7Utr566ce7dI920oiP4tyv0IY0l8jPjzGmGOlOOeULkKQj2hm/1WrRcQVSbfFf4BxZdeXvl22iMdyhZKpuTRdodZkyBeit1C9hAjJ+rj3gj1pLmI/KpBtvl4w1poiUIUcRT227xg4PME3WgkxXrb9AoGAPJbdlmMQvgGdGTFxd5FcQ5NE9XXbNyoENszzwmE8RVUzpFySn27H0VyKzNTQ8f0gONpjMP3TK4LJvxfz4PdWeMYq801/zzYCddUsR0EsoV7EgSYPiLq435/0xxap1ujOmVOcOTFZOIyl1XBVJBGb/l6gbe94SxjP9zUvJGtWRG0=" />
     </application>
 
 </manifest>
