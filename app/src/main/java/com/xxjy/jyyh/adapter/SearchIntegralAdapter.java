@@ -27,7 +27,7 @@ public class SearchIntegralAdapter extends BaseQuickAdapter<ProductBean, BaseVie
     protected void convert(@NonNull BaseViewHolder helper, ProductBean item) {
         GlideUtils.loadImage(mContext, item.getProductImg(), helper.getView(R.id.item_img_iv));
         helper.setText(R.id.item_title_tv, item.getName());
-        if (item.getRedeemPrice() > 0){
+        if (Double.parseDouble(item.getRedeemPrice()) > 0d){
             helper.setText(R.id.item_integral_tv, item.getRedeemPoint() +
                     "积分 + " + item.getRedeemPrice() + "元");
         }else {

@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.entity.MonthCouponEntity;
+import com.xxjy.jyyh.utils.StringUtils;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class OilMonthAdapter extends BaseQuickAdapter<MonthCouponEntity.MonthCou
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, MonthCouponEntity.MonthCouponTemplatesBean item) {
-        helper.setText(R.id.item_money_tag, NumberUtils.format(Double.parseDouble(item.getAmountReduce()), 0))
+        helper.setText(R.id.item_money_tag, StringUtils.checkPoint(item.getAmountReduce()))
                 .setText(R.id.item_content_tv, "满" +
                         NumberUtils.format(Double.parseDouble(item.getAmount()), 0)
                         + "可用");

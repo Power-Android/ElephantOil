@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.adapter;
 
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,7 @@ public class HomeExchangeAdapter extends BaseQuickAdapter<HomeProductEntity.Firm
     protected void convert(@NonNull BaseViewHolder helper, HomeProductEntity.FirmProductsVoBean item) {
         Glide.with(mContext).load(item.getProductImg()).into((ImageView) helper.getView(R.id.item_img_iv));
         helper.setText(R.id.item_title_tv, item.getName())
-                .setText(R.id.item_integral_tv, item.getRedeemPrice() == 0 ?
+                .setText(R.id.item_integral_tv, (TextUtils.isEmpty(item.getRedeemPrice())||Double.parseDouble(item.getRedeemPrice()) == 0d) ?
                         item.getRedeemPoint() + "积分" :
                         item.getRedeemPoint() + "积分 + " + item.getRedeemPrice() + "元")
                 .setText(R.id.sell_num_view, "已兑换" + item.getSalesNum() + "件");

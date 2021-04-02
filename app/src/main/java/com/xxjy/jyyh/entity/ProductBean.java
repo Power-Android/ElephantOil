@@ -15,7 +15,7 @@ public class ProductBean {
     private  int productid;
     private  String productImg;
     private  String name;
-    private  int redeemPrice;
+    private  String redeemPrice;
     private  int salesNum;
     private String link;
     private int id;
@@ -86,11 +86,11 @@ public class ProductBean {
         this.name = name;
     }
 
-    public int getRedeemPrice() {
+    public String getRedeemPrice() {
         return redeemPrice;
     }
 
-    public void setRedeemPrice(int redeemPrice) {
+    public void setRedeemPrice(String redeemPrice) {
         this.redeemPrice = redeemPrice;
     }
 

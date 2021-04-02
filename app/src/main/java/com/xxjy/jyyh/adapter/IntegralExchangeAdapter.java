@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.adapter;
 
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -44,7 +45,7 @@ public class IntegralExchangeAdapter extends BaseQuickAdapter<ProductBean, BaseV
 
 
         helper.setText(R.id.item_title_tv,item.getName())
-                .setText(R.id.item_integral_tv,item.getRedeemPrice()==0?(item.getRedeemPoint()+"积分"):(item.getRedeemPoint()+"积分+"+item.getRedeemPrice()+"元"))
+                .setText(R.id.item_integral_tv, (TextUtils.isEmpty(item.getRedeemPrice())||Double.parseDouble(item.getRedeemPrice())==0d)?(item.getRedeemPoint()+"积分"):(item.getRedeemPoint()+"积分+"+item.getRedeemPrice()+"元"))
                 .setText(R.id.sell_num_view,String.format("已兑换%d件",item.getSalesNum()));
 
 

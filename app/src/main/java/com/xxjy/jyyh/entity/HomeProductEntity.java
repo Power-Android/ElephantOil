@@ -45,8 +45,8 @@ public class HomeProductEntity {
         private Integer productId;
         private String productImg;
         private Integer productType;
-        private Integer redeemPoint;
-        private Integer redeemPrice;
+        private String redeemPoint;
+        private String redeemPrice;
         private Integer salesNum;
         private Integer type;
 
@@ -98,19 +98,19 @@ public class HomeProductEntity {
             this.productType = productType;
         }
 
-        public Integer getRedeemPoint() {
+        public String getRedeemPoint() {
             return redeemPoint;
         }
 
-        public void setRedeemPoint(Integer redeemPoint) {
+        public void setRedeemPoint(String redeemPoint) {
             this.redeemPoint = redeemPoint;
         }
 
-        public Integer getRedeemPrice() {
+        public String getRedeemPrice() {
             return redeemPrice;
         }
 
-        public void setRedeemPrice(Integer redeemPrice) {
+        public void setRedeemPrice(String redeemPrice) {
             this.redeemPrice = redeemPrice;
         }
 

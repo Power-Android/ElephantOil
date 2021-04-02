@@ -39,13 +39,13 @@ public class SignInAdapter extends BaseQuickAdapter<SignInDayBean, BaseViewHolde
                 helper.setVisible(R.id.item_receive_tv, false);
             } else {
                 helper.setVisible(R.id.item_receive_tv, true);
-                helper.setText(R.id.item_receive_tv, "今日可领");
+                helper.setBackgroundRes(R.id.item_receive_tv, R.drawable.ic_sign_today);
             }
         } else {
             if (!item.isCurrentDayFlag()&&!item.isSignFlag()) {
                 if(helper.getAdapterPosition()==currentDayPosition+1&&getData().get(currentDayPosition).isSignFlag()&&getData().get(currentDayPosition).isCurrentDayFlag()){
                     helper.setVisible(R.id.item_receive_tv, true);
-                    helper.setText(R.id.item_receive_tv, "明日可领");
+                    helper.setBackgroundRes(R.id.item_receive_tv, R.drawable.ic_sign_tomorrow);
 
                 } else{
                     helper.setVisible(R.id.item_receive_tv, false);

@@ -76,8 +76,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     private OilTypeAdapter mOilTypeAdapter;
     private OilNumAdapter mOilNumAdapter;
     private OilGunAdapter mOilGunAdapter;
-    private int mOilNoPosition, mOilGunPosition;
-
+    private int  mOilGunPosition=-1;
+    private int  mOilNoPosition;
     private OilGunDialog mOilGunDialog;
     private OilAmountDialog mOilAmountDialog;
     private OilCouponDialog mOilCouponDialog;
@@ -327,21 +327,26 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                 }
                 break;
             case R.id.query_tv:
-                if (isFar) {
-                    showChoiceOil(mStationsBean.getGasName(), view);
-                } else {
-                    for (int i = 0; i < mOilGunAdapter.getData().size(); i++) {
-                        if (mOilGunAdapter.getData().get(i).isSelected()) {
-                            isShowAmount = true;
+                if(mOilGunPosition==-1){
+                    showToastInfo("请选择枪号");
+                }else{
+                    if (isFar) {
+                        showChoiceOil(mStationsBean.getGasName(), view);
+                    } else {
+                        for (int i = 0; i < mOilGunAdapter.getData().size(); i++) {
+                            if (mOilGunAdapter.getData().get(i).isSelected()) {
+                                isShowAmount = true;
+                            }
+                        }
+                        if (isShowAmount) {
+                            showAmountDialog(mStationsBean, mOilNumAdapter.getData(),
+                                    mOilNoPosition, mOilGunPosition);
+                        } else {
+                            showToastInfo("请选择枪号");
                         }
                     }
-                    if (isShowAmount) {
-                        showAmountDialog(mStationsBean, mOilNumAdapter.getData(),
-                                mOilNoPosition, mOilGunPosition);
-                    } else {
-                        showToastInfo("请选择枪号");
-                    }
                 }
+
                 break;
             case R.id.price_description_layout:
                 if (priceDescriptionDialog == null) {
@@ -385,6 +390,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         });
 
         mViewModel.oilLiveData.observe(this, stationsBean -> {
+            mOilGunPosition=-1;
             mStationsBean = stationsBean;
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
             mBinding.oilTagIv.setVisibility(stationsBean.isIsSign() ? View.VISIBLE : View.GONE);

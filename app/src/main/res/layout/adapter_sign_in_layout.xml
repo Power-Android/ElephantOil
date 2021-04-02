@@ -12,41 +12,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
+
         <TextView
             android:id="@+id/integral_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="+0"
-            android:textSize="@dimen/sp_11"
+            android:textSize="11sp"
             android:textColor="@color/color_1300"
             android:layout_marginTop="@dimen/dp_6"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <TextView
+    <ImageView
         android:id="@+id/item_receive_tv"
-        android:layout_width="@dimen/dp_52"
-        android:layout_height="@dimen/dp_21"
-        android:background="@drawable/sign_receive_icon"
-        android:text="明日可领"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_19"
+        android:maxWidth="@dimen/dp_50"
         android:visibility="gone"
-        android:textSize="@dimen/sp_11"
-        android:textColor="#893934"
-        android:gravity="center_horizontal"
-        android:paddingTop="@dimen/dp_1"
-        android:layout_marginTop="@dimen/dp_5"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/dp_5"
+        />
     <TextView
         android:id="@+id/day_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0天"
-        android:textSize="@dimen/sp_11"
+        android:textSize="11sp"
         android:textColor="#909090"
-        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_3"
         app:layout_constraintTop_toBottomOf="@+id/item_coupon_cl"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

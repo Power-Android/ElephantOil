@@ -124,7 +124,6 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             }
         }
         mHomeViewModel.getLocation();
-        loadData(false);
     }
 
     @Override

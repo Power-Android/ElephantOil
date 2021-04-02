@@ -82,6 +82,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                         List<OilEntity.StationsBean> data = adapter.getData();
                         Intent intent = new Intent(SearchResultActivity.this, OilDetailActivity.class);
                         intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
+                        intent.putExtra(Constants.OIL_NUMBER_ID, data.get(position).getOilNo());
                         startActivity(intent);
                     }
                 });

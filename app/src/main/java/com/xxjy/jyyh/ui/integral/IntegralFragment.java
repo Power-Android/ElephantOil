@@ -284,10 +284,10 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 mBinding.signInTv.setTextColor(Color.parseColor("#FFFFFF"));
             }
             SpanUtils.with(mBinding.signinDesc)
-                    .append("本周签到")
-                    .append(data.getList().size() + "")
+                    .append("本周签到 ")
+                    .append(data.getList().size() + " ")
                     .setForegroundColor(Color.parseColor("#FF593E"))
-                    .append("天，额外获得")
+                    .append("天，额外获得 ")
                     .append(data.getCouponAmount() + "元加油券")
                     .setForegroundColor(Color.parseColor("#FF593E"))
                     .create();

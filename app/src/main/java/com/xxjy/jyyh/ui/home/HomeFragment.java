@@ -135,7 +135,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     private BannerViewModel bannerViewModel;
 
-    private int mOilNoPosition, mOilGunPosition;
+    private int mOilNoPosition;
+    private int  mOilGunPosition=-1;
     private boolean isShowAmount = false;
 
     private LocalLifeListAdapter localLifeListAdapter;//本地生活
@@ -218,10 +219,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             getLocation();
 
         } else {
-            if(TextUtils.isEmpty(Constants.HUNTER_GAS_ID)){
+            if (TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
                 mBinding.noLocationLayout.setVisibility(View.VISIBLE);
                 mBinding.recommendStationLayout.setVisibility(View.GONE);
-            }else{
+            } else {
                 mBinding.noLocationLayout.setVisibility(View.GONE);
                 mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
             }
@@ -304,12 +305,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //        mLat = Double.parseDouble(UserConstants.getLatitude());
 //        mLng = Double.parseDouble(UserConstants.getLongitude());
 
-        if ((mLng == 0d || mLat == 0d)&&TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
-            LogUtils.e("2222", "GONE");
+        if ((mLng == 0d || mLat == 0d) && TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
+//            LogUtils.e("2222", "GONE");
             mBinding.recommendStationLayout.setVisibility(View.GONE);
             mBinding.noLocationLayout.setVisibility(View.VISIBLE);
         } else {
-            LogUtils.e("2222", "VISIBLE");
+//            LogUtils.e("2222", "VISIBLE");
 //            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
 //            mBinding.noLocationLayout.setVisibility(View.GONE);
             //首页油站
@@ -790,10 +791,13 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
     }
-    private void getLocation(){
+
+    private void getLocation() {
         mViewModel.getLocation();
     }
+
     private void showNumDialog(OilEntity.StationsBean stationsBean) {
+        mOilGunPosition=-1;
         //油号dialog
         mOilNumDialog = new OilNumDialog(mContext, stationsBean);
         mOilNumDialog.setOnItemClickedListener(new OilNumDialog.OnItemClickedListener() {
@@ -861,21 +865,27 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
             @Override
             public void onQuickClick(View view, OilNumAdapter oilNumAdapter, OilGunAdapter oilGunAdapter) {
-                if (isFar) {
-                    showChoiceOil(oilNumAdapter, mStationsBean.getGasName(), view);
+                if (mOilGunPosition==-1) {
+                    showToastInfo("请选择枪号");
                 } else {
-                    for (int i = 0; i < oilGunAdapter.getData().size(); i++) {
-                        if (oilGunAdapter.getData().get(i).isSelected()) {
-                            isShowAmount = true;
+                    if (isFar) {
+                        showChoiceOil(oilNumAdapter, mStationsBean.getGasName(), view);
+                    } else {
+                        for (int i = 0; i < oilGunAdapter.getData().size(); i++) {
+                            if (oilGunAdapter.getData().get(i).isSelected()) {
+                                isShowAmount = true;
+                            }
+                        }
+                        if (isShowAmount) {
+                            showAmountDialog(mStationsBean, oilNumAdapter.getData(),
+                                    mOilNoPosition, mOilGunPosition);
+                        } else {
+                            showToastInfo("请选择枪号");
                         }
                     }
-                    if (isShowAmount) {
-                        showAmountDialog(mStationsBean, oilNumAdapter.getData(),
-                                mOilNoPosition, mOilGunPosition);
-                    } else {
-                        showToastInfo("请选择枪号");
-                    }
                 }
+
+
             }
 
             @Override

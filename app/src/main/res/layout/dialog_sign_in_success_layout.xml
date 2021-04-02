@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_15"
                 android:includeFontPadding="false"
+                android:layout_marginLeft="2dp"
                 android:text="积分"
                 android:layout_marginBottom="@dimen/dp_1_5"
                 android:textColor="@color/color_6431" />

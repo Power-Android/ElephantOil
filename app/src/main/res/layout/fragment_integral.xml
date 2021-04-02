@@ -189,20 +189,22 @@
                                 android:textStyle="bold"
                                 android:drawableLeft="@drawable/ic_coin"
                                 android:drawablePadding="@dimen/dp_3"
-                                android:layout_marginTop="@dimen/dp_20"
+                                android:layout_marginTop="@dimen/dp_24"
                                 android:layout_marginStart="@dimen/dp_20"/>
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/sign_in_recycler"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/dp_3"
-                                android:layout_marginStart="@dimen/sp_18"
+                                android:layout_marginStart="@dimen/dp_18"
                                 android:layout_marginEnd="@dimen/dp_18"
                                 />
                             <TextView
                                 android:id="@+id/sign_in_tv"
-                                android:layout_width="@dimen/dp_294"
+                                android:layout_width="match_parent"
                                 android:layout_height="@dimen/dp_42"
+                                android:layout_marginStart="@dimen/dp_40"
+                                android:layout_marginEnd="@dimen/dp_40"
                                 android:background="@drawable/selector_sign_in_button"
                                 android:text="立即签到领积分"
                                 android:textSize="@dimen/sp_16"
