@@ -218,8 +218,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             getLocation();
 
         } else {
-            mBinding.noLocationLayout.setVisibility(View.VISIBLE);
-            mBinding.recommendStationLayout.setVisibility(View.GONE);
+            if(TextUtils.isEmpty(Constants.HUNTER_GAS_ID)){
+                mBinding.noLocationLayout.setVisibility(View.VISIBLE);
+                mBinding.recommendStationLayout.setVisibility(View.GONE);
+            }else{
+                mBinding.noLocationLayout.setVisibility(View.GONE);
+                mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 

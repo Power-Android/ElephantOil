@@ -34,7 +34,7 @@
         android:textSize="@dimen/sp_11"
         android:textColor="#893934"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/dp_2"
+        android:paddingTop="@dimen/dp_1"
         android:layout_marginTop="@dimen/dp_5"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

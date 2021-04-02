@@ -37,17 +37,40 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-        <TextView
+        <LinearLayout
             android:id="@+id/view3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+2积分"
-            android:textColor="@color/color_6431"
-            android:textSize="@dimen/sp_15"
+            android:gravity="bottom"
             android:layout_marginBottom="@dimen/dp_110"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent">
+            <View
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_12"
+                android:background="@drawable/add"
+                android:layout_marginBottom="@dimen/dp_7"/>
+            <TextView
+                android:id="@+id/integral_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:textStyle="bold"
+                android:includeFontPadding="false"
+                android:textColor="@color/color_6431"
+                android:textSize="@dimen/sp_25"
+                android:gravity="bottom" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_15"
+                android:includeFontPadding="false"
+                android:text="积分"
+                android:layout_marginBottom="@dimen/dp_1_5"
+                android:textColor="@color/color_6431" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/view5"
             android:layout_width="wrap_content"
@@ -77,8 +100,8 @@
 
     <View
         android:id="@+id/close_view"
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30"
+        android:layout_width="@dimen/dp_23"
+        android:layout_height="@dimen/dp_23"
         android:background="@drawable/ic_dialog_close"
         android:layout_marginTop="@dimen/dp_15"
         app:layout_constraintStart_toStartOf="parent"

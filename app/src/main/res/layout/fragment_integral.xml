@@ -131,7 +131,6 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="4dp"
                                     android:text="我的积分"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/sp_15" />
@@ -140,6 +139,7 @@
                                     android:id="@+id/explanation_view"
                                     android:layout_width="@dimen/dp_12"
                                     android:layout_height="@dimen/dp_12"
+                                    android:layout_marginLeft="3dp"
                                     android:layout_marginBottom="3dp"
                                     android:src="@drawable/ic_help" />
                             </LinearLayout>
@@ -159,6 +159,7 @@
                                     android:id="@+id/integral_view"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:includeFontPadding="false"
                                     android:layout_marginLeft="@dimen/dp_5"
                                     android:gravity="center"
                                     android:textStyle="bold"
@@ -205,10 +206,11 @@
                                 android:background="@drawable/selector_sign_in_button"
                                 android:text="立即签到领积分"
                                 android:textSize="@dimen/sp_16"
+                                android:textStyle="bold"
                                 android:textColor="@color/white"
                                 android:layout_gravity="center_horizontal"
                                 android:gravity="center"
-                                android:layout_marginTop="@dimen/dp_13"
+                                android:layout_marginTop="@dimen/dp_18"
                                 android:layout_marginBottom="@dimen/dp_12"
                                 />
                             <ImageView
