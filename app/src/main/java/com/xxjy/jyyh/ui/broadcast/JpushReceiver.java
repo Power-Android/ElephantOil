@@ -127,6 +127,10 @@ public class JpushReceiver extends BroadcastReceiver {
 //            context.startActivity(i);
 //        }
         if (ActivityUtils.isActivityAlive(context)){
+            Intent i = new Intent(context, MainActivity.class);  //自定义打开的界面
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+        }else{
             Intent i = new Intent(context, WelcomeActivity.class);  //自定义打开的界面
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);

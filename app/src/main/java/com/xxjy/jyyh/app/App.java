@@ -118,7 +118,6 @@ public class App extends Application {
 
         //极光推送配置
         JPushManager.initJPush(this);
-
         //友盟统计
         UMengManager.init(this);
     }

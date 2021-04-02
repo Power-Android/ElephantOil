@@ -17,9 +17,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.BusUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.xxjy.jyyh.PrivacyActivity;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
@@ -44,6 +46,8 @@ import com.xxjy.jyyh.utils.pay.PayListenerUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 
 import org.jetbrains.annotations.NotNull;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewModel> {
     private int mLastFgIndex = -1;
@@ -73,7 +77,6 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     @Override
     protected void initView() {
         BusUtils.register(this);
-
         mHomeFragment = null;
         mOilFragment = null;
         mIntergralFragment = null;
