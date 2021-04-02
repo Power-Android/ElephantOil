@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.base;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewbinding.ViewBinding;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.ui.WelcomeActivity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -32,6 +35,12 @@ public abstract class BindingActivity<V extends ViewBinding, VM extends BaseView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (NetworkUtils.isConnected()) {
+            initViewModel();
+            initView();
+            initListener();
+            //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
+            dataObservable();
+        } else if (ActivityUtils.getTopActivity() instanceof WelcomeActivity) {
             initViewModel();
             initView();
             initListener();

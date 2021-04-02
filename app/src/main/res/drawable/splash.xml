@@ -4,7 +4,7 @@
     <!--logo图片-->
     <item
         android:gravity="center_horizontal"
-        android:top="400dp">
+        android:top="500dp">
         <bitmap
             android:gravity="top"
             android:src="@drawable/splash_window_title_bg"
@@ -13,7 +13,7 @@
     <!--logo下的文字图片-->
     <item
         android:gravity="center_horizontal"
-        android:top="105dp">
+        android:top="205dp">
         <bitmap
             android:gravity="top"
             android:src="@drawable/splash_window_content_bg"/>
