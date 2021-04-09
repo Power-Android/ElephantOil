@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F5"
+    tools:context=".ui.oil.OilDetailActivity">
+
+    <com.tencent.smtt.sdk.WebView
+        android:id="@+id/pay_web_view"
+        android:layout_width="0.1px"
+        android:layout_height="0.1px"
+        android:background="@color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/back_iv"
+        android:layout_width="@dimen/dp_38"
+        android:layout_height="@dimen/dp_35"
+        android:paddingStart="@dimen/common_margin"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingEnd="@dimen/common_margin"
+        android:paddingBottom="@dimen/dp_10"
+        android:src="@drawable/arrow_back_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="全国加油优惠"
+        android:textColor="@color/color_34"
+        android:textSize="@dimen/sp_15"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/back_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/back_iv" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
+        android:paddingEnd="@dimen/dp_20"
+        android:background="@drawable/shape_white_6raduis"
+        android:minHeight="@dimen/dp_120"
+        app:layout_constraintTop_toBottomOf="@+id/title_tv">
+        <ImageView
+            android:id="@+id/oil_tag_iv"
+            android:layout_width="@dimen/dp_75"
+            android:layout_height="@dimen/dp_18"
+            android:src="@drawable/oil_new_tag_iv"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/oil_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:lines="1"
+            android:includeFontPadding="false"
+            android:maxWidth="@dimen/dp_200"
+            android:textColor="@color/color_34"
+            android:textSize="@dimen/sp_18"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/dp_5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/oil_tag_iv" />
+
+        <TextView
+            android:id="@+id/oil_address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLength="16"
+            android:textColor="@color/color_55"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintStart_toStartOf="@+id/oil_name_tv"
+            app:layout_constraintTop_toBottomOf="@+id/oil_name_tv" />
+
+        <TextView
+            android:id="@+id/sepa_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="   |   "
+            android:textColor="#CCCCCC"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintEnd_toStartOf="@+id/invoke_tv"
+            app:layout_constraintTop_toTopOf="@+id/oil_address_tv"
+            app:layout_constraintBottom_toBottomOf="@+id/oil_address_tv"
+            app:layout_constraintStart_toEndOf="@+id/oil_address_tv"/>
+
+        <TextView
+            android:id="@+id/invoke_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="站内开票"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/color_55"
+            app:layout_constraintTop_toTopOf="@+id/oil_address_tv"
+            app:layout_constraintBottom_toBottomOf="@+id/oil_address_tv"
+            app:layout_constraintStart_toEndOf="@+id/sepa_tv" />
+
+        <TextView
+            android:id="@+id/oil_navigation_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_15"
+            android:drawableTop="@drawable/navigation_iv"
+            android:drawablePadding="@dimen/dp_8"
+            android:text="0.00km"
+            android:textColor="@color/color_55"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@+id/oil_address_tv"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <View
+            android:id="@+id/dotted_line_view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dp_13"
+            android:background="@drawable/ic_dotted_line"
+            app:layout_constraintTop_toBottomOf="@+id/invoke_tv" />
+
+        <LinearLayout
+            android:id="@+id/price_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_68"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/dotted_line_view">
+
+            <TextView
+                android:id="@+id/oil_num_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="92# :"
+                android:textStyle="bold"
+                android:textColor="@color/color_2C"
+                android:textSize="@dimen/sp_15" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+                <LinearLayout
+                    android:id="@+id/price_description_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/oil_liter_layout">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="小象价"
+                        android:textColor="@color/color_30"
+                        android:textSize="@dimen/sp_12" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_11"
+                        android:layout_height="@dimen/dp_11"
+                        android:layout_marginStart="@dimen/dp_1"
+                        android:src="@drawable/oil_desc_iv" />
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/oil_liter_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/price_description_layout"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <TextView
+                        android:id="@+id/oil_liter_tag_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥"
+                        android:textColor="@color/color_30"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/oil_liter_tv"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/oil_liter_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.00"
+                        android:textColor="@color/color_30"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toStartOf="@+id/oil_liter_tag_2_tv"
+                        app:layout_constraintStart_toEndOf="@+id/oil_liter_tag_tv"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/oil_liter_tag_2_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/L"
+                        android:textColor="@color/color_30"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/oil_liter_tv"
+                        app:layout_constraintStart_toEndOf="@+id/oil_liter_tv" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/dp_20"
+                android:background="@color/color_EC" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+
+                <TextView
+                    android:id="@+id/oil_price_desc_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="油站价"
+                    android:textColor="#7B7B7B"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/oil_price_layout"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/oil_price_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/oil_price_desc_tv"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <TextView
+                        android:id="@+id/oil_price_tag_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥"
+                        android:textColor="@color/color_55"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/oil_price_tv"
+                        app:layout_constraintStart_toStartOf="parent"
+                        />
+
+                    <TextView
+                        android:id="@+id/oil_price_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.00"
+                        android:textColor="@color/color_55"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toStartOf="@+id/oil_price_tag_2_tv"
+                        app:layout_constraintStart_toEndOf="@+id/oil_price_tag_tv"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/oil_price_tag_2_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/L"
+                        android:textColor="@color/color_55"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/oil_price_tv"
+                        app:layout_constraintStart_toEndOf="@+id/oil_price_tv" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/dp_20"
+                android:background="@color/color_EC" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+
+                <TextView
+                    android:id="@+id/oil_national_desc_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="国标价"
+                    android:textColor="#7B7B7B"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:layout_constraintBottom_toTopOf="@+id/oil_national_price_layout"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/oil_national_price_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/oil_national_desc_tv"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <TextView
+                        android:id="@+id/oil_national_price_tag_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥"
+                        android:textColor="@color/color_55"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/oil_national_price_tv"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/oil_national_price_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.00"
+                        android:textColor="@color/color_55"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toStartOf="@+id/oil_national_price_tag_2_tv"
+                        app:layout_constraintStart_toEndOf="@+id/oil_national_price_tag_tv"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/oil_national_price_tag_2_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/L"
+                        android:textColor="@color/color_55"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/oil_national_price_tv"
+                        app:layout_constraintStart_toEndOf="@+id/oil_national_price_tv" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+        <View
+            android:id="@+id/dotted_line_view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/ic_dotted_line"
+            app:layout_constraintTop_toBottomOf="@+id/price_layout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/oil_tag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:adjustViewBounds="true"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:paddingBottom="@dimen/dp_4"
+        app:layout_constraintTop_toBottomOf="@+id/layout_1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/oil_tag_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_3" />
+
+    </LinearLayout>
+    <View
+        android:id="@+id/view5"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_10"
+        android:background="@color/color_F5"
+        app:layout_constraintTop_toBottomOf="@+id/oil_tag_layout"/>
+    <LinearLayout
+        android:id="@+id/oil_num_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view5"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_22"
+            android:text="请选择油号/油枪"
+            android:textColor="@color/color_34"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="请您务必与加油员确认后在站内支付"
+            android:textColor="@color/color_1300"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_8">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="选择商品"
+                    android:textColor="@color/color_34"
+                    android:textSize="@dimen/sp_13"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv2" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/oil_type_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_17"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:layout_marginEnd="@dimen/dp_17"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@+id/tv3" />
+
+                <TextView
+                    android:id="@+id/tv4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="选择油号"
+                    android:textColor="@color/color_34"
+                    android:textSize="@dimen/sp_13"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/oil_num_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_17"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:layout_marginEnd="@dimen/dp_17"
+                    android:nestedScrollingEnabled="false" />
+
+                <TextView
+                    android:id="@+id/tv5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:text="选择油枪"
+                    android:textColor="@color/color_34"
+                    android:textSize="@dimen/sp_13"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/oil_gun_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_17"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:layout_marginEnd="@dimen/dp_17"
+                    android:layout_marginBottom="@dimen/dp_70"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/query_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:background="@drawable/shape_pay_6radius"
+        android:gravity="center"
+        android:text="确认"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
