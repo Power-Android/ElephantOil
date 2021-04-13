@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.utils.GlideUtils;
+import com.xxjy.jyyh.utils.StringUtils;
 import com.xxjy.jyyh.utils.Util;
 
 import java.math.BigDecimal;
@@ -32,7 +33,7 @@ public class OilCouponAdapter extends BaseQuickAdapter<CouponBean, BaseViewHolde
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, CouponBean item) {
-        helper.setText(R.id.item_coupon_amount, Util.formatDouble(Double.parseDouble(item.getAmountReduce())))
+        helper.setText(R.id.item_coupon_amount, StringUtils.checkPointDouble(item.getAmountReduce()))
                 .setText(R.id.item_use_range_tv, TextUtils.isEmpty(item.getAmount()) ||
                         Double.parseDouble(item.getAmount()) == 0 ? "无门槛" : String.format("满%s元可用", Util.formatDouble(Double.parseDouble(item.getAmount()))))
                 .setText(R.id.item_title_tv, item.getName())

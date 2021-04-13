@@ -8,6 +8,7 @@ import com.xxjy.jyyh.entity.RefuelOrderBean;
 import com.xxjy.jyyh.http.Response;
 
 import rxhttp.RxHttp;
+import rxhttp.wrapper.exception.ParseException;
 
 public class OrderDetailsRepository extends BaseRepository {
     public void refuelOrderDetails(MutableLiveData<RefuelOrderBean> refuelOrderDetailsLiveData, String orderId){
