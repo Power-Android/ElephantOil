@@ -171,12 +171,12 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
         getPlatformCouponVOs(0);
         getBusinessCoupons(0);
 
-        SpanUtils.with(platformShowView).append("失效优惠券已被隐藏")
+        SpanUtils.with(platformShowView).append("不可使用优惠券已被隐藏，")
                 .append("点击查看")
                 .setForegroundColor(Color.parseColor("#FD6431"))
                 .create();
 
-        SpanUtils.with(businessShowView).append("失效优惠券已被隐藏")
+        SpanUtils.with(businessShowView).append("不可使用优惠券已被隐藏，")
                 .append("点击查看")
                 .setForegroundColor(Color.parseColor("#FD6431"))
                 .create();

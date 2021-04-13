@@ -29,6 +29,7 @@ import com.xxjy.jyyh.databinding.ActivityOrderDetailsBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.dialog.RefundDialog;
 import com.xxjy.jyyh.dialog.SelectPayDialog;
+import com.xxjy.jyyh.dialog.TipsDialog;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.RefuelOrderBean;
@@ -73,6 +74,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
 
     private String tips;
 
+    private  TipsDialog tipsDialog;
 
     @Override
     protected void initView() {
@@ -452,12 +454,18 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             }
         });
         mViewModel.refuelApplyRefundLiveData.observe(this,data ->{
-            if (data.getCode() == 1) {
-                showToastSuccess("已成功提交退款申请，1-3天会有处理结果，请及时查看");
-                refuelOrderDetails();
-            } else {
-                showToastError("提交退款失败");
+//            if (data.getCode() == 1) {
+//                showToastSuccess("已成功提交退款申请，1-3天会有处理结果，请及时查看");
+//                refuelOrderDetails();
+//            } else {
+//                showToastError("提交退款失败");
+//            }
+
+            if(tipsDialog==null){
+                tipsDialog = new TipsDialog(this,mBinding.orderManageLayout,data.getMsg());
             }
+            tipsDialog.setContent(data.getMsg());
+            tipsDialog.show();
         });
     }
 

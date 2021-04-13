@@ -34,6 +34,7 @@ public class CouponOilStationsActivity extends BindingActivity<ActivityCouponOil
     protected void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
         mBinding.titleLayout.tvTitle.setText("适用油站");
+        mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
         gasIds = getIntent().getStringExtra("gasIds");
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mOilListAdapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, mOilList);

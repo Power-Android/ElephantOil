@@ -24,6 +24,7 @@ import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.ui.oil.CouponOilStationsActivity;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
+import com.xxjy.jyyh.utils.StringUtils;
 import com.xxjy.jyyh.utils.Util;
 
 import java.math.BigDecimal;
@@ -43,7 +44,7 @@ public class MyCouponAdapter extends BaseMultiItemQuickAdapter<CouponBean, BaseV
 
         switch (helper.getItemViewType()) {
             case 0:
-                helper.setText(R.id.item_coupon_amount, Util.formatDouble(Double.parseDouble(item.getAmountReduce())))
+                helper.setText(R.id.item_coupon_amount, StringUtils.checkPointDouble(item.getAmountReduce()))
                         .setText(R.id.item_use_range_tv, TextUtils.isEmpty(item.getAmount()) || Double.parseDouble(item.getAmount()) == 0 ? "无门槛" : String.format("满%s元可用", Util.formatDouble(Double.parseDouble(item.getAmount()))))
                         .setText(R.id.item_title_tv, item.getName())
                         .setText(R.id.item_coupon_date, String.format("%s - %s", item.getStartTime(), item.getEndTime()));

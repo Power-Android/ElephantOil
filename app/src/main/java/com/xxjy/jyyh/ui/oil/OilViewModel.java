@@ -89,10 +89,10 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public void getPlatformCoupon(String amount, String gasId, String oilNo){
         mRespository.getPlatformCoupon(amount, gasId, oilNo, platformCouponLiveData);
     }
-
     public void getBusinessCoupon(String amount, String gasId, String oilNo){
         mRespository.getBusinessCoupon(amount, gasId, oilNo, businessCouponLiveData);
     }
+
 
     public void getBalance(){
         mRespository.getBalance(balanceLiveData);

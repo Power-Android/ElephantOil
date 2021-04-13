@@ -485,4 +485,20 @@ public class StringUtils {
             }
             return String.valueOf(myNum);
         }
+        public static String checkPointDouble(String num) {
+            StringBuilder myNum = new StringBuilder();
+            try {
+                String integerNum = num.substring(0, num.indexOf("."));
+                String decimals = num.substring(num.indexOf("."), num.length());
+                float decimalsNum = Float.valueOf(decimals);
+                if (decimalsNum > 0) {
+                    myNum = myNum.append(integerNum).append(decimals.substring(0,3));
+                } else {
+                    myNum = myNum.append(integerNum);
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+            return String.valueOf(myNum);
+        }
 }
