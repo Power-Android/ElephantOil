@@ -236,7 +236,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
 
     private void getOilStations(String appLatitude, String appLongitude, String oilNo, String orderBy,
                                 String distance, String pageNum, String pageSize, String gasName, String method) {
-        mOilViewModel.getOilStations1(appLatitude, appLongitude, oilNo, orderBy, distance, pageNum, pageSize, gasName, method);
+        mOilViewModel.getOilStations1(appLatitude, appLongitude, oilNo, orderBy, distance, pageNum, pageSize, gasName, method,"");
     }
 
     private void getIntegrals(String name, String type, String pageNum, String pageSize) {

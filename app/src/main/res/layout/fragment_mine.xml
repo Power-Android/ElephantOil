@@ -337,6 +337,7 @@
                     android:layout_marginLeft="@dimen/dp_12"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_12"
+                    android:visibility="invisible"
                     android:orientation="vertical"
                     app:qmui_backgroundColor="@color/white"
                     app:qmui_radius="@dimen/dp_6">

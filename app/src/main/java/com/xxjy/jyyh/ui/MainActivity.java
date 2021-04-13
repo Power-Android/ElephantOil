@@ -65,10 +65,25 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     private BannerViewModel bannerViewModel;
 
 
-    @BusUtils.Bus(tag = EventConstants.EVENT_CHANGE_FRAGMENT,sticky = true)
+    @BusUtils.Bus(tag = EventConstants.EVENT_CHANGE_FRAGMENT, sticky = true)
     public void onEvent(@NotNull EventEntity event) {
         if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_CHANGE_FRAGMENT)) {
             mBinding.navView.setSelectedItemId(R.id.navigation_oil);
+//            mTransaction = getSupportFragmentManager().beginTransaction();
+//            if (mHomeFragment != null) {
+//                mTransaction.hide(mHomeFragment);
+//            }
+//            if (mOilFragment != null) {
+//                mTransaction.hide(mOilFragment);
+//            }
+//            if (mIntergralFragment != null) {
+//                mTransaction.hide(mIntergralFragment);
+//            }
+//            if (mMineFragment != null) {
+//                mTransaction.hide(mMineFragment);
+//            }
+//
+//            showFragment(Constants.TYPE_INTEGRAL);
         } else if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_TO_INTEGRAL_FRAGMENT)) {
             mBinding.navView.setSelectedItemId(R.id.navigation_integral);
         }
@@ -95,22 +110,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             }
         });
 
-        //新老用户展示tab判断
-        mViewModel.getIsNewUser().observe(this, aBoolean -> {
-            if (aBoolean) {
-                isNewUser = 1;
-            } else {
-                if (UserConstants.getGoneIntegral()){
-                    isNewUser = 1;
-                }else {
-                    isNewUser = 0;
-                }
-            }
-            if(TextUtils.isEmpty(Constants.HUNTER_GAS_ID)){//猎人码绑定油站
-                showDiffFragment(isNewUser);
-            }
 
-        });
 
         initNavigationView();
         new Handler().postDelayed(() -> {
@@ -124,7 +124,26 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
 
         aboutUsViewModel = new ViewModelProvider(this).get(AboutUsViewModel.class);
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
-        checkVersion();
+        if(state==-1){
+            checkVersion();
+            //新老用户展示tab判断
+            mViewModel.getIsNewUser().observe(this, aBoolean -> {
+                if (aBoolean) {
+                    isNewUser = 1;
+                } else {
+                    if (UserConstants.getGoneIntegral()) {
+                        isNewUser = 1;
+                    } else {
+                        isNewUser = 0;
+                    }
+                }
+                if (TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {//猎人码绑定油站
+                    showDiffFragment(isNewUser);
+                }
+
+            });
+        }
+
 
         if (NotificationsUtils.isNotificationEnabled(this)) {
             UserConstants.setNotificationRemindUserCenter(false);
@@ -355,14 +374,15 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         activity.startActivity(intent);
 //        ActivityUtils.startHomeActivity();
     }
+
     /**
      * 打开首页并清空栈
      *
      * @param activity
      */
-    public static void openMainActAndClearTaskJump(BaseActivity activity,int jumpCode) {
+    public static void openMainActAndClearTaskJump(BaseActivity activity, int jumpCode) {
         Intent intent = new Intent(activity, MainActivity.class);
-        intent.putExtra("jumpState",jumpCode);
+        intent.putExtra("jumpState", jumpCode);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
 //        ActivityUtils.startHomeActivity();

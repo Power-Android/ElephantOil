@@ -17,6 +17,13 @@ public class OrderDetailsRepository extends BaseRepository {
                 .subscribe(data -> refuelOrderDetailsLiveData.postValue(data))
         );
     }
+    public void orderRefundDetail(MutableLiveData<RefuelOrderBean> refundOrderDetailsLiveData, String orderId){
+        addDisposable(RxHttp.postForm(ApiService.ORDER_REFUND_DETAILS)
+                .add("id",orderId)
+                .asResponse(RefuelOrderBean.class)
+                .subscribe(data -> refundOrderDetailsLiveData.postValue(data))
+        );
+    }
     public void cancelOrder(MutableLiveData<Response> cancelOrderDetailsLiveData, String orderId){
         addDisposable(RxHttp.postForm(ApiService.REFUEL_ORDER_CANCEL)
                 .add("orderId",orderId)
@@ -29,6 +36,14 @@ public class OrderDetailsRepository extends BaseRepository {
                 .add("orderId",orderId)
                 .asCodeResponse(Response.class)
                 .subscribe(data -> productCancelOrderDetailsLiveData.postValue(data))
+        );
+    }
+    public void refuelApplyRefund(MutableLiveData<Response> refuelApplyRefundLiveData, String orderId,String refundReason){
+        addDisposable(RxHttp.postForm(ApiService.REFUEL_APPLY_REFUND)
+                .add("orderId",orderId)
+                .add("refundReason",refundReason)
+                .asCodeResponse(Response.class)
+                .subscribe(data -> refuelApplyRefundLiveData.postValue(data))
         );
     }
 }

@@ -24,7 +24,7 @@
             android:textSize="@dimen/sp_13"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_23"
-            android:text="暂无数据"
+            android:text="暂无可用优惠券"
             android:textColor="#707070" />
 </LinearLayout>
 

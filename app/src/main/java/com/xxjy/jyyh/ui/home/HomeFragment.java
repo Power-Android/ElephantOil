@@ -159,7 +159,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             Constants.HUNTER_GAS_ID = oilId;
         }
 
-        LogUtils.e("2222222222", Constants.HUNTER_GAS_ID);
+//        LogUtils.e("2222222222", Constants.HUNTER_GAS_ID);
 //        if (UserConstants.getIsLogin()) {
         getHomeOil();
 //        }

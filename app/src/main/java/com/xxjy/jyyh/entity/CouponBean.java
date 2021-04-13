@@ -34,7 +34,34 @@ public class CouponBean implements MultiItemEntity {
     private String startTime;
     private int status;
     private String validTime;
-    private String excludeType;//0:不互斥; 1:与直降互斥; 2:与商家优惠券互斥; 3:与直降和商家优惠券互斥
+    private String excludeType;//0:不
+    private String oilStations;
+    private int rangeType;
+    private String linkUrl;
+
+    public String getLinkUrl() {
+        return linkUrl;
+    }
+
+    public void setLinkUrl(String linkUrl) {
+        this.linkUrl = linkUrl;
+    }
+
+    public int getRangeType() {
+        return rangeType;
+    }
+
+    public void setRangeType(int rangeType) {
+        this.rangeType = rangeType;
+    }
+
+    public String getOilStations() {
+        return oilStations;
+    }
+
+    public void setOilStations(String oilStations) {
+        this.oilStations = oilStations;
+    }
 
     public String getExcludeType() {
         return excludeType;

@@ -30,8 +30,8 @@
 
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" /> <!-- 华为角标 -->
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
-
-    <uses-permission android:name="android.permission.READ_LOGS"
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
 
     <uses-feature
@@ -60,18 +60,20 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
-
-        <activity android:name=".PrivacyActivity"
+        <activity android:name=".ui.order.OtherOrderListActivity"></activity>
+        <activity android:name=".ui.oil.CouponOilStationsActivity" />
+        <activity
+            android:name=".PrivacyActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/FullTheme"/>
+            android:theme="@style/FullTheme" />
         <activity
             android:name=".ui.restaurant.RestaurantActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateUnspecified|adjustPan" />
         <activity
             android:name=".ui.WelcomeActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -392,9 +394,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog"
-            android:windowSoftInputMode="adjustResize" />
-
-<!-- 热修复-->
+            android:windowSoftInputMode="adjustResize" /> <!-- 热修复 -->
         <meta-data
             android:name="com.taobao.android.hotfix.IDSECRET"
             android:value="333406789" />

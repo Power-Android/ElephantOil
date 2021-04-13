@@ -48,9 +48,9 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     }
 
     public void getOilStations1(String appLatitude, String appLongitude, String oilNo, String orderBy,
-                               String distance, String pageNum, String pageSize, String gasName, String method) {
+                               String distance, String pageNum, String pageSize, String gasName, String method, String gasIds) {
         mRespository.getOilStations1(oilStationLiveData1, appLatitude,
-                appLongitude, oilNo, orderBy, distance, pageNum, pageSize, gasName, method);
+                appLongitude, oilNo, orderBy, distance, pageNum, pageSize, gasName, method,gasIds);
     }
 
     public void getBanners() {

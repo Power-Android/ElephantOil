@@ -2,6 +2,7 @@ package com.xxjy.jyyh.wight;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 
 import androidx.annotation.Nullable;
@@ -22,6 +23,12 @@ public class SettingLayout extends AppCompatTextView implements IPagerTitleView 
     private int mNormalColor;
     private int mTextSize = 16;
     private int mSelectTextSize = 20;
+    private boolean mIsBold=false;
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(state);
+    }
 
     public SettingLayout(Context context) {
         this(context, null);
@@ -43,6 +50,9 @@ public class SettingLayout extends AppCompatTextView implements IPagerTitleView 
     public void setmNormalColor(int mNormalColor) {
         this.mNormalColor = mNormalColor;
     }
+    public void setSelectedStyle(boolean isBold){
+        mIsBold = isBold;
+    }
 
     public void setTextViewSize(int normalSize, int selectSize) {
         this.mTextSize = normalSize;
@@ -53,14 +63,19 @@ public class SettingLayout extends AppCompatTextView implements IPagerTitleView 
     public void onSelected(int index, int totalCount) {
         this.setTextColor(mSelectedColor);
         setTextSize(mSelectTextSize);
-        this.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+        if(mIsBold){
+            this.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }else{
+            this.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+        }
     }
 
     @Override
     public void onDeselected(int index, int totalCount) {
         this.setTextColor(mNormalColor);
         setTextSize(mTextSize);
-        this.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            this.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+
     }
 
 

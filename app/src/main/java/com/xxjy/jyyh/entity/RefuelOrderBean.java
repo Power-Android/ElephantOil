@@ -2,7 +2,7 @@ package com.xxjy.jyyh.entity;
 
 public class RefuelOrderBean {
 
-//    {
+    //    {
 //        "amount": "400.00",
 //            "buyTime": "2021-01-28 18:04:12",
 //            "orderId": "02210128180411zWphuI",
@@ -48,6 +48,126 @@ public class RefuelOrderBean {
     private String serviceChargeAmount;
     private int type;
     private String amountMonthCoupon;
+
+    private String createTime;
+    private String finalIntegral;
+    private String finalPayment;
+    private String link;
+
+    private String refundReason;
+    private int refundStatus;
+    private String refundStatusName;
+    private String id;
+    private String applyTime;
+    private String refundSuccessTime;
+    private String refundFailTime;
+    private String realRefundAmount;
+
+    private String tips;
+
+    public String getTips() {
+        return tips;
+    }
+
+    public void setTips(String tips) {
+        this.tips = tips;
+    }
+
+    public String getRealRefundAmount() {
+        return realRefundAmount;
+    }
+
+    public void setRealRefundAmount(String realRefundAmount) {
+        this.realRefundAmount = realRefundAmount;
+    }
+
+    public String getRefundSuccessTime() {
+        return refundSuccessTime;
+    }
+
+    public void setRefundSuccessTime(String refundSuccessTime) {
+        this.refundSuccessTime = refundSuccessTime;
+    }
+
+    public String getRefundFailTime() {
+        return refundFailTime;
+    }
+
+    public void setRefundFailTime(String refundFailTime) {
+        this.refundFailTime = refundFailTime;
+    }
+
+    public String getApplyTime() {
+        return applyTime;
+    }
+
+    public void setApplyTime(String applyTime) {
+        this.applyTime = applyTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRefundReason() {
+        return refundReason;
+    }
+
+    public void setRefundReason(String refundReason) {
+        this.refundReason = refundReason;
+    }
+
+    public int getRefundStatus() {
+        return refundStatus;
+    }
+
+    public void setRefundStatus(int refundStatus) {
+        this.refundStatus = refundStatus;
+    }
+
+    public String getRefundStatusName() {
+        return refundStatusName;
+    }
+
+    public void setRefundStatusName(String refundStatusName) {
+        this.refundStatusName = refundStatusName;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getFinalIntegral() {
+        return finalIntegral;
+    }
+
+    public void setFinalIntegral(String finalIntegral) {
+        this.finalIntegral = finalIntegral;
+    }
+
+    public String getFinalPayment() {
+        return finalPayment;
+    }
+
+    public void setFinalPayment(String finalPayment) {
+        this.finalPayment = finalPayment;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     public String getAmountMonthCoupon() {
         return amountMonthCoupon;

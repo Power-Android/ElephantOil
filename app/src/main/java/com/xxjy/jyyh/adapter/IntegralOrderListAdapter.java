@@ -13,14 +13,14 @@ import com.xxjy.jyyh.entity.RefuelOrderBean;
 
 import java.util.List;
 
-public class IntegralOrderListAdapter extends BaseQuickAdapter<IntegralOrderBean, BaseViewHolder> {
+public class IntegralOrderListAdapter extends BaseQuickAdapter<RefuelOrderBean, BaseViewHolder> {
 
-    public IntegralOrderListAdapter(int layoutResId, @Nullable List<IntegralOrderBean> data) {
+    public IntegralOrderListAdapter(int layoutResId, @Nullable List<RefuelOrderBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, IntegralOrderBean item) {
+    protected void convert(@NonNull BaseViewHolder helper, RefuelOrderBean item) {
 
         helper.setText(R.id.item_time_view, item.getCreateTime())
                 .setText(R.id.item_status_view, item.getStatusName())

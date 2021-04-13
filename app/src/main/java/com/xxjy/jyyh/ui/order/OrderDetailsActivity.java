@@ -2,6 +2,7 @@ package com.xxjy.jyyh.ui.order;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +27,7 @@ import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.databinding.ActivityOrderDetailsBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
+import com.xxjy.jyyh.dialog.RefundDialog;
 import com.xxjy.jyyh.dialog.SelectPayDialog;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
@@ -49,6 +51,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
 
     public static final String ORDER_ID = "order_id";
     public static final String CONTINUE_PAY = "continue_pay";
+    public static final String IS_LIFE = "is_life";
+    public static final String IS_REFUND_ORDER = "is_refund_order";
 
     private QMUIPopup mNormalPopup;
 
@@ -64,6 +68,11 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
     private RefuelOrderBean refuelOrderBean;
     private int orderType;
 
+    private boolean isLife = false;
+    private boolean isRefundOrder = false;
+
+    private String tips;
+
 
     @Override
     protected void initView() {
@@ -73,9 +82,16 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
 //        mBinding.useMethodView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 //        mBinding.useMethodView.getPaint().setAntiAlias(true);
         orderId = getIntent().getStringExtra(ORDER_ID);
+        isLife = getIntent().getBooleanExtra(IS_LIFE,false);
         isContinuePay = getIntent().getBooleanExtra(CONTINUE_PAY, false);
+        isRefundOrder = getIntent().getBooleanExtra(IS_REFUND_ORDER, false);
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        refuelOrderDetails();
+        if(isRefundOrder){
+            orderRefundDetail();
+        }else{
+            refuelOrderDetails();
+        }
+
         initWebViewClient();
     }
 
@@ -85,6 +101,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
         mBinding.continuePayView.setOnClickListener(this::onViewClicked);
         mBinding.orderManageLayout.setOnClickListener(this::onViewClicked);
         mBinding.cancelView.setOnClickListener(this::onViewClicked);
+        mBinding.refundTipsView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -103,8 +120,24 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     if (mNormalPopup != null) {
                         mNormalPopup.dismiss();
                     }
-                    CustomerServiceDialog customerServiceDialog = new CustomerServiceDialog(this);
-                    customerServiceDialog.show(view);
+                    if (i == 0) {
+                        if(isLife){
+                            CustomerServiceDialog customerServiceDialog = new CustomerServiceDialog(this);
+                            customerServiceDialog.show(view);
+                        }else{
+                            RefundDialog refundDialog = new RefundDialog(this, view);
+                            refundDialog.show(view);
+                            refundDialog.setOnConfirmListener(content -> {
+                                mViewModel.refuelApplyRefund(orderId, content);
+
+                            });
+                        }
+
+                    } else {
+                        CustomerServiceDialog customerServiceDialog = new CustomerServiceDialog(this);
+                        customerServiceDialog.show(view);
+                    }
+
 
                 };
                 mNormalPopup = QMUIPopups.listPopup(this,
@@ -138,6 +171,20 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                 break;
             case R.id.cancel_view:
                 cancelOrder();
+                break;
+            case R.id.refund_tips_view:
+                if (TextUtils.isEmpty(tips)) {
+                    return;
+                }
+                try {
+                    Uri phoneUri = Uri.parse("tel:" + tips);
+                    Intent intent = new Intent(Intent.ACTION_DIAL, phoneUri);
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                } catch (Exception e) {
+
+                }
                 break;
         }
     }
@@ -243,6 +290,99 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                 showPayDialog(refuelOrderBean.getProductName(), refuelOrderBean.getOrderId(), refuelOrderBean.getPayAmount());
             }
         });
+        mViewModel.refundOrderDetailsLiveData.observe(this,data ->{
+            refuelOrderBean = data;
+            tips = data.getTips();
+            mBinding.stationNameView.setText(data.getProductName());
+            mBinding.statusView.setText(data.getRefundStatusName());
+            mBinding.numView.setText(data.getLitre() + "L");
+            mBinding.amountView.setText("¥" + data.getAmount());
+            mBinding.businessDirectDiscountView.setText("-¥" + data.getCzbDepreciateAmount());
+            mBinding.businessDiscountView.setText("-¥" + data.getCzbCouponAmount());
+            mBinding.balanceView.setText("-¥" + data.getUsedBalance());
+            mBinding.platformDiscountView.setText("-¥" + data.getAmountCoupon());
+            mBinding.monthDiscountView.setText("-¥" + data.getAmountMonthCoupon());
+            mBinding.orderIdView.setText(data.getOrderId());
+            mBinding.payTypeView.setText(data.getPayTypeName());
+            mBinding.payAmountView.setText("¥" + data.getPayAmount());
+            mBinding.serviceChargeView.setText("+¥" + data.getServiceChargeAmount());
+            mBinding.amountUprightView.setText("-¥" + data.getAmountUpright());
+            mBinding.refundTipsView.setText(data.getTips());
+            mBinding.timeView.setText(data.getBuyTime());
+            orderType = data.getType();
+            switch (data.getType()) {
+                case 1:
+                    mBinding.numLayout.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    mBinding.numLayout.setVisibility(View.GONE);
+                    break;
+            }
+
+            if (TextUtils.isEmpty(data.getAmountUpright())) {
+                mBinding.amountUprightLayout.setVisibility(View.GONE);
+            } else {
+                if (Double.parseDouble(data.getAmountUpright()) == 0d) {
+                    mBinding.amountUprightLayout.setVisibility(View.GONE);
+                } else {
+                    mBinding.amountUprightLayout.setVisibility(View.VISIBLE);
+                }
+            }
+            mBinding.applyRefundTimeView.setText(data.getApplyTime());
+            mBinding.refundReasonLayout.setVisibility(View.VISIBLE);
+            mBinding.refundReasonView.setText(data.getRefundReason());
+            mBinding.refundAmountLayout.setVisibility(View.VISIBLE);
+            mBinding.refundAmountView.setText("¥"+data.getRealRefundAmount());
+            mBinding.orderManageLayout.setVisibility(View.GONE);
+            mBinding.btLayout.setVisibility(View.GONE);
+            mBinding.businessDirectDiscountLayout.setVisibility(View.GONE);
+            mBinding.businessDiscountLayout.setVisibility(View.GONE);
+            mBinding.platformDiscountLayout.setVisibility(View.GONE);
+            mBinding.monthDiscountLayout.setVisibility(View.GONE);
+            mBinding.balanceLayout.setVisibility(View.GONE);
+            mBinding.payTypeLayout.setVisibility(View.GONE);
+
+            mBinding.serviceChargeLayout.setVisibility(View.GONE);
+            mBinding.amountUprightLayout.setVisibility(View.GONE);
+
+            switch (data.getRefundStatus()) {
+                case 0:
+                   mBinding.applyRefundTimeLayout.setVisibility(View.VISIBLE);
+                   mBinding.refundResultTimeLayout.setVisibility(View.GONE);
+                    mBinding.refundTipsView.setVisibility(View.VISIBLE);
+                    mBinding.refundResultTimeView.setVisibility(View.GONE);
+
+
+                    break;
+                case 1:
+                    mBinding.applyRefundTimeLayout.setVisibility(View.VISIBLE);
+                    mBinding.refundResultTimeLayout.setVisibility(View.VISIBLE);
+                    mBinding.refundResultTimeTagView.setText("退款成功时间");
+                    mBinding.refundResultTimeView.setText(data.getRefundSuccessTime());
+                    mBinding.refundTipsView.setVisibility(View.VISIBLE);
+                    break;
+
+                case 2:
+                    mBinding.applyRefundTimeLayout.setVisibility(View.VISIBLE);
+                    mBinding.refundResultTimeLayout.setVisibility(View.VISIBLE);
+                    mBinding.refundResultTimeTagView.setText("退款失败时间");
+                    mBinding.refundResultTimeView.setText(data.getRefundFailTime());
+                    mBinding.refundTipsView.setVisibility(View.GONE);
+                    mBinding.refundResultTimeView.setVisibility(View.GONE);
+                    break;
+                default:
+                    mBinding.applyRefundTimeLayout.setVisibility(View.VISIBLE);
+                    mBinding.refundResultTimeLayout.setVisibility(View.GONE);
+                    mBinding.refundTipsView.setVisibility(View.VISIBLE);
+                    break;
+            }
+
+//            if (isContinuePay && data.getStatus() == 0) {
+//                isContinuePay = false;
+//                showPayDialog(refuelOrderBean.getProductName(), refuelOrderBean.getOrderId(), refuelOrderBean.getPayAmount());
+//            }
+
+        });
 
         mViewModel.cancelOrderDetailsLiveData.observe(this, data -> {
 
@@ -309,6 +449,14 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                 jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
             } else {
                 showToastWarning(payOrderEntity.getMsg());
+            }
+        });
+        mViewModel.refuelApplyRefundLiveData.observe(this,data ->{
+            if (data.getCode() == 1) {
+                showToastSuccess("已成功提交退款申请，1-3天会有处理结果，请及时查看");
+                refuelOrderDetails();
+            } else {
+                showToastError("提交退款失败");
             }
         });
     }
@@ -428,6 +576,9 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
     private void refuelOrderDetails() {
         mViewModel.refuelOrderDetails(orderId);
     }
+    private void orderRefundDetail() {
+        mViewModel.orderRefundDetail(orderId);
+    }
 
     private void cancelOrder() {
         mViewModel.cancelOrder(orderId);
@@ -439,11 +590,30 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
         intent.putExtra(ORDER_ID, orderId);
         activity.startActivity(intent);
     }
+    public static void openPageByRefund(BaseActivity activity, String orderId,boolean isRefundOrder) {
+        Intent intent = new Intent(activity, OrderDetailsActivity.class);
+        intent.putExtra(ORDER_ID, orderId);
+        intent.putExtra(IS_REFUND_ORDER, isRefundOrder);
+        activity.startActivity(intent);
+    }
+    public static void openPage(BaseActivity activity,boolean isLifeOrder, String orderId) {
+        Intent intent = new Intent(activity, OrderDetailsActivity.class);
+        intent.putExtra(ORDER_ID, orderId);
+        intent.putExtra(IS_LIFE, isLifeOrder);
+        activity.startActivity(intent);
+    }
 
     public static void openPage(BaseActivity activity, String orderId, boolean isContinuePay) {
         Intent intent = new Intent(activity, OrderDetailsActivity.class);
         intent.putExtra(ORDER_ID, orderId);
         intent.putExtra(CONTINUE_PAY, isContinuePay);
+        activity.startActivity(intent);
+    }
+    public static void openPage(BaseActivity activity, String orderId, boolean isContinuePay,boolean isLifeOrder) {
+        Intent intent = new Intent(activity, OrderDetailsActivity.class);
+        intent.putExtra(ORDER_ID, orderId);
+        intent.putExtra(CONTINUE_PAY, isContinuePay);
+        intent.putExtra(IS_LIFE, isLifeOrder);
         activity.startActivity(intent);
     }
 

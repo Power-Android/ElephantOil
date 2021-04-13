@@ -8,106 +8,33 @@
     android:background="@color/color_F5"
     android:fitsSystemWindows="true"
     tools:context=".ui.order.OrderListActivity">
-    <include
-        android:id="@+id/title_layout"
-        layout="@layout/top_title_blue_layout"/>
 
 
-
-
-    <com.qmuiteam.qmui.widget.tab.QMUITabSegment
-        android:id="@+id/tab_view"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_35"
-        android:layout_marginTop="10dp"/>
-
+        android:layout_height="@dimen/dp_44"
+        android:background="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:navigationIcon="@drawable/arrow_back_black">
         <LinearLayout
-            android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-            android:padding="@dimen/dp_6"
+            android:layout_width="@dimen/dp_220"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_35"
 
-            android:orientation="horizontal">
-            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-                android:id="@+id/oil_bt"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_37"
-                android:layout_weight="1"
-                app:qmui_borderColor="@color/colorAccent"
-                app:qmui_borderWidth="@dimen/dp_1"
-                app:qmui_backgroundColor="@color/colorAccent"
-                app:qmui_radius="@dimen/dp_20"
-                android:layout_margin="@dimen/dp_6"
-                android:text="加油订单"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:textSize="@dimen/sp_14"
-
-                />
-            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-                android:id="@+id/interests_bt"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_37"
-                android:layout_weight="1"
-                app:qmui_borderColor="@color/colorAccent"
-                app:qmui_borderWidth="@dimen/dp_1"
-                app:qmui_backgroundColor="@color/white"
-                app:qmui_radius="@dimen/dp_20"
-                android:layout_margin="@dimen/dp_6"
-                android:text="权益订单"
-                android:textColor="@color/colorAccent"
-                android:gravity="center"
-                android:textSize="@dimen/sp_14"
-                />
-            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-                android:id="@+id/life_bt"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_37"
-                android:layout_weight="1"
-                app:qmui_borderColor="@color/colorAccent"
-                app:qmui_borderWidth="@dimen/dp_1"
-                app:qmui_backgroundColor="@color/white"
-                app:qmui_radius="@dimen/dp_20"
-                android:layout_margin="@dimen/dp_6"
-                android:text="生活订单"
-                android:textColor="@color/colorAccent"
-                android:gravity="center"
-                android:textSize="@dimen/sp_14"
                 />
         </LinearLayout>
 
+
+    </androidx.appcompat.widget.Toolbar>
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-<!--    <com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout-->
-<!--        android:id="@+id/pull_layout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--       >-->
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/recyclerView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            app:qmui_is_target="true"/>-->
 
-<!--        <com.qmuiteam.qmui.widget.pullLayout.QMUIPullRefreshView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:qmui_action_view_init_offset="-20dp"-->
-<!--            app:qmui_pull_edge="top"-->
-<!--            app:qmui_target_view_trigger_offset="wrap"-->
-<!--            app:qmui_pull_rate="0.45"-->
-<!--            app:qmui_can_over_pull="true"-->
-<!--            app:qmui_need_receive_fling_from_target_view="false"/>-->
-
-<!--        <com.qmuiteam.qmui.widget.pullLayout.QMUIPullLoadMoreView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:qmui_action_view_init_offset="0dp"-->
-<!--            app:qmui_pull_edge="bottom"-->
-<!--            app:qmui_target_view_trigger_offset="wrap"-->
-<!--            app:qmui_pull_rate="0.45"-->
-<!--            app:qmui_can_over_pull="true"-->
-<!--            app:qmui_need_receive_fling_from_target_view="true"/>-->
-<!--    </com.qmuiteam.qmui.widget.pullLayout.QMUIPullLayout>-->
 </LinearLayout>

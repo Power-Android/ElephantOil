@@ -17,11 +17,15 @@ public class OrderListViewModel extends BaseViewModel<OrderListRepository> {
         super(application);
     }
 
-    public MutableLiveData<List<RefuelOrderBean>> refuelOrderListLiveData = new MutableLiveData<>();
-    public MutableLiveData<List<IntegralOrderBean>> integralOrderListLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<RefuelOrderBean>> paymentOrderListLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<RefuelOrderBean>> refundOrderListLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<RefuelOrderBean>> integralOrderListLiveData = new MutableLiveData<>();
     public MutableLiveData<List<RefuelOrderBean>> lifeOrderListLiveData = new MutableLiveData<>();
     public void refuelOrderList(int status,int pageNum,int pageSize) {
-        mRespository.refuelOrderList(refuelOrderListLiveData, status, pageNum, pageSize);
+        mRespository.refuelOrderList(paymentOrderListLiveData, status, pageNum, pageSize);
+    }
+    public void orderRefundList(int status,int pageNum,int pageSize) {
+        mRespository.orderRefundList(refundOrderListLiveData, status, pageNum, pageSize);
     }
     public void integralOrderList(int status,int pageNum,int pageSize) {
         mRespository.integralOrderList(integralOrderListLiveData, status, pageNum, pageSize);

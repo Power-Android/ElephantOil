@@ -58,11 +58,12 @@ public class OilRepository extends BaseRepository {
 
     public void getOilStations1(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
                                String appLongitude, String oilNo, String orderBy, String distance,
-                               String pageNum, String pageSize, String gasName, String method) {
+                               String pageNum, String pageSize, String gasName, String method,String gasIds) {
         addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS)
                 .add("appLatitude", appLatitude, Float.parseFloat(appLatitude) != 0)
                 .add("appLongitude", appLongitude, Float.parseFloat(appLongitude) != 0)
                 .add("oilNo", oilNo, !TextUtils.equals("全部", oilNo))
+                .add("gasIds",gasIds,!TextUtils.isEmpty(gasIds))
                 .add("orderBy", orderBy)
                 .add("distance",distance)
                 .add("pageNum", pageNum)

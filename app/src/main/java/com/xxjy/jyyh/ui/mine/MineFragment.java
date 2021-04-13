@@ -19,6 +19,7 @@ import com.xxjy.jyyh.entity.UserBean;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
+import com.xxjy.jyyh.ui.order.OtherOrderListActivity;
 import com.xxjy.jyyh.ui.setting.SettingActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
@@ -155,13 +156,13 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             public void onLogin() {
                 switch (view.getId()) {
                     case R.id.equity_order_layout:
-                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class).putExtra("type",1));
+                            getActivity().startActivity(new Intent(getContext(), OtherOrderListActivity.class).putExtra("isIntegral",true));
                         break;
                     case R.id.refueling_order_layout:
-                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class).putExtra("type",0));
+                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
                         break;
                     case R.id.local_life_order_layout:
-                        getActivity().startActivity(new Intent(getContext(), OrderListActivity.class).putExtra("type",2));
+                        getActivity().startActivity(new Intent(getContext(), OtherOrderListActivity.class).putExtra("isIntegral",false));
                         break;
                     case R.id.customer_service_view:
                         if(customerServiceDialog==null){

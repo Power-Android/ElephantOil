@@ -73,14 +73,20 @@ public class ApiService {
     public static final String GET_BANNER_OF_POSITION = "api/v1/banner/getBannerOfPostion";
     //获取加油订单列表
     public static final String REFUEL_ORDER_LIST = "api/gasPublic/refuelOrderList";
+    //获取加油订单退单列表
+    public static final String REFUND_ORDER_LIST = "api/gasPublic/orderRefundList";
     //获取订单列表
     public static final String INTEGRAL_ORDER_LIST = "api/product/v1/queryOrders";
     //获取加油订单详情
     public static final String REFUEL_ORDER_DETAILS = "api/gasPublic/refuelOrderDetails";
+    //退款订单详情接口
+    public static final String ORDER_REFUND_DETAILS = "api/gasPublic/orderRefundDetail";
     //取消加油订单
     public static final String REFUEL_ORDER_CANCEL = "api/gasPublic/cancelOrder";
     //取消订单 积分商城订单
     public static final String PRODUCT_ORDER_CANCEL = "api/product/v1/cancelOrder";
+    //申请退款
+    public static final String REFUEL_APPLY_REFUND = "api/gasPublic/refuelApplyRefund";
     //查询余额
     public static final String QUERY_BALANCE = "api/user/queryBalance";
     //查询积分余额
