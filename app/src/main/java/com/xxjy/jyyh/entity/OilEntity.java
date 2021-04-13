@@ -264,7 +264,7 @@ public class OilEntity implements Serializable {
         public void setOilPriceList(List<OilPriceListBean> oilPriceList) {
             this.oilPriceList = oilPriceList;
         }
-        public static class PhoneTimeMapBean {
+        public static class PhoneTimeMapBean implements Serializable{
             private String hours;
             private String phone;
 
@@ -284,7 +284,7 @@ public class OilEntity implements Serializable {
                 this.phone = phone;
             }
         }
-        public static class CzbLabelsBean {
+        public static class CzbLabelsBean implements Serializable{
             private String tagDescription;
             private String tagImageName;
             private String tagIndexDescription;
@@ -332,7 +332,7 @@ public class OilEntity implements Serializable {
             }
         }
 
-        public static class GunNosBean {
+        public static class GunNosBean implements Serializable{
             private Integer gunNo;
 
             public Integer getGunNo() {

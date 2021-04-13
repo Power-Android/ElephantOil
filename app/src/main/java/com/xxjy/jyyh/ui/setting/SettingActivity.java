@@ -1,20 +1,27 @@
 package com.xxjy.jyyh.ui.setting;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CleanUtils;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivitySettingBinding;
 import com.xxjy.jyyh.dialog.CancelAccountDialog;
 import com.xxjy.jyyh.utils.DataCleanManager;
 import com.xxjy.jyyh.utils.LoginHelper;
+import com.xxjy.jyyh.utils.NotificationsUtils;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
 
@@ -39,7 +46,6 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
 
-
         try {
             mBinding.cacheDataView.setText(DataCleanManager.getTotalCacheSize(this));
         }catch (Exception e){
@@ -53,7 +59,17 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
         mBinding.clearCacheLayout.setOnClickListener(this::onViewClicked);
         mBinding.logoutView.setOnClickListener(this::onViewClicked);
         mBinding.cancellationView.setOnClickListener(this::onViewClicked);
+        mBinding.switchTv.setOnClickListener(this::onViewClicked);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (NotificationsUtils.isNotificationEnabled(this)) {
+            mBinding.switchTv.setSelected(true);
+        }else {
+            mBinding.switchTv.setSelected(false);
+        }
     }
 
     @Override
@@ -77,6 +93,23 @@ public class SettingActivity extends BindingActivity<ActivitySettingBinding,Sett
                                     }
                                 }
                         );
+                break;
+            case R.id.switch_tv:
+                if (mBinding.switchTv.isSelected()){
+                    if (NotificationsUtils.isNotificationEnabled(this)) {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", App.getContext().getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                    } else {
+                        mBinding.switchTv.setSelected(false);
+                    }
+                }else {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", App.getContext().getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.logout_view:

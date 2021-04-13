@@ -77,7 +77,7 @@ public class OilNumDialog extends BottomSheetDialog {
         }
 
         mList = mStationsBean.getOilPriceList();
-        //默认第一个选中
+        //如果没有选中，默认第一个选中
         for (int i = 0; i < mList.size(); i++) {
             if (mList.get(i).isSelected()) {
                 selectPosition = i;

@@ -5,10 +5,16 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.SpanUtils;
+import com.rxjava.rxlife.RxLife;
+import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.app.App;
 
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.MonthCouponEntity;
@@ -17,9 +23,12 @@ import com.xxjy.jyyh.entity.OilDefaultPriceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
+import com.xxjy.jyyh.utils.UiUtils;
+import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
 
 /**
@@ -52,7 +61,7 @@ public class OilRepository extends BaseRepository {
                 .add("appLongitude", appLongitude, Float.parseFloat(appLongitude) != 0)
                 .add("oilNo", oilNo, !TextUtils.equals("全部", oilNo))
                 .add("orderBy", orderBy)
-                .add("distance",distance)
+                .add("distance", distance)
                 .add("pageNum", pageNum)
                 .add("pageSize", pageSize)
                 .add("gasName", gasName, !TextUtils.isEmpty(gasName))
@@ -71,7 +80,7 @@ public class OilRepository extends BaseRepository {
                 .add("oilNo", oilNo, !TextUtils.equals("全部", oilNo))
                 .add("gasIds",gasIds,!TextUtils.isEmpty(gasIds))
                 .add("orderBy", orderBy)
-                .add("distance",distance)
+                .add("distance", distance)
                 .add("pageNum", pageNum)
                 .add("pageSize", pageSize)
                 .add("gasName", gasName, !TextUtils.isEmpty(gasName))
@@ -107,10 +116,14 @@ public class OilRepository extends BaseRepository {
                 .add(Constants.GAS_STATION_ID, gasId)
                 .add(Constants.OIL_NUMBER_ID, oilNo)
                 .add("canUseBill", isUserBill)
-                .add("czbCouponAmount", TextUtils.isEmpty(businessAmount) ? "0" : businessAmount)
+                .add("czbCouponAmount", TextUtils.isEmpty(businessAmount) ? "" : businessAmount)
                 .add("couponId", platId)
                 .add("monthCouponId", monthCouponId)
+                .add("canUseUserCoupon", true)
+                .add("canUseCzbCoupon", true)
                 .asResponse(MultiplePriceBean.class)
+                .doOnSubscribe(disposable -> showLoading(true))
+                .doFinally(() -> showLoading(false))
                 .subscribe(multiplePriceBean -> {
                     multiplePriceLiveData.postValue(multiplePriceBean);
                 }));
@@ -122,7 +135,7 @@ public class OilRepository extends BaseRepository {
                 .asResponse(MonthCouponEntity.class)
                 .subscribe(monthCouponEntity -> {
                     monthCouponLiveData.postValue(monthCouponEntity);
-                }));
+                }, throwable -> monthCouponLiveData.postValue(null)));
     }
 
     public void getDefaultPrice(String gasId, String oilNo, MutableLiveData<OilDefaultPriceEntity> defaultPriceLiveData) {
@@ -152,6 +165,56 @@ public class OilRepository extends BaseRepository {
 
     public void getBusinessCoupon(String amount, String gasId, String oilNo, MutableLiveData<List<CouponBean>> businessCouponLiveData) {
         if (TextUtils.isEmpty(amount)) return;
-        addDisposable();
+        addDisposable(RxHttp.postForm(ApiService.BUSINESS_COUPON)
+                .add("canUse", "1")
+                .add("amount", amount)
+                .add(Constants.OIL_NUMBER_ID, oilNo)
+                .add(Constants.GAS_STATION_ID, gasId)
+                .asResponseList(CouponBean.class)
+                .subscribe(couponBeans -> {
+                    businessCouponLiveData.postValue(couponBeans);
+                }));
+    }
+
+    public void getBalance(MutableLiveData<Float> balanceLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.QUERY_BALANCE)
+                .asResponse(Float.class)
+                .subscribe(balance -> {
+                    balanceLiveData.postValue(balance);
+                }));
+    }
+
+    public void createOrder(String amount, String payAmount, String usedBalance, String gasId, String gunNo,
+                            String oilNo, String oilName, String gasName, String priceGun, String priceUnit,
+                            String oilType, String phone, String xxCouponId, String czbCouponId, String czbCouponAmount,
+                            String xxMonthCouponId, String xxMonthCouponAmount, boolean isAddMonthId, boolean isAddMonthAmouont,
+                            MutableLiveData<String> createOrderLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.CREATE_ORDER)
+                .add("amount", amount)
+                .add("payAmount", payAmount)
+                .add("usedBalance", usedBalance)
+                .add("gasId", gasId)
+                .add("gunNo", gunNo)
+                .add("oilNo", oilNo)
+                .add("oilName", oilName)
+                .add("gasName", gasName)
+                .add("priceGun", priceGun)
+                .add("priceUnit", priceUnit)
+                .add("oilType", oilType)
+                .add("phone", phone)
+                .add("xxCouponId", xxCouponId)
+                .add("czbCouponId", czbCouponId)
+                .add("czbCouponAmount", czbCouponAmount)
+                .add("xxMonthCouponId", xxMonthCouponId, isAddMonthId)
+                .add("xxMonthCouponAmount", xxMonthCouponAmount, isAddMonthAmouont)
+                .asResponse(String.class)
+                .doOnSubscribe(disposable -> showLoading(true))
+                .doFinally(() -> showLoading(false))
+                .subscribe(orderId -> {
+                            createOrderLiveData.postValue(orderId);
+                        },
+                        onError -> {
+                            MyToast.showError(App.getContext(), onError.getMessage());
+                        }));
     }
 }

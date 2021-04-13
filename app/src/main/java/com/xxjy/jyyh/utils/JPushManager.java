@@ -25,13 +25,13 @@ public class JPushManager {
      *
      * @param application
      */
-    public static void initJPush(Application application) {
+    public static void initJPush(Context application) {
         initPush(application);
 //        initAnalytics(application);
     }
 
     //初始化推送
-    private static void initPush(Application application) {
+    private static void initPush(Context application) {
         JPushInterface.setDebugMode(Constants.IS_DEBUG);
         JPushInterface.init(application);
     }

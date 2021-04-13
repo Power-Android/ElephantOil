@@ -40,6 +40,8 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public MutableLiveData<OilDefaultPriceEntity> defaultPriceLiveData = new MutableLiveData<>();
     public MutableLiveData<List<CouponBean>> platformCouponLiveData = new MutableLiveData<>();
     public MutableLiveData<List<CouponBean>> businessCouponLiveData = new MutableLiveData<>();
+    public MutableLiveData<Float> balanceLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> createOrderLiveData = new MutableLiveData<>();
 
 
     public void getOrderNews() {
@@ -90,6 +92,20 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
 
     public void getBusinessCoupon(String amount, String gasId, String oilNo){
         mRespository.getBusinessCoupon(amount, gasId, oilNo, businessCouponLiveData);
+    }
+
+    public void getBalance(){
+        mRespository.getBalance(balanceLiveData);
+    }
+
+    public void createOrder(String amount, String payAmount, String usedBalance, String gasId,
+                            String gunNo, String oilNo, String oilName, String gasName, String priceGun,
+                            String priceUnit, String oilType, String phone, String xxCouponId, String czbCouponId,
+                            String czbCouponAmount, String xxMonthCouponId, String xxMonthCouponAmount,
+                            boolean isAddMonthId, boolean isAddMonthAmouont){
+        mRespository.createOrder(amount, payAmount, usedBalance, gasId, gunNo, oilNo, oilName, gasName,
+                priceGun, priceUnit, oilType, phone, xxCouponId, czbCouponId, czbCouponAmount,
+                xxMonthCouponId, xxMonthCouponAmount, isAddMonthId, isAddMonthAmouont, createOrderLiveData);
     }
 
 }

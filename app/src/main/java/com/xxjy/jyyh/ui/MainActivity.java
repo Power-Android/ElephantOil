@@ -39,11 +39,15 @@ import com.xxjy.jyyh.ui.integral.IntegralFragment;
 import com.xxjy.jyyh.ui.mine.MineFragment;
 import com.xxjy.jyyh.ui.oil.OilFragment;
 import com.xxjy.jyyh.ui.setting.AboutUsViewModel;
+import com.xxjy.jyyh.utils.AppManager;
+import com.xxjy.jyyh.utils.JPushManager;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.NotificationsUtils;
 import com.xxjy.jyyh.utils.Util;
 import com.xxjy.jyyh.utils.pay.PayListenerUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
+import com.xxjy.jyyh.utils.umengmanager.UMengManager;
+import com.xxjy.jyyh.utils.umengmanager.UMengOnEvent;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -58,6 +62,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     private MineFragment mMineFragment;
     private FragmentTransaction mTransaction;
     private int isNewUser = -1;//新用户，未满3单跳油站列表，老用户满3单跳首页
+    private static String appChannel = "";  //标记app的渠道
 
     //极光intent
     public static final String TAG_FLAG_INTENT_VALUE_INFO = "intentInfo";
@@ -89,8 +94,27 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         }
     }
 
+    private void initSdk() {
+        appChannel =  UserConstants.getAppChannel();
+        if (TextUtils.isEmpty(appChannel)) {
+            appChannel = AppManager.getAppMetaChannel();
+            UserConstants.setAppChannel(appChannel);
+        }
+
+        //初始化闪验sdk
+        ShanYanManager.initShanYnaSdk(this);
+        //标记首次进入app埋点
+        UMengOnEvent.onFirstStartEvent();
+
+        //极光推送配置
+        JPushManager.initJPush(this);
+        //友盟统计
+        UMengManager.init(this);
+    }
+
     @Override
     protected void initView() {
+        initSdk();
         BusUtils.register(this);
         mHomeFragment = null;
         mOilFragment = null;
@@ -117,7 +141,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             if (!UserConstants.getIsLogin()) {
                 ShanYanManager.checkShanYanSupportState();
             }
-        }, 2000);
+        }, 3000);
 
         int state = getIntent().getIntExtra("jumpState", -1);
         showDiffFragment(state);

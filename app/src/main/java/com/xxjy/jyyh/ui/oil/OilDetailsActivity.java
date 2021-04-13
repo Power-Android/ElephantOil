@@ -68,29 +68,21 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBinding, OilViewModel> implements IPayListener {
+public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBinding, OilViewModel> {
     private List<OilEntity.StationsBean.CzbLabelsBean> mTagList = new ArrayList<>();
     private List<OilEntity.StationsBean.OilPriceListBean> mOilNumList = new ArrayList<>();//油号列表
     private List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> mOilGunList = new ArrayList<>();//油枪列表
     private OilTypeAdapter mOilTypeAdapter;
     private OilNumAdapter mOilNumAdapter;
     private OilGunAdapter mOilGunAdapter;
-    private int  mOilGunPosition=-1;
+    private int  mOilGunPosition = 0;
     private int  mOilNoPosition;
-    private OilGunDialog mOilGunDialog;
-    private OilAmountDialog mOilAmountDialog;
-    private OilCouponDialog mOilCouponDialog;
-    private OilTipsDialog mOilTipsDialog;
-    private OilPayDialog mOilPayDialog;
+    private boolean isSelectGun;
     private HomeViewModel mHomeViewModel;
     private double mLng, mLat;
     private String mGasId;
     private OilEntity.StationsBean mStationsBean;
     private OilStationFlexAdapter mFlexAdapter;
-    private boolean isShouldAutoOpenWeb = false;    //标记是否应该自动打开浏览器进行支付
-    //是否需要跳转支付确认页
-    private boolean shouldJump = false;
-    private PayOrderEntity mPayOrderEntity;
     private boolean isFar = false;//油站是否在距离内
     private boolean isPay = false;//油站是否在距离内 是否显示继续支付按钮
     private GasStationLocationTipsDialog mGasStationTipsDialog;
@@ -101,35 +93,8 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
     private List<OilEntity.StationsBean.OilPriceListBean> mOilNumDieselData = new ArrayList<>();  //柴油
     private List<OilEntity.StationsBean.OilPriceListBean> mOilNumNaturalData = new ArrayList<>(); //天然气
 
-    private boolean isShowAmount = false;
-
     private PriceDescriptionDialog priceDescriptionDialog;
 
-    /**
-     * @param orderEntity 消息事件：支付后跳转支付确认页
-     */
-    @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_PAY_QUERY, sticky = true)
-    public void onEvent(PayOrderEntity orderEntity) {
-        showJump(orderEntity);
-    }
-
-    private void showJump(PayOrderEntity orderEntity) {
-        if (orderEntity == null) return;
-        if (shouldJump) {
-            shouldJump = false;
-//            PayQueryActivity.openPayQueryActivity(this,
-//                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
-            RefuelingPayResultActivity.openPayResultPage(this,
-                    orderEntity.getOrderNo(), orderEntity.getOrderPayNo());
-            closeDialog();
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        showJump(mPayOrderEntity);
-    }
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.backIv, true);
@@ -173,6 +138,7 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
             oilPriceList.get(0).setSelected(true);
             mOilNoPosition = 0;
             mOilGunPosition = 0;
+            isSelectGun = false;
             mOilNumAdapter.setNewData(oilPriceList);
             //切换类型时清空枪号选中状态,清空已选择列表的枪号
             for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
@@ -187,7 +153,6 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
             mBinding.oilNumTv.setText(oilPriceList.get(0).getOilName()+ " :");
             mBinding.oilPriceTv.setText("" + oilPriceList.get(0).getPriceGun());
             mBinding.oilNationalPriceTv.setText("" + oilPriceList.get(0).getPriceOfficial());
-            isShowAmount = false;
             mOilNoPosition = 0;
         });
 
@@ -218,7 +183,7 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
 
             mOilNoPosition = position;
             mOilGunPosition = 0;
-            isShowAmount = false;
+            isSelectGun = false;
             mOilGunAdapter.setNewData(data.get(position).getGunNos());
             mOilGunAdapter.notifyDataSetChanged();
         });
@@ -236,9 +201,8 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
             adapter.notifyDataSetChanged();
 
             mOilGunPosition = position;
+            isSelectGun = true;
         });
-
-        initWebViewClient();
     }
 
     private void requestPermission() {
@@ -288,31 +252,19 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                 }
                 break;
             case R.id.query_tv:
-//                if(mOilGunPosition==-1){
-//                    showToastInfo("请选择枪号");
-//                }else{
-//                    if (isFar) {
-//                        showChoiceOil(mStationsBean.getGasName(), view);
-//                    } else {
-//                        for (int i = 0; i < mOilGunAdapter.getData().size(); i++) {
-//                            if (mOilGunAdapter.getData().get(i).isSelected()) {
-//                                isShowAmount = true;
-//                            }
-//                        }
-//                        if (isShowAmount) {
-//                            showAmountDialog(mStationsBean, mOilNumAdapter.getData(),
-//                                    mOilNoPosition, mOilGunPosition);
-//                        } else {
-//                            showToastInfo("请选择枪号");
-//                        }
-//                    }
-//                }
-                Intent intent = new Intent(this, OilOrderActivity.class);
-                intent.putExtra("stationsBean", (Serializable) mStationsBean);
-                intent.putExtra("oilPriceListBean", (Serializable) mOilNumAdapter.getData());
-                intent.putExtra("oilNoPosition", mOilNoPosition);
-                intent.putExtra("gunNoPosition", mOilGunPosition);
-                startActivity(intent);
+                if(!isSelectGun){
+                    showToastInfo("请选择枪号");
+                }else{
+                    if (isFar) {
+                        showChoiceOil(mStationsBean.getGasName(), view);
+                    } else {
+                        Intent intent = new Intent(this, OilOrderActivity.class);
+                        intent.putExtra("stationsBean", (Serializable) mStationsBean);
+                        intent.putExtra("oilNo", mOilNumAdapter.getData().get(mOilNoPosition).getOilNo());
+                        intent.putExtra("gunNo", mOilGunAdapter.getData().get(mOilGunPosition).getGunNo());
+                        startActivity(intent);
+                    }
+                }
                 break;
             case R.id.price_description_layout:
                 if (priceDescriptionDialog == null) {
@@ -321,6 +273,41 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                 priceDescriptionDialog.show(mBinding.priceDescriptionLayout);
                 break;
         }
+    }
+
+    private void showChoiceOil(String stationName, View view) {
+        mGasStationTipsDialog = new GasStationLocationTipsDialog(this, view, stationName);
+        mGasStationTipsDialog.showPayBt(isPay);
+        mGasStationTipsDialog.setOnClickListener(view1 -> {
+            switch (view1.getId()) {
+                case R.id.select_agin://重新选择
+                    closeDialog();
+                    startActivity(new Intent(this,MainActivity.class));
+                    finish();
+                    break;
+                case R.id.navigation_tv://导航过去
+                    if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                        NavigationDialog navigationDialog = new NavigationDialog(this,
+                                mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
+                                mStationsBean.getGasName());
+                        closeDialog();
+                        navigationDialog.show();
+                    } else {
+                        showToastWarning("您当前未安装地图软件，请先安装");
+                    }
+                    break;
+                case R.id.continue_view://继续支付
+                    isFar = false;
+                    Intent intent = new Intent(this, OilOrderActivity.class);
+                    intent.putExtra("stationsBean", (Serializable) mStationsBean);
+                    intent.putExtra("oilNo", mOilNumAdapter.getData().get(mOilNoPosition).getOilNo());
+                    intent.putExtra("gunNo", mOilGunAdapter.getData().get(mOilGunPosition).getGunNo());
+                    startActivity(intent);
+                    break;
+            }
+
+        });
+        mGasStationTipsDialog.show();
     }
 
     @Override
@@ -356,7 +343,6 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
         });
 
         mViewModel.oilLiveData.observe(this, stationsBean -> {
-            mOilGunPosition=-1;
             mStationsBean = stationsBean;
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
             mBinding.oilTagIv.setVisibility(stationsBean.isIsSign() ? View.VISIBLE : View.INVISIBLE);
@@ -384,62 +370,6 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
             dispatchOilData(stationsBean);
 
             mHomeViewModel.checkDistance(mStationsBean.getGasId());
-        });
-
-        //支付结果回调
-        mHomeViewModel.payOrderLiveData.observe(this, payOrderEntity -> {
-            if (payOrderEntity.getResult() == 0) {//支付未完成
-                switch (payOrderEntity.getPayType()) {
-                    case PayTypeConstants.PAY_TYPE_WEIXIN://微信H5
-                        WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
-                        shouldJump = true;
-                        break;
-                    case PayTypeConstants.PAY_TYPE_WEIXIN_APP://微信原生
-//                        WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
-                        PayListenerUtils.getInstance().addListener(this);
-                        PayHelper.getInstance().WexPay(payOrderEntity.getPayParams());
-
-                        break;
-                    case PayTypeConstants.PAY_TYPE_WEIXIN_XCX://微信小程序
-                        WXSdkManager.newInstance().useWXLaunchMiniProgramToPay(this, payOrderEntity.getOrderNo());
-                        shouldJump = true;
-                        break;
-                    case PayTypeConstants.PAY_TYPE_ZHIFUBAO://支付宝H5
-                        boolean urlCanUse = UiUtils.checkZhifubaoSdkCanPayUrl(this,
-                                payOrderEntity.getUrl(),
-                                h5PayResultModel -> {//直接跳转支付宝
-                                    jumpToPayResultAct(payOrderEntity.getOrderPayNo(),
-                                            payOrderEntity.getOrderNo());
-                                });
-                        if (!urlCanUse) {//外部浏览器打开
-                            isShouldAutoOpenWeb = true;
-                            mBinding.payWebView.loadUrl(payOrderEntity.getUrl());
-                            mBinding.payWebView.post(() -> {
-                                if (isShouldAutoOpenWeb) {
-                                    UiUtils.openPhoneWebUrl(this,
-                                            payOrderEntity.getUrl());
-                                }
-                            });
-                        }
-                        shouldJump = true;
-                        break;
-                    case PayTypeConstants.PAY_TYPE_ZHIFUBAO_APP:
-                        PayListenerUtils.getInstance().addListener(this);
-                        PayHelper.getInstance().AliPay(this, payOrderEntity.getStringPayParams());
-
-                        break;
-                    case PayTypeConstants.PAY_TYPE_UNIONPAY:
-                        PayListenerUtils.getInstance().addListener(this);
-                        PayHelper.getInstance().unionPay(this, payOrderEntity.getPayNo());
-                        break;
-                }
-                //                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
-                mPayOrderEntity = payOrderEntity;
-            } else if (payOrderEntity.getResult() == 1) {//支付成功
-                jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
-            } else {
-                showToastWarning(payOrderEntity.getMsg());
-            }
         });
 
         mHomeViewModel.distanceLiveData.observe(this, oilDistanceEntity -> {
@@ -544,276 +474,18 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
         mOilTypeAdapter.setNewData(mOilTypeList);
     }
 
-    private void showAmountDialog(OilEntity.StationsBean stationsBean, List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBean, int oilNoPosition, int gunNoPosition) {
-        //快捷金额dialog  请输入加油金额 请选择优惠券 暂无优惠券
-        mOilAmountDialog = new OilAmountDialog(this, this, stationsBean, oilPriceListBean,
-                oilNoPosition, gunNoPosition);
-        mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
-            @Override
-            public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
-                                           String amount, String oilNo) {
-                if (position == 1 || position == 2) {
-                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, oilNo, position == 1);
-                }
-            }
-
-            @Override
-            public void onCreateOrder(View view, String orderId, String payAmount) {
-//                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount, view);
-                showPayDialog(stationsBean, oilPriceListBean, oilNoPosition, gunNoPosition, orderId, payAmount);
-            }
-
-            @Override
-            public void closeAll() {
-                closeDialog();
-            }
-        });
-
-        mOilAmountDialog.show();
-    }
-
-    private void showCouponDialog(OilEntity.StationsBean stationsBean, String amount,
-                                  int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat) {
-        //优惠券dialog
-        mOilCouponDialog = new OilCouponDialog(this, this, amount, stationsBean,
-                oilNoPosition, gunNoPosition, oilNo, isPlat);
-        mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
-            @Override
-            public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat) {
-                List<CouponBean> data = adapter.getData();
-                mOilAmountDialog.setCouponInfo(data.get(position), isPlat, data.get(position).getExcludeType());
-                mOilCouponDialog.dismiss();
-            }
-
-            @Override
-            public void onNoCouponClick(boolean isPlat) {
-                mOilAmountDialog.setCouponInfo(null, isPlat, "");
-                mOilCouponDialog.dismiss();
-            }
-        });
-
-        mOilCouponDialog.show();
-    }
-
-    private void showPayDialog(OilEntity.StationsBean stationsBean, List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBean, int oilNoPosition,
-                               int gunNoPosition, String orderId, String payAmount) {
-        //支付dialog
-        mOilPayDialog = new OilPayDialog(this, this, stationsBean, oilPriceListBean,
-                oilNoPosition, gunNoPosition, orderId, payAmount);
-
-        mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
-            @Override
-            public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
-                List<OilPayTypeEntity> data = adapter.getData();
-                for (OilPayTypeEntity item : data) {
-                    item.setSelect(false);
-                }
-                data.get(position).setSelect(true);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCloseAllClick() {
-                closeDialog();
-            }
-
-            @Override
-            public void onPayOrderClick(String payType, String orderId, String payAmount) {
-                mHomeViewModel.payOrder(payType, orderId, payAmount);
-            }
-        });
-
-        mOilPayDialog.show();
-    }
-
-    private void showChoiceOil(String stationName, View view) {
-        mGasStationTipsDialog = new GasStationLocationTipsDialog(this, view, stationName);
-        mGasStationTipsDialog.showPayBt(isPay);
-        mGasStationTipsDialog.setOnClickListener(view1 -> {
-            switch (view1.getId()) {
-                case R.id.select_agin://重新选择
-                    closeDialog();
-                    startActivity(new Intent(this, MainActivity.class));
-                    finish();
-                    break;
-                case R.id.navigation_tv://导航过去
-                    if (MapIntentUtils.isPhoneHasMapNavigation()) {
-                        NavigationDialog navigationDialog = new NavigationDialog(this,
-                                mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
-                                mStationsBean.getGasName());
-                        closeDialog();
-                        navigationDialog.show();
-                    } else {
-                        showToastWarning("您当前未安装地图软件，请先安装");
-                    }
-                    break;
-                case R.id.continue_view://继续支付
-                    isFar = false;
-                    for (int i = 0; i < mOilGunAdapter.getData().size(); i++) {
-                        if (mOilGunAdapter.getData().get(i).isSelected()) {
-                            isShowAmount = true;
-                        }
-                    }
-                    if (isShowAmount) {
-                        showAmountDialog(mStationsBean, mOilNumAdapter.getData(),
-                                mOilNoPosition, mOilGunPosition);
-                    } else {
-                        showToastInfo("请选择枪号");
-                    }
-                    break;
-            }
-
-        });
-        mGasStationTipsDialog.show();
-    }
-
-    private void jumpToPayResultAct(String orderPayNo, String orderNo) {
-        if (TextUtils.isEmpty(orderPayNo) && TextUtils.isEmpty(orderNo)) {
-            return;
-        }
-        Intent intent = new Intent(this, RefuelingPayResultActivity.class);
-        intent.putExtra("orderPayNo", orderPayNo);
-        intent.putExtra("orderNo", orderNo);
-        startActivity(intent);
-        closeDialog();
-    }
-
     private void closeDialog() {
-        if (mOilGunDialog != null) {
-            mOilGunDialog.dismiss();
-            mOilGunDialog = null;
-        }
-        if (mOilAmountDialog != null) {
-            mOilAmountDialog.dismiss();
-            mOilAmountDialog = null;
-        }
-        if (mOilCouponDialog != null) {
-            mOilCouponDialog.dismiss();
-            mOilCouponDialog = null;
-        }
-        if (mOilTipsDialog != null) {
-            mOilTipsDialog.dismiss();
-            mOilTipsDialog = null;
-        }
-        if (mOilPayDialog != null) {
-            mOilPayDialog.dismiss();
-            mOilPayDialog = null;
-        }
         if (mLocationTipsDialog != null) {
             mLocationTipsDialog = null;
         }
         if (mGasStationTipsDialog != null) {
             mGasStationTipsDialog = null;
         }
-        isShowAmount = false;
-        mOilNoPosition = 0;
-        //关掉以后重新刷新数据,否则再次打开时上下选中不一致
-        mViewModel.getOilDetail(mGasId, mLat, mLng);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         BusUtils.removeSticky(EventConstants.EVENT_JUMP_PAY_QUERY);
-//        PayListenerUtils.getInstance().removeListener(this);
     }
-
-    protected void initWebViewClient() {
-        mBinding.payWebView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(final WebView webView, String url) {
-                if (!(url.startsWith("http") || url.startsWith("https"))) {
-                    return true;
-                }
-
-                isShouldAutoOpenWeb = false;
-                /**
-                 * 推荐采用的新的二合一接口(payInterceptorWithUrl),只需调用一次
-                 */
-                final PayTask task = new PayTask(OilDetailsActivity.this);
-                boolean isIntercepted = task.payInterceptorWithUrl(url, true,
-                        result -> runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                jumpToPayResultAct(result.getResultCode(), result.getResultCode());
-                            }
-                        }));
-
-                /**
-                 * 判断是否成功拦截
-                 * 若成功拦截，则无需继续加载该URL；否则继续加载
-                 */
-                if (!isIntercepted) {   //如果不使用sdk直接将url抛出到浏览器
-                    UiUtils.openPhoneWebUrl(OilDetailsActivity.this, url);
-                }
-                return true;
-            }
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        /*
-         * 支付控件返回字符串:success、fail、cancel 分别代表支付成功，支付失败，支付取消
-         */
-
-        if (data == null) {
-            return;
-        }
-        String str = data.getExtras().getString("pay_result");
-        if (!TextUtils.isEmpty(str)) {
-            if (str.equalsIgnoreCase("success")) {
-                //如果想对结果数据校验确认，直接去商户后台查询交易结果，
-                //校验支付结果需要用到的参数有sign、data、mode(测试或生产)，sign和data可以在result_data获取到
-                /**
-                 * result_data参数说明：
-                 * sign —— 签名后做Base64的数据
-                 * data —— 用于签名的原始数据
-                 *      data中原始数据结构：
-                 *      pay_result —— 支付结果success，fail，cancel
-                 *      tn —— 订单号
-                 */
-//            msg = "云闪付支付成功";
-                PayListenerUtils.getInstance().addSuccess();
-            } else if (str.equalsIgnoreCase("fail")) {
-//            msg = "云闪付支付失败！";
-                PayListenerUtils.getInstance().addFail();
-            } else if (str.equalsIgnoreCase("cancel")) {
-//            msg = "用户取消了云闪付支付";
-                PayListenerUtils.getInstance().addCancel();
-
-            }
-        }
-
-    }
-
-    @Override
-    public void onSuccess() {
-        RefuelingPayResultActivity.openPayResultPage(this,
-                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
-        PayListenerUtils.getInstance().removeListener(this);
-        closeDialog();
-    }
-
-    @Override
-    public void onFail() {
-        RefuelingPayResultActivity.openPayResultPage(this,
-                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
-        PayListenerUtils.getInstance().removeListener(this);
-        closeDialog();
-    }
-
-    @Override
-    public void onCancel() {
-        Toasty.info(this, "支付取消").show();
-        PayListenerUtils.getInstance().removeListener(this);
-        closeDialog();
-    }
-
 }

@@ -514,7 +514,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             case R.id.home_quick_oil_rl:
                 LoginHelper.login(mContext, () -> {
                     if (mStationsBean != null) {
-                        Intent intent = new Intent(mContext, OilDetailActivity.class);
+                        Intent intent = new Intent(mContext, OilDetailsActivity.class);
                         intent.putExtra(Constants.GAS_STATION_ID, mStationsBean.getGasId());
                         intent.putExtra(Constants.OIL_NUMBER_ID, mStationsBean.getOilPriceList().get(0).getOilNo() + "");
                         startActivity(intent);

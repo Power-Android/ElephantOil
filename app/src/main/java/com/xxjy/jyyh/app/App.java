@@ -37,7 +37,6 @@ import com.xxjy.jyyh.utils.umengmanager.UMengOnEvent;
  */
 public class App extends Application {
     private static Context mContext;
-    private static String appChannel = "";  //标记app的渠道
 
     public static Context getContext() {
         return mContext;
@@ -103,27 +102,5 @@ public class App extends Application {
 
         // webview 在调用TBS初始化、创建WebView之前进行如下配置
         X5WebManager.initX5Web(this);
-
-        //初始化闪验sdk
-        ShanYanManager.initShanYnaSdk(this);
-
-        appChannel =  UserConstants.getAppChannel();
-        if (TextUtils.isEmpty(appChannel)) {
-            appChannel = AppManager.getAppMetaChannel();
-            UserConstants.setAppChannel(appChannel);
-        }
-
-        //标记首次进入app埋点
-        UMengOnEvent.onFirstStartEvent();
-
-        //极光推送配置
-        JPushManager.initJPush(this);
-        //友盟统计
-        UMengManager.init(this);
     }
-
-    public static String getAppChannel() {
-        return appChannel;
-    }
-
 }

@@ -52,7 +52,7 @@ public class UMengOnEvent {
         }
         UserConstants.setFirstOpen(true);
         Map<String, String> params = new HashMap<>();
-        params.put("app_store", App.getAppChannel());
+        params.put("app_store", UserConstants.getAppChannel());
         params.put("brand", DeviceUtils.getManufacturer());
         params.put("model", DeviceUtils.getModel());
         params.put("version", DeviceUtils.getSDKVersionName());
