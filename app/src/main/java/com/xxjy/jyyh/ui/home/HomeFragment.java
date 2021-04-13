@@ -78,6 +78,7 @@ import com.xxjy.jyyh.entity.RefuelOilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
+import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.restaurant.RestaurantActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;

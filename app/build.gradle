@@ -163,6 +163,4 @@ dependencies {
     api files('libs/qmf-ppplugin-android-3.1.1.aar')
 
     implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.18'
-
-
 }

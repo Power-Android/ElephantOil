@@ -2,12 +2,18 @@ package com.xxjy.jyyh.ui.oil;
 
 import android.text.TextUtils;
 
+
 import androidx.lifecycle.MutableLiveData;
+
 
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CouponBean;
+import com.xxjy.jyyh.entity.MonthCouponEntity;
+import com.xxjy.jyyh.entity.MultiplePriceBean;
+import com.xxjy.jyyh.entity.OilDefaultPriceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
@@ -95,4 +101,57 @@ public class OilRepository extends BaseRepository {
         );
     }
 
+    public void getMultiplePrice(String amount, String gasId, String oilNo, String isUserBill, String platId, String businessAmount, String monthCouponId, MutableLiveData<MultiplePriceBean> multiplePriceLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.OIL_MULTIPLE_PRICE)
+                .add("amount", amount)
+                .add(Constants.GAS_STATION_ID, gasId)
+                .add(Constants.OIL_NUMBER_ID, oilNo)
+                .add("canUseBill", isUserBill)
+                .add("czbCouponAmount", TextUtils.isEmpty(businessAmount) ? "0" : businessAmount)
+                .add("couponId", platId)
+                .add("monthCouponId", monthCouponId)
+                .asResponse(MultiplePriceBean.class)
+                .subscribe(multiplePriceBean -> {
+                    multiplePriceLiveData.postValue(multiplePriceBean);
+                }));
+    }
+
+    public void getMonthCoupon(String gasId, MutableLiveData<MonthCouponEntity> monthCouponLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.GET_MONTH_COUPON)
+                .add(Constants.GAS_STATION_ID, gasId)
+                .asResponse(MonthCouponEntity.class)
+                .subscribe(monthCouponEntity -> {
+                    monthCouponLiveData.postValue(monthCouponEntity);
+                }));
+    }
+
+    public void getDefaultPrice(String gasId, String oilNo, MutableLiveData<OilDefaultPriceEntity> defaultPriceLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.OIL_PRICE_DEFAULT)
+                .add(Constants.GAS_STATION_ID, gasId)
+                .add(Constants.OIL_NUMBER_ID, oilNo)
+                .asResponse(OilDefaultPriceEntity.class)
+                .subscribe(priceEntity -> {
+                    defaultPriceLiveData.postValue(priceEntity);
+                }));
+    }
+
+    public void getPlatformCoupon(String amount, String gasId, String oilNo, MutableLiveData<List<CouponBean>> platformCouponLiveData) {
+        //0真正可用 1已用 2过期  3时间未到 4 金额未达到
+        if (TextUtils.isEmpty(amount)) return;
+        addDisposable(RxHttp.postForm(ApiService.PLATFORM_COUPON)
+                .add("canUse", "1")
+                .add("rangeType", "2")
+                .add("amount", amount)
+                .add(Constants.OIL_NUMBER_ID, oilNo)
+                .add(Constants.GAS_STATION_ID, gasId)
+                .asResponseList(CouponBean.class)
+                .subscribe(couponBeans -> {
+                    platformCouponLiveData.postValue(couponBeans);
+                }));
+    }
+
+    public void getBusinessCoupon(String amount, String gasId, String oilNo, MutableLiveData<List<CouponBean>> businessCouponLiveData) {
+        if (TextUtils.isEmpty(amount)) return;
+        addDisposable();
+    }
 }

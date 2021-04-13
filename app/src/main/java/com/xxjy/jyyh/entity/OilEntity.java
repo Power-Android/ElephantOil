@@ -21,7 +21,7 @@ public class OilEntity implements Serializable {
         this.stations = stations;
     }
 
-    public static class StationsBean {
+    public static class StationsBean implements Serializable{
         private String cityName;
         private String countyName;
         private Double distance;
@@ -344,7 +344,7 @@ public class OilEntity implements Serializable {
             }
         }
 
-        public static class OilPriceListBean {
+        public static class OilPriceListBean implements Serializable{
             private String priceYfq;
             private Integer oilType;
             private String oilName;
@@ -418,7 +418,7 @@ public class OilEntity implements Serializable {
                 this.gunNos = gunNos;
             }
 
-            public static class GunNosBean {
+            public static class GunNosBean implements Serializable{
                 private Integer gunNo;
                 private boolean isSelected;
 

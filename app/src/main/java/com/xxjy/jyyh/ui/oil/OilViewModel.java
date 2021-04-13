@@ -7,6 +7,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CouponBean;
+import com.xxjy.jyyh.entity.MonthCouponEntity;
+import com.xxjy.jyyh.entity.MultiplePriceBean;
+import com.xxjy.jyyh.entity.OilDefaultPriceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
@@ -31,6 +35,11 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public MutableLiveData<OilEntity> oilStationLiveData1 = new MutableLiveData<>();
     public MutableLiveData<List<BannerBean>> bannersLiveData = new MutableLiveData<>();
     public MutableLiveData<OilEntity.StationsBean> oilLiveData = new MutableLiveData<>();
+    public MutableLiveData<MultiplePriceBean> multiplePriceLiveData = new MutableLiveData<>();
+    public MutableLiveData<MonthCouponEntity> monthCouponLiveData = new MutableLiveData<>();
+    public MutableLiveData<OilDefaultPriceEntity> defaultPriceLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<CouponBean>> platformCouponLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<CouponBean>> businessCouponLiveData = new MutableLiveData<>();
 
 
     public void getOrderNews() {
@@ -59,6 +68,28 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
 
     public void getOilDetail(String gasId, double lat, double lng) {
         mRespository.getOilDetail(gasId, lat, lng, oilLiveData);
+    }
+
+    public void getMultiplePrice(String amount, String gasId, String oilNo, String isUserBill,
+                                 String platId, String businessAmount, String monthCouponId){
+        mRespository.getMultiplePrice(amount, gasId, oilNo, isUserBill, platId,
+                businessAmount, monthCouponId, multiplePriceLiveData);
+    }
+
+    public void getMonthCoupon(String gasId){
+        mRespository.getMonthCoupon(gasId, monthCouponLiveData);
+    }
+
+    public void getDefaultPrice(String gasId, String oilNo){
+        mRespository.getDefaultPrice(gasId, oilNo, defaultPriceLiveData);
+    }
+
+    public void getPlatformCoupon(String amount, String gasId, String oilNo){
+        mRespository.getPlatformCoupon(amount, gasId, oilNo, platformCouponLiveData);
+    }
+
+    public void getBusinessCoupon(String amount, String gasId, String oilNo){
+        mRespository.getBusinessCoupon(amount, gasId, oilNo, businessCouponLiveData);
     }
 
 }
