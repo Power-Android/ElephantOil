@@ -615,7 +615,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
                                   int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat) {
         //优惠券dialog
         mOilCouponDialog = new OilCouponDialog(this, this, amount, stationsBean,
-                oilNoPosition, gunNoPosition, oilNo, isPlat);
+                oilNoPosition, gunNoPosition, oilNo, isPlat, "");
         mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
             @Override
             public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat) {

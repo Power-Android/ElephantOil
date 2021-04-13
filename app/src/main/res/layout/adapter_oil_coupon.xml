@@ -5,15 +5,20 @@
     android:layout_height="@dimen/dp_80"
     android:layout_marginTop="@dimen/dp_3"
     android:layout_marginBottom="@dimen/dp_3"
-    android:id="@+id/rootView"
-    android:background="@color/color_F5">
-
-    <LinearLayout
+    android:id="@+id/rootView">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_80"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
         android:orientation="horizontal">
-
+        <View
+            android:id="@+id/line_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@drawable/shape_stroke_red_5radius"/>
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
+            android:id="@+id/layout_1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -21,7 +26,10 @@
             android:orientation="vertical"
             app:qmui_backgroundColor="@color/white"
             app:qmui_radiusBottomLeft="@dimen/dp_5"
-            app:qmui_radiusTopLeft="@dimen/dp_5">
+            app:qmui_radiusTopLeft="@dimen/dp_5"
+            android:layout_margin="@dimen/dp_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -63,18 +71,25 @@
         </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
         <View
+            android:id="@+id/separate"
             android:layout_width="@dimen/dp_13"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_coupon_line" />
+            android:background="@drawable/ic_coupon_line"
+            app:layout_constraintStart_toEndOf="@+id/layout_1"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:qmui_backgroundColor="@color/white"
             app:qmui_radiusBottomRight="@dimen/dp_5"
-            app:qmui_radiusTopRight="@dimen/dp_5">
+            app:qmui_radiusTopRight="@dimen/dp_5"
+            android:layout_margin="@dimen/dp_1"
+            app:layout_constraintStart_toEndOf="@+id/separate"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -115,7 +130,7 @@
                 android:src="@drawable/default_img_bg"
                 app:riv_corner_radius="@dimen/dp_3" />
         </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout

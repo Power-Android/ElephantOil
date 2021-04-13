@@ -41,10 +41,10 @@ public class OilCouponDialog extends BottomSheetDialog {
     private final DialogOilCouponBinding mBinding;
     private List<CouponBean> mList = new ArrayList<>();
     private OilCouponAdapter mOilCouponAdapter;
-    private String amount, oilNo;
+    private String amount, oilNo, id;
 
     public OilCouponDialog(Context context, BaseActivity activity, String amount, OilEntity.StationsBean stationsBean,
-                           int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat) {
+                           int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat, String id) {
         super(context, R.style.bottom_sheet_dialog);
         this.mContext = context;
         this.mActivity = activity;
@@ -54,6 +54,7 @@ public class OilCouponDialog extends BottomSheetDialog {
         this.gunNoPosition = gunNoPosition;
         this.oilNo = oilNo;
         this.isPlat = isPlat;
+        this.id = id;
         mBinding = DialogOilCouponBinding.bind(
                 View.inflate(context, R.layout.dialog_oil_coupon, null));
         init();
@@ -133,6 +134,9 @@ public class OilCouponDialog extends BottomSheetDialog {
         if (couponBeans != null && couponBeans.size() > 0) {
             mList = couponBeans;
             mOilCouponAdapter.setNewData(mList);
+            if (!TextUtils.isEmpty(id)){
+                mOilCouponAdapter.setChecked(id);
+            }
         }
     }
 

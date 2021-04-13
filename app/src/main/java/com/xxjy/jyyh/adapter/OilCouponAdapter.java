@@ -39,7 +39,13 @@ public class OilCouponAdapter extends BaseQuickAdapter<CouponBean, BaseViewHolde
                 .setText(R.id.item_coupon_date, String.format("%s - %s", item.getStartTime(), item.getEndTime()))
                 .addOnClickListener(R.id.rootView);
         GlideUtils.loadImage(mContext, item.getImgUrl(), helper.getView(R.id.image_view));
-
+        if (item.isSelected()) {
+            helper.getView(R.id.line_layout).setVisibility(View.VISIBLE);
+            helper.getView(R.id.separate).setBackground(mContext.getResources().getDrawable(R.drawable.ic_coupon_line_sel));
+        } else {
+            helper.getView(R.id.line_layout).setVisibility(View.GONE);
+            helper.getView(R.id.separate).setBackground(mContext.getResources().getDrawable(R.drawable.ic_coupon_line));
+        }
         switch (item.getStatus()) {
             //0真正可用 1已用 2过期  3时间未到 4 金额未达到
             case 0:
@@ -75,4 +81,14 @@ public class OilCouponAdapter extends BaseQuickAdapter<CouponBean, BaseViewHolde
         }
     }
 
+    public void setChecked(String id) {
+        for (int i = 0; i < getData().size(); i++) {
+            if (id.equals(getData().get(i).getId())) {
+                getData().get(i).setSelected(true);
+            } else {
+                getData().get(i).setSelected(false);
+            }
+        }
+        notifyDataSetChanged();
+    }
 }

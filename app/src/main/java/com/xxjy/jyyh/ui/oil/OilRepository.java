@@ -110,7 +110,9 @@ public class OilRepository extends BaseRepository {
         );
     }
 
-    public void getMultiplePrice(String amount, String gasId, String oilNo, String isUserBill, String platId, String businessAmount, String monthCouponId, MutableLiveData<MultiplePriceBean> multiplePriceLiveData) {
+    public void getMultiplePrice(String amount, String gasId, String oilNo, String isUserBill, String platId,
+                                 String businessAmount, String monthCouponId, boolean isUseCoupon, boolean isUseBusinessCoupon,
+                                 MutableLiveData<MultiplePriceBean> multiplePriceLiveData) {
         addDisposable(RxHttp.postForm(ApiService.OIL_MULTIPLE_PRICE)
                 .add("amount", amount)
                 .add(Constants.GAS_STATION_ID, gasId)
@@ -119,8 +121,8 @@ public class OilRepository extends BaseRepository {
                 .add("czbCouponAmount", TextUtils.isEmpty(businessAmount) ? "" : businessAmount)
                 .add("couponId", platId)
                 .add("monthCouponId", monthCouponId)
-                .add("canUseUserCoupon", true)
-                .add("canUseCzbCoupon", true)
+                .add("canUseUserCoupon", isUseCoupon)
+                .add("canUseCzbCoupon", isUseBusinessCoupon)
                 .asResponse(MultiplePriceBean.class)
                 .doOnSubscribe(disposable -> showLoading(true))
                 .doFinally(() -> showLoading(false))

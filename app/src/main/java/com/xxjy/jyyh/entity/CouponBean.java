@@ -38,6 +38,15 @@ public class CouponBean implements MultiItemEntity {
     private String oilStations;
     private int rangeType;
     private String linkUrl;
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getLinkUrl() {
         return linkUrl;

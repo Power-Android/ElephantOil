@@ -73,9 +73,9 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     }
 
     public void getMultiplePrice(String amount, String gasId, String oilNo, String isUserBill,
-                                 String platId, String businessAmount, String monthCouponId){
+                                 String platId, String businessAmount, String monthCouponId, boolean isUseCoupon, boolean isUseBusinessCoupon){
         mRespository.getMultiplePrice(amount, gasId, oilNo, isUserBill, platId,
-                businessAmount, monthCouponId, multiplePriceLiveData);
+                businessAmount, monthCouponId, isUseCoupon, isUseBusinessCoupon, multiplePriceLiveData);
     }
 
     public void getMonthCoupon(String gasId){
