@@ -2,7 +2,6 @@ package com.xxjy.jyyh.ui.home;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -29,7 +28,6 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SpanUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -82,7 +80,6 @@ import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.restaurant.RestaurantActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
-import com.xxjy.jyyh.ui.setting.SettingActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
@@ -144,6 +141,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private List<OilEntity.StationsBean> data = new ArrayList<>();
     private int pageNum = 1;
     private int pageSize = 10;
+    private boolean mIsUseCoupon = true, mIsUseBusinessCoupon = true;//是否使用优惠券
 
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
@@ -907,9 +905,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
             @Override
             public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
-                                           String amount, String oilNo) {
+                                           String amount, String oilNo, String couponId) {
                 if (position == 1 || position == 2) {
-                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, oilNo, position == 1);
+                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, oilNo, position == 1,
+                            couponId);
                 }
             }
 
@@ -929,21 +928,32 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     }
 
     private void showCouponDialog(OilEntity.StationsBean stationsBean, String amount,
-                                  int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat) {
+                                  int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat,
+                                  String couponId) {
         //优惠券dialog
         mOilCouponDialog = new OilCouponDialog(mContext, getBaseActivity(), amount, stationsBean,
-                oilNoPosition, gunNoPosition, oilNo, isPlat, "");
+                oilNoPosition, gunNoPosition, oilNo, isPlat, couponId);
         mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
             @Override
             public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat) {
+                if (isPlat){
+                    mIsUseCoupon = true;
+                }else {
+                    mIsUseBusinessCoupon = true;
+                }
                 List<CouponBean> data = adapter.getData();
-                mOilAmountDialog.setCouponInfo(data.get(position), isPlat, data.get(position).getExcludeType());
+                mOilAmountDialog.setCouponInfo(data.get(position), isPlat, data.get(position).getExcludeType(), mIsUseCoupon, mIsUseBusinessCoupon);
                 mOilCouponDialog.dismiss();
             }
 
             @Override
             public void onNoCouponClick(boolean isPlat) {
-                mOilAmountDialog.setCouponInfo(null, isPlat, "");
+                if (isPlat){
+                    mIsUseCoupon = false;
+                }else {
+                    mIsUseBusinessCoupon = false;
+                }
+                mOilAmountDialog.setCouponInfo(null, isPlat, "", mIsUseCoupon, mIsUseBusinessCoupon);
                 mOilCouponDialog.dismiss();
             }
         });

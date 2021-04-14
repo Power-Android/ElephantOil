@@ -227,7 +227,16 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/view1"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
+                <TextView
+                    android:id="@+id/discount_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小象加油已为您匹配最佳折扣组合"
+                    android:visibility="gone"
+                    android:textColor="@color/color_76FF"
+                    android:textSize="@dimen/sp_10"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_12"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/discount_recycler_view"
                     android:layout_width="match_parent"

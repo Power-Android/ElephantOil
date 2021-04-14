@@ -84,7 +84,6 @@ public class OilCouponDialog extends BottomSheetDialog {
                     mOnItemClickedListener.onOilCouponClick(adapter, view, position, isPlat);
                     dismiss();
                 }
-
             }
         });
         mBinding.noCouponTv.setOnClickListener(view -> {

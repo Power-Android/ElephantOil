@@ -2,14 +2,12 @@ package com.xxjy.jyyh.ui.oil;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alipay.sdk.app.PayTask;
 import com.amap.api.location.CoordinateConverter;
@@ -53,7 +51,6 @@ import com.xxjy.jyyh.entity.OilTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
-import com.xxjy.jyyh.ui.pay.PayQueryActivity;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.utils.OilUtils;
@@ -106,6 +103,8 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     private boolean isShowAmount = false;
 
     private PriceDescriptionDialog priceDescriptionDialog;
+    private boolean mIsUseCoupon = true, mIsUseBusinessCoupon = true;//是否使用优惠券
+
 
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
@@ -590,9 +589,9 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
         mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
             @Override
             public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
-                                           String amount, String oilNo) {
+                                           String amount, String oilNo, String couponId) {
                 if (position == 1 || position == 2) {
-                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, oilNo, position == 1);
+                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, oilNo, position == 1, couponId);
                 }
             }
 
@@ -612,21 +611,31 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     }
 
     private void showCouponDialog(OilEntity.StationsBean stationsBean, String amount,
-                                  int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat) {
+                                  int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat, String couponId) {
         //优惠券dialog
         mOilCouponDialog = new OilCouponDialog(this, this, amount, stationsBean,
-                oilNoPosition, gunNoPosition, oilNo, isPlat, "");
+                oilNoPosition, gunNoPosition, oilNo, isPlat, couponId);
         mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
             @Override
             public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat) {
+                if (isPlat){
+                    mIsUseCoupon = true;
+                }else {
+                    mIsUseBusinessCoupon = true;
+                }
                 List<CouponBean> data = adapter.getData();
-                mOilAmountDialog.setCouponInfo(data.get(position), isPlat, data.get(position).getExcludeType());
+                mOilAmountDialog.setCouponInfo(data.get(position), isPlat, data.get(position).getExcludeType(), mIsUseCoupon, mIsUseBusinessCoupon);
                 mOilCouponDialog.dismiss();
             }
 
             @Override
             public void onNoCouponClick(boolean isPlat) {
-                mOilAmountDialog.setCouponInfo(null, isPlat, "");
+                if (isPlat){
+                    mIsUseCoupon = false;
+                }else {
+                    mIsUseBusinessCoupon = false;
+                }
+                mOilAmountDialog.setCouponInfo(null, isPlat, "", mIsUseCoupon, mIsUseBusinessCoupon);
                 mOilCouponDialog.dismiss();
             }
         });

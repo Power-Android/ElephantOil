@@ -1,17 +1,11 @@
 package com.xxjy.jyyh.dialog;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -19,7 +13,6 @@ import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -30,7 +23,6 @@ import com.xxjy.jyyh.adapter.OilDiscountAdapter;
 import com.xxjy.jyyh.adapter.OilMonthAdapter;
 import com.xxjy.jyyh.adapter.TextWatcherAdapter;
 import com.xxjy.jyyh.base.BaseActivity;
-import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.SPConstants;
@@ -41,20 +33,12 @@ import com.xxjy.jyyh.entity.MultiplePriceBean;
 import com.xxjy.jyyh.entity.OilDefaultPriceEntity;
 import com.xxjy.jyyh.entity.OilDiscountEntity;
 import com.xxjy.jyyh.entity.OilEntity;
-import com.xxjy.jyyh.entity.PayOrderParams;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
-import per.goweii.anylayer.AnyLayer;
-import per.goweii.anylayer.Layer;
-import per.goweii.anylayer.dialog.DialogLayer;
-import per.goweii.anylayer.utils.AnimatorHelper;
 import rxhttp.RxHttp;
 
 /**
@@ -79,7 +63,7 @@ public class OilAmountDialog extends BottomSheetDialog {
     private List<CouponBean> platformCoupons = new ArrayList<>();
     private List<CouponBean> businessCoupons = new ArrayList<>();
     private CouponBean mPlatCouponBean, mBusinessCouponBean;
-    private String platId = "", businessAmount = "";//平台优惠券id， 商家优惠金额 每次刷新价格是要清空
+    private String platId = "", businessId = "", businessAmount = "";//平台优惠券id， 商家优惠金额 每次刷新价格是要清空
     private OilHotDialog mOilHotDialog;
     private OilServiceDialog mOilServiceDialog;
     private List<MonthCouponEntity.MonthCouponTemplatesBean> mOilMonthList = new ArrayList<>();
@@ -94,6 +78,7 @@ public class OilAmountDialog extends BottomSheetDialog {
     private boolean isSelecedPlat = true; //是否选择了平台优惠券，用于判断月度红包是否弹框
     private String mMonthCouponImgUrl;
     private String mMonthCouponRule;
+    private boolean isUseCoupon = true, isUseBusinessCoupon = true;
 
     public OilAmountDialog(Context context, BaseActivity activity, OilEntity.StationsBean stationsBean,
                            List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBeans,
@@ -175,7 +160,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                                 mOilMonthAdapter.isSelected(true);
                                 mBinding.monthRedCl.setSelected(true);
                                 mOilMonthTipDialog.dismiss();
-                                getMultiplePrice("", businessAmount, monthCouponId);
+                                getMultiplePrice("", businessAmount, monthCouponId, isUseCoupon, isUseBusinessCoupon);
                             }
 
                             @Override
@@ -195,7 +180,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                                     mExcludeType = "";
                                     mDiscountList.get(1).setPlatformDesc("暂无可用优惠券");
                                 }
-                                getMultiplePrice("", businessAmount, "");
+                                getMultiplePrice("", businessAmount, "", isUseCoupon, isUseBusinessCoupon);
                             }
                         });
                         mOilMonthTipDialog.show(mBinding.monthRedCheck);
@@ -207,12 +192,13 @@ public class OilAmountDialog extends BottomSheetDialog {
                     mOilMonthAdapter.isSelected(b);
                     //勾选了月度红包，取消平台优惠券
                     platId = "";
+                    isUseCoupon = false;//取消最优组合
                     mExcludeType = "";
                     mPlatCouponBean = null;
 //                    mDiscountList.get(1).setPlatformDesc("请选择优惠券");
                     mDiscountList.get(1).setPlatformDesc("-¥" + mAmountReduce);
                     mDiscountAdapter.notifyDataSetChanged();
-                    getMultiplePrice("", businessAmount, b ? monthCouponId : "");
+                    getMultiplePrice("", businessAmount, b ? monthCouponId : "", isUseCoupon, isUseBusinessCoupon);
                 }
             }
         });
@@ -238,7 +224,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                 mOnItemClickedListener.onOilDiscountClick(adapter, view, position,
                         mBinding.amountEt.getText().toString(),
                         String.valueOf(oilPriceListBeans
-                                .get(oilNoPosition).getOilNo()));
+                                .get(oilNoPosition).getOilNo()), position == 1 ? platId : businessId);
             }
         });
 
@@ -254,7 +240,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                         }
                     }
                     //刷新互斥价格
-                    getMultiplePrice(platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "");
+                    getMultiplePrice(platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", isUseCoupon, isUseBusinessCoupon);
                     break;
                 case R.id.item_title_desc://直降优惠服务费
                     if (mOilServiceDialog == null) {
@@ -273,7 +259,7 @@ public class OilAmountDialog extends BottomSheetDialog {
         getBusinessCoupon();//商家优惠券
         getBalance();//余额
         //再次进来时需要刷新数据
-        getMultiplePrice(platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "");
+        getMultiplePrice(platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", isUseCoupon, isUseBusinessCoupon);
     }
 
     private void refreshMonthStauts(String amount) {
@@ -425,7 +411,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                 .add("oilType", oilPriceListBeans.get(oilNoPosition).getOilType() + "")
                 .add("phone", SPUtils.getInstance().getString(SPConstants.MOBILE))
                 .add("xxCouponId", platId)
-                .add("czbCouponId", mBusinessCouponBean == null ? "" : mBusinessCouponBean.getId())
+                .add("czbCouponId", TextUtils.isEmpty(businessId) ? "" : businessId)
                 .add("czbCouponAmount", businessAmount)
                 .add("xxMonthCouponId", monthCouponId, mBinding.monthRedCheck.isChecked() && !TextUtils.isEmpty(monthCouponId))
                 .add("xxMonthCouponAmount", mAmountReduce, mBinding.monthRedCheck.isChecked() && !TextUtils.isEmpty(mAmountReduce))
@@ -524,7 +510,7 @@ public class OilAmountDialog extends BottomSheetDialog {
      * 获取互斥价格
      * 说明：商家优惠券和直降金额互斥
      */
-    private void getMultiplePrice(String platId, String businessAmount, String monthCouponId) {
+    private void getMultiplePrice(String platId, String businessAmount, String monthCouponId, boolean isUseCoupon, boolean isUseBusinessCoupon) {
         mBinding.loadingView.setVisibility(View.VISIBLE);
         RxHttp.postForm(ApiService.OIL_MULTIPLE_PRICE)
                 .add("amount", mBinding.amountEt.getText())
@@ -535,6 +521,8 @@ public class OilAmountDialog extends BottomSheetDialog {
                 .add("czbCouponAmount", TextUtils.isEmpty(businessAmount) ? "0" : businessAmount)
                 .add("couponId", platId)
                 .add("monthCouponId", monthCouponId)
+                .add("canUseUserCoupon", isUseCoupon)
+                .add("canUseCzbCoupon", isUseBusinessCoupon)
                 .asResponse(MultiplePriceBean.class)
                 .to(RxLife.toMain(mActivity))
                 .subscribe(multiplePriceBean -> {
@@ -547,6 +535,11 @@ public class OilAmountDialog extends BottomSheetDialog {
                                 }
                             }
                             mOilAmountAdapter.notifyDataSetChanged();
+                            if (multiplePriceBean.getBestuserCoupon() != null || multiplePriceBean.getBestBusinessCoupon() != null){
+                                mBinding.discountDesc.setVisibility(View.VISIBLE);
+                            }else {
+                                mBinding.discountDesc.setVisibility(View.GONE);
+                            }
                             //直降金额 //服务费
                             if (Float.parseFloat(multiplePriceBean.getTotalDiscountAmount()) > 0) {
                                 mDiscountAdapter.getData().get(0).setFallAmount(
@@ -555,6 +548,15 @@ public class OilAmountDialog extends BottomSheetDialog {
                                 mDiscountAdapter.getData().get(0).setFallAmount(
                                         Float.parseFloat(multiplePriceBean.getTotalDiscountAmount()));
                                 mDiscountAdapter.getData().get(0).setFallDesc("暂无优惠");
+                            }
+                            if (multiplePriceBean.getBestuserCoupon() != null){
+                                this.platId = multiplePriceBean.getBestuserCoupon().getId();
+                                mDiscountAdapter.getData().get(1).setPlatformDesc("-¥" + multiplePriceBean.getBestuserCoupon().getAmountReduce());
+                            }
+                            if (multiplePriceBean.getBestBusinessCoupon() != null){
+                                businessId = multiplePriceBean.getBestBusinessCoupon().getId();
+                                this.businessAmount = multiplePriceBean.getBestBusinessCoupon().getAmountReduce();
+                                mDiscountAdapter.getData().get(2).setBusinessDesc("-¥" + multiplePriceBean.getBestBusinessCoupon().getAmountReduce());
                             }
                             //升数
                             mBinding.literTv.setText(String.format("约%sL",
@@ -590,9 +592,13 @@ public class OilAmountDialog extends BottomSheetDialog {
      * @param couponBean
      * @param isPlat      是否是平台券
      * @param excludeType 0:不互斥; 1:与直降互斥; 2:与商家优惠券互斥; 3:与直降和商家优惠券互斥
+     * @param isUseCoupon
+     * @param isUseBusinessCoupon
      */
-    public void setCouponInfo(CouponBean couponBean, boolean isPlat, String excludeType) {//优惠券互斥
+    public void setCouponInfo(CouponBean couponBean, boolean isPlat, String excludeType, boolean isUseCoupon, boolean isUseBusinessCoupon) {//优惠券互斥
         if (couponBean != null) {
+            this.isUseCoupon = isUseCoupon;
+            this.isUseBusinessCoupon = isUseBusinessCoupon;
             if (isPlat) {
                 mPlatCouponBean = couponBean;
                 platId = couponBean.getId();
@@ -607,10 +613,12 @@ public class OilAmountDialog extends BottomSheetDialog {
                     case "2"://与商家优惠券互斥
                         if (businessCoupons.size() > 0) {
                             businessAmount = "";
+                            businessId = "";
                             mBusinessCouponBean = null;
                             mDiscountList.get(2).setBusinessDesc("请选择优惠券");
                         } else {
                             businessAmount = "";
+                            businessId = "";
                             mBusinessCouponBean = null;
                             mDiscountList.get(2).setBusinessDesc("暂无可用优惠券");
                         }
@@ -620,10 +628,12 @@ public class OilAmountDialog extends BottomSheetDialog {
                         mDiscountAdapter.getData().get(0).setService(false);
                         if (businessCoupons.size() > 0) {
                             businessAmount = "";
+                            businessId = "";
                             mBusinessCouponBean = null;
                             mDiscountList.get(2).setBusinessDesc("请选择优惠券");
                         } else {
                             businessAmount = "";
+                            businessId = "";
                             mBusinessCouponBean = null;
                             mDiscountList.get(2).setBusinessDesc("暂无可用优惠券");
                         }
@@ -636,6 +646,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                 mBinding.monthRedCl.setSelected(false);
             } else {
                 mBusinessCouponBean = couponBean;
+                businessId = couponBean.getId();
                 businessAmount = couponBean.getAmountReduce();
                 mDiscountList.get(2).setBusinessDesc("-¥" + couponBean.getAmountReduce());
                 if ("2".equals(mExcludeType) || "3".equals(mExcludeType)) {//选择商家优惠券后与平台优惠券互斥
@@ -654,32 +665,37 @@ public class OilAmountDialog extends BottomSheetDialog {
                 }
             } else {
                 businessAmount = "";
+                businessId = "";
                 mBusinessCouponBean = null;
                 mDiscountList.get(2).setBusinessDesc("请选择优惠券");
             }
         }
         mDiscountAdapter.notifyDataSetChanged();
-        getMultiplePrice(platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "");
+        getMultiplePrice(platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", isUseCoupon, isUseBusinessCoupon);
     }
 
     private void refreshData() {
         //每次价格改变时，要清空这俩
         platId = "";
+        businessId = "";
         businessAmount = "";
         mBusinessCouponBean = null;
+        if (!mBinding.monthRedCheck.isChecked()){
+            isUseCoupon = true;//价格改变时，设置成true
+        }
         if (mOilMonthAdapter.getData().size() > 0) {
             refreshMonthStauts(mBinding.amountEt.getText().toString().trim());
         }
         getPlatformCoupon();
         getBusinessCoupon();
         //刷新价格互斥
-        getMultiplePrice(platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "");
+        getMultiplePrice(platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", isUseCoupon, isUseBusinessCoupon);
     }
 
     public interface OnItemClickedListener {
 
         void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
-                                String amount, String oilNo);
+                                String amount, String oilNo, String couponId);
 
         void onCreateOrder(View view, String orderId, String payAmount);
 
