@@ -343,6 +343,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             mBinding.monthDiscountLayout.setVisibility(View.GONE);
             mBinding.balanceLayout.setVisibility(View.GONE);
             mBinding.payTypeLayout.setVisibility(View.GONE);
+            mBinding.payAmountLayout.setVisibility(View.GONE);
 
             mBinding.serviceChargeLayout.setVisibility(View.GONE);
             mBinding.amountUprightLayout.setVisibility(View.GONE);

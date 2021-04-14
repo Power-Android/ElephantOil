@@ -257,14 +257,12 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
             }
         });
         platformShowView.setOnClickListener(v -> {
-//            isPlatformShowAdd = true;
-//            getPlatformCouponVOs(0);
+
             platformCouponAdapter.addData(unCanData);
             platformShowView.setVisibility(View.INVISIBLE);
         });
         businessShowView.setOnClickListener(v -> {
-//            isBusinessShowAdd = true;
-//            getBusinessCoupons(0);
+
             businessCouponAdapter.addData(unCanData2);
             businessShowView.setVisibility(View.INVISIBLE);
         });
@@ -287,29 +285,20 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
     protected void dataObservable() {
         mViewModel.platformCouponLiveData.observe(this, data -> {
             mPlatformRefreshView.finishRefresh();
-//            if (isPlatformShowAdd) {
-//                platformCouponAdapter.addData(data);
-//            } else {
+
                 platformCouponAdapter.setNewData(data);
-//            }
+
 
         });
         mViewModel.businessCouponLiveData.observe(this, data -> {
             mBusinessRefreshView.finishRefresh();
-//            if (isBusinessShowAdd) {
-//                businessCouponAdapter.addData(data);
-//            } else {
+
                 businessCouponAdapter.setNewData(data);
-//            }
+
         });
 
         mViewModel.disablePlatformCouponLiveData.observe(this, data -> {
-//            mPlatformRefreshView.finishRefresh();
-//            if (isPlatformShowAdd) {
-//                platformCouponAdapter.addData(data);
-//            } else {
-//                platformCouponAdapter.setNewData(data);
-//            }
+
             if (data != null && data.size() > 0) {
                 platformShowView.setVisibility(View.VISIBLE);
                 unCanData.addAll(data);
@@ -320,12 +309,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 
         });
         mViewModel.disableBusinessCouponLiveData.observe(this, data -> {
-//            mBusinessRefreshView.finishRefresh();
-//            if (isBusinessShowAdd) {
-//                businessCouponAdapter.addData(data);
-//            } else {
-//                businessCouponAdapter.setNewData(data);
-//            }
+
             if (data != null && data.size() > 0) {
                 businessShowView.setVisibility(View.VISIBLE);
                 unCanData2.addAll(data);
@@ -342,35 +326,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
         });
     }
 
-    //    private void initTab() {
-//        QMUITabBuilder tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
-//        tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 16), QMUIDisplayHelper.sp2px(this, 17));
-//        tabBuilder.setColor(Color.parseColor("#8ABAFF"), Color.parseColor("#FFFFFF"));
-//        mBinding.tabView.addTab(tabBuilder.setText("平台优惠券").build(this));
-//        mBinding.tabView.addTab(tabBuilder.setText("商家优惠券").build(this));
-//        mBinding.tabView.addTab(tabBuilder.setText("兑换").build(this));
-//
-//        int space = QMUIDisplayHelper.dp2px(this, 10);
-//        mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
-//        mBinding.tabView.setItemSpaceInScrollMode(space);
-//        mBinding.tabView.setPadding(space, 0, space, 0);
-//        mBinding.tabView.setMode(QMUITabSegment.MODE_FIXED);
-//        mBinding.tabView.selectTab(0);
-//        mBinding.tabView.notifyDataChanged();
-//    }
-    private void changeBt(int type, QMUIRoundButton canUseBt, QMUIRoundButton noCanUseBt) {
-        if (type == 1) {
-            canUseBt.setBackgroundResource(R.drawable.shape_stroke_blue_15radius);
-            canUseBt.setTextColor(Color.parseColor("#1676FF"));
-            noCanUseBt.setBackgroundResource(0);
-            noCanUseBt.setTextColor(Color.parseColor("#585858"));
-        } else {
-            canUseBt.setBackgroundResource(0);
-            canUseBt.setTextColor(Color.parseColor("#585858"));
-            noCanUseBt.setBackgroundResource(R.drawable.shape_stroke_blue_15radius);
-            noCanUseBt.setTextColor(Color.parseColor("#1676FF"));
-        }
-    }
+
 
     private void getPlatformCouponVOs(int platformCanUse) {
         mViewModel.getPlatformCouponVOs(platformCanUse);
