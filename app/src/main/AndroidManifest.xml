@@ -60,8 +60,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
-        <activity android:name=".ui.oil.OilOrderActivity"></activity>
-        <activity android:name=".ui.oil.OilDetailsActivity" />
+        <activity android:name=".ui.oil.OilOrderActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.order.OtherOrderListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.oil.OilDetailsActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".PrivacyActivity"
             android:screenOrientation="portrait"
