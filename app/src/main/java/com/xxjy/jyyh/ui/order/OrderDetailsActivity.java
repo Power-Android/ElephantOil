@@ -311,6 +311,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             mBinding.amountUprightView.setText("-¥" + data.getAmountUpright());
             mBinding.refundTipsView.setText(data.getTips());
             mBinding.timeView.setText(data.getBuyTime());
+            mBinding.refundAmountView.setText("¥"+data.getRealRefundAmount());
+
             orderType = data.getType();
             switch (data.getType()) {
                 case 1:
@@ -333,8 +335,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             mBinding.applyRefundTimeView.setText(data.getApplyTime());
             mBinding.refundReasonLayout.setVisibility(View.VISIBLE);
             mBinding.refundReasonView.setText(data.getRefundReason());
-            mBinding.refundAmountLayout.setVisibility(View.VISIBLE);
-            mBinding.refundAmountView.setText("¥"+data.getRealRefundAmount());
+
+
             mBinding.orderManageLayout.setVisibility(View.GONE);
             mBinding.btLayout.setVisibility(View.GONE);
             mBinding.businessDirectDiscountLayout.setVisibility(View.GONE);
@@ -343,7 +345,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
             mBinding.monthDiscountLayout.setVisibility(View.GONE);
             mBinding.balanceLayout.setVisibility(View.GONE);
             mBinding.payTypeLayout.setVisibility(View.GONE);
-            mBinding.payAmountLayout.setVisibility(View.GONE);
+            mBinding.payAmountLayout.setVisibility(View.VISIBLE);
 
             mBinding.serviceChargeLayout.setVisibility(View.GONE);
             mBinding.amountUprightLayout.setVisibility(View.GONE);
@@ -354,7 +356,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                    mBinding.refundResultTimeLayout.setVisibility(View.GONE);
                     mBinding.refundTipsView.setVisibility(View.VISIBLE);
                     mBinding.refundResultTimeView.setVisibility(View.GONE);
-
+                    mBinding.refundAmountLayout.setVisibility(View.GONE);
 
                     break;
                 case 1:
@@ -363,6 +365,7 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.refundResultTimeTagView.setText("退款成功时间");
                     mBinding.refundResultTimeView.setText(data.getRefundSuccessTime());
                     mBinding.refundTipsView.setVisibility(View.VISIBLE);
+                    mBinding.refundAmountLayout.setVisibility(View.VISIBLE);
                     break;
 
                 case 2:
@@ -372,11 +375,13 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.refundResultTimeView.setText(data.getRefundFailTime());
                     mBinding.refundTipsView.setVisibility(View.GONE);
                     mBinding.refundResultTimeView.setVisibility(View.GONE);
+                    mBinding.refundAmountLayout.setVisibility(View.GONE);
                     break;
                 default:
                     mBinding.applyRefundTimeLayout.setVisibility(View.VISIBLE);
                     mBinding.refundResultTimeLayout.setVisibility(View.GONE);
                     mBinding.refundTipsView.setVisibility(View.VISIBLE);
+                    mBinding.refundAmountLayout.setVisibility(View.GONE);
                     break;
             }
 
