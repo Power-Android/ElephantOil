@@ -285,38 +285,38 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/color_E8" />
                 </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/refund_reason_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:minHeight="@dimen/dp_45">
+<!--                <RelativeLayout-->
+<!--                    android:id="@+id/refund_reason_layout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:minHeight="@dimen/dp_45">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="退款原因"
-                        android:textColor="@color/color_34"
-                        android:textSize="@dimen/sp_14" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:text="退款原因"-->
+<!--                        android:textColor="@color/color_34"-->
+<!--                        android:textSize="@dimen/sp_14" />-->
 
-                    <TextView
-                        android:id="@+id/refund_reason_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_100"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="--"
-                        android:textColor="@color/color_9A"
-                        android:textSize="@dimen/sp_14" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/refund_reason_view"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginLeft="@dimen/dp_100"-->
+<!--                        android:layout_alignParentRight="true"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:text="&#45;&#45;"-->
+<!--                        android:textColor="@color/color_9A"-->
+<!--                        android:textSize="@dimen/sp_14" />-->
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/color_E8" />
-                </RelativeLayout>
+<!--                    <View-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="0.5dp"-->
+<!--                        android:layout_alignParentBottom="true"-->
+<!--                        android:background="@color/color_E8" />-->
+<!--                </RelativeLayout>-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_45">
