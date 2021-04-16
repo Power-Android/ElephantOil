@@ -355,7 +355,6 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                    mBinding.applyRefundTimeLayout.setVisibility(View.VISIBLE);
                    mBinding.refundResultTimeLayout.setVisibility(View.GONE);
                     mBinding.refundTipsView.setVisibility(View.VISIBLE);
-                    mBinding.refundResultTimeView.setVisibility(View.GONE);
                     mBinding.refundAmountLayout.setVisibility(View.GONE);
 
                     break;
@@ -374,7 +373,6 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.refundResultTimeTagView.setText("退款失败时间");
                     mBinding.refundResultTimeView.setText(data.getRefundFailTime());
                     mBinding.refundTipsView.setVisibility(View.GONE);
-                    mBinding.refundResultTimeView.setVisibility(View.GONE);
                     mBinding.refundAmountLayout.setVisibility(View.GONE);
                     break;
                 default:
