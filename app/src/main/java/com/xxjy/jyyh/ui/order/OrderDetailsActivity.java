@@ -333,8 +333,8 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                 }
             }
             mBinding.applyRefundTimeView.setText(data.getApplyTime());
-            mBinding.refundReasonLayout.setVisibility(View.VISIBLE);
-            mBinding.refundReasonView.setText(data.getRefundReason());
+//            mBinding.refundReasonLayout.setVisibility(View.VISIBLE);
+//            mBinding.refundReasonView.setText(data.getRefundReason());
 
 
             mBinding.orderManageLayout.setVisibility(View.GONE);
