@@ -93,6 +93,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     public void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.topLayout);
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.noticeLayout);
+        BarUtils.addMarginTopEqualStatusBarHeight(mBinding.userDataLayout);
 
 
         boolean b = UserConstants.getGoneIntegral();
