@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.dialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -64,7 +65,7 @@ public class OilPayDialog extends BottomSheetDialog {
     private void init() {
         getWindow().getAttributes().windowAnimations =
                 R.style.bottom_sheet_dialog;
-        setCancelable(true);
+        setCancelable(false);
         setCanceledOnTouchOutside(false);
         setContentView(mBinding.getRoot());
         mBehavior = BottomSheetBehavior.from((View) mBinding.getRoot().getParent());

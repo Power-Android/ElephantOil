@@ -452,7 +452,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                     } else {
                         mDiscountAdapter.getData().get(1).setPlatformDesc("暂无可用优惠券");
                     }
-                    mDiscountAdapter.notifyDataSetChanged();
+//                    mDiscountAdapter.notifyDataSetChanged();
                 });
     }
 
@@ -473,7 +473,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                     } else {
                         mDiscountAdapter.getData().get(2).setBusinessDesc("暂无可用优惠券");
                     }
-                    mDiscountAdapter.notifyDataSetChanged();
+//                    mDiscountAdapter.notifyDataSetChanged();
                 });
     }
 

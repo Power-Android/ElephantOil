@@ -148,6 +148,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
             mStationsBean.getOilPriceList().get(i).setSelected(false);
             if (String.valueOf(mStationsBean.getOilPriceList().get(i).getOilNo()).equals(String.valueOf(mOilNo))) {
                 mOilNoPosition = i;
+                mOilNo = mStationsBean.getOilPriceList().get(i).getOilNo();
                 mStationsBean.getOilPriceList().get(i).setSelected(true);
                 mBinding.oilNameTv.setText(mStationsBean.getGasName());
                 mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
@@ -159,6 +160,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     mStationsBean.getOilPriceList().get(i).getGunNos().get(k).setSelected(false);
                     if (String.valueOf(mStationsBean.getOilPriceList().get(i).getGunNos().get(k).getGunNo()).equals(String.valueOf(mGunNo))) {
                         mGunNoPosition = k;
+                        mGunNo = mStationsBean.getOilPriceList().get(i).getGunNos().get(k).getGunNo();
                         mStationsBean.getOilPriceList().get(i).getGunNos().get(k).setSelected(true);
                         mBinding.oilGunTv.setText(mStationsBean.getOilPriceList().get(mOilNoPosition).getGunNos().get(mGunNoPosition).getGunNo() + "号枪");
                     }
@@ -385,18 +387,18 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 }
                 data.get(position).setSelect(true);
                 adapter.notifyDataSetChanged();
-                for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
-                    for (int j = 0; j < mStationsBean.getOilPriceList().get(i).getGunNos().size(); j++) {
-                        mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
-                    }
-                }
+
                 List<OilEntity.StationsBean.OilPriceListBean> oilPriceList = data.get(position).getOilPriceList();
                 for (int i = 0; i < oilPriceList.size(); i++) {
                     oilPriceList.get(i).setSelected(false);
                 }
                 oilPriceList.get(0).setSelected(true);
                 oilNumAdapter.setNewData(oilPriceList);
-                oilGunAdapter.setNewData(oilPriceList.get(mGunNoPosition).getGunNos());
+
+                for (int i = 0; i < oilPriceList.get(0).getGunNos().size(); i++) {
+                    oilPriceList.get(0).getGunNos().get(i).setSelected(false);
+                }
+                oilGunAdapter.setNewData(oilPriceList.get(0).getGunNos());
             }
 
             @Override
@@ -407,10 +409,9 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 }
                 data.get(position).setSelected(true);
                 adapter.notifyDataSetChanged();
-                for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
-                    for (int j = 0; j < mStationsBean.getOilPriceList().get(i).getGunNos().size(); j++) {
-                        mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
-                    }
+
+                for (int i = 0; i < data.get(position).getGunNos().size(); i++) {
+                    data.get(position).getGunNos().get(i).setSelected(false);
                 }
                 oilGunAdapter.setNewData(data.get(position).getGunNos());
             }
@@ -427,12 +428,34 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
 
             @Override
             public void onQuickClick(View view, OilNumAdapter oilNumAdapter, OilGunAdapter oilGunAdapter) {
-                for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
-                    if (mStationsBean.getOilPriceList().get(i).isSelected()) {
-                        mOilNoPosition = i;
-                        for (int j = 0; j < mStationsBean.getOilPriceList().get(i).getGunNos().size(); j++) {
-                            if (mStationsBean.getOilPriceList().get(i).getGunNos().get(j).isSelected()) {
-                                mGunNoPosition = j;
+                List<OilEntity.StationsBean.OilPriceListBean> numData = oilNumAdapter.getData();
+                for (int i = 0; i < numData.size(); i++) {
+                    if (numData.get(i).isSelected()){
+                        mOilNo = numData.get(i).getOilNo();
+                        for (int j = 0; j < mStationsBean.getOilPriceList().size(); j++) {
+                            mStationsBean.getOilPriceList().get(j).setSelected(false);
+                            if (String.valueOf(mOilNo).equals(String.valueOf(mStationsBean.getOilPriceList().get(j).getOilNo()))){
+                                mOilNoPosition = j;
+                                mStationsBean.getOilPriceList().get(j).setSelected(true);
+                            }
+                        }
+                    }
+                }
+
+                List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> gunData = oilGunAdapter.getData();
+                for (int i = 0; i < gunData.size(); i++) {
+                    if (gunData.get(i).isSelected()){
+                        mGunNo = gunData.get(i).getGunNo();
+                        for (int j = 0; j < mStationsBean.getOilPriceList().size(); j++) {
+                            if (String.valueOf(mOilNo).equals(String.valueOf(mStationsBean.getOilPriceList().get(j).getOilNo()))){
+                                List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> gunNos = stationsBean.getOilPriceList().get(j).getGunNos();
+                                for (int k = 0; k < gunNos.size(); k++) {
+                                    mStationsBean.getOilPriceList().get(j).getGunNos().get(k).setSelected(false);
+                                    if (String.valueOf(mGunNo).equals(String.valueOf(gunNos.get(k).getGunNo()))){
+                                        mGunNoPosition = k;
+                                        mStationsBean.getOilPriceList().get(j).getGunNos().get(k).setSelected(true);
+                                    }
+                                }
                             }
                         }
                     }
@@ -445,6 +468,12 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 mBinding.oilGunTv.setText(mStationsBean.getOilPriceList().get(mOilNoPosition).getGunNos()
                         .get(mGunNoPosition).getGunNo() + "号枪");
                 platId = ""; businessAmount = ""; businessId = "";//切换油类型后要清空券id
+                mBinding.amountEt.getText().clear();//清空价格,清空快捷金额状态
+                List<OilDefaultPriceEntity.DefaultAmountBean> data = mOilAmountAdapter.getData();
+                for (int i = 0; i < data.size(); i++) {
+                    data.get(i).setSelected(false);
+                }
+                mOilAmountAdapter.notifyDataSetChanged();
                 mViewModel.getMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
                         mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
                         platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon);
@@ -828,7 +857,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 } else {
                     mDiscountAdapter.getData().get(1).setPlatformDesc("暂无可用优惠券");
                 }
-                mDiscountAdapter.notifyDataSetChanged();
+//                mDiscountAdapter.notifyDataSetChanged();
             }
         });
 
@@ -841,7 +870,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 } else {
                     mDiscountAdapter.getData().get(2).setBusinessDesc("暂无可用优惠券");
                 }
-                mDiscountAdapter.notifyDataSetChanged();
+//                mDiscountAdapter.notifyDataSetChanged();
             }
         });
 
@@ -1008,5 +1037,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
             mOilPayDialog.dismiss();
             mOilPayDialog = null;
         }
+
+        refreshData();
     }
 }
