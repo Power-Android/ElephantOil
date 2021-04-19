@@ -111,6 +111,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
     private boolean mIsShowMonthToast = true;//切换油号后不弹吐司，设置成false
 
 
+
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
      */
