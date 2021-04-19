@@ -83,7 +83,7 @@
             android:layout_marginEnd="@dimen/dp_5"
             android:ellipsize="end"
             android:lines="1"
-            android:maxLength="16"
+            android:maxEms="16"
             android:textColor="@color/color_55"
             android:textSize="@dimen/sp_12"
             app:layout_constraintStart_toStartOf="@+id/oil_name_tv"

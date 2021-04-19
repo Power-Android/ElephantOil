@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.qmuiteam.qmui.arch.QMUIActivity;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 import com.xxjy.jyyh.R;
@@ -122,7 +123,7 @@ public abstract class BaseActivity extends QMUIFragmentActivity {
      */
     public void dismissLoadingDialog() {
         if (mLoadingDialog != null && mLoadingDialog.isShown()) {
-            mLoadingDialog.dismiss();
+            mLoadingDialog.onPreRemove();
         }
     }
 

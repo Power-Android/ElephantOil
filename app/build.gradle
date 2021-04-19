@@ -100,6 +100,7 @@ dependencies {
     implementation rootProject.ext.support["material"]
     implementation rootProject.ext.support["design"]
     implementation rootProject.ext.support["constraint-layout"]
+    implementation files('libs/jar_4_1_17.jar')
     androidTestImplementation rootProject.ext.support["junit"]
     androidTestImplementation rootProject.ext.support["espresso"]
     //jetpack

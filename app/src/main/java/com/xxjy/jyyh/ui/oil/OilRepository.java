@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.rxjava.rxlife.RxLife;
@@ -124,10 +125,15 @@ public class OilRepository extends BaseRepository {
                 .add("canUseUserCoupon", isUseCoupon)
                 .add("canUseCzbCoupon", isUseBusinessCoupon)
                 .asResponse(MultiplePriceBean.class)
-                .doOnSubscribe(disposable -> showLoading(true))
-                .doFinally(() -> showLoading(false))
+                .doOnSubscribe(disposable ->{
+                    showLoading(true);
+                })
+                .doFinally(() ->{
+                    showLoading(false);
+                })
                 .subscribe(multiplePriceBean -> {
                     multiplePriceLiveData.postValue(multiplePriceBean);
+                    showLoading(false);
                 }));
     }
 
