@@ -272,7 +272,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
     private void loginByCode(String codeNumber) {
         mViewModel.loginByCode(codeNumber, mPhoneNumber, wxOpenId, wxUnionId, UserConstants.getUuid(),
                 JPushInterface.getRegistrationID(this),
-                mBinding.invitationEt.getText().toString());
+                mBinding.invitationEt.getText().toString(),LoginActivity.isInvite);
     }
 
     private void loginForWx() {
@@ -290,7 +290,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
     }
 
     private void openId2Login(String openId, String accessToken) {
-        mViewModel.openId2Login(openId, accessToken);
+        mViewModel.openId2Login(openId, accessToken,LoginActivity.isInvite);
     }
 
     @Override

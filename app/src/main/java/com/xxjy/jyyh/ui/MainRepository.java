@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.HomeNewUserBean;
 
 import rxhttp.RxHttp;
 
@@ -20,6 +22,15 @@ public class MainRepository extends BaseRepository {
                 .asResponse(Boolean.class)
                 .subscribe(b -> {
                     osLiveData.postValue(b);
+                })
+        );
+    }
+    public void newUserStatus(MutableLiveData<HomeNewUserBean> newUserLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.NEW_USER_STATUS)
+                .add("code","newuser")
+                .asResponse(HomeNewUserBean.class)
+                .subscribe(b -> {
+                    newUserLiveData.postValue(b);
                 })
         );
     }

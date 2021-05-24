@@ -117,8 +117,8 @@
                         <LinearLayout
                             android:id="@+id/view1"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_250"
-                            android:background="@drawable/ic_intergral_top_bg"
+                            android:layout_height="@dimen/dp_110"
+                            android:background="@drawable/ic_intergral_top_bg_2"
                             android:orientation="vertical">
 
                             <LinearLayout
@@ -170,59 +170,60 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/view3"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_257"
-                            android:background="@drawable/sign_in_bg"
-                            android:layout_marginTop="@dimen/dp_90"
-                            android:orientation="vertical"
-                            android:layout_marginStart="@dimen/dp_8"
-                            android:layout_marginEnd="@dimen/dp_8">
-                            <TextView
-                                android:id="@+id/signin_desc"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="已连续签到2天，额外获得10元加油券"
-                                android:textSize="@dimen/sp_13"
-                                android:textColor="@color/color_34"
-                                android:textStyle="bold"
-                                android:drawableLeft="@drawable/ic_coin"
-                                android:drawablePadding="@dimen/dp_3"
-                                android:layout_marginTop="@dimen/dp_24"
-                                android:layout_marginStart="@dimen/dp_20"/>
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/sign_in_recycler"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dp_3"
-                                android:layout_marginStart="@dimen/dp_18"
-                                android:layout_marginEnd="@dimen/dp_18"
-                                />
-                            <TextView
-                                android:id="@+id/sign_in_tv"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dp_42"
-                                android:layout_marginStart="@dimen/dp_40"
-                                android:layout_marginEnd="@dimen/dp_40"
-                                android:background="@drawable/selector_sign_in_button"
-                                android:text="立即签到领积分"
-                                android:textSize="@dimen/sp_16"
-                                android:textStyle="bold"
-                                android:textColor="@color/white"
-                                android:layout_gravity="center_horizontal"
-                                android:gravity="center"
-                                android:layout_marginTop="@dimen/dp_18"
-                                android:layout_marginBottom="@dimen/dp_12"
-                                />
-                            <ImageView
-                                android:id="@+id/sign_in_rule"
-                                android:layout_width="@dimen/dp_60"
-                                android:layout_height="@dimen/dp_11"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/sign_in_rule_icon"
-                                android:layout_marginBottom="@dimen/dp_25"/>
-                        </LinearLayout>
+<!--                        <LinearLayout-->
+<!--                            android:id="@+id/view3"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="@dimen/dp_257"-->
+<!--                            android:background="@drawable/sign_in_bg"-->
+<!--                            android:layout_marginTop="@dimen/dp_90"-->
+<!--                            android:visibility="gone"-->
+<!--                            android:orientation="vertical"-->
+<!--                            android:layout_marginStart="@dimen/dp_8"-->
+<!--                            android:layout_marginEnd="@dimen/dp_8">-->
+<!--                            <TextView-->
+<!--                                android:id="@+id/signin_desc"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="已连续签到2天，额外获得10元加油券"-->
+<!--                                android:textSize="@dimen/sp_13"-->
+<!--                                android:textColor="@color/color_34"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:drawableLeft="@drawable/ic_coin"-->
+<!--                                android:drawablePadding="@dimen/dp_3"-->
+<!--                                android:layout_marginTop="@dimen/dp_24"-->
+<!--                                android:layout_marginStart="@dimen/dp_20"/>-->
+<!--                            <androidx.recyclerview.widget.RecyclerView-->
+<!--                                android:id="@+id/sign_in_recycler"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginTop="@dimen/dp_3"-->
+<!--                                android:layout_marginStart="@dimen/dp_18"-->
+<!--                                android:layout_marginEnd="@dimen/dp_18"-->
+<!--                                />-->
+<!--                            <TextView-->
+<!--                                android:id="@+id/sign_in_tv"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="@dimen/dp_42"-->
+<!--                                android:layout_marginStart="@dimen/dp_40"-->
+<!--                                android:layout_marginEnd="@dimen/dp_40"-->
+<!--                                android:background="@drawable/selector_sign_in_button"-->
+<!--                                android:text="立即签到领积分"-->
+<!--                                android:textSize="@dimen/sp_16"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:textColor="@color/white"-->
+<!--                                android:layout_gravity="center_horizontal"-->
+<!--                                android:gravity="center"-->
+<!--                                android:layout_marginTop="@dimen/dp_18"-->
+<!--                                android:layout_marginBottom="@dimen/dp_12"-->
+<!--                                />-->
+<!--                            <ImageView-->
+<!--                                android:id="@+id/sign_in_rule"-->
+<!--                                android:layout_width="@dimen/dp_60"-->
+<!--                                android:layout_height="@dimen/dp_11"-->
+<!--                                android:layout_gravity="center_horizontal"-->
+<!--                                android:src="@drawable/sign_in_rule_icon"-->
+<!--                                android:layout_marginBottom="@dimen/dp_25"/>-->
+<!--                        </LinearLayout>-->
 
                         <LinearLayout
                             android:id="@+id/view2"
@@ -231,7 +232,7 @@
                             android:visibility="visible"
                             android:background="@color/color_F5"
                             android:orientation="vertical"
-                            android:layout_below="@+id/view3"
+                            android:layout_below="@+id/view1"
                             android:paddingLeft="@dimen/dp_12"
                             android:paddingTop="@dimen/dp_10"
                             android:paddingRight="@dimen/dp_12">

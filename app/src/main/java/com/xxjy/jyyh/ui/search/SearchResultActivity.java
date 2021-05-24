@@ -26,9 +26,12 @@ import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.room.DBInstance;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
+import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
 import com.xxjy.jyyh.ui.oil.OilViewModel;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +83,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     @Override
                     public void onLogin() {
                         List<OilEntity.StationsBean> data = adapter.getData();
-                        Intent intent = new Intent(SearchResultActivity.this, OilDetailActivity.class);
+//                        Intent intent = new Intent(SearchResultActivity.this, OilDetailActivity.class);
+                        Intent intent = new Intent(SearchResultActivity.this, OilDetailsActivity.class);
                         intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
                         intent.putExtra(Constants.OIL_NUMBER_ID, data.get(position).getOilNo());
                         startActivity(intent);
@@ -97,6 +101,9 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             selectDistanceDialog.setSelectPosition(5);
 
             selectOilNumDialog = new SelectOilNumDialog(getContext(), mCheckOilGasId, mBinding.tabLayout, mBinding.getRoot());
+
+            EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
+                    TrackingConstant.SEARCH_LIST, "", "type=1");
 
         } else {
             mBinding.tab1Tv.setText("综合");
@@ -120,6 +127,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             });
 
             getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
+            EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
+                    TrackingConstant.SEARCH_LIST, "", "type=2");
         }
     }
 

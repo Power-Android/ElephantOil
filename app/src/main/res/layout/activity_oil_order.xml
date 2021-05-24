@@ -78,7 +78,7 @@
                         android:id="@+id/oil_address_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_8"
+                        android:layout_marginTop="@dimen/dp_5"
                         app:layout_constraintTop_toBottomOf="@+id/oil_name_tv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toTopOf="@+id/oil_price_tv"
@@ -125,15 +125,16 @@
                         android:textColor="@color/color_34"
                         android:textStyle="bold"
                         android:textSize="@dimen/sp_13"
-                        android:layout_marginTop="@dimen/common_margin"
+                        android:layout_marginTop="@dimen/dp_13"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/edit_layout"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_51"
                         android:layout_marginTop="@dimen/dp_8"
                         android:background="@drawable/shape_stroke_blue_4radius"
-                        android:layout_marginBottom="@dimen/common_margin"
+                        android:layout_marginBottom="@dimen/dp_20"
                         app:layout_constraintTop_toBottomOf="@+id/view1">
                         <TextView
                             android:id="@+id/view2"
@@ -223,9 +224,9 @@
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:id="@+id/amount_input_cl"
                                     android:layout_width="match_parent"
-                                    android:layout_height="@dimen/dp_44"
+                                    android:layout_height="@dimen/dp_52"
                                     android:layout_marginStart="@dimen/dp_20"
-                                    android:layout_marginTop="@dimen/dp_15"
+                                    android:layout_marginTop="@dimen/dp_8"
                                     android:layout_marginEnd="@dimen/dp_20"
                                     android:background="@drawable/shape_stroke_blue_4radius"
                                     app:layout_constraintTop_toBottomOf="@+id/tv4">
@@ -245,8 +246,8 @@
 
                                     <EditText
                                         android:id="@+id/amount_et"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="234dp"
+                                        android:layout_height="36dp"
                                         android:layout_marginStart="@dimen/dp_3"
                                         android:layout_marginEnd="@dimen/dp_12"
                                         android:background="@null"
@@ -285,65 +286,39 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/dp_18"
-                                    android:layout_marginTop="@dimen/dp_5"
+                                    android:layout_marginTop="@dimen/dp_8"
                                     android:layout_marginEnd="@dimen/dp_18"
                                     app:layout_constraintTop_toBottomOf="@+id/amount_input_cl" />
 
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:id="@+id/month_red_cl"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:visibility="visible"
+                                    android:layout_height="@dimen/dp_150"
+                                    android:visibility="gone"
                                     android:layout_marginStart="@dimen/dp_20"
                                     android:layout_marginEnd="@dimen/dp_20"
                                     android:layout_marginTop="@dimen/dp_5"
-                                    android:background="@drawable/selector_month_red"
+                                    android:background="@drawable/red_month_icon"
                                     app:layout_constraintTop_toBottomOf="@+id/amount_recycler_view">
-                                    <ImageView
-                                        android:id="@+id/view4"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:src="@drawable/month_red_text"
-                                        android:layout_marginStart="@dimen/dp_12"
-                                        android:layout_marginTop="@dimen/dp_17"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"/>
                                     <TextView
                                         android:id="@+id/month_red_desc"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textSize="@dimen/sp_11"
-                                        android:textColor="@color/color_1300"
-                                        android:layout_marginTop="@dimen/dp_5"
-                                        app:layout_constraintTop_toBottomOf="@+id/view4"
-                                        app:layout_constraintStart_toStartOf="@+id/view4"/>
-                                    <ImageView
-                                        android:id="@+id/month_red_rule"
-                                        android:layout_width="@dimen/dp_56"
-                                        android:layout_height="@dimen/dp_11"
-                                        android:src="@drawable/month_red_rule"
-                                        android:layout_marginEnd="@dimen/dp_12"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="@+id/view4"/>
+                                        android:textColor="@color/black"
+                                        android:layout_marginTop="@dimen/dp_38"
+                                        android:layout_marginStart="@dimen/dp_12"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"/>
                                     <androidx.recyclerview.widget.RecyclerView
                                         android:id="@+id/month_recycler_view"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/dp_10"
+                                        android:layout_height="0dp"
+                                        android:layout_marginTop="@dimen/dp_5"
+                                        android:layout_marginBottom="@dimen/dp_8"
                                         app:layout_constraintTop_toBottomOf="@+id/month_red_desc"
-                                        app:layout_constraintStart_toStartOf="@+id/view4" />
-                                    <TextView
-                                        android:id="@+id/view5"
-                                        android:layout_width="@dimen/dp_53"
-                                        android:layout_height="@dimen/dp_13"
-                                        android:text="超值单单减"
-                                        android:textSize="@dimen/sp_9"
-                                        android:textColor="#FF4B33"
-                                        android:gravity="center"
-                                        android:layout_marginEnd="@dimen/dp_10"
-                                        android:background="@drawable/shape_stroke_red_3raduis"
-                                        app:layout_constraintTop_toTopOf="@+id/month_recycler_view"
-                                        app:layout_constraintEnd_toEndOf="parent"/>
+                                        app:layout_constraintStart_toStartOf="@+id/month_red_desc"
+                                        app:layout_constraintBottom_toTopOf="@+id/month_red_rule"/>
                                     <TextView
                                         android:id="@+id/month_red_money"
                                         android:layout_width="wrap_content"
@@ -351,17 +326,18 @@
                                         android:text="¥8.8"
                                         android:textSize="@dimen/sp_20"
                                         android:textStyle="bold"
-                                        android:textColor="@color/color_1300"
+                                        android:textColor="@color/white"
                                         android:layout_marginTop="@dimen/dp_5"
                                         android:layout_marginEnd="@dimen/dp_4"
                                         android:includeFontPadding="false"
-                                        app:layout_constraintTop_toBottomOf="@+id/view5"
+                                        app:layout_constraintTop_toTopOf="@+id/month_recycler_view"
+                                        app:layout_constraintBottom_toBottomOf="@+id/month_recycler_view"
                                         app:layout_constraintEnd_toStartOf="@+id/month_red_check" />
                                     <CheckBox
                                         android:id="@+id/month_red_check"
                                         android:layout_width="@dimen/common_margin"
                                         android:layout_height="@dimen/common_margin"
-                                        android:background="@drawable/selector_checkbox"
+                                        android:background="@drawable/selector_red_month"
                                         android:button="@null"
                                         android:layout_marginEnd="@dimen/dp_12"
                                         app:layout_constraintTop_toTopOf="@+id/month_red_money"
@@ -371,13 +347,90 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="请您购买前仔细阅读月度红包活动规则"
-                                        android:layout_marginTop="@dimen/dp_8"
-                                        android:layout_marginBottom="@dimen/common_margin"
+                                        android:layout_marginBottom="@dimen/dp_11"
                                         android:textSize="@dimen/sp_10"
-                                        android:textColor="#7F7F7F"
-                                        app:layout_constraintTop_toBottomOf="@+id/month_recycler_view"
+                                        android:textColor="@color/black"
                                         app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="@id/view4"/>
+                                        app:layout_constraintStart_toStartOf="@id/month_red_desc"/>
+                                    <ImageView
+                                        android:id="@+id/month_red_rule"
+                                        android:layout_width="@dimen/dp_74"
+                                        android:layout_height="@dimen/dp_12"
+                                        android:src="@drawable/month_red_rule_icon"
+                                        android:layout_marginEnd="@dimen/dp_12"
+                                        android:layout_marginBottom="@dimen/dp_12"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"/>
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/redeem_cl"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dp_10"
+                                    app:layout_constraintTop_toBottomOf="@+id/month_red_cl">
+                                    <View
+                                        android:id="@+id/redeem_view1"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/dp_10"
+                                        android:background="@color/color_F5"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"/>
+                                    <View
+                                        android:id="@+id/redeem_view2"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/dp_10"
+                                        android:background="@color/color_F5"
+                                        app:layout_constraintTop_toBottomOf="@+id/redeem_recycler"
+                                        app:layout_constraintStart_toStartOf="parent"/>
+                                    <ImageView
+                                        android:id="@+id/redeem_view3"
+                                        android:layout_width="@dimen/dp_19"
+                                        android:layout_height="@dimen/dp_22"
+                                        android:src="@drawable/redeem_icon"
+                                        android:layout_marginTop="@dimen/dp_10"
+                                        android:layout_marginStart="@dimen/dp_20"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@+id/redeem_view1"/>
+                                    <TextView
+                                        android:id="@+id/redeem_view4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="超值搭配"
+                                        android:textSize="@dimen/sp_13"
+                                        android:textColor="@color/color_2C"
+                                        android:textStyle="bold"
+                                        android:layout_marginStart="@dimen/dp_4"
+                                        app:layout_constraintStart_toEndOf="@+id/redeem_view3"
+                                        app:layout_constraintBottom_toBottomOf="@+id/redeem_view3"/>
+                                    <TextView
+                                        android:id="@+id/redeem_view5"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="只需5元享受超值商品"
+                                        android:textSize="@dimen/sp_10"
+                                        android:textColor="@color/color_76FF"
+                                        android:layout_marginStart="@dimen/dp_7"
+                                        app:layout_constraintStart_toEndOf="@+id/redeem_view4"
+                                        app:layout_constraintBaseline_toBaselineOf="@+id/redeem_view4"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="附近有31家门店 立即查看 >"
+                                        android:textSize="@dimen/sp_10"
+                                        android:textColor="@color/color_76FF"
+                                        app:layout_constraintBaseline_toBaselineOf="@+id/redeem_view4"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        android:layout_marginEnd="@dimen/dp_20"/>
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/redeem_recycler"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/dp_12"
+                                        android:layout_marginStart="@dimen/dp_20"
+                                        android:layout_marginEnd="@dimen/dp_20"
+                                        android:paddingBottom="@dimen/dp_17"
+                                        app:layout_constraintTop_toBottomOf="@+id/redeem_view3"
+                                        app:layout_constraintBottom_toTopOf="@+id/redeem_view2"/>
                                 </androidx.constraintlayout.widget.ConstraintLayout>
                                 <TextView
                                     android:id="@+id/discount_desc"
@@ -405,12 +458,12 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="活动说明"
+                                    android:visibility="gone"
                                     android:textSize="@dimen/sp_12"
                                     android:textColor="@color/color_9A"
                                     android:drawableRight="@drawable/oil_desc_iv"
                                     android:drawablePadding="@dimen/dp_5"
                                     android:layout_marginStart="@dimen/dp_20"
-                                    android:layout_marginTop="@dimen/dp_5"
                                     android:layout_marginBottom="@dimen/dp_30"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/discount_recycler_view" />

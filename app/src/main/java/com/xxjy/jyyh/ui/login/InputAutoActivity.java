@@ -163,7 +163,7 @@ public class InputAutoActivity extends BindingActivity<ActivityInputAutoBinding,
     }
 
     private void bindPhone(String autoCode) {
-        mViewModel.appBindPhone(TAG_LOGIN_PHONE_NUMBER, autoCode, TAG_LOGIN_WXOPENID, TAG_LOGIN_UNIONID,INVITE_CODE, JPushInterface.getRegistrationID(this));
+        mViewModel.appBindPhone(TAG_LOGIN_PHONE_NUMBER, autoCode, TAG_LOGIN_WXOPENID, TAG_LOGIN_UNIONID,INVITE_CODE, JPushInterface.getRegistrationID(this),LoginActivity.isInvite);
     }
 
     /**

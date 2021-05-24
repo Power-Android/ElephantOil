@@ -483,7 +483,8 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
                         Glide.with(holder.imageView)
                                 .load(url)
                                 .apply(new RequestOptions()
-                                        .error(R.drawable.default_img_bg))
+                                        .placeholder(R.drawable.bg_banner_loading)
+                                        .error(R.drawable.bg_banner_error))
                                 .into(holder.imageView);
                     }
                 }).addBannerLifecycleObserver(this)

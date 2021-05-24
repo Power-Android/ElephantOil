@@ -15,11 +15,14 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilPayTypeAdapter;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.databinding.DialogOilPayLayoutBinding;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.PayTypeBean;
 import com.xxjy.jyyh.utils.UiUtils;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
@@ -74,6 +77,8 @@ public class OilPayDialog extends BottomSheetDialog {
     }
 
     private void initData() {
+        EventTrackingManager.getInstance().tracking(mContext, mActivity, String.valueOf(++Constants.PV_ID),
+                TrackingConstant.GAS_PAYMENT, "", "gas_id=" + stationsBean.getGasId() + ";type=1");
         mBinding.payAmountTv.setText(payAmount);
         mBinding.payOilInfoTv.setText(stationsBean.getGasName() + "-" +
                 oilPriceListBean.get(oilNoPosition).getOilName());
@@ -107,6 +112,8 @@ public class OilPayDialog extends BottomSheetDialog {
                     return;
                 }
                 UiUtils.canClickViewStateDelayed(view, 1000);
+                EventTrackingManager.getInstance().tracking(mContext, mActivity, String.valueOf(++Constants.PV_ID),
+                        TrackingConstant.GAS_PAYMENT, "", "gas_id=" + stationsBean.getGasId() + ";type=2");
                 mOnItemClickedListener.onPayOrderClick(payType, orderId, payAmount);
             }
         });

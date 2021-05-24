@@ -17,12 +17,14 @@ import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilDistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
+import com.xxjy.jyyh.entity.QueryRefuelJobEntity;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.functions.Consumer;
 import rxhttp.RxHttp;
 
 /**
@@ -34,8 +36,7 @@ import rxhttp.RxHttp;
 public class HomeRepository extends BaseRepository {
 
     /**
-     * @param locationLiveData
-     * 定位获取经纬度
+     * @param locationLiveData 定位获取经纬度
      */
     public void getLocation(MutableLiveData<LocationEntity> locationLiveData) {
         LocationEntity locationEntity = new LocationEntity();
@@ -74,10 +75,9 @@ public class HomeRepository extends BaseRepository {
     /**
      * @param lat
      * @param lng
-     * @param homeOilLiveData
-     * 首页油站
+     * @param homeOilLiveData 首页油站
      */
-    public void getHomeOil(double lat, double lng,String gasId,
+    public void getHomeOil(double lat, double lng, String gasId,
                            MutableLiveData<OilEntity> homeOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.HOME_OIL)
                 .add(Constants.LATITUDE, lat, lat != 0)
@@ -89,8 +89,7 @@ public class HomeRepository extends BaseRepository {
     }
 
     /**
-     * @param oftenOilLiveData
-     * 常去油站
+     * @param oftenOilLiveData 常去油站
      */
     public void getOftenOils(MutableLiveData<List<OfentEntity>> oftenOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.OFTEN_OIL)
@@ -101,22 +100,17 @@ public class HomeRepository extends BaseRepository {
     }
 
     /**
-     * @param gasId
-     * @param refuelOilLiveData
-     * 加油任务
+     * @param refuelOilLiveData 加油任务
      */
-    public void getRefuelJob(String gasId,
-                             MutableLiveData<String> refuelOilLiveData) {
-        addDisposable(RxHttp.postForm(ApiService.REFUEL_JOB)
-                .add(Constants.GAS_STATION_ID, gasId)
-                .asString()
-                .subscribe( data-> refuelOilLiveData.postValue(data))
+    public void getRefuelJob(MutableLiveData<QueryRefuelJobEntity> refuelOilLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.QUERY_REFUEL_JOB)
+                .asResponse(QueryRefuelJobEntity.class)
+                .subscribe(data -> refuelOilLiveData.postValue(data))
         );
     }
 
     /**
-     * @param productLiveData
-     * 首页积分豪礼
+     * @param productLiveData 首页积分豪礼
      */
     public void getHomeProduct(MutableLiveData<List<HomeProductEntity.FirmProductsVoBean>> productLiveData) {
         addDisposable(RxHttp.postForm(ApiService.HOME_PRODUCT)
@@ -142,21 +136,30 @@ public class HomeRepository extends BaseRepository {
 
     public void checkDistance(String gasId, MutableLiveData<OilDistanceEntity> distanceLiveData) {
         addDisposable(RxHttp.postForm(ApiService.GET_PAY_DISTANCE)
-                .add("gasId",gasId)
+                .add("gasId", gasId)
                 .add(Constants.LATITUDE, UserConstants.getLatitude())
                 .add(Constants.LONGTIDUE, UserConstants.getLongitude())
                 .asResponse(OilDistanceEntity.class)
                 .subscribe(oilDistanceEntity -> distanceLiveData.postValue(oilDistanceEntity))
         );
     }
-    public void getStoreList(int pageNum,int pageSize, MutableLiveData<List<OilEntity.StationsBean>> storeLiveData) {
+
+    public void getStoreList(int pageNum, int pageSize, MutableLiveData<List<OilEntity.StationsBean>> storeLiveData) {
         addDisposable(RxHttp.postForm(ApiService.GET_STORE_LIST)
-                .add("pageNum",pageNum)
-                .add("pageSize",pageSize)
+                .add("pageNum", pageNum)
+                .add("pageSize", pageSize)
                 .add(Constants.LATITUDE, UserConstants.getLatitude())
                 .add(Constants.LONGTIDUE, UserConstants.getLongitude())
                 .asResponseList(OilEntity.StationsBean.class)
                 .subscribe(data -> storeLiveData.postValue(data))
         );
+    }
+
+    public void receiverJobCoupon(String id, String couponId, MutableLiveData<String> receiverCouponLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.RECEIVE_OIL_JOB_COUPON)
+                .add("id", id)
+                .add("couponId", couponId)
+                .asResponse(String.class)
+                .subscribe(s -> receiverCouponLiveData.postValue(s)));
     }
 }

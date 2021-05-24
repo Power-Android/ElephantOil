@@ -17,6 +17,18 @@ public class Constants {
     public static final String YINSI_ZHENG_CE = CONFIG_BASE_URL + "found/articles/400222";
     public static final String INTEGRAL_EXPLANATION_URL = CONFIG_BASE_URL + "mall/introduction";
 
+    //签到链接https://tcore.qqgyhk.com/oil/marketList?meet=1,
+    // 营销活动聚合页https://tcore.qqgyhk.com/oil/marketList，
+    // 购买月卡https://tcore.qqgyhk.com/oil/monthCardBuy，
+    // 提前购买https://tcore.qqgyhk.com/oil/monthCard，
+    // 新人好礼https://tcore.qqgyhk.com/oil/newUserGift
+    public static final String SIGN_IN_URL = CONFIG_BASE_URL + "oil/marketList?meet=1";
+    public static final String MARKET_ACTIVITIES_URL = CONFIG_BASE_URL + "oil/marketList";
+    public static final String BUY_MONTH_CARD_URL = CONFIG_BASE_URL + "oil/monthCardBuy";
+    public static final String BUY_IN_ADVANCE_MONTH_CARD_URL = CONFIG_BASE_URL + "oil/monthCard";
+    public static final String NEW_USER_GIFT_URL = CONFIG_BASE_URL + "oil/newUserGift";
+
+
     /**
      * release服务器
      */
@@ -74,5 +86,6 @@ public class Constants {
 
     //eventBus
 
+    public static int PV_ID = 0;
 
 }

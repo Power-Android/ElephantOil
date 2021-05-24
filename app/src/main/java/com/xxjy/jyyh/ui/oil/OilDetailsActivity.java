@@ -58,6 +58,8 @@ import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.utils.OilUtils;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.xxjy.jyyh.utils.pay.IPayListener;
 import com.xxjy.jyyh.utils.pay.PayHelper;
@@ -106,7 +108,11 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         //首页油站
-        mViewModel.getOilDetail(mGasId, mLat, mLng);
+        mViewModel.getOilDetail(mGasId, Double.parseDouble(UserConstants.getLatitude()), Double.parseDouble(UserConstants.getLongitude()));
+//        requestPermission();
+
+        EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
+                TrackingConstant.GAS_DETAIL, "", "gas_id=" + mGasId);
 
         //标签列表
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
@@ -207,9 +213,6 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
 
     private void requestPermission() {
         PermissionUtils.permission(
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION)
                 .callback(new PermissionUtils.SimpleCallback() {
@@ -258,6 +261,8 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                     if (isFar) {
                         showChoiceOil(mStationsBean.getGasName(), view);
                     } else {
+                        EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
+                                TrackingConstant.GAS_GUN_NO, "", "type=3");
                         Intent intent = new Intent(this, OilOrderActivity.class);
                         intent.putExtra("stationsBean", (Serializable) mStationsBean);
                         intent.putExtra("oilNo", mOilNumAdapter.getData().get(mOilNoPosition).getOilNo());
@@ -276,17 +281,21 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
     }
 
     private void showChoiceOil(String stationName, View view) {
-        mGasStationTipsDialog = new GasStationLocationTipsDialog(this, view, stationName);
+        mGasStationTipsDialog = new GasStationLocationTipsDialog(this, this, view, stationName);
         mGasStationTipsDialog.showPayBt(isPay);
         mGasStationTipsDialog.setOnClickListener(view1 -> {
             switch (view1.getId()) {
                 case R.id.select_agin://重新选择
+                    EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
+                            TrackingConstant.GAS_FENCE, "", "type=1");
                     closeDialog();
                     startActivity(new Intent(this,MainActivity.class));
                     finish();
                     break;
                 case R.id.navigation_tv://导航过去
                     if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                        EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
+                                TrackingConstant.GAS_FENCE, "", "type=2");
                         NavigationDialog navigationDialog = new NavigationDialog(this,
                                 mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
                                 mStationsBean.getGasName());
@@ -297,6 +306,8 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                     }
                     break;
                 case R.id.continue_view://继续支付
+                    EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
+                            TrackingConstant.GAS_FENCE, "", "type=3");
                     isFar = false;
                     Intent intent = new Intent(this, OilOrderActivity.class);
                     intent.putExtra("stationsBean", (Serializable) mStationsBean);
@@ -331,9 +342,9 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                     mLng = locationEntity.getLng();
                     mLat = locationEntity.getLat();
                     LogUtils.i("定位成功：" + locationEntity.getLng() + "\n" + locationEntity.getLat());
-                    //首页油站
-                    mViewModel.getOilDetail(mGasId, mLat, mLng);
                 }
+                //首页油站
+                mViewModel.getOilDetail(mGasId, mLat, mLng);
             } else {
                 mLat = 0;
                 mLng = 0;

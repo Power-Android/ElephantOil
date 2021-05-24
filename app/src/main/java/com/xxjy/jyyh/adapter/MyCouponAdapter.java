@@ -33,10 +33,12 @@ import java.util.List;
 
 public class MyCouponAdapter extends BaseMultiItemQuickAdapter<CouponBean, BaseViewHolder> {
 
-    public MyCouponAdapter(int layoutResId, @Nullable List<CouponBean> data) {
+    private boolean mIsBusiness=false;
+    public MyCouponAdapter(boolean isBusiness, @Nullable List<CouponBean> data) {
         super(data);
         addItemType(0, R.layout.adapter_my_coupon);
         addItemType(1, R.layout.adapter_my_coupon_integral);
+        mIsBusiness= isBusiness;
     }
 
     @Override
@@ -155,20 +157,37 @@ if(TextUtils.isEmpty(item.getDescription())){
     helper.getView(R.id.desc_content2).setVisibility(View.GONE);
 }else{
     if(item.getDescription().length()>16){
-        helper.setText(R.id.desc_content, "使用说明："+item.getDescription().substring(0,15));
+        helper.setText(R.id.desc_content, "使用说明："+item.getDescription());
         helper.setText(R.id.desc_content2, "使用说明："+item.getDescription());
         helper.getView(R.id.down_view).setVisibility(View.VISIBLE);
-        helper.getView(R.id.explain_layout).setOnClickListener(new View.OnClickListener() {
+
+        helper.getView(R.id.down_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if( helper.getView(R.id.desc_content2).getVisibility()==View.VISIBLE){
                     helper.getView(R.id.desc_content).setVisibility(View.VISIBLE);
                     helper.getView(R.id.desc_content2).setVisibility(View.GONE);
-                    helper.getView(R.id.down_view).setVisibility(View.VISIBLE);
+//                    helper.getView(R.id.down_view).setVisibility(View.VISIBLE);
                 }else{
                     helper.getView(R.id.desc_content).setVisibility(View.INVISIBLE);
                     helper.getView(R.id.desc_content2).setVisibility(View.VISIBLE);
-                    helper.getView(R.id.down_view).setVisibility(View.INVISIBLE);
+//                    helper.getView(R.id.down_view).setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        helper.getView(R.id.explain_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if( helper.getView(R.id.desc_content2).getVisibility()==View.VISIBLE){
+                    helper.getView(R.id.desc_content).setVisibility(View.VISIBLE);
+                    helper.getView(R.id.desc_content2).setVisibility(View.GONE);
+//                    helper.getView(R.id.down_view).setVisibility(View.VISIBLE);
+                }else{
+                    helper.getView(R.id.desc_content).setVisibility(View.INVISIBLE);
+                    helper.getView(R.id.desc_content2).setVisibility(View.VISIBLE);
+//                    helper.getView(R.id.down_view).setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -179,6 +198,11 @@ if(TextUtils.isEmpty(item.getDescription())){
     }
 }
 
+if(mIsBusiness){
+   helper.setVisible(R.id.tag_view,true);
+}else{
+    helper.setGone(R.id.tag_view,false);
+}
 
 //        helper.getView(R.id.desc_ll).setVisibility(View.GONE);
 //        helper.getView(R.id.desc_tv).setOnClickListener(view -> {

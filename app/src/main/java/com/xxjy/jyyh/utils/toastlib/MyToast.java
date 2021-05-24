@@ -120,7 +120,6 @@ public class MyToast {
         switch (toastyType) {
             case TYPE_NORMAL:
                 runOnUiThread(() -> Toasty.normal(context, myToastShow).show());
-
                 break;
             case TYPE_INFO:
                 runOnUiThread(() -> Toasty.info(context, myToastShow).show());

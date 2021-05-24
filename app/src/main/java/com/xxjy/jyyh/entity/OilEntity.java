@@ -31,7 +31,7 @@ public class OilEntity implements Serializable {
         private Integer gasType;
         private String gasTypeImg;
         private String gasTypeName;
-        private Integer isInvoice;
+        private int isInvoice;
         private boolean isSign;
         private String oilName;
         private String oilNo;
@@ -145,11 +145,11 @@ public class OilEntity implements Serializable {
             this.gasTypeName = gasTypeName;
         }
 
-        public Integer getIsInvoice() {
+        public int getIsInvoice() {
             return isInvoice;
         }
 
-        public void setIsInvoice(Integer isInvoice) {
+        public void setIsInvoice(int isInvoice) {
             this.isInvoice = isInvoice;
         }
 

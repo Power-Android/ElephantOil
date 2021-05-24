@@ -100,7 +100,7 @@ dependencies {
     implementation rootProject.ext.support["material"]
     implementation rootProject.ext.support["design"]
     implementation rootProject.ext.support["constraint-layout"]
-    implementation files('libs/jar_4_1_17.jar')
+    implementation files('libs\\jar_4_1_17.jar')
     androidTestImplementation rootProject.ext.support["junit"]
     androidTestImplementation rootProject.ext.support["espresso"]
     //jetpack
@@ -162,6 +162,8 @@ dependencies {
     implementation files('libs/UPPayPluginExPro.jar')
     implementation files('libs/UPPayAssistEx.jar')
     api files('libs/qmf-ppplugin-android-3.1.1.aar')
+    //数美风控
+    api files('libs/smsdk-3.0.6-release.aar')
 
     implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.18'
 }

@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.xxjy.jyyh.base.BaseActivity;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.WelcomeActivity;
 import com.xxjy.jyyh.utils.GsonTool;
@@ -128,10 +129,12 @@ public class JpushReceiver extends BroadcastReceiver {
 //        }
         if (ActivityUtils.isActivityAlive(context)){
             Intent i = new Intent(context, MainActivity.class);  //自定义打开的界面
+            i.putExtra("startFrom", 1);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }else{
             Intent i = new Intent(context, WelcomeActivity.class);  //自定义打开的界面
+            i.putExtra("startFrom", 1);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }

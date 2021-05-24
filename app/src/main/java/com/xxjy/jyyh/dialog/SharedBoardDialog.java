@@ -17,6 +17,8 @@ public class SharedBoardDialog extends BaseDialog {
     private View shareWx,shareWxFriends;
     public SharedBoardDialog(BaseActivity context) {
         super(context, Gravity.BOTTOM, 0, AnimationDirection.VERTICLE, true, true);
+        shareWx = findViewById(R.id.share_wx);
+        shareWxFriends = findViewById(R.id.share_wx_friends);
         initListener();
     }
 

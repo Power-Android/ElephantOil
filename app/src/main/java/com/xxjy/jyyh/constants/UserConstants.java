@@ -7,9 +7,11 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.luck.picture.lib.tools.DateUtils;
 import com.xxjy.jyyh.utils.Util;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 
+import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -136,6 +138,14 @@ public class UserConstants {
         return SPUtils.getInstance().getLong(SPConstants.BACKGROUND_TIME);
     }
 
+    public static void setStartFrom(String startFrom) {
+        SPUtils.getInstance().put(SPConstants.START_FROM, startFrom);
+    }
+
+    public static String getStartFrom(){
+        return SPUtils.getInstance().getString(SPConstants.START_FROM);
+    }
+
     public static void setNotificationRemind(boolean b) {
         String str = TimeUtils.date2String(new Date(), "yyyy-MM-dd") + "@_@" + b;
         SPUtils.getInstance().put(SPConstants.NOTIFICATION_REMIND, str);
@@ -157,6 +167,18 @@ public class UserConstants {
     public static boolean getNotificationRemindVersion() {
         String content = SPUtils.getInstance().getString(SPConstants.NOTIFICATION_REMIND_VERSION);
         if (TextUtils.equals(content, Util.getVersionName() + "@_@" + true)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public static void setShowNewUserRedPacket() {
+        SPUtils.getInstance().put(SPConstants.NEW_USER_RED_PACKET, System.currentTimeMillis());
+    }
+
+    public static boolean getShowNewUserRedPacket() {
+        long content = SPUtils.getInstance().getLong(SPConstants.NEW_USER_RED_PACKET,0l);
+        if (TimeUtils.isToday(content)) {
             return true;
         } else {
             return false;

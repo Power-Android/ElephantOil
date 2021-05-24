@@ -65,6 +65,7 @@ public class ApiService {
     public static final String EXCHANGE_COUPON = "api/coupon/v1/exchangeCoupon";
     //平台优惠券
     public static final String PLATFORM_COUPON = "api/coupon/v1/getPlatformCouponVOs";
+    public static final String PLATFORM_COUPON_LIST = "api/coupon/v1/getPlatformCouponList";
     //油站默认快捷价格
     public static final String OIL_PRICE_DEFAULT = "api/gasPublic/buyPriceDefault";
     //油站优惠券互斥
@@ -148,5 +149,15 @@ public class ApiService {
     public static final String INTEGRAL_SIGN  = "api/product/v1/integralSign";
     //电子围栏新接口
     public static final String GET_PAY_DISTANCE  = "api/gasPublic/getPayDistance";
+    //数据埋点
+    public static final String TRACKING_ADD = "api/v1/clickData/add";
+    //获取月度红包以及月度权益包购买条件信息(单独购买)
+    public static final String GET_MONTH_EQUITY_INFO  = "api/monthCard/v1/getMonthEquityInfo";
+    //新人礼包
+    public static final String NEW_USER_STATUS  = "api/activeCommon/newUserStatus";
+    //首页加油任务
+    public static final String QUERY_REFUEL_JOB = "api/activeCommon/queryRefuelJob";
+    //领取加油任务红包
+    public static final String RECEIVE_OIL_JOB_COUPON = "api/activeCommon/receiveOilJobCoupon";
 
 }

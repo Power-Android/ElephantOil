@@ -7,8 +7,12 @@ import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.popup.QMUIFullScreenPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.base.BaseActivity;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.databinding.DialogGasStationLocationTipsBinding;
 import com.xxjy.jyyh.databinding.DialogWithdrawalTipsBinding;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 
 /**
  * @author power
@@ -18,13 +22,15 @@ import com.xxjy.jyyh.databinding.DialogWithdrawalTipsBinding;
  */
 public class GasStationLocationTipsDialog {
     private Context mContext;
+    private BaseActivity mActivity;
     private QMUIFullScreenPopup mPopup;
     private DialogGasStationLocationTipsBinding mBinding;
     private View mView;
     private String mStationName;
 
-    public GasStationLocationTipsDialog(Context context, View view, String stationName) {
+    public GasStationLocationTipsDialog(Context context, BaseActivity activity, View view, String stationName) {
         this.mContext = context;
+        this.mActivity = activity;
         this.mView = view;
         this.mStationName = stationName;
         mBinding = DialogGasStationLocationTipsBinding.bind(View.inflate(mContext, R.layout.dialog_gas_station_location_tips, null));
@@ -51,6 +57,8 @@ public class GasStationLocationTipsDialog {
         mBinding.closeIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventTrackingManager.getInstance().tracking(mContext, mActivity , String.valueOf(++Constants.PV_ID),
+                        TrackingConstant.GAS_FENCE, "", "type=4");
                 mPopup.dismiss();
             }
         });

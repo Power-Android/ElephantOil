@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:layout_width="@dimen/dp_303"
-        android:layout_height="@dimen/dp_312"
+        android:layout_height="@dimen/dp_320"
         android:orientation="vertical"
         android:background="@drawable/shape_white_13radius"
         app:layout_constraintTop_toTopOf="parent"

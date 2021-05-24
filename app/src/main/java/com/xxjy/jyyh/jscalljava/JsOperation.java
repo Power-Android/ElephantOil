@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.JsonUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.google.gson.Gson;
@@ -19,12 +20,14 @@ import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.http.HttpManager;
 import com.xxjy.jyyh.jscalljava.jscallback.OnJsCallListener;
+import com.xxjy.jyyh.ui.mine.MyCouponActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.ImageUtils;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
@@ -66,6 +69,15 @@ public class JsOperation implements JsOperationMethods {
         return params.toString();
     }
 
+    //获取埋点信息
+    @Override
+    @JavascriptInterface
+    public String getEventTracking() {
+        Map<String, String> params = EventTrackingManager.getInstance().getParams(mActivity, String.valueOf(++Constants.PV_ID));
+        JSONObject jsonObject = new JSONObject(params);
+        Log.e("getEventTracking",jsonObject.toString());
+        return jsonObject.toString();
+    }
 
     // 调起分享
     @Override
@@ -167,6 +179,7 @@ public class JsOperation implements JsOperationMethods {
     @Override
     @JavascriptInterface
     public void toWechatPay(final String url) {
+        LogUtils.e("支付参数：",url);
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -374,6 +387,44 @@ public class JsOperation implements JsOperationMethods {
         });
     }
 
+    @Override
+    @JavascriptInterface
+    public void goCouponListPage() {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mActivity.startActivity(new Intent(mActivity, MyCouponActivity.class));
+            }
+        });
+    }
+
+    @Override
+    @JavascriptInterface
+    public void toLoginByInviteFriends() {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mActivity instanceof WebViewActivity) {
+                    WebViewActivity webViewActivity = (WebViewActivity) mActivity;
+                    webViewActivity.setShouldLoadUrl(true);
+                }
+                UiUtils.toLoginActivity(mActivity, Constants.LOGIN_FINISH,true);
+            }
+        });
+    }
+
+    @Override
+    @JavascriptInterface
+    public void toMyPage() {
+        if(mActivity instanceof WebViewActivity){
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    UiUtils.jumpToHome(mActivity, Constants.TYPE_MINE);
+                }
+            });
+        }
+    }
 
 
     @Override

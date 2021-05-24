@@ -22,6 +22,7 @@ import com.xxjy.jyyh.adapter.MyViewPagerAdapter;
 import com.xxjy.jyyh.adapter.SearchHistoryAdapter;
 import com.xxjy.jyyh.adapter.SearchRecommendAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivitySearchBinding;
 import com.xxjy.jyyh.dialog.QueryDialog;
@@ -29,6 +30,8 @@ import com.xxjy.jyyh.entity.IntegralHistoryEntity;
 import com.xxjy.jyyh.entity.RecomdEntity;
 import com.xxjy.jyyh.entity.SearchHistoryEntity;
 import com.xxjy.jyyh.room.DBInstance;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 import com.xxjy.jyyh.wight.SettingLayout;
 
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -235,8 +238,12 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
             public void onPageSelected(int position) {
                 if (position == 0) {
                     mBinding.searchEt.setHint("搜索油站名称");
+                    EventTrackingManager.getInstance().tracking(SearchActivity.this, SearchActivity.this, String.valueOf(++Constants.PV_ID),
+                            TrackingConstant.SEARCH_BOX, "", "type=1");
                 } else {
                     mBinding.searchEt.setHint("搜索权益名称");
+                    EventTrackingManager.getInstance().tracking(SearchActivity.this, SearchActivity.this, String.valueOf(++Constants.PV_ID),
+                            TrackingConstant.SEARCH_BOX, "", "type=2");
                 }
             }
 

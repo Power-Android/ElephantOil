@@ -65,7 +65,8 @@ public class CouponOilStationsActivity extends BindingActivity<ActivityCouponOil
                 @Override
                 public void onLogin() {
                     List<OilEntity.StationsBean> data = adapter.getData();
-                    Intent intent = new Intent(CouponOilStationsActivity.this, OilDetailActivity.class);
+//                    Intent intent = new Intent(CouponOilStationsActivity.this, OilDetailActivity.class);
+                    Intent intent = new Intent(CouponOilStationsActivity.this, OilDetailsActivity.class);
                     intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
                     intent.putExtra(Constants.OIL_NUMBER_ID, data.get(position).getOilNo());
                     startActivity(intent);

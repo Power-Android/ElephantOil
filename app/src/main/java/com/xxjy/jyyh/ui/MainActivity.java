@@ -11,28 +11,24 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.BusUtils;
-import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.xxjy.jyyh.PrivacyActivity;
+import com.blankj.utilcode.util.SPUtils;
 import com.xxjy.jyyh.R;
-import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
+import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMainBinding;
+import com.xxjy.jyyh.dialog.HomeNewUserDialog;
 import com.xxjy.jyyh.dialog.NoticeTipsDialog;
 import com.xxjy.jyyh.dialog.VersionUpDialog;
 import com.xxjy.jyyh.entity.EventEntity;
-import com.xxjy.jyyh.ui.broadcast.HomeAdDialog;
+import com.xxjy.jyyh.dialog.HomeAdDialog;
 import com.xxjy.jyyh.ui.home.HomeFragment;
 import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.integral.IntegralFragment;
@@ -44,14 +40,14 @@ import com.xxjy.jyyh.utils.JPushManager;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.NotificationsUtils;
 import com.xxjy.jyyh.utils.Util;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 import com.xxjy.jyyh.utils.pay.PayListenerUtils;
+import com.xxjy.jyyh.utils.shumeimanager.SmAntiFraudManager;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 import com.xxjy.jyyh.utils.umengmanager.UMengManager;
 import com.xxjy.jyyh.utils.umengmanager.UMengOnEvent;
 
 import org.jetbrains.annotations.NotNull;
-
-import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewModel> {
     private int mLastFgIndex = -1;
@@ -73,6 +69,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     @BusUtils.Bus(tag = EventConstants.EVENT_CHANGE_FRAGMENT, sticky = true)
     public void onEvent(@NotNull EventEntity event) {
         if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_CHANGE_FRAGMENT)) {
+            TrackingConstant.OIL_MAIN_TYPE = "1";
             mBinding.navView.setSelectedItemId(R.id.navigation_oil);
 //            mTransaction = getSupportFragmentManager().beginTransaction();
 //            if (mHomeFragment != null) {
@@ -95,21 +92,28 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     }
 
     private void initSdk() {
-        appChannel =  UserConstants.getAppChannel();
-        if (TextUtils.isEmpty(appChannel)) {
-            appChannel = AppManager.getAppMetaChannel();
-            UserConstants.setAppChannel(appChannel);
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                appChannel =  UserConstants.getAppChannel();
+                if (TextUtils.isEmpty(appChannel)) {
+                    appChannel = AppManager.getAppMetaChannel();
+                    UserConstants.setAppChannel(appChannel);
+                }
 
-        //初始化闪验sdk
-        ShanYanManager.initShanYnaSdk(this);
-        //标记首次进入app埋点
-        UMengOnEvent.onFirstStartEvent();
+                //初始化闪验sdk
+                ShanYanManager.initShanYnaSdk(MainActivity.this);
+                //标记首次进入app埋点
+                UMengOnEvent.onFirstStartEvent();
 
-        //极光推送配置
-        JPushManager.initJPush(this);
-        //友盟统计
-        UMengManager.init(this);
+                //极光推送配置
+                JPushManager.initJPush(MainActivity.this);
+                //友盟统计
+                UMengManager.init(MainActivity.this);
+                //数美风控
+                SmAntiFraudManager.initSdk(MainActivity.this);
+            }
+        }).start();
     }
 
     @Override
@@ -174,6 +178,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         } else {
             UserConstants.setNotificationRemindUserCenter(true);
         }
+//        newUserStatus();
     }
 
     private void showDiffFragment(int position) {
@@ -324,15 +329,10 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             if (compare == 1) {
                 //是否强制更新，0：否，1：是
                 VersionUpDialog checkVersionDialog = new VersionUpDialog(this, data);
-                checkVersionDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        getAdData();
-                    }
-                });
+                checkVersionDialog.setOnDismissListener(dialog -> newUserStatus());
                 checkVersionDialog.show();
             } else {
-                getAdData();
+                newUserStatus();
             }
 
         });
@@ -343,16 +343,29 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             if (data != null && data.size() > 0) {
                 HomeAdDialog homeAdDialog = new HomeAdDialog(this, data.get(0));
                 homeAdDialog.show(mBinding.getRoot());
-                homeAdDialog.setOnItemClickedListener(new HomeAdDialog.OnItemClickedListener() {
-                    @Override
-                    public void onCloseClick(View view) {
-                        showNotification();
-                    }
-                });
+                homeAdDialog.setOnItemClickedListener(view -> showNotification());
             } else {
                 showNotification();
             }
         });
+    }
+    //新人礼包
+    private void newUserStatus() {
+        if(UserConstants.getIsLogin()){
+            mViewModel.newUserStatus().observe(this, data -> {
+                if (data != null && data.getStatus()==1) {
+                    HomeNewUserDialog homeNewUserDialog = HomeNewUserDialog.getInstance();
+                    homeNewUserDialog.setData(this,data);
+                    homeNewUserDialog.show(mBinding.getRoot());
+                    homeNewUserDialog.setOnItemClickedListener(view -> getAdData());
+                } else {
+                    getAdData();
+                }
+            });
+        }else{
+            getAdData();
+        }
+
     }
 
     private void showNotification() {
@@ -385,6 +398,24 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         super.onNewIntent(intent);
         disPathIntentMessage(intent);
         jump(intent);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(UserConstants.getIsLogin()){
+            mViewModel.newUserStatus().observe(this, data -> {
+                if (data != null && data.getStatus()==1) {
+//                    HomeNewUserDialog homeNewUserDialog = new HomeNewUserDialog(this, data);
+//                    homeNewUserDialog.show(mBinding.getRoot());
+//                    homeNewUserDialog.setOnItemClickedListener(view -> getAdData());
+                    HomeNewUserDialog homeNewUserDialog = HomeNewUserDialog.getInstance();
+                    homeNewUserDialog.setData(this,data);
+                    homeNewUserDialog.show(mBinding.getRoot());
+                    homeNewUserDialog.setOnItemClickedListener(view -> getAdData());
+                }
+            });
+        }
     }
 
     /**
@@ -424,6 +455,9 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         if (intent == null) {
             intent = getIntent();
         }
+        int startFrom = intent.getIntExtra("startFrom", 0);
+        UserConstants.setStartFrom(String.valueOf(startFrom));
+
         String intentInfo = intent.getStringExtra(TAG_FLAG_INTENT_VALUE_INFO);
         if (TextUtils.isEmpty(intentInfo)) return;
         NaviActivityInfo.disPathIntentFromUrl(this, intentInfo);

@@ -36,9 +36,9 @@ public class TopLineAdapter extends BannerAdapter<OrderNewsEntity, TopLineAdapte
                 mIsWhite ? R.color.color_9EE : R.color.color_34));
         SpanUtils.with(holder.message)
                 .append("车主")
-                .append(data.getAccount())
+                .append(data.getAccount() + "")
                 .append("加油")
-                .append(data.getAmount())
+                .append(data.getAmount() + "")
                 .append("元，节省")
                 .append(String.valueOf(data.getDiscount()))
                 .setForegroundColor(App.getContext().getResources().getColor(
@@ -50,7 +50,7 @@ public class TopLineAdapter extends BannerAdapter<OrderNewsEntity, TopLineAdapte
     class TopLineHolder extends RecyclerView.ViewHolder{
         public TextView message;
 
-        public TopLineHolder(@NonNull View view){
+        public TopLineHolder(View view){
             super(view);
             message = view.findViewById(R.id.message);
         }

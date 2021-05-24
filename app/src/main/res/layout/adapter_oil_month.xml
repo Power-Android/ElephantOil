@@ -8,7 +8,7 @@
         android:id="@+id/item_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/month_red_def"
+        android:src="@drawable/red_month_unselect"
         android:scaleType="fitXY"/>
     <TextView
         android:id="@+id/view1"
@@ -33,6 +33,7 @@
         android:includeFontPadding="false"
         android:layout_marginTop="@dimen/dp_5"
         android:textStyle="bold"
+        android:layout_marginStart="@dimen/dp_1"
         app:layout_constraintStart_toEndOf="@+id/view1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
