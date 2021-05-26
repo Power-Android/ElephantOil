@@ -78,4 +78,12 @@ public class SmAntiFraudManager {
         }
         return null;
     }
+    public static String getDeviceId() {
+        try {
+            return SmAntiFraud.getDeviceId();
+        }catch (Exception e){
+            return null;
+        }
+
+    }
 }

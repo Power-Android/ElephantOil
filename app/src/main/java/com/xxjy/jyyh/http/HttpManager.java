@@ -10,6 +10,7 @@ import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
+import com.xxjy.jyyh.utils.shumeimanager.SmAntiFraudManager;
 
 import java.io.File;
 import java.util.HashMap;
@@ -149,6 +150,7 @@ public class HttpManager {
         finalParams.put("adCode", adCode);//区域编码
         finalParams.put("appStore", app_store); //下载渠道
         finalParams.put("appId", "Orvay1rVsoU9nlpY");
+        finalParams.put("deviceId",SmAntiFraudManager.getDeviceId());//数美风控deviceId
 
         return finalParams;
     }
