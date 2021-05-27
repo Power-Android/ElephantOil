@@ -261,7 +261,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         BusUtils.register(this);
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
-        LogUtils.e("2222211111", Constants.HUNTER_GAS_ID);
+//        LogUtils.e("2222211111", Constants.HUNTER_GAS_ID);
 
 //        mViewModel.getLocation();
 //        getLocation();

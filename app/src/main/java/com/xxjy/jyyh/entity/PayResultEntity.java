@@ -12,6 +12,7 @@ public class PayResultEntity {
 
     private ActiveParamsBean activeParams;
     private GasParamsBean gasParams;
+    private ProductParamsBean productParams;
     private String discountAmount;
     private String integral;
     private String integralBalance;
@@ -29,6 +30,14 @@ public class PayResultEntity {
 
     public ActiveParamsBean getActiveParams() {
         return activeParams;
+    }
+
+    public ProductParamsBean getProductParams() {
+        return productParams;
+    }
+
+    public void setProductParams(ProductParamsBean productParams) {
+        this.productParams = productParams;
     }
 
     public void setActiveParams(ActiveParamsBean activeParams) {
@@ -124,9 +133,43 @@ public class PayResultEntity {
             }
         }
     }
+
+    public static class ProductParamsBean {
+        //        "productAmount": 6.8,
+//                "orderListH5Url": "123456678hkkkgfds",
+//                "type": 2
+        private String productAmount;
+        private String orderListH5Url;
+        private int type;
+
+        public String getProductAmount() {
+            return productAmount;
+        }
+
+        public void setProductAmount(String productAmount) {
+            this.productAmount = productAmount;
+        }
+
+        public String getOrderListH5Url() {
+            return orderListH5Url;
+        }
+
+        public void setOrderListH5Url(String orderListH5Url) {
+            this.orderListH5Url = orderListH5Url;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+    }
+
     public static class GasParamsBean {
 
-//        {
+        //        {
 //            "amount":100,
 //                "gunNo":2,
 //                "orderId":"02210207202202GZPQHp",
@@ -135,15 +178,15 @@ public class PayResultEntity {
 //                "oilNo":"92",
 //                "authId":102021106
 //        }
-      private String amount;
-      private String gunNo;
-      private String orderId;
-      private String phone;
-      private String gasId;
-      private String gasName;
-      private String oilNo;
-      private String oilName;
-      private String authId;
+        private String amount;
+        private String gunNo;
+        private String orderId;
+        private String phone;
+        private String gasId;
+        private String gasName;
+        private String oilNo;
+        private String oilName;
+        private String authId;
 
 
         public String getOilName() {

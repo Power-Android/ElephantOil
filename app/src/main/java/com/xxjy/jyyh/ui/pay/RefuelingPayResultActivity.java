@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.SystemClock;
+import android.text.Html;
 import android.view.View;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.PayResultBannerAdapter;
@@ -20,16 +23,22 @@ import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityRefuelingPayResultBinding;
+import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.PayResultEntity;
+import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
+import com.xxjy.jyyh.ui.order.OtherOrderListActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
 import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 import com.xxjy.jyyh.wight.MyCountDownTime;
+import com.youth.banner.adapter.BannerImageAdapter;
+import com.youth.banner.holder.BannerImageHolder;
+import com.youth.banner.indicator.RectangleIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +49,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
     private List<PayResultEntity.ActiveParamsBean.BannerBean> data = new ArrayList<>();
     private List<HomeProductEntity.FirmProductsVoBean> mExchangeList = new ArrayList<>();
-    private PayResultBannerAdapter payResultBannerAdapter;
+//    private PayResultBannerAdapter payResultBannerAdapter;
     private String mOrderNo;
     private String mOrderPayNo;
     private HomeExchangeAdapter mExchangeAdapter;
@@ -78,15 +87,18 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
             mCountDownTime.start();
 
         }
+//        mBinding.goHomeView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG );
+//        mBinding.goHomeView.getPaint().setAntiAlias(true);//抗锯齿
+        mBinding.goHomeView.setText(Html.fromHtml("<u>返回首页 ></u>"));//下划线
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        payResultBannerAdapter = new PayResultBannerAdapter(R.layout.item_pay_result_banner, data);
-        mBinding.bannerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mBinding.bannerRecyclerView.setAdapter(payResultBannerAdapter);
-        payResultBannerAdapter.setOnItemClickListener((adapter, view, position) -> {
-            List<PayResultEntity.ActiveParamsBean.BannerBean> data = adapter.getData();
-            WebViewActivity.openRealUrlWebActivity(RefuelingPayResultActivity.this, data.get(position).getLink());
-        });
+//        payResultBannerAdapter = new PayResultBannerAdapter(R.layout.item_pay_result_banner, data);
+//        mBinding.bannerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        mBinding.bannerRecyclerView.setAdapter(payResultBannerAdapter);
+//        payResultBannerAdapter.setOnItemClickListener((adapter, view, position) -> {
+//            List<PayResultEntity.ActiveParamsBean.BannerBean> data = adapter.getData();
+//            WebViewActivity.openRealUrlWebActivity(RefuelingPayResultActivity.this, data.get(position).getLink());
+//        });
 
         mBinding.recommendRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mExchangeAdapter = new HomeExchangeAdapter(R.layout.adapter_integral_exchange, mExchangeList);
@@ -174,6 +186,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
     protected void initListener() {
         mBinding.goOrderView.setOnClickListener(this::onViewClicked);
         mBinding.goHomeView.setOnClickListener(this::onViewClicked);
+        mBinding.goEquityOrderView.setOnClickListener(this::onViewClicked);
         mBinding.tv1.setOnClickListener(this::onViewClicked);
         mBinding.tv2.setOnClickListener(this::onViewClicked);
     }
@@ -197,6 +210,10 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     UiUtils.jumpToHome(this, Constants.TYPE_HOME);
                 }
                 finish();
+                break;
+            case R.id.go_equity_order_view:
+                startActivity(new Intent(this, OtherOrderListActivity.class).putExtra("isIntegral", true));
+                break;
             case R.id.tv1:
             case R.id.tv2:
                 mCountDownTime.start();
@@ -214,6 +231,16 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
             } else {
                 mBinding.integralLl.setVisibility(View.VISIBLE);
             }
+//搭售商品
+            if(resultEntity.getProductParams()!=null){
+                if(resultEntity.getProductParams().getType()==2){
+                    mBinding.goEquityOrderView.setVisibility(View.VISIBLE);
+
+                }else{
+                    mBinding.goEquityOrderView.setVisibility(View.GONE);
+                }
+            }
+
             switch (resultEntity.getResult()) {
                 case 1://支付成功
 //                    mBinding.queryStatusView.setVisibility(View.GONE);
@@ -245,8 +272,14 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     mBinding.payAmountView2.setText("¥" + resultEntity.getPayAmount() + "");
                     mBinding.integralTv.setText(resultEntity.getIntegral() + "");
                     mBinding.integralAll.setText(resultEntity.getIntegralBalance() + "");
-                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null) {
-                        payResultBannerAdapter.setNewData(resultEntity.getActiveParams().getBanner());
+//                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null) {
+//                        payResultBannerAdapter.setNewData(resultEntity.getActiveParams().getBanner());
+//                    }
+                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null&&resultEntity.getActiveParams().getBanner().size()>0) {
+                       mBinding.banner.setVisibility(View.VISIBLE);
+                        initBanner(resultEntity.getActiveParams().getBanner());
+                    }else{
+                        mBinding.banner.setVisibility(View.GONE);
                     }
                     if (resultEntity.getGasParams() != null){
                         mGasId = resultEntity.getGasParams().getGasId();
@@ -274,8 +307,14 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 //                    mBinding.tagView.setText("预计下单可获得");
 //                    mBinding.integralTv.setText(resultEntity.getIntegral() + "");
 //                    mBinding.integralAll.setText(resultEntity.getIntegralBalance() + "");
-                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null) {
-                        payResultBannerAdapter.setNewData(resultEntity.getActiveParams().getBanner());
+//                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null) {
+//                        payResultBannerAdapter.setNewData(resultEntity.getActiveParams().getBanner());
+//                    }
+                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null&&resultEntity.getActiveParams().getBanner().size()>0) {
+                       mBinding.banner.setVisibility(View.VISIBLE);
+                        initBanner(resultEntity.getActiveParams().getBanner());
+                    }else{
+                        mBinding.banner.setVisibility(View.GONE);
                     }
                     break;
             }
@@ -303,6 +342,29 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
         super.onDestroy();
 
+    }
+
+    private void initBanner(List<PayResultEntity.ActiveParamsBean.BannerBean> data){
+        //banner
+        mBinding.banner.setAdapter(new BannerImageAdapter<PayResultEntity.ActiveParamsBean.BannerBean>(data) {
+            @Override
+            public void onBindView(BannerImageHolder holder, PayResultEntity.ActiveParamsBean.BannerBean data, int position, int size) {
+                Glide.with(holder.imageView)
+                        .load(data.getImgUrl())
+                        .apply(new RequestOptions()
+                                .placeholder(R.drawable.bg_banner_loading)
+                                .error(R.drawable.bg_banner_error))
+                        .into(holder.imageView);
+                holder.imageView.setOnClickListener(v -> {
+
+                    WebViewActivity.openWebActivity(RefuelingPayResultActivity.this, data.getLink());
+
+
+
+                });
+            }
+        }).addBannerLifecycleObserver(this)
+                .setIndicator(new RectangleIndicator(this));
     }
 
     public static void openPayResultPage(Activity activity, String orderNo, String orderPayNo) {
