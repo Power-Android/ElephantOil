@@ -31,7 +31,7 @@ public class OrderListRepository extends BaseRepository {
         );
     }
     public void integralOrderList(MutableLiveData<List<RefuelOrderBean>> integralOrderListLiveData, int status, int pageNum, int pageSize){
-        addDisposable(RxHttp.postForm(ApiService.INTEGRAL_ORDER_LIST)
+        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/product/v1/queryOrders")
                 .add("status",status==-1?"":status)
                 .add("pageNum",pageNum)
                 .add("pageSize",pageSize)

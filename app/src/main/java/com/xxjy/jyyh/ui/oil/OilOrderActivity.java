@@ -15,11 +15,13 @@ import android.view.View;
 
 import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.rxjava.rxlife.RxLife;
 import com.xxjy.jyyh.R;
@@ -54,6 +56,8 @@ import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.OilTypeEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
+import com.xxjy.jyyh.entity.ProductIdEntity;
+import com.xxjy.jyyh.entity.RedeemEntity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
@@ -70,6 +74,7 @@ import com.xxjy.jyyh.utils.toastlib.Toasty;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import rxhttp.RxHttp;
@@ -117,9 +122,11 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
 
     private boolean isUseBill = true;
     private boolean isFirstOpen = true;
-    private List<String> mRedeemList = new ArrayList<>();
+    private List<RedeemEntity.ProductOilGasListBean> mRedeemList = new ArrayList<>();
     private OilRedeemAdapter mOilRedeemAdapter;
-
+    private List<ProductIdEntity> mProductIdList = new ArrayList<>();
+    private String mJsonStr = "";//搭售商品ids
+    private String mProductAmount;
 
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
@@ -231,7 +238,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                                 mOilMonthTipDialog.dismiss();
                                 mViewModel.getMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
                                         mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
-                                        "", businessAmount, monthCouponId, mIsUseCoupon, mIsUseBusinessCoupon);
+                                        "", businessAmount, monthCouponId, mIsUseCoupon, mIsUseBusinessCoupon, mJsonStr);
                             }
 
                             @Override
@@ -253,7 +260,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                                 }
                                 mViewModel.getMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
                                         mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
-                                        "", businessAmount, "", mIsUseCoupon, mIsUseBusinessCoupon);
+                                        "", businessAmount, "", mIsUseCoupon, mIsUseBusinessCoupon, mJsonStr);
                             }
                         });
                         mOilMonthTipDialog.show(mBinding.monthRedCheck);
@@ -273,19 +280,35 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     mDiscountAdapter.notifyDataSetChanged();
                     mViewModel.getMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
                             mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
-                            "", businessAmount, b ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon);
+                            "", businessAmount, b ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon, mJsonStr);
                 }
             }
         });
         mViewModel.getMonthCoupon(mStationsBean.getGasId());//获取月度红包
 
         //搭售
-        for (int i = 0; i < 4; i++) {
-            mRedeemList.add("");
-        }
         mBinding.redeemRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mOilRedeemAdapter = new OilRedeemAdapter(R.layout.adapter_oil_redeem, mRedeemList);
         mBinding.redeemRecycler.setAdapter(mOilRedeemAdapter);
+        mOilRedeemAdapter.setOnItemClickListener((adapter, view, position) -> {
+            List<RedeemEntity.ProductOilGasListBean> data = adapter.getData();
+            mOilRedeemAdapter.setSelected(position);
+            mProductIdList.clear();
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).isSelected()){
+                    mProductIdList.add(new ProductIdEntity(data.get(i).getProductId()+"", "1"));
+                }
+            }
+            mJsonStr = GsonUtils.toJson(mProductIdList);
+
+            //刷新互斥价格
+            mViewModel.getMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
+                    mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
+                    platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon, mJsonStr);
+
+
+        });
+        mViewModel.getRedeem(mStationsBean.getGasId());
 
         //优惠列表
         for (int i = 0; i < 4; i++) {
@@ -321,7 +344,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     //刷新互斥价格
                     mViewModel.getMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
                             mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
-                            platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon);
+                            platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon, mJsonStr);
 
                     break;
                 case R.id.item_title_desc://直降优惠服务费
@@ -374,7 +397,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         //刷新价格互斥
         mViewModel.getMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
                 mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
-                platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon);
+                platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon, mJsonStr);
     }
 
     private void refreshMonthStauts(String amount) {
@@ -516,7 +539,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     mOilAmountAdapter.notifyDataSetChanged();
                     mViewModel.getMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
                             mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
-                            platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon);
+                            platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon, mJsonStr);
                     mViewModel.getDefaultPrice(mStationsBean.getGasId(), String.valueOf(mStationsBean.getOilPriceList()
                             .get(mOilNoPosition).getOilNo()));//获取快捷价格
                     EventTrackingManager.getInstance().tracking(OilOrderActivity.this, OilOrderActivity.this, String.valueOf(++Constants.PV_ID),
@@ -650,7 +673,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         mDiscountAdapter.notifyDataSetChanged();
         mViewModel.getMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(),
                 String.valueOf(mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
-                platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon);
+                platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon, mJsonStr);
     }
 
     @Override
@@ -695,7 +718,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     mStationsBean.getOilPriceList().get(mOilNoPosition).getPriceYfq(), mStationsBean.getOilPriceList().get(mOilNoPosition).getOilType() + "",
                     SPUtils.getInstance().getString(SPConstants.MOBILE), platId, TextUtils.isEmpty(businessId) ? "" : businessId,
                     businessAmount, monthCouponId, mAmountReduce, mBinding.monthRedCheck.isChecked() && !TextUtils.isEmpty(monthCouponId),
-                    mBinding.monthRedCheck.isChecked() && !TextUtils.isEmpty(mAmountReduce));
+                    mBinding.monthRedCheck.isChecked() && !TextUtils.isEmpty(mAmountReduce), mJsonStr, mProductAmount);
         });
 
         ClickUtils.applySingleDebouncing(mBinding.editLayout, this::onViewClicked);
@@ -817,6 +840,8 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 //优惠金额
                 mBinding.discountPriceTv.setText(String.format("已优惠：¥%s",
                         multiplePriceBean.getSumDiscountPrice()));
+
+                mProductAmount = multiplePriceBean.getProductAmount();
                 //服务费
                 if (!TextUtils.isEmpty(multiplePriceBean.getServiceChargeAmount()) &&
                         Float.parseFloat(multiplePriceBean.getServiceChargeAmount()) > 0) {
@@ -859,7 +884,6 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     }
                 } else {
                     mDiscountAdapter.getData().get(3).setUseBill(false);
-
                 }
 
 
@@ -953,6 +977,26 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     mDiscountAdapter.getData().get(2).setBusinessDesc("暂无可用优惠券");
                 }
                 mDiscountAdapter.notifyDataSetChanged();
+            }
+        });
+
+        mViewModel.redeemLiveData.observe(this, new Observer<RedeemEntity>() {
+            @Override
+            public void onChanged(RedeemEntity redeemEntity) {
+                if (redeemEntity != null){
+                    mBinding.redeemCl.setVisibility(View.VISIBLE);
+                    List<RedeemEntity.EntranceListBean> entranceList = redeemEntity.getEntranceList();
+                    Glide.with(OilOrderActivity.this).load(entranceList.get(0).getIcon()).into(mBinding.redeemView3);
+                    mBinding.redeemView4.setText(entranceList.get(0).getTitle());
+                    mBinding.redeemView5.setText(entranceList.get(0).getSubtitle());
+                    mBinding.redeemView6.setOnClickListener(view -> WebViewActivity.openRealUrlWebActivity(OilOrderActivity.this, redeemEntity.getH5url()));
+
+                    mRedeemList = redeemEntity.getProductOilGasList();
+                    mOilRedeemAdapter.setNewData(mRedeemList);
+                    mOilRedeemAdapter.notifyDataSetChanged();
+                }else {
+                    mBinding.redeemCl.setVisibility(View.GONE);
+                }
             }
         });
 

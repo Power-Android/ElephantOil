@@ -125,7 +125,7 @@ public class HomeRepository extends BaseRepository {
     }
 
     public void payOrder(String payType, String orderId, String payAmount, MutableLiveData<PayOrderEntity> payOrderLiveData) {
-        addDisposable(RxHttp.postForm(ApiService.PAY_ORDER)
+        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/gasPublic/refuelPayOrder")
                 .add("payType", payType)
                 .add("orderId", orderId)
                 .add("payAmount", payAmount)

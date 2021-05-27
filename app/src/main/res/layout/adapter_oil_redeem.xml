@@ -67,6 +67,7 @@
             android:layout_height="@dimen/dp_16"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="@dimen/dp_10"
+            android:src="@drawable/redeem_unslect_icon"
             app:layout_constraintBottom_toBottomOf="@+id/item_price_tv"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <com.makeramen.roundedimageview.RoundedImageView
