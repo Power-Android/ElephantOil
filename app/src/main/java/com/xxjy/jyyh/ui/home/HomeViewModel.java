@@ -12,6 +12,7 @@ import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilDistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
+import com.xxjy.jyyh.entity.QueryRefuelJobEntity;
 
 import java.util.List;
 
@@ -25,7 +26,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<LocationEntity> locationLiveData = new MutableLiveData<>();
     public MutableLiveData<OilEntity> homeOilLiveData = new MutableLiveData<>();
     public MutableLiveData<List<OfentEntity>> oftenOilLiveData = new MutableLiveData<>();
-    public MutableLiveData<String> refuelOilLiveData = new MutableLiveData<>();
+    public MutableLiveData<QueryRefuelJobEntity> refuelOilLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> receiverCouponLiveData = new MutableLiveData<>();
     public MutableLiveData<List<HomeProductEntity.FirmProductsVoBean>> productLiveData = new MutableLiveData<>();
     public MutableLiveData<PayOrderEntity> payOrderLiveData = new MutableLiveData<>();
     public MutableLiveData<OilDistanceEntity> distanceLiveData = new MutableLiveData<>();
@@ -47,8 +49,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         mRespository.getOftenOils(oftenOilLiveData);
     }
 
-    public void getRefuelJob(String gasId) {
-        mRespository.getRefuelJob(gasId, refuelOilLiveData);
+    public void getRefuelJob() {
+        mRespository.getRefuelJob(refuelOilLiveData);
     }
 
     public void getHomeProduct() {
@@ -65,5 +67,9 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getStoreList(int pageNum,int pageSize){
         mRespository.getStoreList( pageNum, pageSize,storeLiveData);
+    }
+
+    public void receiverJobCoupon(String id, String couponId) {
+        mRespository.receiverJobCoupon(id, couponId, receiverCouponLiveData);
     }
 }

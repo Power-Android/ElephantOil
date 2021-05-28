@@ -45,12 +45,14 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
 
     private boolean isOpenAuth = false;     //是否已经调起了登录
     public static int loginState = -1;
+    public static boolean isInvite = false;
     private boolean isDown = false;
     private boolean isInputHunterCode = false;//食肉输入猎人码
 
     @Override
     protected void initView() {
         StatusBarUtil.setHeightAndPadding(this, mBinding.toolbar);
+        isInvite = getIntent().getBooleanExtra("invite",false);
         tryOpenLoginActivity();
     }
 
@@ -241,7 +243,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
             }
         }
         mViewModel.verifyLogin(token, JPushInterface.getRegistrationID(this),
-                SYConfigUtils.inviteCode);
+                SYConfigUtils.inviteCode,isInvite);
     }
 
     private void toLoginForOtherActivity() {
@@ -263,7 +265,7 @@ public class LoginActivity extends BindingActivity<ActivityLoginBinding, LoginVi
     }
 
     private void openId2Login(String openId, String accessToken) {
-        mViewModel.openId2Login(openId, accessToken);
+        mViewModel.openId2Login(openId, accessToken,isInvite);
     }
 
     @Override

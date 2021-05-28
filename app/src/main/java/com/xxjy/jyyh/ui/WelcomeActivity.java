@@ -135,6 +135,10 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
         mWelcomeAdTv = (TextView) findViewById(R.id.welcome_ad_tv);
         ImageView headerImg = (ImageView) findViewById(R.id.splash_img_header);
         BarUtils.addMarginTopEqualStatusBarHeight(headerImg);
+
+        int startFrom = getIntent().getIntExtra("startFrom", 0);
+        UserConstants.setStartFrom(String.valueOf(startFrom));
+
         mAlphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(this, R.anim.alpha_welcome_ad_in);
         mWelcomeAd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,6 +200,7 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+
                 UserConstants.setAgreePrivacy(true);
                 isShownYSXY = true;
                 getAdInfo();

@@ -42,6 +42,7 @@ public class MapLocationHelper {
     private LocationResult mLocationResult;
     public static String cityCode;
     public static String adCode;
+    public static String mCity;
 
     private MapLocationHelper() {
     }
@@ -145,6 +146,7 @@ public class MapLocationHelper {
                     mLocationLongitude = location.getLongitude();
                     cityCode = location.getCityCode();
                     adCode = location.getAdCode();
+                    mCity = location.getCity();
                     LogUtils.i(cityCode + "---"+location.getLatitude() + "---" + location.getLongitude());
                     aMapLocation = location;
                     hasLocationPermission = true;
@@ -254,6 +256,10 @@ public class MapLocationHelper {
 
     public static String getAdCode(){
         return adCode;
+    }
+
+    public static String getCity(){
+        return mCity;
     }
 
     /**

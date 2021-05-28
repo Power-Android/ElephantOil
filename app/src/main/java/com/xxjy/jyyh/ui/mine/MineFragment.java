@@ -1,13 +1,19 @@
 package com.xxjy.jyyh.ui.mine;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.NumberUtils;
+import com.blankj.utilcode.util.SpanUtils;
+import com.qmuiteam.qmui.util.QMUIDeviceHelper;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MineTabAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
@@ -44,9 +50,10 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
             if (UserConstants.getIsLogin()) {
                 queryUserInfo();
+                getMonthEquityInfo();
             }
         }
     }
@@ -57,18 +64,34 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         getBannerOfPostion();
         if (UserConstants.getIsLogin()) {
             queryUserInfo();
+            getMonthEquityInfo();
         } else {
             mBinding.photoView.setImageResource(R.drawable.default_img_bg);
             mBinding.nameView.setText("登录注册");
             mBinding.userPhoneView.setText("");
-            mBinding.couponView.setText("0");
-            mBinding.integralView.setText("0");
-            mBinding.balanceView.setText("0");
+            SpanUtils.with(mBinding.couponView)
+                    .setBold()
+                    .append("0")
+                    .append("张")
+                    .setForegroundColor(Color.parseColor("#323334"))
+                    .create();
+            SpanUtils.with(mBinding.integralView)
+                    .setBold()
+                    .append("0")
+//                    .append("积分")
+//                    .setForegroundColor(Color.parseColor("#323334"))
+                    .create();
+            SpanUtils.with(mBinding.balanceView)
+                    .setBold()
+                    .append("0")
+                    .append("元")
+                    .setForegroundColor(Color.parseColor("#323334"))
+                    .create();
         }
-        if (UserConstants.getGoneIntegral()){
+        if (UserConstants.getGoneIntegral()) {
             mBinding.equityOrderLayout.setVisibility(View.INVISIBLE);
             mBinding.moreServiceLayout.setVisibility(View.GONE);
-        }else {
+        } else {
             mBinding.equityOrderLayout.setVisibility(View.VISIBLE);
             mBinding.moreServiceLayout.setVisibility(View.VISIBLE);
         }
@@ -77,16 +100,16 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         } else {
             UserConstants.setNotificationRemindUserCenter(true);
         }
-        if(UserConstants.getNotificationRemindUserCenter()){
+        if (UserConstants.getNotificationRemindUserCenter()) {
             mBinding.noticeLayout.setVisibility(View.VISIBLE);
             mBinding.noticeLayout.setAnimation(AnimationUtils.makeInAnimation(getContext(), true));
 
-        }else{
+        } else {
             mBinding.noticeLayout.setVisibility(View.GONE);
-            mBinding.noticeLayout.setAnimation(AnimationUtils.makeOutAnimation(getContext(), true));
+//            mBinding.noticeLayout.setAnimation(AnimationUtils.makeOutAnimation(getContext(), true));
 
         }
-
+        setHeight(false);
     }
 
     @Override
@@ -97,9 +120,9 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 
 
         boolean b = UserConstants.getGoneIntegral();
-        if (b){
+        if (b) {
             mBinding.integralLayout.setVisibility(View.INVISIBLE);
-        }else {
+        } else {
             mBinding.integralLayout.setVisibility(View.VISIBLE);
         }
 
@@ -107,9 +130,11 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mViewModel.getOsBalance().observe(this, aBoolean -> {
             if (!aBoolean) {
                 UserConstants.setGoneBalance(true);
-                mBinding.balanceLayout.setVisibility(View.INVISIBLE);
+                mBinding.balanceLineView.setVisibility(View.GONE);
+                mBinding.balanceLayout.setVisibility(View.GONE);
             } else {
                 UserConstants.setGoneBalance(false);
+                mBinding.balanceLineView.setVisibility(View.VISIBLE);
                 mBinding.balanceLayout.setVisibility(View.VISIBLE);
             }
         });
@@ -118,7 +143,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mineTabAdapter = new MineTabAdapter(R.layout.adapter_mine_tab, tabs);
         mBinding.recyclerView.setAdapter(mineTabAdapter);
         mineTabAdapter.setOnItemClickListener((adapter, view, position) -> {
-           LoginHelper.login(getActivity(), () -> WebViewActivity.openWebActivity((MainActivity) getActivity(), ((BannerBean) (adapter.getItem(position))).getLink()));
+            LoginHelper.login(getActivity(), () -> WebViewActivity.openWebActivity((MainActivity) getActivity(), ((BannerBean) (adapter.getItem(position))).getLink()));
 
         });
 
@@ -126,6 +151,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             getBannerOfPostion();
             if (UserConstants.getIsLogin()) {
                 queryUserInfo();
+                getMonthEquityInfo();
             } else {
                 mBinding.refreshview.finishRefresh();
             }
@@ -148,6 +174,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.integralLayout.setOnClickListener(this::onViewClicked);
         mBinding.closeNoticeView.setOnClickListener(this::onViewClicked);
         mBinding.openView.setOnClickListener(this::onViewClicked);
+        mBinding.receiveBt.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -157,16 +184,16 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             public void onLogin() {
                 switch (view.getId()) {
                     case R.id.equity_order_layout:
-                            getActivity().startActivity(new Intent(getContext(), OtherOrderListActivity.class).putExtra("isIntegral",true));
+                        getActivity().startActivity(new Intent(getContext(), OtherOrderListActivity.class).putExtra("isIntegral", true));
                         break;
                     case R.id.refueling_order_layout:
                         getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
                         break;
                     case R.id.local_life_order_layout:
-                        getActivity().startActivity(new Intent(getContext(), OtherOrderListActivity.class).putExtra("isIntegral",false));
+                        getActivity().startActivity(new Intent(getContext(), OtherOrderListActivity.class).putExtra("isIntegral", false));
                         break;
                     case R.id.customer_service_view:
-                        if(customerServiceDialog==null){
+                        if (customerServiceDialog == null) {
                             customerServiceDialog = new CustomerServiceDialog(getBaseActivity());
                         }
                         customerServiceDialog.show(view);
@@ -190,16 +217,16 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                         });
                         break;
                     case R.id.integral_layout:
-                        if(userBean==null){
+                        if (userBean == null) {
                             return;
                         }
-                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(),userBean.getIntegralBillUrl());
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), userBean.getIntegralBillUrl());
                         break;
                     case R.id.balance_layout:
-                        if(userBean==null){
+                        if (userBean == null) {
                             return;
                         }
-                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(),userBean.getWalletUrl());
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), userBean.getWalletUrl());
 
                         break;
                     case R.id.close_notice_view:
@@ -209,6 +236,13 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                         break;
                     case R.id.open_view:
                         NotificationsUtils.requestNotify(getContext());
+                        break;
+                    case R.id.receive_bt:
+                        if (userBean == null) {
+                            return;
+                        }
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), userBean.getMonthCardBuyUrl());
+
                         break;
                 }
             }
@@ -221,30 +255,103 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     protected void dataObservable() {
 
         mViewModel.userLiveData.observe(this, data -> {
-            userBean=data;
+            userBean = data;
             mBinding.refreshview.finishRefresh();
             GlideUtils.loadCircleImage(getContext(), data.getHeadImg(), mBinding.photoView);
             mBinding.nameView.setText(data.getPhone());
             mBinding.userPhoneView.setText(data.getPhone());
             mBinding.couponView.setText(data.getCouponsSize());
-            mBinding.integralView.setText(NumberUtils.format(Double.parseDouble(data.getIntegralBalance()),0));
+            mBinding.integralView.setText(NumberUtils.format(Double.parseDouble(data.getIntegralBalance()), 0));
             mBinding.balanceView.setText(data.getBalance());
 //            mBinding.userPhoneView.setVisibility(View.VISIBLE);
+            setHeight(!data.isHasBuyOldMonthCoupon());
+            SpanUtils.with(mBinding.couponView)
+
+                    .append("" + data.getCouponsSize())
+                    .setBold()
+                    .append("张")
+                    .setForegroundColor(Color.parseColor("#323334"))
+                    .create();
+            SpanUtils.with(mBinding.integralView)
+                    .append("" + NumberUtils.format(Double.parseDouble(data.getIntegralBalance()), 0))
+                    .setBold()
+//                    .append("积分")
+//                    .setForegroundColor(Color.parseColor("#323334"))
+                    .create();
+            SpanUtils.with(mBinding.balanceView)
+                    .append("" + data.getBalance())
+                    .setBold()
+                    .append("元")
+                    .setForegroundColor(Color.parseColor("#323334"))
+                    .create();
+            if (TextUtils.isEmpty(data.getMonthCardExpireDate())) {
+
+                SpanUtils.with(mBinding.cardMoneyView)
+                        .append("到手立省")
+                        .append(data.getTotalDiscountPre() + "元")
+                        .setForegroundColor(Color.parseColor("#FE1300"))
+                        .create();
+                mBinding.receiveBt.setText("立即领卡");
+            } else {
+                SpanUtils.with(mBinding.cardMoneyView2)
+                        .append("已省")
+                        .append(data.getMonthCardTotalDiscount() + "元")
+                        .setForegroundColor(Color.parseColor("#FE1300"))
+                        .create();
+                mBinding.receiveBt.setText("前往月卡中心");
+                mBinding.cardMoneyView.setText("到期时间：" + data.getMonthCardExpireDate());
+            }
+
 
         });
         mViewModel.bannersLiveData.observe(this, data -> {
-            if(data!=null&&data.size()>0){
+            if (data != null && data.size() > 0) {
                 mBinding.moreServiceLayout.setVisibility(View.VISIBLE);
                 mineTabAdapter.setNewData(data);
                 mBinding.refreshview.finishRefresh();
-            }else {
+            } else {
                 mBinding.moreServiceLayout.setVisibility(View.GONE);
+
+            }
+
+        });
+        mViewModel.monthEquityInfoLiveData.observe(this, data -> {
+            if (data != null) {
+                if (data.isBuymMonthCard()) {
+                    mBinding.cardMoneyView2.setVisibility(View.VISIBLE);
+                    mBinding.cardMoneyView.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.cardMoneyView2.setVisibility(View.INVISIBLE);
+                    mBinding.cardMoneyView.setVisibility(View.VISIBLE);
+                }
 
             }
 
         });
     }
 
+    private void setHeight(boolean isHeight) {
+        if (isHeight) {
+            ViewGroup.LayoutParams params = mBinding.layout1.getLayoutParams();
+            params.height = QMUIDisplayHelper.dpToPx(125);
+            mBinding.layout1.setLayoutParams(params);
+            ViewGroup.LayoutParams params2 = mBinding.bgView.getLayoutParams();
+            params2.height = QMUIDisplayHelper.dpToPx(125);
+            mBinding.bgView.setLayoutParams(params2);
+            mBinding.bgView.setBackgroundResource(R.drawable.bg_mine_top);
+            mBinding.cardLayout.setVisibility(View.VISIBLE);
+        } else {
+            ViewGroup.LayoutParams params = mBinding.layout1.getLayoutParams();
+            params.height = QMUIDisplayHelper.dpToPx(70);
+            mBinding.layout1.setLayoutParams(params);
+            ViewGroup.LayoutParams params2 = mBinding.bgView.getLayoutParams();
+            params2.height = QMUIDisplayHelper.dpToPx(70);
+            mBinding.bgView.setLayoutParams(params2);
+            mBinding.bgView.setBackgroundResource(R.drawable.bg_mine_top_2);
+            mBinding.cardLayout.setVisibility(View.GONE);
+        }
+
+    }
 
     private void getBannerOfPostion() {
         mViewModel.getBannerOfPostion();
@@ -252,5 +359,9 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 
     private void queryUserInfo() {
         mViewModel.queryUserInfo();
+    }
+
+    private void getMonthEquityInfo() {
+        mViewModel.getMonthEquityInfo();
     }
 }

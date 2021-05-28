@@ -316,18 +316,20 @@ public class OilAmountDialog extends BottomSheetDialog {
                             }
                             totalMoney = totalMoney + Float.parseFloat(monthCouponEntity.getMonthCouponTemplates().get(i).getAmountReduce());
                         }
-                        SpanUtils.with(mBinding.monthRedDesc)
-                                .append(monthCouponEntity.getMonthCouponAmount() + "元")
-                                .setForegroundColor(mContext.getResources().getColor(R.color.color_1300))
-                                .append("享")
-                                .setForegroundColor(mContext.getResources().getColor(R.color.color_34))
-                                .append(totalMoney + "元")
-                                .setForegroundColor(mContext.getResources().getColor(R.color.color_1300))
-                                .append("立减红包，本单立减")
-                                .setForegroundColor(mContext.getResources().getColor(R.color.color_34))
-                                .append(mAmountReduce + "元")
-                                .setForegroundColor(mContext.getResources().getColor(R.color.color_1300))
-                                .create();
+//                        SpanUtils.with(mBinding.monthRedDesc)
+//                                .append(monthCouponEntity.getMonthCouponAmount() + "元")
+//                                .setForegroundColor(mContext.getResources().getColor(R.color.color_1300))
+//                                .append("享")
+//                                .setForegroundColor(mContext.getResources().getColor(R.color.color_34))
+//                                .append(totalMoney + "元")
+//                                .setForegroundColor(mContext.getResources().getColor(R.color.color_1300))
+//                                .append("立减红包，本单立减")
+//                                .setForegroundColor(mContext.getResources().getColor(R.color.color_34))
+//                                .append(mAmountReduce + "元")
+//                                .setForegroundColor(mContext.getResources().getColor(R.color.color_1300))
+//                                .create();
+                        mBinding.monthRedDesc.setText(monthCouponEntity.getMonthCouponAmount() + "元享" +
+                                totalMoney + "元立减红包，本单立减" + mAmountReduce + "元");
 
                         mOilMonthAdapter.setNewData(monthCouponEntity.getMonthCouponTemplates());
                     }
@@ -452,7 +454,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                     } else {
                         mDiscountAdapter.getData().get(1).setPlatformDesc("暂无可用优惠券");
                     }
-                    mDiscountAdapter.notifyDataSetChanged();
+//                    mDiscountAdapter.notifyDataSetChanged();
                 });
     }
 
@@ -473,7 +475,7 @@ public class OilAmountDialog extends BottomSheetDialog {
                     } else {
                         mDiscountAdapter.getData().get(2).setBusinessDesc("暂无可用优惠券");
                     }
-                    mDiscountAdapter.notifyDataSetChanged();
+//                    mDiscountAdapter.notifyDataSetChanged();
                 });
     }
 

@@ -13,10 +13,13 @@ import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.pgyer.pgyersdk.PgyerSDKManager;
+import com.pgyer.pgyersdk.pgyerenum.FeatureEnum;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.xxjy.jyyh.BuildConfig;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.UserConstants;
@@ -102,5 +105,11 @@ public class App extends Application {
 
         // webview 在调用TBS初始化、创建WebView之前进行如下配置
         X5WebManager.initX5Web(this);
+
+        //蒲公英检测
+        new PgyerSDKManager.InitSdk()
+                .setContext(this)
+                .enable(FeatureEnum.CHECK_UPDATE)
+                .build();
     }
 }

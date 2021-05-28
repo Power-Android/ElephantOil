@@ -69,7 +69,7 @@ public class SPConstants {
      */
     public static final String GONE_BALANCE = "gone_balance";
 
-    /*
+    /**
     *后台时间
      */
     public static final String BACKGROUND_TIME = "background_time";
@@ -80,4 +80,15 @@ public class SPConstants {
     public static final String NOTIFICATION_REMIND = "notification_remind";
     public static final String NOTIFICATION_REMIND_VERSION = "notification_remind_version";
     public static final String NOTIFICATION_REMIND_USER_CENTER = "notification_remind_user_center";
+
+    /**
+     * 埋点启动标识
+     */
+    public static final String START_FROM = "startFrom";
+
+
+    /**
+     *新人红包弹窗
+     */
+    public static final String NEW_USER_RED_PACKET = "new_user_red_packet";
 }

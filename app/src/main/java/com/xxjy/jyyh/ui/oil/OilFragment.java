@@ -46,6 +46,8 @@ import com.xxjy.jyyh.ui.setting.AboutUsActivity;
 import com.xxjy.jyyh.ui.setting.SettingActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
@@ -124,6 +126,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             }
         }
         mHomeViewModel.getLocation();
+        EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
+                TrackingConstant.GAS_LIST, "", "", "", TrackingConstant.OIL_MAIN_TYPE);
     }
 
     @Override
@@ -152,7 +156,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 @Override
                 public void onLogin() {
                     List<OilEntity.StationsBean> data = adapter.getData();
-                    Intent intent = new Intent(mContext, OilDetailActivity.class);
+//                    Intent intent = new Intent(mContext, OilDetailActivity.class);
+                    Intent intent = new Intent(mContext, OilDetailsActivity.class);
                     intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
                     intent.putExtra(Constants.OIL_NUMBER_ID, data.get(position).getOilNo());
                     startActivity(intent);
@@ -400,7 +405,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                         Glide.with(holder.imageView)
                                 .load(data.getImgUrl())
                                 .apply(new RequestOptions()
-                                        .error(R.drawable.default_img_bg))
+                                        .placeholder(R.drawable.bg_banner_loading)
+                                        .error(R.drawable.bg_banner_error))
                                 .into(holder.imageView);
                         holder.imageView.setOnClickListener(v -> {
 //                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {

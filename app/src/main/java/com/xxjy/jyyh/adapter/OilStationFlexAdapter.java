@@ -28,11 +28,11 @@ public class OilStationFlexAdapter extends BaseQuickAdapter<OilEntity.StationsBe
     @Override
     protected void convert(@NonNull BaseViewHolder helper, OilEntity.StationsBean.CzbLabelsBean item) {
 
-        if (!TextUtils.isEmpty(item.getTagDescription())){
+        if (!TextUtils.isEmpty(item.getTagIndexDescription())){
 //            helper.itemView.setVisibility(View.GONE);
-            helper.setText(R.id.item_title_tv, item.getTagDescription());
+            helper.setText(R.id.item_title_tv, item.getTagIndexDescription());
         }else{
-            helper.setText(R.id.item_title_tv, item.getTagName());
+            helper.setText(R.id.item_title_tv, item.getTagName()+"");
         }
     }
 }

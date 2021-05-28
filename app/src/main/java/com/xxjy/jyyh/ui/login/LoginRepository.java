@@ -24,7 +24,7 @@ import rxhttp.RxHttp;
  */
 public class LoginRepository extends BaseRepository {
 
-    public void verifyLogin(String twinklyToken, String jpushId, String inviteCode,
+    public void verifyLogin(String twinklyToken, String jpushId, String inviteCode,boolean isInvite,
                             MutableLiveData<String> verifyLoginLiveData) {
         addDisposable(RxHttp.postForm(ApiService.VERIFY_LOGIN)
                 .add("twinklyToken", twinklyToken)
@@ -32,6 +32,7 @@ public class LoginRepository extends BaseRepository {
                 .add("jpushId", jpushId)
                 .add("invitePhone", inviteCode,!TextUtils.isEmpty(inviteCode)&&inviteCode.length()==11)
                 .add("inviteCode", inviteCode, !TextUtils.isEmpty(inviteCode)&&inviteCode.length()==4)
+                .add("invite8",1,isInvite)
                 .asResponse(String.class)
                 .subscribe(new Consumer<String>() {
                     @Override
@@ -62,7 +63,7 @@ public class LoginRepository extends BaseRepository {
 
     public void loginByCode(String codeNumber, String phoneNumber, String wxOpenId,
                             String wxUnionId, String uuid, String registrationID,
-                            String invitationCode, MutableLiveData<String> loginLiveData) {
+                            String invitationCode, boolean isInvite,MutableLiveData<String> loginLiveData) {
         addDisposable(RxHttp.postForm(ApiService.VERIFY_LOGIN)
                 .add("phone", phoneNumber)
                 .add("validCode", codeNumber)
@@ -72,6 +73,7 @@ public class LoginRepository extends BaseRepository {
                 .add("jpushId", registrationID)
                 .add("invitePhone", invitationCode,!TextUtils.isEmpty(invitationCode)&&invitationCode.length()==11)
                 .add("inviteCode", invitationCode, !TextUtils.isEmpty(invitationCode)&&invitationCode.length()==4)
+                .add("invite8",1,isInvite)
                 .asResponse(String.class)
                 .doOnSubscribe(disposable -> showLoading(true))
                 .doFinally(() -> showLoading(false))
@@ -79,16 +81,17 @@ public class LoginRepository extends BaseRepository {
         );
     }
 
-    public void openId2Login(MutableLiveData<WeChatLoginBean> mWechatLoginLiveData, String openId, String accessToken){
+    public void openId2Login(MutableLiveData<WeChatLoginBean> mWechatLoginLiveData, String openId, String accessToken,boolean isInvite){
         addDisposable(RxHttp.postForm(ApiService.WECHAT_LOGIN)
                 .add("openId", openId)
                 .add("did", DeviceUtils.getUniqueDeviceId())
                 .add("accessToken", accessToken)
+                .add("invite8",1,isInvite)
                 .asResponse(WeChatLoginBean.class)
                 .subscribe(s -> mWechatLoginLiveData.postValue(s))
         );
     }
-    public void appBindPhone(MutableLiveData<String> mBindPhoneLiveData, String phone, String validCode,String openId,String unionId,String invitationCode,String jpushId){
+    public void appBindPhone(MutableLiveData<String> mBindPhoneLiveData, String phone, String validCode,String openId,String unionId,String invitationCode,String jpushId,boolean isInvite){
         addDisposable(RxHttp.postForm(ApiService.APP_BIND_PHONE)
                 .add("phone", phone)
                 .add("validCode", validCode)
@@ -98,6 +101,7 @@ public class LoginRepository extends BaseRepository {
                 .add("unionId", TextUtils.isEmpty(unionId)?null:unionId)
                 .add("did", DeviceUtils.getUniqueDeviceId())
                 .add("jpushId", jpushId)
+                .add("invite8",1,isInvite)
                 .asResponse(String.class)
                 .subscribe(s -> mBindPhoneLiveData.postValue(s))
         );

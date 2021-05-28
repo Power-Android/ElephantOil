@@ -63,6 +63,8 @@ import com.xxjy.jyyh.utils.pay.PayListenerUtils;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding, OilViewModel> implements IPayListener {
@@ -104,7 +106,6 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
 
     private PriceDescriptionDialog priceDescriptionDialog;
     private boolean mIsUseCoupon = true, mIsUseBusinessCoupon = true;//是否使用优惠券
-
 
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
@@ -703,7 +704,7 @@ public class OilDetailActivity extends BindingActivity<ActivityOilDetailBinding,
     }
 
     private void showChoiceOil(String stationName, View view) {
-        mGasStationTipsDialog = new GasStationLocationTipsDialog(this, view, stationName);
+        mGasStationTipsDialog = new GasStationLocationTipsDialog(this,this, view, stationName);
         mGasStationTipsDialog.showPayBt(isPay);
         mGasStationTipsDialog.setOnClickListener(view1 -> {
             switch (view1.getId()) {

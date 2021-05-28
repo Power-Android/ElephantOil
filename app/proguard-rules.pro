@@ -551,3 +551,6 @@
     public <init>();
 }
 -keep class com.xxjy.jyyh.app.SophixStubApplication$RealApplicationStub
+
+#数美风控
+-keep class com.ishumei.** {*;}

@@ -10,6 +10,51 @@ public class UserBean {
     private String integralBalance;
     private String walletUrl;
     private String integralBillUrl;
+    private String totalDiscountPre;
+    private String monthCardBuyUrl;
+    private boolean hasBuyOldMonthCoupon;
+    private String monthCardTotalDiscount;
+    private String monthCardExpireDate;
+
+    public String getMonthCardTotalDiscount() {
+        return monthCardTotalDiscount;
+    }
+
+    public void setMonthCardTotalDiscount(String monthCardTotalDiscount) {
+        this.monthCardTotalDiscount = monthCardTotalDiscount;
+    }
+
+    public String getMonthCardExpireDate() {
+        return monthCardExpireDate;
+    }
+
+    public void setMonthCardExpireDate(String monthCardExpireDate) {
+        this.monthCardExpireDate = monthCardExpireDate;
+    }
+
+    public boolean isHasBuyOldMonthCoupon() {
+        return hasBuyOldMonthCoupon;
+    }
+
+    public void setHasBuyOldMonthCoupon(boolean hasBuyOldMonthCoupon) {
+        this.hasBuyOldMonthCoupon = hasBuyOldMonthCoupon;
+    }
+
+    public String getMonthCardBuyUrl() {
+        return monthCardBuyUrl;
+    }
+
+    public void setMonthCardBuyUrl(String monthCardBuyUrl) {
+        this.monthCardBuyUrl = monthCardBuyUrl;
+    }
+
+    public String getTotalDiscountPre() {
+        return totalDiscountPre;
+    }
+
+    public void setTotalDiscountPre(String totalDiscountPre) {
+        this.totalDiscountPre = totalDiscountPre;
+    }
 
     public String getWalletUrl() {
         return walletUrl;

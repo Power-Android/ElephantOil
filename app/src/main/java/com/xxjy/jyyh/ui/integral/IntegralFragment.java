@@ -50,6 +50,8 @@ import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.RectangleIndicator;
@@ -96,10 +98,11 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            getIntegralInfo();
+//            getIntegralInfo();
             if (UserConstants.getIsLogin()) {
                 queryIntegralBalance();
-
+                EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
+                        TrackingConstant.INTEGRAL_MAIN, "", "");
             } else {
                 mBinding.integralView.setText("0");
             }
@@ -129,9 +132,9 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         adapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
 
         //签到
-        mBinding.signInRecycler.setLayoutManager(new GridLayoutManager(mContext, 7));
-        mSignInAdapter = new SignInAdapter(R.layout.adapter_sign_in_layout, mSignInList);
-        mBinding.signInRecycler.setAdapter(mSignInAdapter);
+//        mBinding.signInRecycler.setLayoutManager(new GridLayoutManager(mContext, 7));
+//        mSignInAdapter = new SignInAdapter(R.layout.adapter_sign_in_layout, mSignInList);
+//        mBinding.signInRecycler.setAdapter(mSignInAdapter);
 
         mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -145,7 +148,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                 pageNum = 1;
                 getBannerOfPostion();
                 queryProductCategorys();
-                getIntegralInfo();
+//                getIntegralInfo();
                 if (UserConstants.getIsLogin()) {
                     queryIntegralBalance();
 
@@ -155,7 +158,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         });
         getBannerOfPostion();
         queryProductCategorys();
-        getIntegralInfo();
+//        getIntegralInfo();
         if (UserConstants.getIsLogin()) {
             queryIntegralBalance();
         } else {
@@ -170,8 +173,35 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         mBinding.messageCenterView.setOnClickListener(this::onViewClicked);
         mBinding.explanationView.setOnClickListener(this::onViewClicked);
         mBinding.searchBar.setOnClickListener(this::onViewClicked);
-        mBinding.signInTv.setOnClickListener(this::onViewClicked);
-        mBinding.signInRule.setOnClickListener(this::onViewClicked);
+//        mBinding.signInTv.setOnClickListener(this::onViewClicked);
+//        mBinding.signInRule.setOnClickListener(this::onViewClicked);
+        mBinding.tabView.addOnTabSelectedListener(new QMUIBasicTabSegment.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int index) {
+                pageNum = 1;
+                categoryId = classData.get(index).getId();
+                mBinding.refreshview.setEnableRefresh(true);
+                mBinding.refreshview.setEnableLoadMore(false);
+                mBinding.refreshview.setNoMoreData(false);
+                queryProducts();
+
+            }
+
+            @Override
+            public void onTabUnselected(int index) {
+
+            }
+
+            @Override
+            public void onTabReselected(int index) {
+
+            }
+
+            @Override
+            public void onDoubleTap(int index) {
+
+            }
+        });
     }
 
     @Override
@@ -208,28 +238,28 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
             case R.id.search_bar:
                 startActivity(new Intent(mContext, SearchActivity.class).putExtra("type", "integral"));
                 break;
-            case R.id.sign_in_rule://签到规则
-                if (mSignInRuleDialog == null) {
-                    mSignInRuleDialog = new SignInRuleDialog(mContext, signInRuleStr);
-                    mSignInRuleDialog.show(view);
-                } else {
-                    mSignInRuleDialog.show(view);
-                }
-                break;
-            case R.id.sign_in_tv://签到
-
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        if (todaySignInDayBean == null) {
-                            return;
-                        }
-                        integralSign(todaySignInDayBean.getDayOfWeek(), todaySignInDayBean.getIntelgral(), todaySignInDayBean.getCouponId());
-                    }
-                });
-
-
-                break;
+//            case R.id.sign_in_rule://签到规则
+//                if (mSignInRuleDialog == null) {
+//                    mSignInRuleDialog = new SignInRuleDialog(mContext, signInRuleStr);
+//                    mSignInRuleDialog.show(view);
+//                } else {
+//                    mSignInRuleDialog.show(view);
+//                }
+//                break;
+//            case R.id.sign_in_tv://签到
+//
+//                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+//                    @Override
+//                    public void onLogin() {
+//                        if (todaySignInDayBean == null) {
+//                            return;
+//                        }
+//                        integralSign(todaySignInDayBean.getDayOfWeek(), todaySignInDayBean.getIntelgral(), todaySignInDayBean.getCouponId());
+//                    }
+//                });
+//
+//
+//                break;
         }
     }
 
@@ -261,46 +291,46 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
             mBinding.integralView.setText(NumberUtils.format(Double.parseDouble(data), 0));
         });
 
-        mViewModel.integralInfoLiveData.observe(this, data -> {
-            mSignInList.clear();
-            mSignInList.addAll(data.getList());
-            mSignInAdapter.refresh();
-            mSignInAdapter.notifyDataSetChanged();
-            signInRuleStr = data.getSignRule();
-            signInBean = data;
-            for (SignInDayBean bean : mSignInList) {
-                if (bean.isCurrentDayFlag()) {
-                    todaySignInDayBean = bean;
-                    break;
-                }
-            }
-            if (todaySignInDayBean.isSignFlag()) {
-                mBinding.signInTv.setEnabled(false);
-                mBinding.signInTv.setText("已签到");
-                mBinding.signInTv.setTextColor(Color.parseColor("#A0A0A0"));
-            } else {
-                mBinding.signInTv.setEnabled(true);
-                mBinding.signInTv.setText("立即签到领积分");
-                mBinding.signInTv.setTextColor(Color.parseColor("#FFFFFF"));
-            }
-            SpanUtils.with(mBinding.signinDesc)
-                    .append("本周签到 ")
-                    .append(data.getList().size() + " ")
-                    .setForegroundColor(Color.parseColor("#FF593E"))
-                    .append("天，额外获得 ")
-                    .append(data.getCouponAmount() + "元加油券")
-                    .setForegroundColor(Color.parseColor("#FF593E"))
-                    .create();
-        });
-        mViewModel.integralSignLiveData.observe(this, data -> {
-            if (mSignInSuccessDialog == null) {
-                mSignInSuccessDialog = new SignInSuccessDialog(mContext, getBaseActivity());
-            }
-            mSignInSuccessDialog.setData(data,signInBean);
-            mSignInSuccessDialog.show(mBinding.signInTv);
-            getIntegralInfo();
-            queryIntegralBalance();
-        });
+//        mViewModel.integralInfoLiveData.observe(this, data -> {
+//            mSignInList.clear();
+//            mSignInList.addAll(data.getList());
+//            mSignInAdapter.refresh();
+//            mSignInAdapter.notifyDataSetChanged();
+//            signInRuleStr = data.getSignRule();
+//            signInBean = data;
+//            for (SignInDayBean bean : mSignInList) {
+//                if (bean.isCurrentDayFlag()) {
+//                    todaySignInDayBean = bean;
+//                    break;
+//                }
+//            }
+//            if (todaySignInDayBean.isSignFlag()) {
+//                mBinding.signInTv.setEnabled(false);
+//                mBinding.signInTv.setText("已签到");
+//                mBinding.signInTv.setTextColor(Color.parseColor("#A0A0A0"));
+//            } else {
+//                mBinding.signInTv.setEnabled(true);
+//                mBinding.signInTv.setText("立即签到领积分");
+//                mBinding.signInTv.setTextColor(Color.parseColor("#FFFFFF"));
+//            }
+//            SpanUtils.with(mBinding.signinDesc)
+//                    .append("本周签到 ")
+//                    .append(data.getList().size() + " ")
+//                    .setForegroundColor(Color.parseColor("#FF593E"))
+//                    .append("天，额外获得 ")
+//                    .append(data.getCouponAmount() + "元加油券")
+//                    .setForegroundColor(Color.parseColor("#FF593E"))
+//                    .create();
+//        });
+//        mViewModel.integralSignLiveData.observe(this, data -> {
+//            if (mSignInSuccessDialog == null) {
+//                mSignInSuccessDialog = new SignInSuccessDialog(mContext, getBaseActivity());
+//            }
+//            mSignInSuccessDialog.setData(data,signInBean);
+//            mSignInSuccessDialog.show(mBinding.signInTv);
+//            getIntegralInfo();
+//            queryIntegralBalance();
+//        });
     }
 
     private void initTab() {
@@ -327,33 +357,7 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
         mBinding.tabView.selectTab(0);
 //        mBinding.tabView.selectTab(0, false, false);
         mBinding.tabView.notifyDataChanged();
-        mBinding.tabView.addOnTabSelectedListener(new QMUIBasicTabSegment.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(int index) {
-                pageNum = 1;
-                categoryId = classData.get(index).getId();
-                mBinding.refreshview.setEnableRefresh(true);
-                mBinding.refreshview.setEnableLoadMore(false);
-                mBinding.refreshview.setNoMoreData(false);
-                queryProducts();
 
-            }
-
-            @Override
-            public void onTabUnselected(int index) {
-
-            }
-
-            @Override
-            public void onTabReselected(int index) {
-
-            }
-
-            @Override
-            public void onDoubleTap(int index) {
-
-            }
-        });
 
     }
 
@@ -432,7 +436,8 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
                         Glide.with(holder.imageView)
                                 .load(data.getImgUrl())
                                 .apply(new RequestOptions()
-                                        .error(R.drawable.default_img_bg))
+                                        .placeholder(R.drawable.bg_banner_loading)
+                                        .error(R.drawable.bg_banner_error))
                                 .into(holder.imageView);
                         holder.imageView.setOnClickListener(v -> {
 //                            LoginHelper.login(getContext(), new LoginHelper.CallBack() {

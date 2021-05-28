@@ -24,11 +24,6 @@ import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.login.LoginActivity;
 
 import java.io.File;
-import java.util.HashMap;
-
-import cn.jpush.android.api.JPushInterface;
-import io.reactivex.rxjava3.functions.Consumer;
-import rxhttp.RxHttp;
 
 public class UiUtils {
     @SuppressLint("SetJavaScriptEnabled")
@@ -227,6 +222,17 @@ public class UiUtils {
      */
     public static void toLoginActivity(Context context, int state) {
         Intent intent = new Intent(context, LoginActivity.class);
+        LoginActivity.loginState = state;
+        context.startActivity(intent);
+    }
+    /**
+     * 跳转至login登录界面  邀请好友
+     *
+     * @param context
+     */
+    public static void toLoginActivity(Context context, int state,boolean isInvite) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.putExtra("invite",isInvite);
         LoginActivity.loginState = state;
         context.startActivity(intent);
     }

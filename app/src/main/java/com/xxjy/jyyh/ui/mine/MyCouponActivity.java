@@ -39,6 +39,7 @@ import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.oil.CouponOilStationsActivity;
 import com.xxjy.jyyh.ui.oil.OilDetailActivity;
+import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.wight.SettingLayout;
 
@@ -149,7 +150,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 //        mPlatformNoCanUseBt = mPlatformCoupon.findViewById(R.id.no_can_use_bt);
         mPlatformRefreshView = mPlatformCoupon.findViewById(R.id.refresh_view);
         mPlatformRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        platformCouponAdapter = new MyCouponAdapter(R.layout.adapter_my_coupon, data);
+        platformCouponAdapter = new MyCouponAdapter(false, data);
         platformCouponAdapter.setEmptyView(R.layout.empty_coupon_layout, mPlatformRecyclerView);
         mPlatformRecyclerView.setAdapter(platformCouponAdapter);
 
@@ -159,7 +160,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 //        mBusinessNoCanUseBt = mBusinessCoupon.findViewById(R.id.no_can_use_bt);
         mBusinessRefreshView = mBusinessCoupon.findViewById(R.id.refresh_view);
         mBusinessRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        businessCouponAdapter = new MyCouponAdapter(R.layout.adapter_my_coupon, data2);
+        businessCouponAdapter = new MyCouponAdapter(true, data2);
 
         businessCouponAdapter.setEmptyView(R.layout.empty_coupon_layout, mBusinessRecyclerView);
         mBusinessRecyclerView.setAdapter(businessCouponAdapter);
@@ -227,7 +228,9 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
                         } else {
                             String[] strs = oilStations.split(",");
                             if (strs.length == 1) {
-                                startActivity(new Intent(MyCouponActivity.this, OilDetailActivity.class)
+//                                startActivity(new Intent(MyCouponActivity.this, OilDetailActivity.class)
+//                                        .putExtra(Constants.GAS_STATION_ID, strs[0]));
+                                startActivity(new Intent(MyCouponActivity.this, OilDetailsActivity.class)
                                         .putExtra(Constants.GAS_STATION_ID, strs[0]));
                             } else {
                                 startActivity(new Intent(MyCouponActivity.this, CouponOilStationsActivity.class)

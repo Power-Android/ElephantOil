@@ -86,7 +86,10 @@
             app:qmui_backgroundColor="@color/white"
             app:qmui_radiusBottomRight="@dimen/dp_5"
             app:qmui_radiusTopRight="@dimen/dp_5"
-            android:layout_margin="@dimen/dp_1"
+
+            android:layout_marginTop="@dimen/dp_1"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginRight="@dimen/dp_1"
             app:layout_constraintStart_toEndOf="@+id/separate"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent">

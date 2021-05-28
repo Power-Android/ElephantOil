@@ -17,8 +17,17 @@ public class MultiplePriceBean {
     private String balancePrice;//抵扣多少余额，费用详情使用
     private String serviceChargeAmount;//服务费
     private String totalDiscountAmount;//总优惠直降金额
+    private String productAmount;//搭售金额
     private BestBusinessCouponBean bestBusinessCoupon;
     private BestuserCouponBean bestuserCoupon;
+
+    public String getProductAmount() {
+        return productAmount;
+    }
+
+    public void setProductAmount(String productAmount) {
+        this.productAmount = productAmount;
+    }
 
     public String getTotalDiscountAmount() {
         return totalDiscountAmount;

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.rxjava.rxlife.RxLife;
@@ -23,6 +24,7 @@ import com.xxjy.jyyh.entity.OilDefaultPriceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
+import com.xxjy.jyyh.entity.RedeemEntity;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 
@@ -72,13 +74,13 @@ public class OilRepository extends BaseRepository {
     }
 
     public void getOilStations1(MutableLiveData<OilEntity> oilStationLiveData, String appLatitude,
-                               String appLongitude, String oilNo, String orderBy, String distance,
-                               String pageNum, String pageSize, String gasName, String method,String gasIds) {
+                                String appLongitude, String oilNo, String orderBy, String distance,
+                                String pageNum, String pageSize, String gasName, String method, String gasIds) {
         addDisposable(RxHttp.postForm(ApiService.OIL_STATIONS)
                 .add("appLatitude", appLatitude, Float.parseFloat(appLatitude) != 0)
                 .add("appLongitude", appLongitude, Float.parseFloat(appLongitude) != 0)
                 .add("oilNo", oilNo, !TextUtils.equals("全部", oilNo))
-                .add("gasIds",gasIds,!TextUtils.isEmpty(gasIds))
+                .add("gasIds", gasIds, !TextUtils.isEmpty(gasIds))
                 .add("orderBy", orderBy)
                 .add("distance", distance)
                 .add("pageNum", pageNum)
@@ -101,8 +103,8 @@ public class OilRepository extends BaseRepository {
                              MutableLiveData<OilEntity.StationsBean> oilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.OIL_DETAIL)
                 .add(Constants.GAS_STATION_ID, gasId)
-                .add(Constants.LATITUDE, lat+"", lat != 0)
-                .add(Constants.LONGTIDUE, lng+"", lng != 0)
+                .add(Constants.LATITUDE, lat + "", lat != 0)
+                .add(Constants.LONGTIDUE, lng + "", lng != 0)
                 .asResponse(OilEntity.StationsBean.class)
                 .doOnSubscribe(disposable -> showLoading(true))
                 .doFinally(() -> showLoading(false))
@@ -112,8 +114,8 @@ public class OilRepository extends BaseRepository {
 
     public void getMultiplePrice(String amount, String gasId, String oilNo, String isUserBill, String platId,
                                  String businessAmount, String monthCouponId, boolean isUseCoupon, boolean isUseBusinessCoupon,
-                                 MutableLiveData<MultiplePriceBean> multiplePriceLiveData) {
-        addDisposable(RxHttp.postForm(ApiService.OIL_MULTIPLE_PRICE)
+                                 String productIds, MutableLiveData<MultiplePriceBean> multiplePriceLiveData) {
+        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/tiein/v1/getPayPrices")
                 .add("amount", amount)
                 .add(Constants.GAS_STATION_ID, gasId)
                 .add(Constants.OIL_NUMBER_ID, oilNo)
@@ -123,11 +125,17 @@ public class OilRepository extends BaseRepository {
                 .add("monthCouponId", monthCouponId)
                 .add("canUseUserCoupon", isUseCoupon)
                 .add("canUseCzbCoupon", isUseBusinessCoupon)
+                .add("productIds", productIds, !TextUtils.isEmpty(productIds) && !TextUtils.equals("[]", productIds))
                 .asResponse(MultiplePriceBean.class)
-                .doOnSubscribe(disposable -> showLoading(true))
-                .doFinally(() -> showLoading(false))
+                .doOnSubscribe(disposable -> {
+                    showLoading(true);
+                })
+                .doFinally(() -> {
+                    showLoading(false);
+                })
                 .subscribe(multiplePriceBean -> {
                     multiplePriceLiveData.postValue(multiplePriceBean);
+                    showLoading(false);
                 }));
     }
 
@@ -190,8 +198,9 @@ public class OilRepository extends BaseRepository {
                             String oilNo, String oilName, String gasName, String priceGun, String priceUnit,
                             String oilType, String phone, String xxCouponId, String czbCouponId, String czbCouponAmount,
                             String xxMonthCouponId, String xxMonthCouponAmount, boolean isAddMonthId, boolean isAddMonthAmouont,
+                            String productIds, String productAmount,
                             MutableLiveData<String> createOrderLiveData) {
-        addDisposable(RxHttp.postForm(ApiService.CREATE_ORDER)
+        addDisposable(RxHttp.postForm("http://192.168.1.84:8833//api/tiein/v1/refuelAndProductCreateOrder")
                 .add("amount", amount)
                 .add("payAmount", payAmount)
                 .add("usedBalance", usedBalance)
@@ -209,6 +218,8 @@ public class OilRepository extends BaseRepository {
                 .add("czbCouponAmount", czbCouponAmount)
                 .add("xxMonthCouponId", xxMonthCouponId, isAddMonthId)
                 .add("xxMonthCouponAmount", xxMonthCouponAmount, isAddMonthAmouont)
+                .add("productIds", productIds, !TextUtils.isEmpty(productIds) && !TextUtils.equals("[]", productIds))
+                .add("productAmount", productAmount, !TextUtils.isEmpty(productAmount))
                 .asResponse(String.class)
                 .doOnSubscribe(disposable -> showLoading(true))
                 .doFinally(() -> showLoading(false))
@@ -218,5 +229,18 @@ public class OilRepository extends BaseRepository {
                         onError -> {
                             MyToast.showError(App.getContext(), onError.getMessage());
                         }));
+    }
+
+    public void getRedeem(String gasId, MutableLiveData<RedeemEntity> redeemLiveData) {
+        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/tiein/v1/queryTieinSaleInfo")
+                .add(Constants.GAS_STATION_ID, "AY001262714")
+                .asResponse(RedeemEntity.class)
+                .subscribe(new Consumer<RedeemEntity>() {
+                    @Override
+                    public void accept(RedeemEntity s) throws Throwable {
+                        redeemLiveData.postValue(s);
+                    }
+                })
+        );
     }
 }

@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
+import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.HomeNewUserBean;
 
 /**
  * @author power
@@ -17,6 +19,7 @@ import com.xxjy.jyyh.base.BaseViewModel;
 public class MainViewModel extends BaseViewModel<MainRepository> {
     private MutableLiveData<Boolean> osLiveData = new MutableLiveData<>();
 
+
     public MainViewModel(@NonNull Application application) {
         super(application);
     }
@@ -24,6 +27,11 @@ public class MainViewModel extends BaseViewModel<MainRepository> {
     public LiveData<Boolean> getOsOverAll() {
         mRespository.getOsOverAll(osLiveData);
         return osLiveData;
+    }
+    public LiveData<HomeNewUserBean> newUserStatus() {
+         MutableLiveData<HomeNewUserBean> newUserLiveData = new MutableLiveData<>();
+        mRespository.newUserStatus(newUserLiveData);
+        return newUserLiveData;
     }
 
     public LiveData<Boolean> getIsNewUser() {

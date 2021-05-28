@@ -140,58 +140,32 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/month_red_cl"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/dp_145"
                     android:visibility="visible"
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_marginEnd="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_5"
-                    android:background="@drawable/selector_month_red"
+                    android:background="@drawable/red_month_icon"
                     app:layout_constraintTop_toBottomOf="@+id/amount_recycler_view">
-                    <ImageView
-                        android:id="@+id/view1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/month_red_text"
-                        android:layout_marginStart="@dimen/dp_12"
-                        android:layout_marginTop="@dimen/dp_17"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
                     <TextView
                         android:id="@+id/month_red_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/sp_11"
-                        android:textColor="@color/color_1300"
-                        android:layout_marginTop="@dimen/dp_5"
-                        app:layout_constraintTop_toBottomOf="@+id/view1"
-                        app:layout_constraintStart_toStartOf="@+id/view1"/>
-                    <ImageView
-                        android:id="@+id/month_red_rule"
-                        android:layout_width="@dimen/dp_56"
-                        android:layout_height="@dimen/dp_11"
-                        android:src="@drawable/month_red_rule"
-                        android:layout_marginEnd="@dimen/dp_12"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/view1"/>
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/dp_38"
+                        android:layout_marginStart="@dimen/dp_12"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/month_recycler_view"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_marginBottom="@dimen/dp_8"
                         app:layout_constraintTop_toBottomOf="@+id/month_red_desc"
-                        app:layout_constraintStart_toStartOf="@+id/view1" />
-                    <TextView
-                        android:id="@+id/view2"
-                        android:layout_width="@dimen/dp_53"
-                        android:layout_height="@dimen/dp_13"
-                        android:text="超值单单减"
-                        android:textSize="@dimen/sp_9"
-                        android:textColor="#FF4B33"
-                        android:gravity="center"
-                        android:layout_marginEnd="@dimen/dp_10"
-                        android:background="@drawable/shape_stroke_red_3raduis"
-                        app:layout_constraintTop_toTopOf="@+id/month_recycler_view"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintStart_toStartOf="@+id/month_red_desc"
+                        app:layout_constraintBottom_toTopOf="@+id/month_red_rule"/>
                     <TextView
                         android:id="@+id/month_red_money"
                         android:layout_width="wrap_content"
@@ -199,17 +173,18 @@
                         android:text="¥8.8"
                         android:textSize="@dimen/sp_20"
                         android:textStyle="bold"
-                        android:textColor="@color/color_1300"
+                        android:textColor="@color/white"
                         android:layout_marginTop="@dimen/dp_5"
                         android:layout_marginEnd="@dimen/dp_4"
                         android:includeFontPadding="false"
-                        app:layout_constraintTop_toBottomOf="@+id/view2"
+                        app:layout_constraintTop_toTopOf="@+id/month_recycler_view"
+                        app:layout_constraintBottom_toBottomOf="@+id/month_recycler_view"
                         app:layout_constraintEnd_toStartOf="@+id/month_red_check" />
                     <CheckBox
                         android:id="@+id/month_red_check"
                         android:layout_width="@dimen/common_margin"
                         android:layout_height="@dimen/common_margin"
-                        android:background="@drawable/selector_checkbox"
+                        android:background="@drawable/selector_red_month"
                         android:button="@null"
                         android:layout_marginEnd="@dimen/dp_12"
                         app:layout_constraintTop_toTopOf="@+id/month_red_money"
@@ -219,13 +194,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="请您购买前仔细阅读月度红包活动规则"
-                        android:layout_marginTop="@dimen/dp_8"
-                        android:layout_marginBottom="@dimen/common_margin"
+                        android:layout_marginBottom="@dimen/dp_11"
                         android:textSize="@dimen/sp_10"
-                        android:textColor="#7F7F7F"
-                        app:layout_constraintTop_toBottomOf="@+id/month_recycler_view"
+                        android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/view1"/>
+                        app:layout_constraintStart_toStartOf="@id/month_red_desc"/>
+                    <ImageView
+                        android:id="@+id/month_red_rule"
+                        android:layout_width="@dimen/dp_74"
+                        android:layout_height="@dimen/dp_12"
+                        android:src="@drawable/month_red_rule_icon"
+                        android:layout_marginEnd="@dimen/dp_12"
+                        android:layout_marginBottom="@dimen/dp_12"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <TextView
                     android:id="@+id/discount_desc"

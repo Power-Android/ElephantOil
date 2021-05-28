@@ -15,7 +15,7 @@ public class MyCouponRepository extends BaseRepository {
 
 
     public void getPlatformCouponVOs(MutableLiveData<List<CouponBean>> platformCouponLiveData, int canUse){
-        addDisposable(RxHttp.postForm(ApiService.PLATFORM_COUPON)
+        addDisposable(RxHttp.postForm(ApiService.PLATFORM_COUPON_LIST)
                 .add("canUse",canUse)// 0 falae 1 true
                 .asResponseList(CouponBean.class)
                 .subscribe(data -> platformCouponLiveData.postValue(data))

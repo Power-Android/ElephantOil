@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.SpanUtils;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.ui.login.LoginActivity;
@@ -37,6 +38,7 @@ public class LoginHelper {
         SPUtils.getInstance().put(SPConstants.APP_TOKEN,"");
         SPUtils.getInstance().put(SPConstants.USER_TYPE,-1);
         SPUtils.getInstance().put(SPConstants.OPEN_ID,"");
+        SPUtils.getInstance().put(SPConstants.NEW_USER_RED_PACKET,0l);
         UMengManager.onProfileSignOff();
         if (activity != null){
             activity.finish();

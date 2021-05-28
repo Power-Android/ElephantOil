@@ -99,13 +99,13 @@ public class OilStationListAdapter extends BaseQuickAdapter<OilEntity.StationsBe
         int textViewPadding2 = QMUIDisplayHelper.dp2px(context, 2);
         textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
-        if (!isSign) {
+//        if (!isSign) {
             textView.setTextColor(ContextCompat.getColor(context, R.color.color_3E));
             textView.setBackgroundResource(R.drawable.shape_soild_station_tag_red);
-        } else {
-            textView.setTextColor(ContextCompat.getColor(context, R.color.white));
-            textView.setBackgroundResource(R.drawable.shape_soild_station_tag);
-        }
+//        } else {
+//            textView.setTextColor(ContextCompat.getColor(context, R.color.white));
+//            textView.setBackgroundResource(R.drawable.shape_soild_station_tag);
+//        }
 
         textView.setText(content);
         floatLayout.addView(textView);

@@ -33,8 +33,8 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
         super(application);
     }
 
-    public void verifyLogin(String twinklyToken, String jpushId, String inviteCode){
-        mRespository.verifyLogin(twinklyToken, jpushId, inviteCode,  mVerifyLoginLiveData);
+    public void verifyLogin(String twinklyToken, String jpushId, String inviteCode,boolean isInvite){
+        mRespository.verifyLogin(twinklyToken, jpushId, inviteCode,   isInvite,mVerifyLoginLiveData);
     }
 
     public LiveData<Boolean> sendCode(String scene, String phoneNumber) {
@@ -43,9 +43,9 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
     }
 
     public void loginByCode(String codeNumber, String phoneNumber, String wxOpenId,
-                            String wxUnionId, String uuid, String registrationID, String invitationCode) {
+                            String wxUnionId, String uuid, String registrationID, String invitationCode,boolean isInvite) {
         mRespository.loginByCode(codeNumber, phoneNumber, wxOpenId, wxUnionId, uuid,
-                registrationID, invitationCode, mLoginLiveData);
+                registrationID, invitationCode, isInvite, mLoginLiveData);
     }
 
     public void setLoginSuccess(String token, String mobile){
@@ -61,11 +61,11 @@ public class LoginViewModel extends BaseViewModel<LoginRepository> {
         ActivityUtils.finishActivity(MobileLoginActivity.class);
     }
 
-    public void openId2Login(String openId,String accessToken){
-        mRespository.openId2Login(mWechatLoginLiveData,openId,accessToken);
+    public void openId2Login(String openId,String accessToken,boolean isInvite){
+        mRespository.openId2Login(mWechatLoginLiveData,openId,accessToken,isInvite);
     }
-    public void appBindPhone(String phone,String validCode, String openId,String unionId,String invitationCode,String jpushId){
-        mRespository.appBindPhone(mBindPhoneLiveData,phone,validCode,openId,unionId,invitationCode,jpushId);
+    public void appBindPhone(String phone,String validCode, String openId,String unionId,String invitationCode,String jpushId,boolean isInvite){
+        mRespository.appBindPhone(mBindPhoneLiveData,phone,validCode,openId,unionId,invitationCode,jpushId, isInvite);
     }
     public void getSpecOil(String inviteCode) {
         mRespository.getSpecOil(inviteCode, specStationLiveData);

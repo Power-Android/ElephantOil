@@ -212,4 +212,23 @@ public interface JsOperationMethods {
      */
     void getOpenId();
 
+    /**
+     * 埋点信息
+     * @return
+     */
+     String getEventTracking();
+
+    /**
+     * 去优惠券列表
+     */
+    void goCouponListPage();
+
+    /**
+     * 邀请好友登录
+     */
+    void toLoginByInviteFriends();
+    /**
+     * 我的页面
+     */
+    void toMyPage();
 }

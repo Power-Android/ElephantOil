@@ -32,10 +32,10 @@ public class OilMonthAdapter extends BaseQuickAdapter<MonthCouponEntity.MonthCou
                         NumberUtils.format(Double.parseDouble(item.getAmount()), 0)
                         + "可用");
         if (isSelected && item.getMonthCouponDefault()) {
-            helper.setImageResource(R.id.item_bg, R.drawable.month_red_select);
+            helper.setImageResource(R.id.item_bg, R.drawable.red_month_selected);
             helper.setText(R.id.item_content_tv, "本单可用");
         } else {
-            helper.setImageResource(R.id.item_bg, R.drawable.month_red_def);
+            helper.setImageResource(R.id.item_bg, R.drawable.red_month_unselect);
         }
     }
 
