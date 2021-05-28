@@ -3,9 +3,9 @@
   "rightBus": {
     "event_jump_pay_query": [
       "{ desc: com.xxjy.jyyh.ui.home.HomeFragment#onEvent(com.xxjy.jyyh.entity.PayOrderEntity orderEntity), sticky: true }",
-      "{ desc: com.xxjy.jyyh.ui.restaurant.RestaurantActivity#onEvent(com.xxjy.jyyh.entity.PayOrderEntity orderEntity), sticky: true }",
       "{ desc: com.xxjy.jyyh.ui.oil.OilDetailActivity#onEvent(com.xxjy.jyyh.entity.PayOrderEntity orderEntity), sticky: true }",
-      "{ desc: com.xxjy.jyyh.ui.oil.OilOrderActivity#onEvent(com.xxjy.jyyh.entity.PayOrderEntity orderEntity), sticky: true }"
+      "{ desc: com.xxjy.jyyh.ui.oil.OilOrderActivity#onEvent(com.xxjy.jyyh.entity.PayOrderEntity orderEntity), sticky: true }",
+      "{ desc: com.xxjy.jyyh.ui.restaurant.RestaurantActivity#onEvent(com.xxjy.jyyh.entity.PayOrderEntity orderEntity), sticky: true }"
     ],
     "event_jump_hunter_code": [
       "{ desc: com.xxjy.jyyh.ui.home.HomeFragment#onHunterEvent(java.lang.String oilId), sticky: true }"
