@@ -286,23 +286,39 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
             case R.id.oil_history_delete_iv://油站的历史记录删除
                 mQueryDialog = new QueryDialog(this);
                 mQueryDialog.show();
-                mQueryDialog.setOnConfirmListener(() -> {
-                    DBInstance.getInstance().deleteAllData();
-                    mOilHistoryList.clear();
-                    mOilView.findViewById(R.id.oil_history_title).setVisibility(View.GONE);
-                    mOilView.findViewById(R.id.oil_history_delete_iv).setVisibility(View.GONE);
-                    mOilHistoryAdapter.notifyDataSetChanged();
+                mQueryDialog.setOnConfirmListener(new QueryDialog.OnConfirmListener() {
+                    @Override
+                    public void onConfirm() {
+                        DBInstance.getInstance().deleteAllData();
+                        mOilHistoryList.clear();
+                        mOilView.findViewById(R.id.oil_history_title).setVisibility(View.GONE);
+                        mOilView.findViewById(R.id.oil_history_delete_iv).setVisibility(View.GONE);
+                        mOilHistoryAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onRefuse() {
+
+                    }
                 });
                 break;
             case R.id.interest_history_delete_iv://权益的历史记录删除
                 mQueryDialog = new QueryDialog(this);
                 mQueryDialog.show();
-                mQueryDialog.setOnConfirmListener(() -> {
-                    DBInstance.getInstance().deleteAllIntegralData();
-                    mInterestHistoryList.clear();
-                    mInterestView.findViewById(R.id.interest_history_title).setVisibility(View.GONE);
-                    mInterestView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.GONE);
-                    mInterestHistoryAdapter.notifyDataSetChanged();
+                mQueryDialog.setOnConfirmListener(new QueryDialog.OnConfirmListener() {
+                    @Override
+                    public void onConfirm() {
+                        DBInstance.getInstance().deleteAllIntegralData();
+                        mInterestHistoryList.clear();
+                        mInterestView.findViewById(R.id.interest_history_title).setVisibility(View.GONE);
+                        mInterestView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.GONE);
+                        mInterestHistoryAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onRefuse() {
+
+                    }
                 });
                 break;
         }
