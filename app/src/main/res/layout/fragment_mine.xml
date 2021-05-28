@@ -3,8 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/colorAccent">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_600"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refreshview"
@@ -20,11 +25,9 @@
             android:background="@color/colorAccent"
             app:srlAccentColor="@color/white" />
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
 
             <LinearLayout
                 android:id="@+id/top_title_layout"
@@ -68,19 +71,19 @@
                 </LinearLayout>
             </LinearLayout>
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_1"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_125"
+                android:layout_height="70dp"
                 android:background="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/top_title_layout">
 
                 <View
                     android:id="@+id/bg_view"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_125"
-                    android:background="@drawable/bg_mine_top"
+                    android:layout_height="70dp"
+                    android:background="@drawable/bg_mine_top_2"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -89,20 +92,21 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/card_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_69"
-                    android:layout_marginLeft="@dimen/dp_12"
-                    android:layout_marginRight="@dimen/dp_12"
+                    android:layout_height="69dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
                     android:background="@drawable/bg_mine_card"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/bg_view"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
                     <ImageView
                         android:id="@+id/card_tag_view"
-                        android:layout_width="@dimen/dp_32"
-                        android:layout_height="@dimen/dp_32"
-                        android:layout_marginLeft="@dimen/dp_16"
-                        android:layout_marginTop="@dimen/dp_14"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="14dp"
                         android:src="@drawable/ic_card_tag"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -111,21 +115,23 @@
                         android:id="@+id/card_name_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_9"
+                        android:layout_marginLeft="9dp"
                         android:text="小象省钱月卡"
                         android:textColor="@color/color_18"
                         android:textSize="@dimen/sp_14"
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/card_tag_view"
                         app:layout_constraintTop_toTopOf="@+id/card_tag_view" />
+
                     <TextView
                         android:id="@+id/card_money_view_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_9"
+                        android:layout_marginLeft="9dp"
                         android:text="已省0.00元"
                         android:textColor="@color/color_3D"
                         android:textSize="@dimen/sp_12"
+                        android:visibility="invisible"
                         app:layout_constraintStart_toEndOf="@+id/card_name_view"
                         app:layout_constraintTop_toTopOf="@+id/card_name_view" />
 
@@ -133,23 +139,25 @@
                         android:id="@+id/card_money_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_9"
+                        android:layout_marginLeft="9dp"
                         android:text="到手立省"
                         android:textColor="@color/color_3D"
                         android:textSize="@dimen/sp_12"
+                        android:visibility="invisible"
                         app:layout_constraintStart_toEndOf="@+id/card_tag_view"
                         app:layout_constraintTop_toBottomOf="@+id/card_name_view" />
 
                     <TextView
+                        android:id="@+id/receive_bt"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dp_21"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_height="21dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="12dp"
                         android:alpha="0.8"
                         android:background="@drawable/shape_solid_11radius"
                         android:gravity="center"
-                        android:paddingLeft="@dimen/dp_8"
-                        android:paddingRight="@dimen/dp_8"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
                         android:text="立即领卡"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_12"
@@ -217,7 +225,7 @@
             <LinearLayout
                 android:id="@+id/bottom_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/white"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -232,16 +240,18 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/my_coupon_layout"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:orientation="vertical">
+
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/my_coupon_layout"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                           >
+                            android:layout_marginLeft="@dimen/dp_24">
 
                             <ImageView
                                 android:id="@+id/coupon_tag_view"
@@ -278,9 +288,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dp_9"
                                 android:text="0"
-                                android:textColor="@color/color_34"
+                                android:textColor="#FD6431"
                                 android:textSize="@dimen/sp_12"
-                                android:textStyle="bold"
                                 app:layout_constraintStart_toEndOf="@+id/coupon_tag_view"
                                 app:layout_constraintTop_toBottomOf="@+id/coupon_name_view" />
 
@@ -292,132 +301,138 @@
                         android:layout_width="@dimen/dp_0_5"
                         android:layout_height="@dimen/dp_35"
                         android:background="@color/color_EE" />
+
                     <LinearLayout
+                        android:id="@+id/integral_layout"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:orientation="vertical">
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/integral_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                       >
 
-                        <ImageView
-                            android:id="@+id/integral_tag_view"
-                            android:layout_width="@dimen/dp_32"
-                            android:layout_height="@dimen/dp_32"
-                            android:src="@drawable/ic_mine_integral"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
 
-                        <TextView
-                            android:id="@+id/integral_name_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_9"
-                            android:text="积分"
-                            android:textColor="@color/color_34"
-                            android:textSize="@dimen/sp_13"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@+id/integral_tag_view"
-                            app:layout_constraintTop_toTopOf="@+id/integral_tag_view" />
+                            android:layout_marginLeft="@dimen/dp_24">
 
-                        <ImageView
-                            android:layout_width="@dimen/dp_5"
-                            android:layout_height="@dimen/dp_8"
-                            android:layout_marginLeft="@dimen/dp_3"
-                            android:layout_marginTop="@dimen/dp_5"
-                            android:src="@drawable/arrow_right_1_icon"
-                            app:layout_constraintStart_toEndOf="@+id/integral_name_view"
-                            app:layout_constraintTop_toTopOf="@+id/integral_name_view" />
+                            <ImageView
+                                android:id="@+id/integral_tag_view"
+                                android:layout_width="@dimen/dp_32"
+                                android:layout_height="@dimen/dp_32"
+                                android:src="@drawable/ic_mine_integral"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/integral_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_9"
-                            android:text="0"
-                            android:textColor="@color/color_34"
-                            android:textSize="@dimen/sp_12"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@+id/integral_tag_view"
-                            app:layout_constraintTop_toBottomOf="@+id/integral_name_view" />
+                            <TextView
+                                android:id="@+id/integral_name_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_9"
+                                android:text="积分"
+                                android:textColor="@color/color_34"
+                                android:textSize="@dimen/sp_13"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/integral_tag_view"
+                                app:layout_constraintTop_toTopOf="@+id/integral_tag_view" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <ImageView
+                                android:layout_width="@dimen/dp_5"
+                                android:layout_height="@dimen/dp_8"
+                                android:layout_marginLeft="@dimen/dp_3"
+                                android:layout_marginTop="@dimen/dp_5"
+                                android:src="@drawable/arrow_right_1_icon"
+                                app:layout_constraintStart_toEndOf="@+id/integral_name_view"
+                                app:layout_constraintTop_toTopOf="@+id/integral_name_view" />
+
+                            <TextView
+                                android:id="@+id/integral_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_9"
+                                android:text="0"
+                                android:textColor="#FD6431"
+                                android:textSize="@dimen/sp_12"
+                                app:layout_constraintStart_toEndOf="@+id/integral_tag_view"
+                                app:layout_constraintTop_toBottomOf="@+id/integral_name_view" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
+
                     <View
+                        android:id="@+id/balance_line_view"
                         android:layout_width="@dimen/dp_0_5"
                         android:layout_height="@dimen/dp_35"
                         android:background="@color/color_EE" />
+
                     <LinearLayout
+                        android:id="@+id/balance_layout"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:orientation="vertical">
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/balance_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        >
 
-                        <ImageView
-                            android:id="@+id/balance_tag_view"
-                            android:layout_width="@dimen/dp_32"
-                            android:layout_height="@dimen/dp_32"
-                            android:src="@drawable/ic_mine_balance"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/balance_name_view"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_9"
-                            android:text="现金奖"
-                            android:textColor="@color/color_34"
-                            android:textSize="@dimen/sp_13"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@+id/balance_tag_view"
-                            app:layout_constraintTop_toTopOf="@+id/balance_tag_view" />
+                            android:layout_marginLeft="@dimen/dp_24">
 
-                        <ImageView
-                            android:layout_width="@dimen/dp_5"
-                            android:layout_height="@dimen/dp_8"
-                            android:layout_marginLeft="@dimen/dp_3"
-                            android:layout_marginTop="@dimen/dp_5"
-                            android:src="@drawable/arrow_right_1_icon"
-                            app:layout_constraintStart_toEndOf="@+id/balance_name_view"
-                            app:layout_constraintTop_toTopOf="@+id/balance_name_view" />
+                            <ImageView
+                                android:id="@+id/balance_tag_view"
+                                android:layout_width="@dimen/dp_32"
+                                android:layout_height="@dimen/dp_32"
+                                android:src="@drawable/ic_mine_balance"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/balance_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_9"
-                            android:text="0"
-                            android:textColor="@color/color_34"
-                            android:textSize="@dimen/sp_12"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@+id/balance_tag_view"
-                            app:layout_constraintTop_toBottomOf="@+id/balance_name_view" />
+                            <TextView
+                                android:id="@+id/balance_name_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_9"
+                                android:text="余额"
+                                android:textColor="@color/color_34"
+                                android:textSize="@dimen/sp_13"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/balance_tag_view"
+                                app:layout_constraintTop_toTopOf="@+id/balance_tag_view" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <ImageView
+                                android:layout_width="@dimen/dp_5"
+                                android:layout_height="@dimen/dp_8"
+                                android:layout_marginLeft="@dimen/dp_3"
+                                android:layout_marginTop="@dimen/dp_5"
+                                android:src="@drawable/arrow_right_1_icon"
+                                app:layout_constraintStart_toEndOf="@+id/balance_name_view"
+                                app:layout_constraintTop_toTopOf="@+id/balance_name_view" />
+
+                            <TextView
+                                android:id="@+id/balance_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_9"
+                                android:text="0"
+                                android:textColor="#FD6431"
+                                android:textSize="@dimen/sp_12"
+                                app:layout_constraintStart_toEndOf="@+id/balance_tag_view"
+                                app:layout_constraintTop_toBottomOf="@+id/balance_name_view" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
                 </LinearLayout>
-
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="8dp"
                         android:background="@color/color_F5" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -465,10 +480,10 @@
                                 android:textSize="@dimen/sp_12" />
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="@dimen/dp_0_5"
-                            android:layout_height="@dimen/dp_35"
-                            android:background="@color/color_EE" />
+                        <!--                        <View-->
+                        <!--                            android:layout_width="@dimen/dp_0_5"-->
+                        <!--                            android:layout_height="@dimen/dp_35"-->
+                        <!--                            android:background="@color/color_EE" />-->
 
                         <LinearLayout
                             android:id="@+id/equity_order_layout"
@@ -492,10 +507,10 @@
                                 android:textSize="@dimen/sp_12" />
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="@dimen/dp_0_5"
-                            android:layout_height="@dimen/dp_35"
-                            android:background="@color/color_EE" />
+                        <!--                        <View-->
+                        <!--                            android:layout_width="@dimen/dp_0_5"-->
+                        <!--                            android:layout_height="@dimen/dp_35"-->
+                        <!--                            android:background="@color/color_EE" />-->
 
                         <LinearLayout
                             android:id="@+id/local_life_order_layout"
@@ -522,20 +537,19 @@
 
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:id="@+id/more_service_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_12"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginRight="@dimen/dp_12"
                     android:orientation="vertical"
-                    android:visibility="invisible"
-                  >
+                    android:visibility="invisible">
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="8dp"
                         android:background="@color/color_F5" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -545,6 +559,13 @@
                         android:textColor="@color/color_34"
                         android:textSize="@dimen/sp_14"
                         android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_0_5"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:layout_marginTop="@dimen/dp_13"
+                        android:background="@color/color_EE" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"
@@ -556,59 +577,57 @@
 
                 </LinearLayout>
 
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:orientation="vertical">-->
+                <!--                    <View-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="8dp"-->
+                <!--                        android:background="@color/color_F5" />-->
+                <!--                    <TextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_marginLeft="@dimen/dp_12"-->
+                <!--                        android:layout_marginTop="@dimen/dp_15"-->
+                <!--                        android:text="热门活动"-->
+                <!--                        android:textColor="@color/color_34"-->
+                <!--                        android:textSize="@dimen/sp_14"-->
+                <!--                        android:textStyle="bold" />-->
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:background="@color/color_F5" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_12"
-                        android:layout_marginTop="@dimen/dp_15"
-                        android:text="热门活动"
-                        android:textColor="@color/color_34"
-                        android:textSize="@dimen/sp_14"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_0_5"
-                        android:layout_marginLeft="@dimen/dp_12"
-                        android:layout_marginTop="@dimen/dp_13"
-                        android:background="@color/color_EE" />
-                    
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/dp_13"
-                        android:layout_marginLeft="@dimen/dp_15"
-                        android:layout_marginRight="@dimen/dp_15">
-                        <com.qmuiteam.qmui.widget.QMUIRadiusImageView
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/dp_88"
-                            android:layout_weight="1"
-                            android:layout_marginRight="@dimen/dp_5"
-                            app:qmui_corner_radius="@dimen/dp_10"
-                            app:qmui_border_width="0dp"
-                            android:background="@color/color_EE"
-                            />
-                        <com.qmuiteam.qmui.widget.QMUIRadiusImageView
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/dp_88"
-                            android:layout_weight="1"
-                            app:qmui_corner_radius="@dimen/dp_10"
-                            app:qmui_border_width="0dp"
-                            android:background="@color/color_EE"
-                           />
-                    </LinearLayout>
-                </LinearLayout>
+                <!--                    <View-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="@dimen/dp_0_5"-->
+                <!--                        android:layout_marginLeft="@dimen/dp_12"-->
+                <!--                        android:layout_marginTop="@dimen/dp_13"-->
+                <!--                        android:background="@color/color_EE" />-->
+                <!--                    -->
+                <!--                    <LinearLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:orientation="horizontal"-->
+                <!--                        android:layout_marginTop="@dimen/dp_13"-->
+                <!--                        android:layout_marginLeft="@dimen/dp_15"-->
+                <!--                        android:layout_marginRight="@dimen/dp_15">-->
+                <!--                        <com.qmuiteam.qmui.widget.QMUIRadiusImageView-->
+                <!--                            android:layout_width="0dp"-->
+                <!--                            android:layout_height="@dimen/dp_88"-->
+                <!--                            android:layout_weight="1"-->
+                <!--                            android:layout_marginRight="@dimen/dp_5"-->
+                <!--                            app:qmui_corner_radius="@dimen/dp_10"-->
+                <!--                            app:qmui_border_width="0dp"-->
+                <!--                            android:background="@color/color_EE"-->
+                <!--                            />-->
+                <!--                        <com.qmuiteam.qmui.widget.QMUIRadiusImageView-->
+                <!--                            android:layout_width="0dp"-->
+                <!--                            android:layout_height="@dimen/dp_88"-->
+                <!--                            android:layout_weight="1"-->
+                <!--                            app:qmui_corner_radius="@dimen/dp_10"-->
+                <!--                            app:qmui_border_width="0dp"-->
+                <!--                            android:background="@color/color_EE"-->
+                <!--                           />-->
+                <!--                    </LinearLayout>-->
+                <!--                </LinearLayout>-->
 
 
             </LinearLayout>
