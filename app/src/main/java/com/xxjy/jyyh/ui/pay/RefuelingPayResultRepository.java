@@ -18,7 +18,7 @@ import rxhttp.RxHttp;
 public class RefuelingPayResultRepository extends BaseRepository {
 
     public void getPayResult(String orderNo, String orderPayNo, MutableLiveData<PayResultEntity> payResultLiveData) {
-        addDisposable(RxHttp.postForm("http://192.168.1.84:8833//api/tiein/v1/queryPayOrderResult")
+        addDisposable(RxHttp.postForm(ApiService.PAY_ORDER_RESULT)
                 .add("orderNo", orderNo)
                 .add("orderPayNo", orderPayNo)
                 .asResponse(PayResultEntity.class)

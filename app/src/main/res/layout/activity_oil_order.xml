@@ -255,7 +255,7 @@
                                         android:imeOptions="actionDone"
                                         android:inputType="numberDecimal|number"
                                         android:maxLength="5"
-                                        android:paddingLeft="@dimen/dp_1"
+                                        android:paddingLeft="@dimen/dp_5"
                                         android:singleLine="true"
                                         android:text=""
                                         android:textColor="@color/color_34"
@@ -366,6 +366,7 @@
                                     android:id="@+id/redeem_cl"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:visibility="gone"
                                     android:layout_marginTop="@dimen/dp_10"
                                     app:layout_constraintTop_toBottomOf="@+id/month_red_cl">
                                     <View

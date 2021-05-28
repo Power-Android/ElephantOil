@@ -69,7 +69,7 @@ public class ApiService {
     //油站默认快捷价格
     public static final String OIL_PRICE_DEFAULT = "api/gasPublic/buyPriceDefault";
     //油站优惠券互斥
-    public static final String OIL_MULTIPLE_PRICE = "api/gasPublic/getMultiplePrices";
+    public static final String OIL_MULTIPLE_PRICE = "api/tiein/v1/getPayPrices";
     //获取某个位置的banner
     public static final String GET_BANNER_OF_POSITION = "api/v1/banner/getBannerOfPostion";
     //获取加油订单列表
@@ -77,7 +77,7 @@ public class ApiService {
     //获取加油订单退单列表
     public static final String REFUND_ORDER_LIST = "api/gasPublic/orderRefundList";
     //获取订单列表
-    public static final String INTEGRAL_ORDER_LIST = "api/product/v1/queryOrders";
+    public static final String INTEGRAL_ORDER_LIST = "api/product/v1/queryMallOrderList";
     //获取加油订单详情
     public static final String REFUEL_ORDER_DETAILS = "api/gasPublic/refuelOrderDetails";
     //退款订单详情接口
@@ -95,7 +95,7 @@ public class ApiService {
     //下单温馨提示
     public static final String GET_ORDER_TIP = "api/gasPublic/getOrderTs";
     //创建加油订单
-    public static final String CREATE_ORDER = "api/gasPublic/refuelCreateOrder";
+    public static final String CREATE_ORDER = "api/tiein/v1/refuelAndProductCreateOrder";
     //app版本更新检测
     public static final String CHECK_VERSION = "api/v1/common/checkVersion";
     //客服中心
@@ -117,7 +117,7 @@ public class ApiService {
     //加油支付
     public static final String PAY_ORDER = "api/gasPublic/refuelPayOrder";
     //加油支付结果回调数据
-    public static final String PAY_ORDER_RESULT = "api/gasPublic/refuelPayOrderResult";
+    public static final String PAY_ORDER_RESULT = "/api/tiein/v1/queryPayOrderResult";
     //搜索权益
     public static final String QUERY_PRODUCTS_BY_NAME = "api/product/v1/queryProductsByName";
     //热门搜索
@@ -159,5 +159,7 @@ public class ApiService {
     public static final String QUERY_REFUEL_JOB = "api/activeCommon/queryRefuelJob";
     //领取加油任务红包
     public static final String RECEIVE_OIL_JOB_COUPON = "api/activeCommon/receiveOilJobCoupon";
+    //获取搭售列表
+    public static final String QUERY_SALE_INFO = "api/tiein/v1/queryTieinSaleInfo";
 
 }

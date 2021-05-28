@@ -115,7 +115,7 @@ public class OilRepository extends BaseRepository {
     public void getMultiplePrice(String amount, String gasId, String oilNo, String isUserBill, String platId,
                                  String businessAmount, String monthCouponId, boolean isUseCoupon, boolean isUseBusinessCoupon,
                                  String productIds, MutableLiveData<MultiplePriceBean> multiplePriceLiveData) {
-        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/tiein/v1/getPayPrices")
+        addDisposable(RxHttp.postForm(ApiService.OIL_MULTIPLE_PRICE)
                 .add("amount", amount)
                 .add(Constants.GAS_STATION_ID, gasId)
                 .add(Constants.OIL_NUMBER_ID, oilNo)
@@ -200,7 +200,7 @@ public class OilRepository extends BaseRepository {
                             String xxMonthCouponId, String xxMonthCouponAmount, boolean isAddMonthId, boolean isAddMonthAmouont,
                             String productIds, String productAmount,
                             MutableLiveData<String> createOrderLiveData) {
-        addDisposable(RxHttp.postForm("http://192.168.1.84:8833//api/tiein/v1/refuelAndProductCreateOrder")
+        addDisposable(RxHttp.postForm(ApiService.CREATE_ORDER)
                 .add("amount", amount)
                 .add("payAmount", payAmount)
                 .add("usedBalance", usedBalance)
@@ -232,7 +232,7 @@ public class OilRepository extends BaseRepository {
     }
 
     public void getRedeem(String gasId, MutableLiveData<RedeemEntity> redeemLiveData) {
-        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/tiein/v1/queryTieinSaleInfo")
+        addDisposable(RxHttp.postForm(ApiService.QUERY_SALE_INFO)
                 .add(Constants.GAS_STATION_ID, "AY001262714")
                 .asResponse(RedeemEntity.class)
                 .subscribe(new Consumer<RedeemEntity>() {
