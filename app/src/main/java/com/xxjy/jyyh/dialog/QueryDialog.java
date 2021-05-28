@@ -1,20 +1,15 @@
 package com.xxjy.jyyh.dialog;
 
-import android.animation.Animator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 
-import androidx.annotation.NonNull;
-
+import com.blankj.utilcode.util.SpanUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.databinding.DialogQueryLayoutBinding;
 
 import per.goweii.anylayer.AnyLayer;
-import per.goweii.anylayer.Layer;
 import per.goweii.anylayer.dialog.DialogLayer;
-import per.goweii.anylayer.utils.AnimatorHelper;
 
 /**
  * @author power
@@ -24,9 +19,10 @@ import per.goweii.anylayer.utils.AnimatorHelper;
  */
 public class QueryDialog {
     private BaseActivity mContext;
-    private final DialogQueryLayoutBinding mBinding;
+    private DialogQueryLayoutBinding mBinding;
     private DialogLayer mDialogLayer;
     private OnConfirmListener mOnConfirmListener;
+    private String title, left, right;
 
     public QueryDialog(BaseActivity context) {
         this.mContext = context;
@@ -46,6 +42,9 @@ public class QueryDialog {
         mDialogLayer.onClick((layer, view) -> {
             switch (view.getId()){
                 case R.id.cancle_tv:
+                    if (mOnConfirmListener != null){
+                        mOnConfirmListener.onRefuse();
+                    }
                     layer.dismiss();
                     break;
                 case R.id.confirm_tv:
@@ -64,8 +63,21 @@ public class QueryDialog {
         }
     }
 
+    public void setContent(String title, String price){
+        SpanUtils.with(mBinding.contentTv)
+                .append("当前")
+                .append(title)
+                .setForegroundColor(mContext.getResources().getColor(R.color.color_76FF))
+                .append("仅需" + price + "元带回家！确认放弃吗？")
+                .create();
+        mBinding.contentTv.setGravity(Gravity.START);
+        mBinding.cancleTv.setText("残忍拒绝");
+        mBinding.confirmTv.setText("继续购买");
+    }
+
     public interface OnConfirmListener {
         void onConfirm();
+        void onRefuse();
     }
 
     public void setOnConfirmListener(OnConfirmListener onConfirmListener){
