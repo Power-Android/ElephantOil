@@ -273,7 +273,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 
         getBanners();
         //110100
-        cityCode = UserConstants.getAdCode().replace(UserConstants.getAdCode().substring(UserConstants.getAdCode().length()-2),"00");
+        cityCode = UserConstants.getCityCode();
         getAreaList(cityCode);
         getProductCategory();
         loadCarServeData(false);

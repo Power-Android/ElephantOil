@@ -207,8 +207,8 @@ public class UserConstants {
      * @return 城市编码
      */
     public static String getCityCode() {
-        if (MapLocationHelper.getCityCode() != null) {
-            return MapLocationHelper.getCityCode();
+        if (MapLocationHelper.getAdCode() != null) {
+            return MapLocationHelper.getAdCode().replace(MapLocationHelper.getAdCode().substring(MapLocationHelper.getAdCode().length()-2),"00");
         } else {
             return "";
         }
