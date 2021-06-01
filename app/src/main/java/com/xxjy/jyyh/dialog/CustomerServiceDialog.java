@@ -34,9 +34,9 @@ public class CustomerServiceDialog {
 
     public CustomerServiceDialog(Context context) {
         this.mContext = context;
-        aboutUsViewModel = new ViewModelProvider((BaseActivity)context).get(AboutUsViewModel.class);
+        aboutUsViewModel = new ViewModelProvider((BaseActivity) context).get(AboutUsViewModel.class);
         mBinding = DialogCallHelpBinding.bind(
-               LayoutInflater.from(context).inflate( R.layout.dialog_call_help, null));
+                LayoutInflater.from(context).inflate(R.layout.dialog_call_help, null));
         init();
     }
 
@@ -46,23 +46,23 @@ public class CustomerServiceDialog {
                 .closeBtn(false)
                 .skinManager(QMUISkinManager.defaultInstance(mContext));
         mPopup.onBlankClick(popup -> {
-          dismiss();
+            dismiss();
         });
         mBinding.callHelpOnline.setOnClickListener(v -> {
             dismiss();
-            toWebChatOnline(mContext,mLink);
+            toWebChatOnline(mContext, mLink);
         });
         mBinding.callHelpPhone.setOnClickListener(v -> {
             dismiss();
-            toDialPhoneAct(mContext,mPhone);
+            toDialPhoneAct(mContext, mPhone);
         });
 
         aboutUsViewModel.getCallCenter();
-        aboutUsViewModel.callCenterLiveData.observe((BaseActivity)mContext,data->{
-this.mLink=data.getCallOnline();
-this.mPhone=data.getCallPhone();
-this.mTime=data.getCallNotice();
-mBinding.callHelpWorkTime.setText(this.mTime);
+        aboutUsViewModel.callCenterLiveData.observe((BaseActivity) mContext, data -> {
+            this.mLink = data.getCallOnline();
+            this.mPhone = data.getCallPhone();
+            this.mTime = data.getCallNotice();
+            mBinding.callHelpWorkTime.setText(this.mTime);
         });
 
     }
@@ -73,11 +73,12 @@ mBinding.callHelpWorkTime.setText(this.mTime);
         }
     }
 
-    public void dismiss(){
-        if (mPopup != null){
+    public void dismiss() {
+        if (mPopup != null) {
             mPopup.dismiss();
         }
     }
+
     /**
      * 跳转拨打电话界面
      *
@@ -98,7 +99,7 @@ mBinding.callHelpWorkTime.setText(this.mTime);
             }
         } catch (Exception e) {
         }
-        ((BaseActivity)activity).showToastWarning("您的设备无法拨打电话");
+        ((BaseActivity) activity).showToastWarning("您的设备无法拨打电话");
         return false;
     }
 

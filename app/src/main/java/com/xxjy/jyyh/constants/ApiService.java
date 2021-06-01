@@ -162,4 +162,8 @@ public class ApiService {
     //获取搭售列表
     public static final String QUERY_SALE_INFO = "api/tiein/v1/queryTieinSaleInfo";
 
+
+
+
+
 }

@@ -790,6 +790,7 @@ public class WebViewActivity extends BindingActivity<ActivityWebviewBinding,WebV
         }
     }
 
+
     /**
      * 一般打开web的方法,会对url进行连接判断
      *

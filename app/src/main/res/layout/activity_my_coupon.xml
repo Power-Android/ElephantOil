@@ -41,11 +41,11 @@
             app:qmui_radiusBottomRight="17dp"
             app:qmui_backgroundColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/search_cl">
+
             <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_44"
-                />
+                android:layout_height="@dimen/dp_44" />
         </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
 
 

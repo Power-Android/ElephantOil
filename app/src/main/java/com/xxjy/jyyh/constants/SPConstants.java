@@ -55,6 +55,10 @@ public class SPConstants {
 
 
     public static final String OPEN_ID = "openId";
+    /**
+     * 城市码
+     */
+    public static final String CITY_CODE = "city_code";
 
     //app引导guide版本标识
     public static final String SP_APP_SHOW_GUIDE_VERSION = "guide_version";

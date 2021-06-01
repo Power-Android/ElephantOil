@@ -673,6 +673,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.locationLiveData.observe(this, locationEntity -> {
             UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
             UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
+            UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
             DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
             DPoint p2 = new DPoint(mLat, mLng);
             mBinding.addressTv.setText(locationEntity.getAddress());

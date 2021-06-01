@@ -27,7 +27,7 @@ public class MapIntentUtils {
 //        String uriStr = "androidamap://navi?sourceApplication=tuanyoubao&lat=" + latitude + "&lon=" + longitude + "&dev=0&style=2";
         //这个是进行路径规划的
         String uriStr = "amapuri://route/plan/?sname=我的位置&dlat=" + latitude + "&dlon=" +
-                longitude + "&dname=" + endName + "&dev=0&t=0&sourceApplication=onecard";
+                longitude + "&dname=" + endName + "&dev=0&t=0&sourceApplication=小象加油";
         Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(uriStr));
         intent.addCategory("android.intent.category.DEFAULT");
         intent.setPackage("com.autonavi.minimap");
@@ -41,7 +41,7 @@ public class MapIntentUtils {
 //        String uriStr = "baidumap://map/navi?location=" + latitude + "," + longitude + "&src=andr.czb.tuanyoubao";
         //这个是进行路径规划的
         String uriStr = "baidumap://map/direction?destination=name:" + endName + "|latlng:" +
-                latitude + "," + longitude + "&coord_type=gcj02&src=andr.czb.tuanyoubao";
+                latitude + "," + longitude + "&coord_type=gcj02&src=andr.xxjy.xiaoxiangjiayou";
         i1.setData(Uri.parse(uriStr));
         startMapActivityForIntent(context, i1);
     }
@@ -49,7 +49,7 @@ public class MapIntentUtils {
     //参考腾讯地图调用app路径规划: http://lbs.qq.com/uri_v1/guide-mobile-navAndRoute.html
     public static void openTencent(BaseActivity context, double latitude, double longitude, String endName) {
         String uriStr = "qqmap://map/routeplan?type=drive&from=我的位置&to=" + endName + "&tocoord=" +
-                latitude + "," + longitude + "&referer=com.czb.youfenqi";
+                latitude + "," + longitude + "&referer=com.xxjy.jyyh";
         Intent i1 = new Intent();
         i1.setData(Uri.parse(uriStr));
         startMapActivityForIntent(context, i1);
@@ -67,7 +67,7 @@ public class MapIntentUtils {
     //参考腾讯地图调用h5路径规划: http://lbs.qq.com/uri_v1/guide-route.html
     public static void openTencentWeb(BaseActivity context, double latitude, double longitude, String endName) {
         String uriStr = "https://apis.map.qq.com/uri/v1/routeplan?type=drive&to=" + endName + "&tocoord=" +
-                latitude + "," + longitude + "&policy=0&referer=com.czb.youfenqi";
+                latitude + "," + longitude + "&policy=0&referer=com.xxjy.jyyh";
         Uri uri = Uri.parse(uriStr);
         Intent i1 = new Intent(Intent.ACTION_VIEW, uri);
         startMapActivityForIntent(context, i1);
