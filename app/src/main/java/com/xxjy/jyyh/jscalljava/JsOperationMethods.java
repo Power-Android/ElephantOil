@@ -231,4 +231,15 @@ public interface JsOperationMethods {
      * 我的页面
      */
     void toMyPage();
+
+    /**
+     * 去权益订单列表
+     */
+    void toEquityOrderListPage();
+
+    /**
+     *客服弹窗
+     *
+     */
+    void showCustomerService();
 }

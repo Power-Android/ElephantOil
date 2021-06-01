@@ -3,6 +3,8 @@ package com.xxjy.jyyh.jscalljava;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
@@ -18,9 +20,11 @@ import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
+import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.http.HttpManager;
 import com.xxjy.jyyh.jscalljava.jscallback.OnJsCallListener;
 import com.xxjy.jyyh.ui.mine.MyCouponActivity;
+import com.xxjy.jyyh.ui.order.OtherOrderListActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.ImageUtils;
@@ -65,7 +69,7 @@ public class JsOperation implements JsOperationMethods {
             finalParams.put("cityName", mapLocation.getCity());
         }
         JSONObject params = new JSONObject(finalParams);
-        Log.e("getAppInfo",params.toString());
+        Log.e("getAppInfo", params.toString());
         return params.toString();
     }
 
@@ -75,7 +79,7 @@ public class JsOperation implements JsOperationMethods {
     public String getEventTracking() {
         Map<String, String> params = EventTrackingManager.getInstance().getParams(mActivity, String.valueOf(++Constants.PV_ID));
         JSONObject jsonObject = new JSONObject(params);
-        Log.e("getEventTracking",jsonObject.toString());
+        Log.e("getEventTracking", jsonObject.toString());
         return jsonObject.toString();
     }
 
@@ -155,7 +159,18 @@ public class JsOperation implements JsOperationMethods {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                Tool.showCallHelpDialog(mActivity, phoneNumber);
+                if (!TextUtils.isEmpty(phoneNumber)) {
+                    try {
+                        Uri phoneUri = Uri.parse("tel:" + phoneNumber);
+                        Intent intent = new Intent(Intent.ACTION_DIAL, phoneUri);
+                        if (intent.resolveActivity(mActivity.getPackageManager()) != null) {
+                            mActivity.startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
         });
     }
@@ -179,7 +194,7 @@ public class JsOperation implements JsOperationMethods {
     @Override
     @JavascriptInterface
     public void toWechatPay(final String url) {
-        LogUtils.e("支付参数：",url);
+        LogUtils.e("支付参数：", url);
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -268,6 +283,7 @@ public class JsOperation implements JsOperationMethods {
 
     /**
      * 权益卡
+     *
      * @param parameter
      */
     @Override
@@ -291,34 +307,33 @@ public class JsOperation implements JsOperationMethods {
     @Override
     @JavascriptInterface
     public void saveImage(String data) {
-        Log.e("saveImage","data==>"+data);
+        Log.e("saveImage", "data==>" + data);
 //        ImageUtils.saveImage(mActivity,data);
-        PermissionUtils.permissionGroup(
-                PermissionConstants.STORAGE
-                )
+        PermissionUtils.permissionGroup(PermissionConstants.STORAGE)
                 .callback(new PermissionUtils.SimpleCallback() {
                     @Override
                     public void onGranted() {
-                        ImageUtils.saveImage(mActivity,data);
+                        ImageUtils.saveImage(mActivity, data);
                     }
 
                     @Override
                     public void onDenied() {
-                        runOnUiThread(() ->  Toast.makeText(mActivity,"权限被拒绝，无法保存",Toast.LENGTH_SHORT));
+                        runOnUiThread(() -> Toast.makeText(mActivity, "权限被拒绝，无法保存", Toast.LENGTH_SHORT));
                     }
                 })
                 .request();
 
     }
+
     @Override
     @JavascriptInterface
     public void shareImageToWeChat(String data) {
-        Log.e("shareImageToWeChat","data==>"+data);
-        if(mActivity instanceof WebViewActivity){
+        Log.e("shareImageToWeChat", "data==>" + data);
+        if (mActivity instanceof WebViewActivity) {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    WXSdkManager.newInstance().shareWX(mActivity,data);
+                    WXSdkManager.newInstance().shareWX(mActivity, data);
                 }
             });
 
@@ -328,7 +343,7 @@ public class JsOperation implements JsOperationMethods {
     @Override
     @JavascriptInterface
     public void toRefuellingPage() {
-        if(mActivity instanceof WebViewActivity){
+        if (mActivity instanceof WebViewActivity) {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -341,7 +356,7 @@ public class JsOperation implements JsOperationMethods {
     @Override
     @JavascriptInterface
     public void toHomePage() {
-        if(mActivity instanceof WebViewActivity){
+        if (mActivity instanceof WebViewActivity) {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -350,10 +365,11 @@ public class JsOperation implements JsOperationMethods {
             });
         }
     }
+
     @Override
     @JavascriptInterface
     public void toIntegralHomePage() {
-        if(mActivity instanceof WebViewActivity){
+        if (mActivity instanceof WebViewActivity) {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -370,10 +386,10 @@ public class JsOperation implements JsOperationMethods {
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
                 LogUtils.e(new Gson().toJson(map));
-                if (map != null && map.containsKey("openid") ) {
+                if (map != null && map.containsKey("openid")) {
                     String openId = map.get("openid");
 //                    String accessToken = map.get("accessToken");
-                    if(mActivity instanceof WebViewActivity){
+                    if (mActivity instanceof WebViewActivity) {
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -408,7 +424,7 @@ public class JsOperation implements JsOperationMethods {
                     WebViewActivity webViewActivity = (WebViewActivity) mActivity;
                     webViewActivity.setShouldLoadUrl(true);
                 }
-                UiUtils.toLoginActivity(mActivity, Constants.LOGIN_FINISH,true);
+                UiUtils.toLoginActivity(mActivity, Constants.LOGIN_FINISH, true);
             }
         });
     }
@@ -416,11 +432,44 @@ public class JsOperation implements JsOperationMethods {
     @Override
     @JavascriptInterface
     public void toMyPage() {
-        if(mActivity instanceof WebViewActivity){
+        if (mActivity instanceof WebViewActivity) {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     UiUtils.jumpToHome(mActivity, Constants.TYPE_MINE);
+                }
+            });
+        }
+    }
+
+    @Override
+    @JavascriptInterface
+    public void toEquityOrderListPage() {
+        if (mActivity instanceof WebViewActivity) {
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mActivity.startActivity(new Intent(mActivity, OtherOrderListActivity.class).putExtra("isIntegral", true));
+                }
+            });
+        }
+    }
+
+    @Override
+    @JavascriptInterface
+    public void showCustomerService() {
+        if (mActivity instanceof WebViewActivity) {
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        CustomerServiceDialog customerServiceDialog = new CustomerServiceDialog(mActivity);
+                        customerServiceDialog.show(mActivity.getWindow().getDecorView());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
             });
         }
@@ -455,6 +504,7 @@ public class JsOperation implements JsOperationMethods {
 //
 //        }
     }
+
     @Override
     @JavascriptInterface
     public void showPerformanceCenterView(boolean isShow) {
@@ -472,7 +522,7 @@ public class JsOperation implements JsOperationMethods {
     @Override
     @JavascriptInterface
     public void goBack() {
-        if(mActivity instanceof WebViewActivity){
+        if (mActivity instanceof WebViewActivity) {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -520,11 +570,11 @@ public class JsOperation implements JsOperationMethods {
     @Override
     @JavascriptInterface
     public void changeToolBarState(boolean isDefault, String bgColor) {
-        if(mActivity instanceof WebViewActivity){
+        if (mActivity instanceof WebViewActivity) {
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ((WebViewActivity) mActivity).changeToolBarState(isDefault,bgColor);
+                    ((WebViewActivity) mActivity).changeToolBarState(isDefault, bgColor);
                 }
             });
 
@@ -541,12 +591,12 @@ public class JsOperation implements JsOperationMethods {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setComponent(cmp);
             mActivity.startActivity(intent);
-        }catch (ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             e.printStackTrace();
             mActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toasty.error(mActivity,"启动微信失败，请手动打开微信").show();
+                    Toasty.error(mActivity, "启动微信失败，请手动打开微信").show();
                 }
             });
         }
@@ -556,8 +606,8 @@ public class JsOperation implements JsOperationMethods {
     @Override
     @JavascriptInterface
     public void finishActivity() {
-        if(mActivity instanceof WebViewActivity){
-           mActivity.finish();
+        if (mActivity instanceof WebViewActivity) {
+            mActivity.finish();
 
         }
     }
