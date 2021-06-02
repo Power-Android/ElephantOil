@@ -9,6 +9,7 @@ import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.AreaListBean;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.CarServeCategoryListBean;
+import com.xxjy.jyyh.entity.CarServeStoreListBean;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.MonthCouponEntity;
 import com.xxjy.jyyh.entity.MultiplePriceBean;
@@ -48,7 +49,7 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public MutableLiveData<RedeemEntity> redeemLiveData = new MutableLiveData<>();
     public MutableLiveData<AreaListBean> cityListLiveData = new MutableLiveData<>();
     public MutableLiveData<CarServeCategoryListBean> productCategoryLiveData = new MutableLiveData<>();
-    public MutableLiveData<String> storeListLiveData = new MutableLiveData<>();
+    public MutableLiveData<CarServeStoreListBean> storeListLiveData = new MutableLiveData<>();
 
 
     public void getOrderNews() {

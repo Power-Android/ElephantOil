@@ -12,6 +12,7 @@ public interface CarServeApiService {
     String DEBUG_URL = CONFIG_DEBUG_URL + "cs/";
 
     String BASE_URL = Constants.URL_IS_DEBUG ? DEBUG_URL : RELEASE_URL;
+    String APP_ID = Constants.URL_IS_DEBUG ? "Orvay1rVsoU9nlpY" : "Orvay1rVsoU9nlpY";
 
     //门店省市区级联
     String GET_AREA = BASE_URL + "api/v1/admin/area/";
@@ -19,5 +20,8 @@ public interface CarServeApiService {
     String GET_PRODUCT_CATEGORY = BASE_URL + "api/v1/customer/product/category/product/category/list";
     //客户渠道门店
     String GET_STORE_LIST = BASE_URL + "api/v1/customer/channel/store/list";
+
+    //客户渠道门店信息详情/api/v1/customer/channel/store/{no}/{appid}
+    String GET_STORE_DETAILS = BASE_URL + "api/v1/customer/channel/store/";
 
 }

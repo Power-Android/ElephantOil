@@ -188,10 +188,11 @@
                     app:qmui_childVerticalSpacing="@dimen/dp_5" />
 
                 <TextView
+                    android:id="@+id/dec_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:text="温馨提示：到店请出示订单中的二维码，代金券及订单号码等不能作为消费凭证。到店请出示订单中的二维码，代金券及订单号码等不能作为消费凭证。到店请出示订单中的二维码，代金券及订单号码等不能作为消费凭证。"
+                    android:text=""
                     android:textColor="#747365"
                     android:textSize="@dimen/sp_11" />
             </LinearLayout>

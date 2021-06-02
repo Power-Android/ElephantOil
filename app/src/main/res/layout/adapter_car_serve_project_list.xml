@@ -6,6 +6,7 @@
    >
 
 <LinearLayout
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
@@ -19,15 +20,18 @@
     android:paddingLeft="@dimen/dp_20"
     android:paddingRight="@dimen/dp_20"
     >
+
 <com.makeramen.roundedimageview.RoundedImageView
+   android:id="@+id/img_iv"
     android:layout_width="@dimen/dp_50"
     android:layout_height="@dimen/dp_50"
     android:src="@drawable/ic_car_serve_default"
     app:riv_corner_radius="@dimen/dp_6"
-    app:riv_border_width="@dimen/dp_1"
+    app:riv_border_width="0.5dp"
     app:riv_border_color="#94d1d1d1"
     />
     <TextView
+        android:id="@+id/name_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_7"
@@ -35,9 +39,10 @@
         android:textSize="@dimen/sp_15"
         android:lines="1"
         android:ellipsize="end"
-        android:text="标准洗车-五座轿车"
+        android:text="--"
         android:layout_weight="1"/>
     <TextView
+        android:id="@+id/line_price_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_7"
@@ -46,6 +51,7 @@
         android:text="¥0"
         />
     <TextView
+        android:id="@+id/sale_price_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
@@ -53,11 +59,13 @@
         android:textSize="@dimen/sp_19"
         android:text="¥0"
         />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/check_box"
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"
         android:layout_marginLeft="@dimen/dp_10"
-        android:button="@drawable/selector_checkbox"/>
+        android:src="@drawable/selector_checkbox"
+       />
 </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

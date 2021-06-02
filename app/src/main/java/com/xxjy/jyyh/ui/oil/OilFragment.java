@@ -47,6 +47,7 @@ import com.xxjy.jyyh.dialog.SelectOilNumDialog;
 import com.xxjy.jyyh.dialog.SelectProductCategoryDialog;
 import com.xxjy.jyyh.dialog.SelectSortDialog;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CarServeStoreBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.car.CarServeDetailsActivity;
@@ -94,6 +95,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     private OilStationListAdapter adapter;
     private CarServeListAdapter carServeAdapter;
     private List<OilEntity.StationsBean> data = new ArrayList<>();
+    private List<CarServeStoreBean> carServeData = new ArrayList<>();
     private SelectOilNumDialog selectOilNumDialog;
     private SelectDistanceDialog selectDistanceDialog;
     private SelectSortDialog mSelectSortDialog;
@@ -179,7 +181,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.refreshview.setEnableLoadMore(false);
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, data);
-        carServeAdapter = new CarServeListAdapter(R.layout.adapter_car_serve_list, data);
+        carServeAdapter = new CarServeListAdapter(R.layout.adapter_car_serve_list, carServeData);
         mBinding.recyclerView.setAdapter(adapter);
 
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -228,11 +230,11 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             LoginHelper.login(getContext(), new LoginHelper.CallBack() {
                 @Override
                 public void onLogin() {
-                    List<OilEntity.StationsBean> data = adapter.getData();
+                    List<CarServeStoreBean> data = adapter.getData();
 //                    Intent intent = new Intent(mContext, OilDetailActivity.class);
                     Intent intent = new Intent(mContext, CarServeDetailsActivity.class);
-                    intent.putExtra(Constants.GAS_STATION_ID, data.get(position).getGasId());
-                    intent.putExtra(Constants.OIL_NUMBER_ID, data.get(position).getOilNo());
+                    intent.putExtra("no", data.get(position).getCardStoreInfoVo().getStoreNo());
+                    intent.putExtra("distance",data.get(position).getCardStoreInfoVo().getDistance());
                     startActivity(intent);
                 }
             });
@@ -241,7 +243,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         carServeAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                List<OilEntity.StationsBean> data = adapter.getData();
+                List<CarServeStoreBean> data = adapter.getData();
                 LoginHelper.login(getContext(), new LoginHelper.CallBack() {
                     @Override
                     public void onLogin() {
@@ -249,8 +251,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                             case R.id.navigation_ll:
                                 if (MapIntentUtils.isPhoneHasMapNavigation()) {
                                     NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
-                                            data.get(position).getStationLatitude(), data.get(position).getStationLongitude(),
-                                            data.get(position).getGasName());
+                                            data.get(position).getCardStoreInfoVo().getLatitude(), data.get(position).getCardStoreInfoVo().getLongitude(),
+                                            data.get(position).getCardStoreInfoVo().getStoreName());
                                     navigationDialog.show();
                                 } else {
                                     showToastWarning("您当前未安装地图软件，请先安装");
@@ -321,7 +323,12 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                loadData(true);
+                if(isOilServe){
+                    loadData(true);
+                }else{
+                    loadCarServeData(true);
+                }
+
 
             }
 
@@ -330,6 +337,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 getOrderNews();
                 getBanners();
                 loadData(false);
+                loadCarServeData(false);
 
             }
         });
@@ -423,11 +431,13 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 isOilServe = true;
                 changeTab(isScrollTop);
                 mBinding.recyclerView.setAdapter(adapter);
+                mBinding.refreshview.setEnableLoadMore(true);
                 break;
             case R.id.tab_2_view:
                 isOilServe = false;
                 changeTab(isScrollTop);
                 mBinding.recyclerView.setAdapter(carServeAdapter);
+                mBinding.refreshview.setEnableLoadMore(true);
                 break;
 
             case R.id.car_city_select_layout:
@@ -637,14 +647,10 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0) {
                 if (pageNum == 1) {
                     adapter.setNewData(dataStations.getStations());
-                    // TODO: 2021/5/31 测试
-                    carServeAdapter.setNewData(dataStations.getStations());
                     mBinding.refreshview.setEnableLoadMore(true);
                     mBinding.refreshview.finishRefresh(true);
                 } else {
                     adapter.addData(dataStations.getStations());
-                    // TODO: 2021/5/31 测试
-                    carServeAdapter.addData(dataStations.getStations());
                     mBinding.refreshview.finishLoadMore(true);
                 }
                 mBinding.noResultLayout.setVisibility(View.GONE);
@@ -652,6 +658,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 mBinding.refreshview.finishLoadMoreWithNoMoreData();
                 mBinding.noResultLayout.setVisibility(View.VISIBLE);
             } else {
+                pageIndex--;
                 mBinding.refreshview.finishLoadMoreWithNoMoreData();
             }
         });
@@ -666,26 +673,23 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 
         });
         mViewModel.storeListLiveData.observe(this, dataStations -> {
-//            if (dataStations != null && dataStations.getStations() != null && dataStations.getStations().size() > 0) {
-//                if (pageNum == 1) {
-//                    adapter.setNewData(dataStations.getStations());
-//                    // TODO: 2021/5/31 测试
-//                    carServeAdapter.setNewData(dataStations.getStations());
-//                    mBinding.refreshview.setEnableLoadMore(true);
-//                    mBinding.refreshview.finishRefresh(true);
-//                } else {
-//                    adapter.addData(dataStations.getStations());
-//                    // TODO: 2021/5/31 测试
-//                    carServeAdapter.addData(dataStations.getStations());
-//                    mBinding.refreshview.finishLoadMore(true);
-//                }
-//                mBinding.noResultLayout.setVisibility(View.GONE);
-//            } else if (pageNum == 1) {
-//                mBinding.refreshview.finishLoadMoreWithNoMoreData();
-//                mBinding.noResultLayout.setVisibility(View.VISIBLE);
-//            } else {
-//                mBinding.refreshview.finishLoadMoreWithNoMoreData();
-//            }
+            if (dataStations != null && dataStations.getRecords() != null && dataStations.getRecords().size() > 0) {
+                if (pageIndex == 1) {
+                    carServeAdapter.setNewData(dataStations.getRecords());
+                    mBinding.refreshview.setEnableLoadMore(true);
+                    mBinding.refreshview.finishRefresh(true);
+                } else {
+                    carServeAdapter.addData(dataStations.getRecords());
+                    mBinding.refreshview.finishLoadMore(true);
+                }
+                mBinding.noResultLayout.setVisibility(View.GONE);
+            } else if (pageIndex == 1) {
+                mBinding.refreshview.finishLoadMoreWithNoMoreData();
+                mBinding.noResultLayout.setVisibility(View.VISIBLE);
+            } else {
+                pageIndex--;
+                mBinding.refreshview.finishLoadMoreWithNoMoreData();
+            }
         });
     }
 
@@ -743,6 +747,6 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mViewModel.getProductCategory();
     }
     private void getCarServeStoreList(){
-        mViewModel.getCarServeStoreList( pageIndex, cityCode, areaCode, productCategoryId, status);
+        mViewModel.getCarServeStoreList(pageIndex, cityCode, areaCode, productCategoryId, status);
     }
 }

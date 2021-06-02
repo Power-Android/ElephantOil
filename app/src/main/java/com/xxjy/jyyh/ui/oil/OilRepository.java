@@ -21,6 +21,7 @@ import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.entity.AreaListBean;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.CarServeCategoryListBean;
+import com.xxjy.jyyh.entity.CarServeStoreListBean;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.MonthCouponEntity;
 import com.xxjy.jyyh.entity.MultiplePriceBean;
@@ -260,7 +261,7 @@ public class OilRepository extends BaseRepository {
                 .subscribe( s -> productCategoryLiveData.postValue(s))
         );
     }
-    public void getCarServeStoreList(MutableLiveData<String> liveData,int pageIndex,String cityCode,String areaCode,long productCategoryId,int status) {
+    public void getCarServeStoreList(MutableLiveData<CarServeStoreListBean> liveData, int pageIndex, String cityCode, String areaCode, long productCategoryId, int status) {
         addDisposable(RxHttp.postJson(CarServeApiService.GET_STORE_LIST)
                 .add("pageIndex",pageIndex)
                 .add("pageSize",10)
@@ -270,7 +271,7 @@ public class OilRepository extends BaseRepository {
                 .add("latitude", UserConstants.getLatitude())
                 .add("productCategoryId",productCategoryId,productCategoryId!=-1)
                 .add("status",status,status!=-1)
-                .asCarServeResponse(String.class)
+                .asCarServeResponse(CarServeStoreListBean.class)
                 .subscribe( s -> liveData.postValue(s))
         );
     }

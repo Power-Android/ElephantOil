@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -17,60 +18,73 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIFloatLayout;
+import com.qmuiteam.qmui.widget.tab.QMUIBasicTabSegment;
 import com.qmuiteam.qmui.widget.tab.QMUITabBuilder;
 import com.qmuiteam.qmui.widget.tab.QMUITabIndicator;
 import com.qmuiteam.qmui.widget.tab.QMUITabSegment;
+import com.qmuiteam.qmui.widget.tab.QMUITabView;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.CarServeProjectListAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityCarServeDetailsBinding;
+import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CarServeProductsBean;
+import com.xxjy.jyyh.entity.CardStoreInfoVoBean;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.RectangleIndicator;
 import com.youth.banner.listener.OnPageChangeListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDetailsBinding,CarServeViewModel> {
+public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDetailsBinding, CarServeViewModel> {
     private QMUITabBuilder tabBuilder;
-    private List<String> classData=new ArrayList<>();
-    private List<String> bannerData=new ArrayList<>();
-    private List<String> serveData = new ArrayList<>();
+    private List<String> classData;
+    private List<String> bannerData = new ArrayList<>();
+    private List<CarServeProductsBean> serveData = new ArrayList<>();
+    private Map<String, List<CarServeProductsBean>> productCategory;
     private CarServeProjectListAdapter adapter;
+    private CardStoreInfoVoBean mCardStoreInfoVo;
+
+
+    private String storeNo;
+    private double distance;
+
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.backView);
-        for (int i=0;i<10;i++) {
-            addTagView("需提前电话预约",mBinding.floatLayout);
+
+
+        storeNo = getIntent().getStringExtra("no");
+        distance = getIntent().getDoubleExtra("distance", 0d);
+
+        mBinding.serveDataRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CarServeProjectListAdapter(R.layout.adapter_car_serve_project_list, serveData);
+        mBinding.serveDataRecyclerview.setAdapter(adapter);
+        getStoreInfo();
+        for (int i = 0; i < 10; i++) {
+            addTagView("需提前电话预约", mBinding.floatLayout);
 
         }
-        classData.add("洗车");
-        classData.add("美容养护");
-        initTab();
-        bannerData.add("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F017dfd55e1437b6ac7251df8a7ebfc.jpg%40900w_1l_2o_100sh.jpg&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1625037236&t=dcfdf1f90f9b58ffc614ba3a2a76782b");
-        bannerData.add("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01f34459b7972ca801211d25f906c9.png%401280w_1l_2o_100sh.png&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1625037236&t=d668f495f08040804891ca4f2d4359ce");
-        bannerData.add("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0109f2578883a70000018c1b5aaea8.JPG%401280w_1l_2o_100sh.jpg&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1625037236&t=2d1243477166700071fef9a5909418f1");
-        initBanner();
 
-        serveData.add("111111111");
-        serveData.add("111111111");
-        serveData.add("111111111");
-        serveData.add("111111111");
-        serveData.add("111111111");
-        serveData.add("111111111");
-        initServe();
+
     }
 
     @Override
     protected void initListener() {
         mBinding.backView.setOnClickListener(this::onViewClicked);
         mBinding.buyView.setOnClickListener(this::onViewClicked);
+        mBinding.phoneView.setOnClickListener(this::onViewClicked);
+        mBinding.navigationView.setOnClickListener(this::onViewClicked);
         mBinding.bannerView.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -79,7 +93,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
             @Override
             public void onPageSelected(int position) {
-                mBinding.indicatorView.setText(position+1+"/"+bannerData.size());
+                mBinding.indicatorView.setText(position + 1 + "/" + bannerData.size());
             }
 
             @Override
@@ -87,17 +101,63 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
             }
         });
+        mBinding.tabServeClassView.setOnTabClickListener(new QMUIBasicTabSegment.OnTabClickListener() {
+            @Override
+            public boolean onTabClick(QMUITabView tabView, int index) {
 
+                adapter.setNewData(productCategory.get(classData.get(index)));
+                adapter.setSelectPosition(0);
+                return false;
+            }
+        });
+        adapter.setOnSelectListener(new CarServeProjectListAdapter.OnSelectListener() {
+            @Override
+            public void onSelect(CarServeProductsBean data) {
+                mBinding.floatLayout.removeAllViews();
+                addTagView(data.getProductAttribute().getCarTypeName(), mBinding.floatLayout);
+                addTagView(data.getProductAttribute().getHasAppointment()==0?"无需电话预约":"需提前电话预约", mBinding.floatLayout);
+                if(data.getProductAttribute().getHasNowRefund()==1){
+                    addTagView("随时退", mBinding.floatLayout);
+                }
+                if(data.getProductAttribute().getExpires()!=0){
+                    addTagView(data.getProductAttribute().getExpires()+"天有效", mBinding.floatLayout);
+                }
+mBinding.decView.setText(data.getDescription());
+            }
+        });
     }
 
     @Override
     protected void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.back_view:
                 finish();
                 break;
             case R.id.buy_view:
-startActivity(new Intent(this,CarServeConfirmOrderActivity.class));
+                startActivity(new Intent(this, CarServeConfirmOrderActivity.class));
+                break;
+            case R.id.phone_view:
+                if(mCardStoreInfoVo==null){
+                    return;
+                }
+                Uri phoneUri = Uri.parse("tel:" + mCardStoreInfoVo.getPhone());
+                Intent intent = new Intent(Intent.ACTION_DIAL, phoneUri);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+                break;
+            case R.id.navigation_view:
+                if(mCardStoreInfoVo==null){
+                    return;
+                }
+                if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                    NavigationDialog navigationDialog = new NavigationDialog(this,
+                            mCardStoreInfoVo.getLatitude(), mCardStoreInfoVo.getLongitude(),
+                            mCardStoreInfoVo.getStoreName());
+                    navigationDialog.show();
+                } else {
+                    showToastWarning("您当前未安装地图软件，请先安装");
+                }
                 break;
         }
 
@@ -105,16 +165,29 @@ startActivity(new Intent(this,CarServeConfirmOrderActivity.class));
 
     @Override
     protected void dataObservable() {
+        mViewModel.storeLiveData.observe(this, data -> {
+            mCardStoreInfoVo = data.getCardStoreInfoVo();
+            if (mCardStoreInfoVo != null) {
+                mBinding.shopNameView.setText(mCardStoreInfoVo.getStoreName());
+                mBinding.shopAddressView.setText(mCardStoreInfoVo.getAddress());
+                mBinding.shopHoursDistanceView.setText(String.format("营业时间：%s - %s | 距离您大约:%.2fKM", mCardStoreInfoVo.getOpenStart(), mCardStoreInfoVo.getEndStart(), distance / 1000d));
+                bannerData.add(mCardStoreInfoVo.getStorePicture());
+                initBanner();
+            }
+            productCategory = data.getProductCategory();
+            if (data.getProductCategory() != null) {
+                classData = new ArrayList<>(data.getProductCategory().keySet());
+                initTab();
+                adapter.setNewData(data.getProductCategory().get(classData.get(0)));
+                adapter.setSelectPosition(0);
+            }
 
+        });
     }
-    private void initServe(){
-        mBinding.serveDataRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        adapter= new CarServeProjectListAdapter(R.layout.adapter_car_serve_project_list,serveData);
-        mBinding.serveDataRecyclerview.setAdapter(adapter);
 
 
-    }
-    private void initBanner(){
+
+    private void initBanner() {
         mBinding.bannerView.setVisibility(View.VISIBLE);
         //banner
         mBinding.bannerView.setAdapter(new BannerImageAdapter<String>(bannerData) {
@@ -129,7 +202,7 @@ startActivity(new Intent(this,CarServeConfirmOrderActivity.class));
             }
         }).addBannerLifecycleObserver(this)
                 .setIndicator(new RectangleIndicator(this));
-        mBinding.indicatorView.setText(1+"/"+bannerData.size());
+        mBinding.indicatorView.setText(1 + "/" + bannerData.size());
     }
 
     private void initTab() {
@@ -156,7 +229,8 @@ startActivity(new Intent(this,CarServeConfirmOrderActivity.class));
         mBinding.tabServeClassView.selectTab(0);
         mBinding.tabServeClassView.notifyDataChanged();
     }
-    private void addTagView( String content, QMUIFloatLayout floatLayout) {
+
+    private void addTagView(String content, QMUIFloatLayout floatLayout) {
         TextView textView = new TextView(this);
         int textViewPadding = QMUIDisplayHelper.dp2px(this, 4);
         int textViewPadding2 = QMUIDisplayHelper.dp2px(this, 2);
@@ -167,4 +241,10 @@ startActivity(new Intent(this,CarServeConfirmOrderActivity.class));
         textView.setText(content);
         floatLayout.addView(textView);
     }
+
+
+    private void getStoreInfo() {
+        mViewModel.getStoreDetails(storeNo);
+    }
+
 }

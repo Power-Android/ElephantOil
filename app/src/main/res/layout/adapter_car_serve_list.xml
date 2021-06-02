@@ -51,12 +51,14 @@
                     app:riv_corner_radius="@dimen/dp_5" />
 
                 <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                    android:id="@+id/shop_status_view"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_21"
                     android:layout_alignParentBottom="true"
                     android:gravity="center"
                     android:textColor="#FFFDFD"
                     android:textSize="@dimen/sp_11"
+                    android:visibility="invisible"
                     android:text="休息中"
                     app:qmui_backgroundColor="@color/colorAccent"
                     app:qmui_radiusBottomLeft="@dimen/dp_5"
