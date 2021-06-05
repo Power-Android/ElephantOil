@@ -50,7 +50,7 @@ public class CarServeRepository extends BaseRepository {
         );
     }
     public void tyingProduct(MutableLiveData<String> liveData) {
-        addDisposable(RxHttp.get(CarServeApiService.GET_ORDER_LIST)
+        addDisposable(RxHttp.get(CarServeApiService.TYING_PRODUCT)
                 .add("pageSize",10)
                 .addHeader("token", UserConstants.getToken())
                 .asResponse(String.class)

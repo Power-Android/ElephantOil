@@ -383,6 +383,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                                 .error(R.drawable.bg_banner_error))
                                         .into(holder.imageView);
                                 holder.imageView.setOnClickListener(v -> {
+                                    if(TextUtils.isEmpty(data.getLink())){
+                                        return;
+                                    }
                                     if (data.getLink().contains("/monthCard")) {
                                         LoginHelper.login(getContext(), new LoginHelper.CallBack() {
                                             @Override
