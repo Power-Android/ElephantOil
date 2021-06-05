@@ -361,7 +361,7 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
         paymentTabView.addTab(tabBuilder.setText("支付失败").build(this));
 
         int space = QMUIDisplayHelper.dp2px(this, 12);
-        paymentTabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 0), false, false));
+        paymentTabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
         paymentTabView.setItemSpaceInScrollMode(space);
         paymentTabView.setPadding(space, 0, space, 0);
         paymentTabView.setMode(QMUITabSegment.MODE_FIXED);
@@ -414,7 +414,7 @@ public class OrderListActivity extends BindingActivity<ActivityOrderListBinding,
         refundTabView.addTab(tabBuilder2.setText("退款成功").build(this));
         refundTabView.addTab(tabBuilder2.setText("退款失败").build(this));
 
-        refundTabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 0), false, false));
+        refundTabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
         refundTabView.setItemSpaceInScrollMode(space);
         refundTabView.setPadding(space, 0, space, 0);
         refundTabView.setMode(QMUITabSegment.MODE_FIXED);

@@ -21,6 +21,7 @@ import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
+import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.http.HttpManager;
 import com.xxjy.jyyh.jscalljava.jscallback.OnJsCallListener;
 import com.xxjy.jyyh.ui.mine.MyCouponActivity;
@@ -32,6 +33,7 @@ import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.WXSdkManager;
 import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
@@ -472,6 +474,27 @@ public class JsOperation implements JsOperationMethods {
 
                 }
             });
+        }
+    }
+
+    @Override
+    public void toNavigation(String longitude, String latitude,String destination) {
+        if(mActivity instanceof WebViewActivity){
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                        NavigationDialog navigationDialog = new NavigationDialog(mActivity,
+                                Double.parseDouble(latitude),Double.parseDouble(longitude),
+                                destination);
+                        navigationDialog.show();
+                    } else {
+                        mActivity.showToastWarning("您当前未安装地图软件，请先安装");
+                    }
+
+                }
+            });
+
         }
     }
 

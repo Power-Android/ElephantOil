@@ -160,7 +160,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private boolean mIsUseCoupon = true, mIsUseBusinessCoupon = true;//是否使用优惠券
     private String couponId = "";
     private OilMonthRuleDialog mOilMonthRuleDialog;
-    private  MineViewModel mineViewModel;
+    private MineViewModel mineViewModel;
 
     /**
      * @param orderEntity 消息事件：支付后跳转支付确认页
@@ -216,7 +216,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         TrackingConstant.HOME_MAIN, "", "gas_id=" + mStationsBean.getGasId());
             }
 
-                mViewModel.getRefuelJob();
+            mViewModel.getRefuelJob();
             if (UserConstants.getIsLogin()) {
                 mViewModel.getOftenOils();
             }
@@ -228,7 +228,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     @Override
     protected void onVisible() {
         super.onVisible();
-            mViewModel.getRefuelJob();
+        mViewModel.getRefuelJob();
         if (PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION)) {
 //            mBinding.noLocationLayout.setVisibility(View.GONE);
@@ -320,7 +320,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.tagBanner.setAdapter(new HomeTopLineAdapter(new ArrayList<>(), true))
                 .setOrientation(Banner.VERTICAL)
                 .setUserInputEnabled(false);
-         mineViewModel = new ViewModelProvider(this).get(MineViewModel.class);
+        mineViewModel = new ViewModelProvider(this).get(MineViewModel.class);
     }
 
 
@@ -428,6 +428,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                         .error(R.drawable.bg_banner_error))
                                 .into(holder.imageView);
                         holder.imageView.setOnClickListener(v -> {
+                            if (TextUtils.isEmpty(data.getLink())) {
+                                return;
+                            }
+
                             if (data.getLink().contains("/monthCard")) {
                                 LoginHelper.login(getContext(), new LoginHelper.CallBack() {
                                     @Override
@@ -702,14 +706,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             Glide.with(mContext).load(mStationsBean.getGasTypeImg()).into(mBinding.oilImgIv);
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
             mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
-            if (mStationsBean != null){
+            if (mStationsBean != null) {
                 mBinding.oilCurrentPriceTv.setText(mStationsBean.getPriceYfq());
                 mBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getPriceGun());
                 mBinding.oilNumTv.setText(mStationsBean.getOilName());
             }
 
             for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
-                if (mStationsBean.getOilNo().equals(String.valueOf(mStationsBean.getOilPriceList().get(i).getOilNo()))){
+                if (mStationsBean.getOilNo().equals(String.valueOf(mStationsBean.getOilPriceList().get(i).getOilNo()))) {
                     mStationsBean.getOilPriceList().get(i).setSelected(true);
                 }
             }
@@ -868,18 +872,18 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                 - mBinding.taskNodeIv1.getWidth() / 2;
                     } else if (data.getProgress() > data.getCoupons().get(0).getNumber() &&
                             data.getProgress() < data.getCoupons().get(1).getNumber()) {
-                        layoutParams.width = (3 * (mBinding.taskNodeIv2.getRight() - mBinding.taskNodeIv.getLeft()) /4
+                        layoutParams.width = (3 * (mBinding.taskNodeIv2.getRight() - mBinding.taskNodeIv.getLeft()) / 4
                                 - mBinding.taskNodeIv2.getWidth() / 2);
                     } else if (data.getProgress() == data.getCoupons().get(1).getNumber()) {
                         layoutParams.width = mBinding.taskNodeIv2.getRight() - mBinding.taskNodeIv.getLeft()
-                                -mBinding.taskNodeIv2.getWidth() / 2;
+                                - mBinding.taskNodeIv2.getWidth() / 2;
                     } else if (data.getProgress() > data.getCoupons().get(1).getNumber() &&
                             data.getProgress() < data.getCoupons().get(2).getNumber()) {
-                        layoutParams.width = (5 * (mBinding.taskNodeIv3.getRight() - mBinding.taskNodeIv.getLeft()) /6
+                        layoutParams.width = (5 * (mBinding.taskNodeIv3.getRight() - mBinding.taskNodeIv.getLeft()) / 6
                                 - mBinding.taskNodeIv2.getWidth() / 2);
                     } else if (data.getProgress() >= data.getCoupons().get(2).getNumber()) {
                         layoutParams.width = mBinding.taskNodeIv3.getRight() - mBinding.taskNodeIv.getLeft()
-                                -mBinding.taskNodeIv3.getWidth() / 2;
+                                - mBinding.taskNodeIv3.getWidth() / 2;
                     } else {
                         mBinding.progressIn.setVisibility(View.GONE);
                     }
@@ -909,9 +913,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mBinding.oilTaskGet.setText("去领取");
                 }
                 mBinding.oilTaskGet.setOnClickListener(view -> {
-                    if (!UserConstants.getIsLogin()){
+                    if (!UserConstants.getIsLogin()) {
                         showToastInfo("请登录后查看");
-                    }else {
+                    } else {
                         mViewModel.receiverJobCoupon(data.getId(), couponId);
                     }
                 });
@@ -1005,7 +1009,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mViewModel.getRefuelJob();
             }
         });
-           mineViewModel.userLiveData.observe(this, data -> {
+        mineViewModel.userLiveData.observe(this, data -> {
             if (data.isHasBuyOldMonthCoupon()) {
                 WebViewActivity.openWebActivity((MainActivity) getActivity(), Constants.MARKET_ACTIVITIES_URL);
             } else {
@@ -1016,7 +1020,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     WebViewActivity.openWebActivity((MainActivity) getActivity(), Constants.BUY_IN_ADVANCE_MONTH_CARD_URL);
 
                 }
-            };
+            }
+            ;
 
         });
     }

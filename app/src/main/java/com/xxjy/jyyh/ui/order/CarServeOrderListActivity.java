@@ -19,10 +19,13 @@ import com.qmuiteam.qmui.widget.tab.QMUITabSegment;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.adapter.CarServeOrderListAdapter;
 import com.xxjy.jyyh.adapter.IntegralOrderListAdapter;
 import com.xxjy.jyyh.adapter.LocalLifeOrderListAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityCarServeOrderListBinding;
+import com.xxjy.jyyh.dialog.CustomerServiceDialog;
+import com.xxjy.jyyh.entity.CarServeOrderBean;
 import com.xxjy.jyyh.entity.RefuelOrderBean;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 
@@ -31,78 +34,54 @@ import java.util.List;
 
 public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeOrderListBinding, OrderListViewModel> {
 
-    private int pageSize = 10;
     private int pageNum = 1;
-    private int payStatus = -1;
-    private LocalLifeOrderListAdapter localLifeOrderListAdapter;
-    private IntegralOrderListAdapter integralOrderAdapter;
-    private List<RefuelOrderBean> refuelOrderData = new ArrayList<>();
+    private int verificationStatus = -1;
+    private int orderStatus = -1;
+    private CarServeOrderListAdapter carServeOrderListAdapter;
+    private List<CarServeOrderBean> carServeOrderBeanList = new ArrayList<>();
 
     private int mPosition = -1;
-    private boolean isIntegral=false;
 
-    private OrderDetailsViewModel orderDetailsViewModel;
+    private CustomerServiceDialog customerServiceDialog;
     @Override
     protected void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
-        isIntegral = getIntent().getBooleanExtra("isIntegral",false);
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.titleLayout.tvTitle.setText("车生活订单");
-        if(!isIntegral){
-//            mBinding.titleLayout.tvTitle.setText("生活订单");
-            localLifeOrderListAdapter = new LocalLifeOrderListAdapter(R.layout.adapter_order_layout, refuelOrderData);
-            mBinding.recyclerView.setAdapter(localLifeOrderListAdapter);
-            localLifeOrderListAdapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
-            localLifeOrderListAdapter.setOnItemClickListener((adapter, view, position) -> {
-                OrderDetailsActivity.openPage(this, true,((RefuelOrderBean) adapter.getItem(position)).getOrderId());
-            });
-            localLifeOrderListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        carServeOrderListAdapter = new CarServeOrderListAdapter(R.layout.adapter_car_serve_order_layout, carServeOrderBeanList);
+            mBinding.recyclerView.setAdapter(carServeOrderListAdapter);
+        carServeOrderListAdapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
+        carServeOrderListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                 @Override
                 public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                     mPosition = position;
                     switch (view.getId()) {
                         case R.id.continue_pay_view:
-                            OrderDetailsActivity.openPage(CarServeOrderListActivity.this, ((RefuelOrderBean) adapter.getItem(position)).getOrderId(), true,true);
+//                            WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((RefuelOrderBean) adapter.getItem(position)).getLink() + "&showCashier=true");
                             break;
                         case R.id.cancel_order_view:
-                            cancelOrder(((RefuelOrderBean) adapter.getItem(position)).getOrderId());
+                            productCancelOrder(((CarServeOrderBean) adapter.getItem(position)).getOrderId());
+                            break;
+                        case R.id.refund_view:
+                            if (customerServiceDialog == null) {
+                                customerServiceDialog = new CustomerServiceDialog(CarServeOrderListActivity.this);
+                            }
+                            customerServiceDialog.show(view);
                             break;
                     }
                 }
             });
-            lifeOrderList();
-        }else{
-//            mBinding.titleLayout.tvTitle.setText("权益订单");
-            integralOrderAdapter = new IntegralOrderListAdapter(R.layout.adapter_order_layout, refuelOrderData);
-            mBinding.recyclerView.setAdapter(integralOrderAdapter);
-            integralOrderAdapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
-            integralOrderAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-                @Override
-                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                    mPosition = position;
-                    switch (view.getId()) {
-                        case R.id.continue_pay_view:
-                            WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((RefuelOrderBean) adapter.getItem(position)).getLink() + "&showCashier=true");
-                            break;
-                        case R.id.cancel_order_view:
-                            productCancelOrder(((RefuelOrderBean) adapter.getItem(position)).getOrderId());
-                            break;
-                    }
-                }
-            });
-            integralOrderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        carServeOrderListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((RefuelOrderBean) adapter.getItem(position)).getLink());
                 }
             });
-            integralOrderList();
-        }
         initTab();
 
 
-        orderDetailsViewModel = new ViewModelProvider(this).get(OrderDetailsViewModel.class);
+        carServeOrderList();
     }
 
     @Override
@@ -112,21 +91,13 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 pageNum++;
-                if(isIntegral){
-                    integralOrderList();
-                }else{
-                    lifeOrderList();
-                }
+                carServeOrderList();
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                pageNum =1;
-                if(isIntegral){
-                    integralOrderList();
-                }else{
-                    lifeOrderList();
-                }
+                pageNum = 1;
+                carServeOrderList();
 
             }
         });
@@ -139,67 +110,67 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
 
     @Override
     protected void dataObservable() {
-        mViewModel.integralOrderListLiveData.observe(this, data -> {
-            if (data != null && data.size() > 0) {
+        mViewModel.carServeOrderListLiveData.observe(this, data -> {
+            if (data != null && data.getList()!=null&&data.getList().size() > 0) {
                 if (pageNum == 1) {
-                    integralOrderAdapter.setNewData(data);
+                    carServeOrderListAdapter.setNewData(data.getList());
                     mBinding.refreshView.setEnableLoadMore(true);
                     mBinding.refreshView.finishRefresh(true);
                 } else {
-                    integralOrderAdapter.addData(data);
+                    carServeOrderListAdapter.addData(data.getList());
                     mBinding.refreshView.finishLoadMore(true);
                 }
             } else {
                 if (pageNum == 1) {
-                    integralOrderAdapter.setNewData(null);
+                    carServeOrderListAdapter.setNewData(null);
                 }
                 mBinding.refreshView.finishLoadMoreWithNoMoreData();
             }
         });
-        mViewModel.lifeOrderListLiveData.observe(this, data -> {
-            if (data != null && data.size() > 0) {
-                if (pageNum == 1) {
-                    localLifeOrderListAdapter.setNewData(data);
-                    mBinding.refreshView.setEnableLoadMore(true);
-                    mBinding.refreshView.finishRefresh(true);
-                } else {
-                    localLifeOrderListAdapter.addData(data);
-                    mBinding.refreshView.finishLoadMore(true);
-                }
-            } else {
-                if (pageNum == 1) {
-                    localLifeOrderListAdapter.setNewData(null);
-                }
-                mBinding.refreshView.finishLoadMoreWithNoMoreData();
-            }
-        });
+//        mViewModel.lifeOrderListLiveData.observe(this, data -> {
+//            if (data != null && data.size() > 0) {
+//                if (pageNum == 1) {
+//                    localLifeOrderListAdapter.setNewData(data);
+//                    mBinding.refreshView.setEnableLoadMore(true);
+//                    mBinding.refreshView.finishRefresh(true);
+//                } else {
+//                    localLifeOrderListAdapter.addData(data);
+//                    mBinding.refreshView.finishLoadMore(true);
+//                }
+//            } else {
+//                if (pageNum == 1) {
+//                    localLifeOrderListAdapter.setNewData(null);
+//                }
+//                mBinding.refreshView.finishLoadMoreWithNoMoreData();
+//            }
+//        });
 
-        orderDetailsViewModel.cancelOrderDetailsLiveData.observe(this, data -> {
-
-                if (data.getCode() == 1) {
-                    showToastSuccess("取消成功");
-                    ((RefuelOrderBean) localLifeOrderListAdapter.getItem(mPosition)).setStatus(3);
-                    ((RefuelOrderBean) localLifeOrderListAdapter.getItem(mPosition)).setStatusName("支付失败");
-                    localLifeOrderListAdapter.notifyItemChanged(mPosition);
-                } else {
-                    showToastError("取消失败");
-                }
-
-
-        });
-        orderDetailsViewModel.productCancelOrderDetailsLiveData.observe(this, data -> {
+//        orderDetailsViewModel.cancelOrderDetailsLiveData.observe(this, data -> {
+//
+//            if (data.getCode() == 1) {
+//                showToastSuccess("取消成功");
+//                ((RefuelOrderBean) localLifeOrderListAdapter.getItem(mPosition)).setStatus(3);
+//                ((RefuelOrderBean) localLifeOrderListAdapter.getItem(mPosition)).setStatusName("支付失败");
+//                localLifeOrderListAdapter.notifyItemChanged(mPosition);
+//            } else {
+//                showToastError("取消失败");
+//            }
+//
+//
+//        });
+        mViewModel.cancelCarServeOrderLiveData.observe(this, data -> {
             if (data.getCode() == 1) {
                 showToastSuccess("取消成功");
-                ((RefuelOrderBean) integralOrderAdapter.getItem(mPosition)).setStatus(3);
-                ((RefuelOrderBean) integralOrderAdapter.getItem(mPosition)).setStatusName("兑换失败");
-                integralOrderAdapter.notifyItemChanged(mPosition);
+                carServeOrderListAdapter.getItem(mPosition).setOrderStatus(3);
+                carServeOrderListAdapter.getItem(mPosition).setOrderStatusName("订单取消");
+                carServeOrderListAdapter.notifyItemChanged(mPosition);
             } else {
                 showToastError("取消失败");
             }
         });
     }
 
-    private void initTab(){
+    private void initTab() {
         QMUITabBuilder tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
         tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 13), QMUIDisplayHelper.sp2px(this, 13));
         tabBuilder.setColor(Color.parseColor("#3d3d3d"), Color.parseColor("#1676FF"));
@@ -217,28 +188,22 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
         mBinding.tabView.addOnTabSelectedListener(new QMUIBasicTabSegment.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int index) {
-                switch (index){
+                switch (index) {
                     case 0:
-                        payStatus = -1;
+                        orderStatus = -1;
+                        verificationStatus = -1;
                         break;
                     case 1:
-                        payStatus = 0;
+                        orderStatus = 1;
+                        verificationStatus = 1;
                         break;
                     case 2:
-                        payStatus = 1;
+                        orderStatus = 0;
+                        verificationStatus = -1;
                         break;
-                    case 3:
-                        payStatus = 2;
-                        break;
-
                 }
                 pageNum = 1;
-                if(isIntegral){
-                    integralOrderList();
-                }else{
-                    lifeOrderList();
-                }
-
+                carServeOrderList();
 
             }
 
@@ -259,17 +224,14 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
         });
     }
 
-        private void integralOrderList() {
-        mViewModel.integralOrderList(payStatus, pageNum, pageSize);
+
+    private void carServeOrderList() {
+        mViewModel.carServeOrderList( orderStatus,verificationStatus, pageNum);
     }
 
-    private void lifeOrderList() {
-        mViewModel.lifeOrderList(payStatus, pageNum, pageSize);
-    }
+
     private void productCancelOrder(String orderId) {
-        orderDetailsViewModel.productCancelOrder(orderId);
+        mViewModel.cancelCarServeOrder(orderId);
     }
-    private void cancelOrder(String orderId) {
-        orderDetailsViewModel.cancelOrder(orderId);
-    }
+
 }

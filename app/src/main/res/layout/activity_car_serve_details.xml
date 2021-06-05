@@ -121,39 +121,48 @@
                     android:nestedScrollingEnabled="false" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_10"
-                android:background="@color/color_F5" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_58"
-                android:background="@color/white"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_20">
+<LinearLayout
+    android:id="@+id/coupon_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:orientation="vertical">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_10"
+        android:background="@color/color_F5" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_58"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:drawableLeft="@drawable/ic_car_coupon"
-                    android:drawablePadding="@dimen/dp_5"
-                    android:text="优惠券"
-                    android:textColor="@color/color_44"
-                    android:textSize="@dimen/sp_14" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@drawable/ic_car_coupon"
+            android:drawablePadding="@dimen/dp_5"
+            android:text="优惠券"
+            android:textColor="@color/color_44"
+            android:textSize="@dimen/sp_14" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:drawableRight="@drawable/ic_arrow_right_black"
-                    android:drawablePadding="@dimen/dp_5"
-                    android:text="选择优惠券"
-                    android:textColor="@color/color_44"
-                    android:textSize="@dimen/sp_13" />
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/coupon_name_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/ic_arrow_right_black"
+            android:drawablePadding="@dimen/dp_5"
+            android:text="选择优惠券"
+            android:textColor="@color/color_44"
+            android:textSize="@dimen/sp_13" />
+    </RelativeLayout>
+
+</LinearLayout>
 
             <View
                 android:layout_width="match_parent"

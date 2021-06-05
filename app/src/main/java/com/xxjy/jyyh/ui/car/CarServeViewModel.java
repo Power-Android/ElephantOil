@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CarServeCouponListBean;
 import com.xxjy.jyyh.entity.CarServeStoreDetailsBean;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.MonthCouponEntity;
@@ -26,8 +27,22 @@ public class CarServeViewModel extends BaseViewModel<CarServeRepository> {
     }
 
     public MutableLiveData<CarServeStoreDetailsBean> storeLiveData = new MutableLiveData<>();
+    public MutableLiveData<CarServeCouponListBean> usableCouponLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> commitOrderLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> tyingProductLiveData = new MutableLiveData<>();
+
 
     public void getStoreDetails(String storeNo) {
         mRespository.getStoreDetails(storeLiveData,storeNo);
     }
+    public void getUsableCoupon() {
+        mRespository.getUsableCoupon(usableCouponLiveData);
+    }
+    public void commitOrder() {
+        mRespository.commitOrder(commitOrderLiveData);
+    }
+    public void tyingProduct() {
+        mRespository.tyingProduct(commitOrderLiveData);
+    }
+
 }

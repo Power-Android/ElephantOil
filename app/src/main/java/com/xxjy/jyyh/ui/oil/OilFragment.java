@@ -431,13 +431,13 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 isOilServe = true;
                 changeTab(isScrollTop);
                 mBinding.recyclerView.setAdapter(adapter);
-                mBinding.refreshview.setEnableLoadMore(true);
+                mBinding.refreshview.resetNoMoreData();
                 break;
             case R.id.tab_2_view:
                 isOilServe = false;
                 changeTab(isScrollTop);
                 mBinding.recyclerView.setAdapter(carServeAdapter);
-                mBinding.refreshview.setEnableLoadMore(true);
+                mBinding.refreshview.resetNoMoreData();
                 break;
 
             case R.id.car_city_select_layout:

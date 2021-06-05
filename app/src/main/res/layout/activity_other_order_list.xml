@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         app:qmui_radiusBottomLeft="17dp"
         app:qmui_radiusBottomRight="17dp"
-        app:qmui_backgroundColor="@color/white">
+        app:qmui_backgroundColor="@color/color_F5">
         <com.qmuiteam.qmui.widget.tab.QMUITabSegment
             android:id="@+id/tab_view"
             android:layout_width="match_parent"
@@ -40,6 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/color_F5"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="5dp"/>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </LinearLayout>

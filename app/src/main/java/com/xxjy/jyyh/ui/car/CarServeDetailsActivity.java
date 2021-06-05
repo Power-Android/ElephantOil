@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.blankj.utilcode.util.BarUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIFloatLayout;
 import com.qmuiteam.qmui.widget.tab.QMUIBasicTabSegment;
@@ -27,8 +28,10 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.CarServeProjectListAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityCarServeDetailsBinding;
+import com.xxjy.jyyh.dialog.CarServeCouponDialog;
 import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CarServeCouponListBean;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.CardStoreInfoVoBean;
 import com.xxjy.jyyh.ui.MainActivity;
@@ -55,6 +58,10 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
     private CarServeProjectListAdapter adapter;
     private CardStoreInfoVoBean mCardStoreInfoVo;
 
+    private CarServeCouponDialog mCarServeCouponDialog;
+    private CarServeCouponListBean mCarServeCouponListBean;
+    private long selectCouponId=0;
+
 
     private String storeNo;
     private double distance;
@@ -71,11 +78,8 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
         adapter = new CarServeProjectListAdapter(R.layout.adapter_car_serve_project_list, serveData);
         mBinding.serveDataRecyclerview.setAdapter(adapter);
         getStoreInfo();
-        for (int i = 0; i < 10; i++) {
-            addTagView("需提前电话预约", mBinding.floatLayout);
 
-        }
-
+        getUsableCoupon();
 
     }
 
@@ -85,6 +89,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
         mBinding.buyView.setOnClickListener(this::onViewClicked);
         mBinding.phoneView.setOnClickListener(this::onViewClicked);
         mBinding.navigationView.setOnClickListener(this::onViewClicked);
+        mBinding.couponLayout.setOnClickListener(this::onViewClicked);
         mBinding.bannerView.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -115,14 +120,14 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
             public void onSelect(CarServeProductsBean data) {
                 mBinding.floatLayout.removeAllViews();
                 addTagView(data.getProductAttribute().getCarTypeName(), mBinding.floatLayout);
-                addTagView(data.getProductAttribute().getHasAppointment()==0?"无需电话预约":"需提前电话预约", mBinding.floatLayout);
-                if(data.getProductAttribute().getHasNowRefund()==1){
+                addTagView(data.getProductAttribute().getHasAppointment() == 0 ? "无需电话预约" : "需提前电话预约", mBinding.floatLayout);
+                if (data.getProductAttribute().getHasNowRefund() == 1) {
                     addTagView("随时退", mBinding.floatLayout);
                 }
-                if(data.getProductAttribute().getExpires()!=0){
-                    addTagView(data.getProductAttribute().getExpires()+"天有效", mBinding.floatLayout);
+                if (data.getProductAttribute().getExpires() != 0) {
+                    addTagView(data.getProductAttribute().getExpires() + "天有效", mBinding.floatLayout);
                 }
-mBinding.decView.setText(data.getDescription());
+                mBinding.decView.setText(data.getDescription());
             }
         });
     }
@@ -137,7 +142,7 @@ mBinding.decView.setText(data.getDescription());
                 startActivity(new Intent(this, CarServeConfirmOrderActivity.class));
                 break;
             case R.id.phone_view:
-                if(mCardStoreInfoVo==null){
+                if (mCardStoreInfoVo == null) {
                     return;
                 }
                 Uri phoneUri = Uri.parse("tel:" + mCardStoreInfoVo.getPhone());
@@ -147,7 +152,8 @@ mBinding.decView.setText(data.getDescription());
                 }
                 break;
             case R.id.navigation_view:
-                if(mCardStoreInfoVo==null){
+                if (mCardStoreInfoVo == null) {
+
                     return;
                 }
                 if (MapIntentUtils.isPhoneHasMapNavigation()) {
@@ -158,6 +164,26 @@ mBinding.decView.setText(data.getDescription());
                 } else {
                     showToastWarning("您当前未安装地图软件，请先安装");
                 }
+                break;
+            case R.id.coupon_layout:
+                if(mCarServeCouponDialog==null){
+                    mCarServeCouponDialog = new CarServeCouponDialog(this,selectCouponId);
+                }
+                mCarServeCouponDialog.dispatchData(mCarServeCouponListBean.getRecords(),selectCouponId);
+                mCarServeCouponDialog.show();
+                mCarServeCouponDialog.setOnItemClickedListener(new CarServeCouponDialog.OnItemClickedListener() {
+                    @Override
+                    public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position) {
+                        selectCouponId = mCarServeCouponListBean.getRecords().get(position).getId();
+                        mBinding.couponNameView.setText(mCarServeCouponListBean.getRecords().get(position).getTitle());
+                    }
+
+                    @Override
+                    public void onNoCouponClick() {
+                        selectCouponId = 0;
+                        mBinding.couponNameView.setText("选择优惠券");
+                    }
+                });
                 break;
         }
 
@@ -183,8 +209,21 @@ mBinding.decView.setText(data.getDescription());
             }
 
         });
-    }
 
+        mViewModel.usableCouponLiveData.observe(this,data->{
+            mCarServeCouponListBean = data;
+            if(data.getRecords()!=null&&data.getRecords().size()>0){
+                mBinding.couponLayout.setVisibility(View.VISIBLE);
+                mBinding.couponNameView.setText(data.getRecords().get(0).getTitle());
+                selectCouponId = data.getRecords().get(0).getId();
+
+
+            }else{
+                mBinding.couponLayout.setVisibility(View.GONE);
+            }
+
+        });
+    }
 
 
     private void initBanner() {
@@ -225,9 +264,8 @@ mBinding.decView.setText(data.getDescription());
         mBinding.tabServeClassView.setItemSpaceInScrollMode(space);
         mBinding.tabServeClassView.setPadding(space, 0, space, 0);
         mBinding.tabServeClassView.setMode(QMUITabSegment.MODE_SCROLLABLE);
-        mBinding.tabServeClassView.setScrollContainer(true);
-        mBinding.tabServeClassView.selectTab(0);
         mBinding.tabServeClassView.notifyDataChanged();
+        mBinding.tabServeClassView.selectTab(0);
     }
 
     private void addTagView(String content, QMUIFloatLayout floatLayout) {
@@ -245,6 +283,10 @@ mBinding.decView.setText(data.getDescription());
 
     private void getStoreInfo() {
         mViewModel.getStoreDetails(storeNo);
+    }
+
+    private void getUsableCoupon() {
+        mViewModel.getUsableCoupon();
     }
 
 }
