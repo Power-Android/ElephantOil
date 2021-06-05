@@ -130,14 +130,6 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
     private String mProductAmount;
     private QueryDialog mQueryDialog;
 
-    /**
-     * @param orderEntity 消息事件：支付后跳转支付确认页
-     */
-    @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_PAY_QUERY, sticky = true)
-    public void onEvent(PayOrderEntity orderEntity) {
-        showJump(orderEntity);
-    }
-
     private void showJump(PayOrderEntity orderEntity) {
         if (orderEntity == null) return;
         if (shouldJump) {
@@ -290,7 +282,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
 
         //搭售
         mBinding.redeemRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mOilRedeemAdapter = new OilRedeemAdapter(R.layout.adapter_oil_redeem, mRedeemList);
+        mOilRedeemAdapter = new OilRedeemAdapter(mRedeemList);
         mBinding.redeemRecycler.setAdapter(mOilRedeemAdapter);
         mOilRedeemAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<RedeemEntity.ProductOilGasListBean> data = adapter.getData();
@@ -321,6 +313,12 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                         mJsonStr = GsonUtils.toJson(mProductIdList);
 
                         //刷新互斥价格
+                        mPlatCouponBean = null;
+                        platId = "";
+                        mExcludeType = "";
+                        businessId = "";
+                        businessAmount = "";
+                        mBusinessCouponBean = null;
                         refreshMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
                                 mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
                                 platId, businessAmount, mBinding.monthRedCheck.isChecked() ? monthCouponId : "", mIsUseCoupon, mIsUseBusinessCoupon, mJsonStr);
@@ -336,7 +334,12 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     }
                 }
                 mJsonStr = GsonUtils.toJson(mProductIdList);
-
+                mPlatCouponBean = null;
+                platId = "";
+                mExcludeType = "";
+                businessId = "";
+                businessAmount = "";
+                mBusinessCouponBean = null;
                 //刷新互斥价格
                 refreshMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
                         mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(3).isUseBill() ? "1" : "0",
@@ -557,6 +560,15 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                         }
                     }
 
+                    List<RedeemEntity.ProductOilGasListBean> redeemData = mOilRedeemAdapter.getData();
+                    for (int i = 0; i < redeemData.size(); i++) {
+                        redeemData.get(i).setSelected(false);
+                    }
+                    mProductIdList.clear();
+                    mJsonStr = "";
+                    mBinding.redeemRecycler.scrollToPosition(0);
+                    mOilRedeemAdapter.notifyDataSetChanged();
+
                     mBinding.oilPriceTv.setText("¥" + mStationsBean.getOilPriceList().get(mOilNoPosition).getPriceYfq() + "起");
                     mBinding.oilStationPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
                     mBinding.oilStationPriceTv.setText("油站价 ¥" + mStationsBean.getOilPriceList().get(mOilNoPosition).getPriceGun());
@@ -737,6 +749,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 } else {
                     mBinding.discountRecyclerView.setVisibility(View.GONE);
                     mBinding.hotIv.setVisibility(View.GONE);
+
                     mBinding.redeemCl.setVisibility(View.GONE);
                 }
             }

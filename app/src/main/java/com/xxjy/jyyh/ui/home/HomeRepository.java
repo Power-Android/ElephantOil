@@ -162,4 +162,10 @@ public class HomeRepository extends BaseRepository {
                 .asResponse(String.class)
                 .subscribe(s -> receiverCouponLiveData.postValue(s)));
     }
+
+    public void getHomeCar(MutableLiveData<String> homeCarLiveData) {
+        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/tiein/v1/queryTieinSaleCfInfo")
+                .asResponse(String.class)
+                .subscribe(s -> homeCarLiveData.postValue(s)));
+    }
 }

@@ -1,34 +1,20 @@
 package com.xxjy.jyyh.adapter;
 
-import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.qmuiteam.qmui.qqface.QMUIQQFaceView;
 import com.xxjy.jyyh.R;
-import com.xxjy.jyyh.constants.Constants;
-import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.entity.CouponBean;
-import com.xxjy.jyyh.entity.EventEntity;
-import com.xxjy.jyyh.entity.OfentEntity;
-import com.xxjy.jyyh.ui.oil.CouponOilStationsActivity;
-import com.xxjy.jyyh.ui.oil.OilDetailActivity;
-import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.StringUtils;
 import com.xxjy.jyyh.utils.Util;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 public class MyCouponAdapter extends BaseMultiItemQuickAdapter<CouponBean, BaseViewHolder> {

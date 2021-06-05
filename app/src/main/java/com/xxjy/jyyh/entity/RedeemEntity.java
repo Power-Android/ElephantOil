@@ -1,5 +1,7 @@
 package com.xxjy.jyyh.entity;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -159,7 +161,7 @@ public class RedeemEntity implements Serializable {
         }
     }
 
-    public static class ProductOilGasListBean {
+    public static class ProductOilGasListBean implements MultiItemEntity {
         private String costPrice;
         private String gasId;
         private Integer id;
@@ -321,6 +323,11 @@ public class RedeemEntity implements Serializable {
 
         public void setTrialType(Integer trialType) {
             this.trialType = trialType;
+        }
+
+        @Override
+        public int getItemType() {
+            return getTrialType();
         }
     }
 

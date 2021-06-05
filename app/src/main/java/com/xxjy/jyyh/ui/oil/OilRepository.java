@@ -233,7 +233,7 @@ public class OilRepository extends BaseRepository {
 
     public void getRedeem(String gasId, MutableLiveData<RedeemEntity> redeemLiveData) {
         addDisposable(RxHttp.postForm(ApiService.QUERY_SALE_INFO)
-                .add(Constants.GAS_STATION_ID, "AY001262714")
+                .add(Constants.GAS_STATION_ID, gasId)
                 .asResponse(RedeemEntity.class)
                 .subscribe(new Consumer<RedeemEntity>() {
                     @Override

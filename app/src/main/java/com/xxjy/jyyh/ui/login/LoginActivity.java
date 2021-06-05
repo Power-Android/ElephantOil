@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.LogUtils;
@@ -26,10 +24,7 @@ import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityLoginBinding;
-import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.ui.MainActivity;
-import com.xxjy.jyyh.ui.oil.OilDetailActivity;
-import com.xxjy.jyyh.ui.oil.OilViewModel;
 import com.xxjy.jyyh.utils.GsonTool;
 import com.xxjy.jyyh.utils.StatusBarUtil;
 import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
