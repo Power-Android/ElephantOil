@@ -32,6 +32,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<PayOrderEntity> payOrderLiveData = new MutableLiveData<>();
     public MutableLiveData<OilDistanceEntity> distanceLiveData = new MutableLiveData<>();
     public MutableLiveData<List<OilEntity.StationsBean>> storeLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> homeCarLiveData = new MutableLiveData<>();
+
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -71,5 +73,9 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void receiverJobCoupon(String id, String couponId) {
         mRespository.receiverJobCoupon(id, couponId, receiverCouponLiveData);
+    }
+
+    public void getHomeCar() {
+        mRespository.getHomeCar(homeCarLiveData);
     }
 }

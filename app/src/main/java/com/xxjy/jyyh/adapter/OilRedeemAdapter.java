@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.blankj.utilcode.util.SpanUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
@@ -23,10 +24,16 @@ import java.util.List;
  * @project ElephantOil
  * @description:
  */
-public class OilRedeemAdapter extends BaseQuickAdapter<RedeemEntity.ProductOilGasListBean, BaseViewHolder> {
+public class OilRedeemAdapter extends BaseMultiItemQuickAdapter<RedeemEntity.ProductOilGasListBean, BaseViewHolder> {
+    public static final int TYPENORMAL = 1;
+    public static final int TYPECAR = 2;
+    public static final int TYPENORMAL1 = 3;
 
-    public OilRedeemAdapter(int layoutResId, @Nullable List<RedeemEntity.ProductOilGasListBean> data) {
-        super(layoutResId, data);
+    public OilRedeemAdapter(@Nullable List<RedeemEntity.ProductOilGasListBean> data) {
+        super(data);
+        addItemType(TYPENORMAL, R.layout.adapter_oil_redeem);
+        addItemType(TYPECAR, R.layout.adapter_oil_redeem_car);
+        addItemType(TYPENORMAL1, R.layout.adapter_oil_redeem);
     }
 
     @Override

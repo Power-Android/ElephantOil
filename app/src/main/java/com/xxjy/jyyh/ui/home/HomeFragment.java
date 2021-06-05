@@ -2,8 +2,8 @@ package com.xxjy.jyyh.ui.home;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
@@ -11,28 +11,24 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alipay.sdk.app.PayTask;
 import com.amap.api.location.CoordinateConverter;
 import com.amap.api.location.DPoint;
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.ClickUtils;
-import com.blankj.utilcode.util.GsonUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.PermissionUtils;
-import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.SpanUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -42,25 +38,24 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
+import com.xxjy.jyyh.adapter.HomeMenuAdapter;
 import com.xxjy.jyyh.adapter.HomeOftenAdapter;
 import com.xxjy.jyyh.adapter.HomeTopLineAdapter;
-import com.xxjy.jyyh.adapter.LocalLifeListAdapter;
+import com.xxjy.jyyh.adapter.MyViewPagerAdapter;
 import com.xxjy.jyyh.adapter.OilGunAdapter;
 import com.xxjy.jyyh.adapter.OilNumAdapter;
 import com.xxjy.jyyh.adapter.OilStationFlexAdapter;
-import com.xxjy.jyyh.adapter.TopLineAdapter;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
-import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentHomeBinding;
+import com.xxjy.jyyh.databinding.HomeCarCardLayoutBinding;
+import com.xxjy.jyyh.databinding.HomeOilCardLayoutBinding;
 import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
 import com.xxjy.jyyh.dialog.LocationTipsDialog;
 import com.xxjy.jyyh.dialog.NavigationDialog;
@@ -72,50 +67,43 @@ import com.xxjy.jyyh.dialog.OilNumDialog;
 import com.xxjy.jyyh.dialog.OilPayDialog;
 import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.entity.BannerBean;
-import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
-import com.xxjy.jyyh.entity.OilPayTypeEntity;
 import com.xxjy.jyyh.entity.OilTypeEntity;
-import com.xxjy.jyyh.entity.PayOrderEntity;
-import com.xxjy.jyyh.entity.RefuelOilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.mine.MineViewModel;
-import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
 import com.xxjy.jyyh.ui.oil.OilOrderActivity;
 import com.xxjy.jyyh.ui.oil.OilViewModel;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
-import com.xxjy.jyyh.ui.restaurant.RestaurantActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
-import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
-import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
-import com.xxjy.jyyh.utils.UiUtils;
-import com.xxjy.jyyh.utils.WXSdkManager;
 import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
 import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
-import com.xxjy.jyyh.utils.pay.IPayListener;
-import com.xxjy.jyyh.utils.pay.PayHelper;
-import com.xxjy.jyyh.utils.pay.PayListenerUtils;
-import com.xxjy.jyyh.utils.toastlib.MyToast;
-import com.xxjy.jyyh.utils.toastlib.Toasty;
+import com.xxjy.jyyh.wight.SettingLayout;
 import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
+import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.RectangleIndicator;
+
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.UIUtil;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.blankj.utilcode.util.ThreadUtils.runOnUiThread;
 
 /**
  * @author power
@@ -124,51 +112,34 @@ import static com.blankj.utilcode.util.ThreadUtils.runOnUiThread;
  * @description:
  */
 public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewModel> implements
-        OnRefreshLoadMoreListener, IPayListener {
+        OnRefreshLoadMoreListener {
     private List<OilEntity.StationsBean.CzbLabelsBean> mOilTagList = new ArrayList<>();
     private List<OfentEntity> mOftenList = new ArrayList<>();
     private List<HomeProductEntity.FirmProductsVoBean> mExchangeList = new ArrayList<>();
     private OilNumDialog mOilNumDialog;
-    private OilGunDialog mOilGunDialog;
-    private OilAmountDialog mOilAmountDialog;
-    private OilTipsDialog mOilTipsDialog;
-    private OilPayDialog mOilPayDialog;
-    private OilCouponDialog mOilCouponDialog;
     private double mLng, mLat;
     private OilEntity.StationsBean mStationsBean;
     private OilStationFlexAdapter mFlexAdapter;
     private HomeExchangeAdapter mExchangeAdapter;
-    private boolean isShouldAutoOpenWeb = false;    //标记是否应该自动打开浏览器进行支付
-    //是否需要跳转支付确认页
-    private boolean shouldJump = false;
-    private PayOrderEntity mPayOrderEntity;
     private boolean isFar = false;//油站是否在距离内
     private boolean isPay = false;//油站是否在距离内 是否显示继续支付按钮
     private GasStationLocationTipsDialog mGasStationTipsDialog;
     private LocationTipsDialog mLocationTipsDialog;
-
     private BannerViewModel bannerViewModel;
-
     private int mOilNoPosition;
     private int mOilGunPosition = -1;
     private boolean isShowAmount = false;
-
-    private LocalLifeListAdapter localLifeListAdapter;//本地生活
-    private List<OilEntity.StationsBean> data = new ArrayList<>();
-    private int pageNum = 1;
-    private int pageSize = 10;
-    private boolean mIsUseCoupon = true, mIsUseBusinessCoupon = true;//是否使用优惠券
     private String couponId = "";
     private OilMonthRuleDialog mOilMonthRuleDialog;
     private MineViewModel mineViewModel;
-
-    /**
-     * @param orderEntity 消息事件：支付后跳转支付确认页
-     */
-    @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_PAY_QUERY, sticky = true)
-    public void onEvent(PayOrderEntity orderEntity) {
-        showJump(orderEntity);
-    }
+    private final String[] titles = new String[]{"油站", "车服"};
+    private final List<View> mList = new ArrayList<>(2);
+    private View mOilView;
+    private View mCarView;
+    private HomeOilCardLayoutBinding mOilCardBinding;
+    private HomeCarCardLayoutBinding mCarCardBinding;
+    private List<String> menuList = new ArrayList<>();
+    private HomeMenuAdapter mHomeMenuAdapter;
 
     //猎人码跳转
     @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_HUNTER_CODE, sticky = true)
@@ -176,24 +147,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         if (!TextUtils.isEmpty(oilId)) {
             Constants.HUNTER_GAS_ID = oilId;
         }
-
-//        LogUtils.e("2222222222", Constants.HUNTER_GAS_ID);
-//        if (UserConstants.getIsLogin()) {
         getHomeOil();
-//        }
 
-    }
-
-    private void showJump(PayOrderEntity orderEntity) {
-        if (orderEntity == null) return;
-        if (shouldJump) {
-            shouldJump = false;
-//            PayQueryActivity.openPayQueryActivity(getActivity(),
-//                    orderEntity.getOrderPayNo(), orderEntity.getOrderNo());
-            RefuelingPayResultActivity.openPayResultPage(getActivity(),
-                    orderEntity.getOrderNo(), orderEntity.getOrderPayNo());
-            closeDialog();
-        }
     }
 
     public static HomeFragment getInstance() {
@@ -205,7 +160,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         super.onHiddenChanged(hidden);
         if (!hidden) {
             getBaseActivity().setTransparentStatusBar();
-            mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
+//            mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
 
 //            requestPermission();
 //            mViewModel.getLocation();
@@ -220,8 +175,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             if (UserConstants.getIsLogin()) {
                 mViewModel.getOftenOils();
             }
-            initLocalLife();
-//            mBinding.oftenOilRecyclerView.setVisibility(UserConstants.getIsLogin() ? View.VISIBLE :View.GONE);
         }
     }
 
@@ -237,31 +190,26 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             getLocation();
 
         } else {
-            if (TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
-                mBinding.noLocationLayout.setVisibility(View.VISIBLE);
-                mBinding.recommendStationLayout.setVisibility(View.GONE);
+            if (TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {//是否显示首页卡片
+                mOilCardBinding.noLocationLayout.setVisibility(View.VISIBLE);
+                mOilCardBinding.recommendStationLayout.setVisibility(View.GONE);
             } else {
-                mBinding.noLocationLayout.setVisibility(View.GONE);
-                mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
+                mOilCardBinding.noLocationLayout.setVisibility(View.GONE);
+                mOilCardBinding.recommendStationLayout.setVisibility(View.VISIBLE);
             }
 
         }
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        showJump(mPayOrderEntity);
-    }
-
     @Override
     public void initView() {
         getBaseActivity().setTransparentStatusBar();
-        mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
+//        mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         BusUtils.register(this);
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
-//        LogUtils.e("2222211111", Constants.HUNTER_GAS_ID);
+
+        //tab
+        initMagicIndicator();
 
 //        mViewModel.getLocation();
 //        getLocation();
@@ -272,8 +220,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //            mViewModel.getLocation();
             getLocation();
         } else {
-            mBinding.noLocationLayout.setVisibility(View.VISIBLE);
-            mBinding.recommendStationLayout.setVisibility(View.GONE);
+            mOilCardBinding.noLocationLayout.setVisibility(View.VISIBLE);
+            mOilCardBinding.recommendStationLayout.setVisibility(View.GONE);
         }
         getHomeOil();
         //请求定位权限
@@ -284,17 +232,17 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
         flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
         flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
-        mBinding.tagRecyclerView.setLayoutManager(flexboxLayoutManager);
+        mOilCardBinding.tagRecyclerView.setLayoutManager(flexboxLayoutManager);
         mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_station_tag, mOilTagList);
-        mBinding.tagRecyclerView.setAdapter(mFlexAdapter);
+        mOilCardBinding.tagRecyclerView.setAdapter(mFlexAdapter);
 
-        //智能优选title
-        SpanUtils.with(mBinding.descTv)
-                .append("小象加油")
-                .setForegroundColor(getResources().getColor(R.color.color_76FF))
-                .append("根据您当前的位置智能优选")
-                .setForegroundColor(getResources().getColor(R.color.color_6A))
-                .create();
+        //菜单列表
+        for (int i = 0; i < 4; i++) {
+            menuList.add("");
+        }
+        mBinding.menuRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
+        mHomeMenuAdapter = new HomeMenuAdapter(R.layout.adapter_home_menu, menuList);
+        mBinding.menuRecyclerView.setAdapter(mHomeMenuAdapter);
 
         //积分豪礼
         mBinding.exchangeRecyclerView.setLayoutManager(
@@ -315,25 +263,81 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
         mViewModel.getHomeProduct();
         loadBanner();
-        initWebViewClient();
-        initLocalLife();
-        mBinding.tagBanner.setAdapter(new HomeTopLineAdapter(new ArrayList<>(), true))
+        mOilCardBinding.tagBanner.setAdapter(new HomeTopLineAdapter(new ArrayList<>(), true))
                 .setOrientation(Banner.VERTICAL)
                 .setUserInputEnabled(false);
         mineViewModel = new ViewModelProvider(this).get(MineViewModel.class);
     }
 
+    private void initMagicIndicator() {
+        mOilView = View.inflate(mContext, R.layout.home_oil_card_layout, null);
+        mCarView = View.inflate(mContext, R.layout.home_car_card_layout, null);
+        mList.add(mOilView);
+        mList.add(mCarView);
+
+        mOilCardBinding = HomeOilCardLayoutBinding.bind(mOilView);
+        mCarCardBinding = HomeCarCardLayoutBinding.bind(mCarView);
+
+        MyViewPagerAdapter adapter = new MyViewPagerAdapter(titles, mList);
+        mBinding.viewPager.setOffscreenPageLimit(1);
+        mBinding.viewPager.setAdapter(adapter);
+
+
+        CommonNavigator commonNavigator = new CommonNavigator(mContext);
+
+        mBinding.indicator.setVisibility(View.VISIBLE);
+        commonNavigator.setFollowTouch(true);
+
+        commonNavigator.setAdjustMode(true);
+        int padding = 70;
+        commonNavigator.setLeftPadding(padding);
+        commonNavigator.setRightPadding(padding);
+        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
+            @Override
+            public int getCount() {
+                return mList.size();
+            }
+
+            @Override
+            public IPagerTitleView getTitleView(Context context, final int index) {
+                SettingLayout simplePagerTitleView = new SettingLayout(context);
+                simplePagerTitleView.setText(titles[index]);
+                simplePagerTitleView.setTextViewSize(17, 17);
+                simplePagerTitleView.setSelectedStyle(true);
+                simplePagerTitleView.setmNormalColor(getResources().getColor(R.color.color_0202));
+                simplePagerTitleView.setmSelectedColor(getResources().getColor(R.color.color_0202));
+                simplePagerTitleView.setOnClickListener(v -> mBinding.viewPager.setCurrentItem(index));
+                return simplePagerTitleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator indicator = new LinePagerIndicator(context);
+                indicator.setMode(LinePagerIndicator.MODE_EXACTLY);
+                indicator.setLineHeight(UIUtil.dip2px(context, 2));
+                indicator.setLineWidth(UIUtil.dip2px(context, 25));
+                indicator.setRoundRadius(UIUtil.dip2px(context, 10));
+                indicator.setStartInterpolator(new AccelerateInterpolator());
+                indicator.setEndInterpolator(new DecelerateInterpolator(2.0f));
+                indicator.setColors(getResources().getColor(R.color.color_76FF));
+                return indicator;
+            }
+        });
+        mBinding.indicator.setNavigator(commonNavigator);
+        ViewPagerHelper.bind(mBinding.indicator, mBinding.viewPager);
+
+    }
 
     private void orderMsg() {
         OilViewModel oilViewModel = new ViewModelProvider(this).get(OilViewModel.class);
         oilViewModel.getOrderNews();
         oilViewModel.orderNewsLiveData.observe(this, data -> {
             if (data != null && data.size() > 0) {
-                mBinding.tagBanner.setVisibility(View.VISIBLE);
-                mBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
-                mBinding.tagBanner.setDatas(data);
+                mOilCardBinding.tagBanner.setVisibility(View.VISIBLE);
+                mOilCardBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
+                mOilCardBinding.tagBanner.setDatas(data);
             } else {
-                mBinding.tagBanner.setVisibility(View.GONE);
+                mOilCardBinding.tagBanner.setVisibility(View.GONE);
             }
         });
     }
@@ -350,116 +354,71 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //        mLng = Double.parseDouble(UserConstants.getLongitude());
 
         if ((mLng == 0d || mLat == 0d) && TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
-//            LogUtils.e("2222", "GONE");
-            mBinding.recommendStationLayout.setVisibility(View.GONE);
-            mBinding.noLocationLayout.setVisibility(View.VISIBLE);
+            mOilCardBinding.recommendStationLayout.setVisibility(View.GONE);
+            mOilCardBinding.noLocationLayout.setVisibility(View.VISIBLE);
         } else {
 //            LogUtils.e("2222", "VISIBLE");
 //            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
 //            mBinding.noLocationLayout.setVisibility(View.GONE);
             //首页油站
             mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
+            mViewModel.getHomeCar();
         }
 //    }
-    }
-
-    private void initLocalLife() {
-        mBinding.localLifeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        localLifeListAdapter = new LocalLifeListAdapter(R.layout.adapter_local_life_list, data);
-        mBinding.localLifeRecyclerView.setAdapter(localLifeListAdapter);
-
-        localLifeListAdapter.setOnItemClickListener((adapter, view, position) -> {
-            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                @Override
-                public void onLogin() {
-                    startActivity(new Intent(mContext, RestaurantActivity.class).putExtra(Constants.GAS_STATION_ID, ((OilEntity.StationsBean) adapter.getItem(position)).getGasId()));
-                }
-            });
-
-        });
-        localLifeListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                List<OilEntity.StationsBean> data = adapter.getData();
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        switch (view.getId()) {
-                            case R.id.navigation_ll:
-                                if (MapIntentUtils.isPhoneHasMapNavigation()) {
-                                    NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
-                                            data.get(position).getStationLatitude(), data.get(position).getStationLongitude(),
-                                            data.get(position).getGasName());
-                                    navigationDialog.show();
-                                } else {
-                                    showToastWarning("您当前未安装地图软件，请先安装");
-                                }
-                                break;
-                        }
-
-                    }
-                });
-            }
-        });
-        loadLocalLife(false);
-    }
-
-    private void loadLocalLife(boolean isLoadMore) {
-        if (isLoadMore) {
-            pageNum++;
-        } else {
-            pageNum = 1;
-        }
-        mViewModel.getStoreList(pageNum, pageSize);
     }
 
     private void loadBanner() {
         bannerViewModel.getBannerOfPostion(BannerPositionConstants.HOME_BANNER).observe(this, data -> {
             if (data != null && data.size() > 0) {
-                mBinding.banner.setVisibility(View.VISIBLE);
+//                mBinding.topBanner.setVisibility(View.VISIBLE);
                 //banner
-                mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
-                    @Override
-                    public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
-                        Glide.with(holder.imageView)
-                                .load(data.getImgUrl())
-                                .apply(new RequestOptions()
-                                        .placeholder(R.drawable.bg_banner_loading)
-                                        .error(R.drawable.bg_banner_error))
-                                .into(holder.imageView);
-                        holder.imageView.setOnClickListener(v -> {
-                            if (TextUtils.isEmpty(data.getLink())) {
-                                return;
-                            }
-
-                            if (data.getLink().contains("/monthCard")) {
-                                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                                    @Override
-                                    public void onLogin() {
-                                        queryUserInfo();
-                                    }
-                                });
-                            } else if (data.getLink().contains("/inviteFriends")) {
-                                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                                    @Override
-                                    public void onLogin() {
+                mBinding.topBanner
+                        .setAdapter(new BannerImageAdapter<BannerBean>(data) {
+                            @Override
+                            public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
+                                Glide.with(holder.imageView)
+                                        .load(data.getImgUrl())
+                                        .apply(new RequestOptions()
+                                                .placeholder(R.drawable.bg_banner_loading)
+                                                .error(R.drawable.bg_banner_error))
+                                        .into(holder.imageView);
+                                holder.imageView.setOnClickListener(v -> {
+                                    if (data.getLink().contains("/monthCard")) {
+                                        LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                                            @Override
+                                            public void onLogin() {
+                                                queryUserInfo();
+                                            }
+                                        });
+                                    } else if (data.getLink().contains("/inviteFriends")) {
+                                        LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                                            @Override
+                                            public void onLogin() {
+                                                WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
+                                            }
+                                        });
+                                    } else {
+                                        TrackingConstant.OIL_MAIN_TYPE = "3";
                                         WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
                                     }
                                 });
-                            } else {
-                                TrackingConstant.OIL_MAIN_TYPE = "3";
-                                WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
                             }
-
-
-                        });
-                    }
-                }).addBannerLifecycleObserver(this)
-                        .setIndicator(new RectangleIndicator(mContext));
+                        })
+                        .setIndicator(new RectangleIndicator(mContext))
+                        .setIndicatorSpace((int) getResources().getDimension(R.dimen.dp_4))
+                        .setIndicatorHeight((int) getResources().getDimension(R.dimen.dp_4))
+                        .setIndicatorNormalWidth((int) getResources().getDimension(R.dimen.dp_4))
+                        .setIndicatorSelectedWidth((int) getResources().getDimension(R.dimen.dp_8))
+                        .setIndicatorNormalColor(getResources().getColor(R.color.color_2D))
+                        .setIndicatorSelectedColor(getResources().getColor(R.color.color_76FF))
+                        .setIndicatorMargins(new IndicatorConfig.Margins(0, 0,
+                                0, (int) getResources().getDimension(R.dimen.dp_55)))
+                        .addBannerLifecycleObserver(this);
             } else {
-                mBinding.banner.setVisibility(View.GONE);
+//                mBinding.topBanner.setVisibility(View.GONE);
             }
         });
+
         bannerViewModel.getBannerOfPostion(BannerPositionConstants.MARKETING_CENTER).observe(this, data -> {
             if (data != null && data.size() > 0) {
                 mBinding.banner2.setVisibility(View.VISIBLE);
@@ -527,60 +486,44 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     }
                 })
                 .request();
-
-//        new PermissionUtils.SimpleCallback() {
-//            @Override
-//            public void onGranted() {
-//
-//            }
-//
-//            @Override
-//            public void onDenied() {
-//                mLat = 0;
-//                mLng = 0;
-//                mViewModel.getHomeOil(mLat, mLng);
-//                showFailLocation();
-////                        showToastWarning("权限被拒绝，部分产品功能将无法使用！");
-//            }
-//        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initListener() {
-        mBinding.scrollView.setOnScrollChangeListener(
-                (View.OnScrollChangeListener) (view, x, y, oldX, oldY) -> {
-                    if (y > BarUtils.getStatusBarHeight()) {
-                        mBinding.toolbar.setBackgroundColor(Color.parseColor("#1676FF"));
-                        mBinding.locationIv.setVisibility(View.INVISIBLE);
-                        mBinding.addressTv.setVisibility(View.INVISIBLE);
-                        mBinding.titleTv.setVisibility(View.VISIBLE);
-                        mBinding.searchIv.setImageResource(R.drawable.icon_search_white);
-                    } else {
-                        mBinding.toolbar.setBackgroundColor(Color.parseColor("#F5F5F5"));
-                        mBinding.locationIv.setVisibility(View.VISIBLE);
-                        mBinding.addressTv.setVisibility(View.VISIBLE);
-                        mBinding.titleTv.setVisibility(View.INVISIBLE);
-                        mBinding.searchIv.setImageResource(R.drawable.icon_search);
-                    }
-                });
-        mBinding.quickOilTv.setOnClickListener(this::onViewClicked);
-        mBinding.homeQuickOilRl.setOnClickListener(this::onViewClicked);
-        mBinding.oilNumTv.setOnClickListener(this::onViewClicked);
+//        mBinding.scrollView.setOnScrollChangeListener(
+//                (View.OnScrollChangeListener) (view, x, y, oldX, oldY) -> {
+//                    if (y > BarUtils.getStatusBarHeight()) {
+//                        mBinding.toolbar.setBackgroundColor(Color.parseColor("#1676FF"));
+//                        mBinding.locationIv.setVisibility(View.INVISIBLE);
+//                        mBinding.addressTv.setVisibility(View.INVISIBLE);
+//                        mBinding.titleTv.setVisibility(View.VISIBLE);
+//                        mBinding.searchIv.setImageResource(R.drawable.icon_search_white);
+//                    } else {
+//                        mBinding.toolbar.setBackgroundColor(Color.parseColor("#F5F5F5"));
+//                        mBinding.locationIv.setVisibility(View.VISIBLE);
+//                        mBinding.addressTv.setVisibility(View.VISIBLE);
+//                        mBinding.titleTv.setVisibility(View.INVISIBLE);
+//                        mBinding.searchIv.setImageResource(R.drawable.icon_search);
+//                    }
+//                });
+        mOilCardBinding.quickOilTv.setOnClickListener(this::onViewClicked);
+        mOilCardBinding.oilview.setOnClickListener(this::onViewClicked);
+        mOilCardBinding.oilNumTv.setOnClickListener(this::onViewClicked);
         mBinding.searchIv.setOnClickListener(this::onViewClicked);
         mBinding.awardTv.setOnClickListener(this::onViewClicked);
         mBinding.otherOilTv.setOnClickListener(this::onViewClicked);
-        mBinding.oilNavigationTv.setOnClickListener(this::onViewClicked);
+        mOilCardBinding.oilNavigationTv.setOnClickListener(this::onViewClicked);
         mBinding.locationIv.setOnClickListener(this::onViewClicked);
         mBinding.addressTv.setOnClickListener(this::onViewClicked);
 
-        ClickUtils.applySingleDebouncing(new View[]{mBinding.quickOilTv, mBinding.oilNumTv}, this::onViewClicked);
+        ClickUtils.applySingleDebouncing(new View[]{mOilCardBinding.quickOilTv, mOilCardBinding.oilNumTv}, this::onViewClicked);
         mBinding.refreshView.setEnableLoadMore(false);
         mBinding.refreshView.setOnRefreshLoadMoreListener(this);
         mBinding.goIntegralView.setOnClickListener(this::onViewClicked);
         mBinding.signInIv.setOnClickListener(this::onViewClicked);
-        mBinding.goMoreOilView.setOnClickListener(this::onViewClicked);
-        mBinding.goLocationView.setOnClickListener(this::onViewClicked);
+        mOilCardBinding.goMoreOilView.setOnClickListener(this::onViewClicked);
+        mOilCardBinding.goLocationView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -600,7 +543,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 });
 
                 break;
-            case R.id.home_quick_oil_rl:
+            case R.id.oilview:
                 LoginHelper.login(mContext, () -> {
                     if (mStationsBean != null) {
                         Intent intent = new Intent(mContext, OilDetailsActivity.class);
@@ -677,7 +620,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.locationLiveData.observe(this, locationEntity -> {
             UserConstants.setLatitude(String.valueOf(locationEntity.getLat()));
             UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
-            UserConstants.setLongitude(String.valueOf(locationEntity.getLng()));
             DPoint p = new DPoint(locationEntity.getLat(), locationEntity.getLng());
             DPoint p2 = new DPoint(mLat, mLng);
             mBinding.addressTv.setText(locationEntity.getAddress());
@@ -699,17 +641,17 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     oilEntity.getStations().size() <= 0 || oilEntity.getStations().get(0).getOilPriceList() == null) {
                 return;
             }
-            mBinding.noLocationLayout.setVisibility(View.GONE);
-            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
+            mOilCardBinding.noLocationLayout.setVisibility(View.GONE);
+            mOilCardBinding.recommendStationLayout.setVisibility(View.VISIBLE);
 
             mStationsBean = oilEntity.getStations().get(0);
-            Glide.with(mContext).load(mStationsBean.getGasTypeImg()).into(mBinding.oilImgIv);
-            mBinding.oilNameTv.setText(mStationsBean.getGasName());
-            mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
+            Glide.with(mContext).load(mStationsBean.getGasTypeImg()).into(mOilCardBinding.oilImgIv1);
+            mOilCardBinding.oilNameTv.setText(mStationsBean.getGasName());
+            mOilCardBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
             if (mStationsBean != null) {
-                mBinding.oilCurrentPriceTv.setText(mStationsBean.getPriceYfq());
-                mBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getPriceGun());
-                mBinding.oilNumTv.setText(mStationsBean.getOilName());
+                mOilCardBinding.oilCurrentPriceTv.setText(mStationsBean.getPriceYfq());
+                mOilCardBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getPriceGun());
+                mOilCardBinding.oilNumTv.setText(mStationsBean.getOilName());
             }
 
             for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
@@ -718,14 +660,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 }
             }
 
-            mBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
-            mBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+            mOilCardBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
+            mOilCardBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
             if (mStationsBean.getCzbLabels() != null && mStationsBean.getCzbLabels().size() > 0) {
                 mOilTagList = mStationsBean.getCzbLabels();
                 mFlexAdapter.setNewData(mOilTagList);
-                mBinding.tagRecyclerView.setVisibility(View.VISIBLE);
+                mOilCardBinding.tagRecyclerView.setVisibility(View.VISIBLE);
             } else {
-                mBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
+                mOilCardBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
                 orderMsg();
             }
             //常去油站
@@ -747,7 +689,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             if (enetities != null && enetities.size() > 0) {
                 mOftenList.clear();
                 mOftenList = enetities;
-                mOftenList.add(0, new OfentEntity("• 我最近常去："));
+                mOftenList.add(0, new OfentEntity("我最近常去："));
                 FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
                 flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
                 flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
@@ -758,8 +700,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mBinding.oftenOilRecyclerView.setAdapter(oftenAdapter);
                 mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
                 oftenAdapter.setOnItemClickListener((adapter, view, position) ->
-//                        startActivity(new Intent(getContext(), OilDetailActivity.class)
-//                                .putExtra(Constants.GAS_STATION_ID, ((OfentEntity) adapter.getItem(position)).getGasId())));
                         startActivity(new Intent(getContext(), OilDetailsActivity.class)
                                 .putExtra(Constants.GAS_STATION_ID, ((OfentEntity) adapter.getItem(position)).getGasId())));
             } else {
@@ -774,62 +714,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
 
-        //支付结果回调
-        mViewModel.payOrderLiveData.observe(this, payOrderEntity -> {
-            if (payOrderEntity.getResult() == 0) {//支付未完成
-                switch (payOrderEntity.getPayType()) {
-                    case PayTypeConstants.PAY_TYPE_WEIXIN://微信H5
-                        WeChatWebPayActivity.openWebPayAct(getActivity(), payOrderEntity.getUrl());
-                        shouldJump = true;
-                        break;
-                    case PayTypeConstants.PAY_TYPE_WEIXIN_APP://微信原生
-//                        WeChatWebPayActivity.openWebPayAct(this, payOrderEntity.getUrl());
-                        PayListenerUtils.getInstance().addListener(this);
-                        PayHelper.getInstance().WexPay(payOrderEntity.getPayParams());
-
-                        break;
-                    case PayTypeConstants.PAY_TYPE_WEIXIN_XCX://微信小程序
-                        WXSdkManager.newInstance().useWXLaunchMiniProgramToPay(getBaseActivity(), payOrderEntity.getOrderNo());
-                        shouldJump = true;
-                        break;
-                    case PayTypeConstants.PAY_TYPE_ZHIFUBAO://支付宝H5
-                        boolean urlCanUse = UiUtils.checkZhifubaoSdkCanPayUrl(getActivity(),
-                                payOrderEntity.getUrl(),
-                                h5PayResultModel -> {//直接跳转支付宝
-                                    jumpToPayResultAct(payOrderEntity.getOrderPayNo(),
-                                            payOrderEntity.getOrderNo());
-                                });
-                        if (!urlCanUse) {//外部浏览器打开
-                            isShouldAutoOpenWeb = true;
-                            mBinding.payWebView.loadUrl(payOrderEntity.getUrl());
-                            mBinding.payWebView.post(() -> {
-                                if (isShouldAutoOpenWeb) {
-                                    UiUtils.openPhoneWebUrl(getBaseActivity(),
-                                            payOrderEntity.getUrl());
-                                }
-                            });
-                        }
-                        shouldJump = true;
-                        break;
-                    case PayTypeConstants.PAY_TYPE_ZHIFUBAO_APP:
-                        PayListenerUtils.getInstance().addListener(this);
-                        PayHelper.getInstance().AliPay(getActivity(), payOrderEntity.getStringPayParams());
-
-                        break;
-                    case PayTypeConstants.PAY_TYPE_UNIONPAY://云闪付
-                        PayListenerUtils.getInstance().addListener(this);
-                        PayHelper.getInstance().unionPay(getActivity(), payOrderEntity.getPayNo());
-                        break;
-                }
-//                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
-                mPayOrderEntity = payOrderEntity;
-
-            } else if (payOrderEntity.getResult() == 1) {//支付成功
-                jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
-            } else {
-                showToastWarning(payOrderEntity.getMsg());
-            }
-        });
         mViewModel.refuelOilLiveData.observe(this, data -> {
             if (data != null) {
                 mBinding.oilTaskCl.setVisibility(View.VISIBLE);
@@ -894,7 +778,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mBinding.taskNumTv3.setText("第" + data.getCoupons().get(2).getNumber() + "单");
                 SpanUtils.with(mBinding.oilTaskNum)
                         .append("当前已加油")
-                        .append(" " + (data.getProgress() - data.getUsable()) + " ")
+                        .append(" " + (Math.max(data.getProgress() - data.getUsable(), 0))  + " ")
                         .setForegroundColor(getResources().getColor(R.color.color_3E3D))
                         .append("单")
                         .create();
@@ -928,43 +812,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     }
 
                 });
-
-//                RefuelOilEntity refuelOilEntity = GsonUtils.fromJson(data, RefuelOilEntity.class);
-//
-//                if (refuelOilEntity.getCode() == 1 && refuelOilEntity.getData() != null && refuelOilEntity.getData().size() > 0) {
-////                    mBinding.integralRl.setVisibility(View.VISIBLE);
-//                    RefuelOilEntity.DataBean dataBean = refuelOilEntity.getData().get(0);
-//
-//                    SpanUtils.with(mBinding.integralDesc)
-//                            .append("还需加油")
-//                            .append(dataBean.getNOrderAmount() + "")
-//                            .setForegroundColor(getResources().getColor(R.color.color_1300))
-//                            .append("元 可立即领取")
-//                            .append(dataBean.getSpName())
-//                            .setForegroundColor(getResources().getColor(R.color.color_1300))
-//                            .create();
-//                    mBinding.orderNumDecView.setText("   (价值" + dataBean.getRedeemPoint() + "积分)");
-//                    GlideUtils.loadImage(getContext(), dataBean.getSpImg(), mBinding.integralIv);
-//                    mBinding.progress.setMax(100);
-//                    if (Double.parseDouble(dataBean.getProgress()) == 0d) {
-//                        mBinding.progress.setProgress(0);
-//                    } else {
-//                        mBinding.progress.setProgress(Integer.parseInt(NumberUtils.format(Double.parseDouble(dataBean.getProgress()) * 100, 0)));
-//                    }
-//                    if (dataBean.isStatus()) {
-//                        mBinding.awardTv.setEnabled(true);
-//                        mBinding.awardTv.setBackgroundResource(R.drawable.shape_receive_6radius);
-//                        mBinding.awardTv.setAlpha(1f);
-//                    } else {
-//                        mBinding.awardTv.setEnabled(false);
-//                        mBinding.awardTv.setBackgroundResource(R.drawable.shape_no_receive_6radius);
-//                        mBinding.awardTv.setAlpha(0.5f);
-//                    }
-//                    mBinding.awardTv.setOnClickListener(v ->
-//                            WebViewActivity.openRealUrlWebActivity(getBaseActivity(), dataBean.getLink()));
-//                }
             } else {
-//                mBinding.integralRl.setVisibility(View.GONE);
                 mBinding.oilTaskCl.setVisibility(View.GONE);
             }
         });
@@ -978,29 +826,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
 
-        //本地生活
-        mViewModel.storeLiveData.observe(this, dataStore -> {
-
-            if (dataStore != null && dataStore.size() > 0) {
-                if (pageNum == 1) {
-                    mBinding.localLifeLayout.setVisibility(View.VISIBLE);
-                    localLifeListAdapter.setNewData(dataStore);
-                    mBinding.refreshView.setEnableLoadMore(true);
-                    mBinding.refreshView.finishRefresh(true);
-                } else {
-                    localLifeListAdapter.addData(dataStore);
-                    mBinding.refreshView.finishLoadMore(true);
-                }
-
-            } else {
-                if (pageNum == 1) {
-                    mBinding.localLifeLayout.setVisibility(View.GONE);
-                    localLifeListAdapter.setNewData(null);
-                }
-                mBinding.refreshView.finishLoadMoreWithNoMoreData();
-            }
-        });
-
         //加油任务领奖
         mViewModel.receiverCouponLiveData.observe(this, new Observer<String>() {
             @Override
@@ -1009,6 +834,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mViewModel.getRefuelJob();
             }
         });
+
         mineViewModel.userLiveData.observe(this, data -> {
             if (data.isHasBuyOldMonthCoupon()) {
                 WebViewActivity.openWebActivity((MainActivity) getActivity(), Constants.MARKET_ACTIVITIES_URL);
@@ -1021,8 +847,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
                 }
             }
-            ;
-
         });
     }
 
@@ -1059,9 +883,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mOilGunPosition = 0;
                 oilNumAdapter.setNewData(oilPriceList);
                 oilGunAdapter.setNewData(oilPriceList.get(mOilGunPosition).getGunNos());
-                mBinding.oilCurrentPriceTv.setText(oilPriceList.get(0).getPriceYfq());
-                mBinding.oilOriginalPriceTv.setText("油站价¥" + oilPriceList.get(0).getPriceGun());
-                mBinding.oilNumTv.setText(oilPriceList.get(0).getOilName());
+                mOilCardBinding.oilCurrentPriceTv.setText(oilPriceList.get(0).getPriceYfq());
+                mOilCardBinding.oilOriginalPriceTv.setText("油站价¥" + oilPriceList.get(0).getPriceGun());
+                mOilCardBinding.oilNumTv.setText(oilPriceList.get(0).getOilName());
             }
 
             @Override
@@ -1081,9 +905,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mOilGunPosition = 0;
                 isShowAmount = false;
                 oilGunAdapter.setNewData(data.get(position).getGunNos());
-                mBinding.oilCurrentPriceTv.setText(data.get(position).getPriceYfq());
-                mBinding.oilOriginalPriceTv.setText("油站价¥" + data.get(position).getPriceGun());
-                mBinding.oilNumTv.setText(data.get(position).getOilName());
+                mOilCardBinding.oilCurrentPriceTv.setText(data.get(position).getPriceYfq());
+                mOilCardBinding.oilOriginalPriceTv.setText("油站价¥" + data.get(position).getPriceGun());
+                mOilCardBinding.oilNumTv.setText(data.get(position).getOilName());
             }
 
             @Override
@@ -1133,118 +957,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         });
 
         mOilNumDialog.show();
-    }
-
-    private void showAmountDialog(OilEntity.StationsBean stationsBean,
-                                  List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBean,
-                                  int oilNoPosition, int gunNoPosition) {
-        //快捷金额dialog  请输入加油金额 请选择优惠券 暂无优惠券
-        mOilAmountDialog = new OilAmountDialog(mContext, getBaseActivity(), stationsBean, oilPriceListBean,
-                oilNoPosition, gunNoPosition);
-        mOilAmountDialog.setOnItemClickedListener(new OilAmountDialog.OnItemClickedListener() {
-            @Override
-            public void onOilDiscountClick(BaseQuickAdapter adapter, View view, int position,
-                                           String amount, String oilNo, String couponId) {
-                if (position == 1 || position == 2) {
-                    showCouponDialog(stationsBean, amount, oilNoPosition, gunNoPosition, oilNo, position == 1,
-                            couponId);
-                }
-            }
-
-            @Override
-            public void onCreateOrder(View view, String orderId, String payAmount) {
-//                showTipsDialog(stationsBean, oilNoPosition, gunNoPosition, orderId, payAmount, view);
-                showPayDialog(stationsBean, oilPriceListBean, oilNoPosition, gunNoPosition, orderId, payAmount);
-            }
-
-            @Override
-            public void closeAll() {
-                closeDialog();
-            }
-        });
-
-        mOilAmountDialog.show();
-    }
-
-    private void showCouponDialog(OilEntity.StationsBean stationsBean, String amount,
-                                  int oilNoPosition, int gunNoPosition, String oilNo, boolean isPlat,
-                                  String couponId) {
-        //优惠券dialog
-        mOilCouponDialog = new OilCouponDialog(mContext, getBaseActivity(), amount, stationsBean,
-                oilNoPosition, gunNoPosition, oilNo, isPlat, couponId);
-        mOilCouponDialog.setOnItemClickedListener(new OilCouponDialog.OnItemClickedListener() {
-            @Override
-            public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position, boolean isPlat) {
-                if (isPlat) {
-                    mIsUseCoupon = true;
-                } else {
-                    mIsUseBusinessCoupon = true;
-                }
-                List<CouponBean> data = adapter.getData();
-                mOilAmountDialog.setCouponInfo(data.get(position), isPlat, data.get(position).getExcludeType(), mIsUseCoupon, mIsUseBusinessCoupon);
-                mOilCouponDialog.dismiss();
-            }
-
-            @Override
-            public void onNoCouponClick(boolean isPlat) {
-                if (isPlat) {
-                    mIsUseCoupon = false;
-                } else {
-                    mIsUseBusinessCoupon = false;
-                }
-                mOilAmountDialog.setCouponInfo(null, isPlat, "", mIsUseCoupon, mIsUseBusinessCoupon);
-                mOilCouponDialog.dismiss();
-            }
-        });
-
-        mOilCouponDialog.show();
-    }
-
-    private void showTipsDialog(OilEntity.StationsBean stationsBean, int oilNoPosition,
-                                int gunNoPosition, String orderId, String payAmount, View view) {
-        //温馨提示dialog
-        mOilTipsDialog = new OilTipsDialog(mContext, getBaseActivity());
-        mOilTipsDialog.setOnItemClickedListener(() -> {
-            mOilTipsDialog.dismiss();
-            //show的时候把订单信息传过去
-//            showPayDialog(stationsBean, oilPriceListBean, oilNoPosition, gunNoPosition, orderId, payAmount);
-        });
-
-        mOilTipsDialog.show(view);
-    }
-
-    private void showPayDialog(OilEntity.StationsBean stationsBean,
-                               List<OilEntity.StationsBean.OilPriceListBean> oilPriceListBean,
-                               int oilNoPosition, int gunNoPosition, String orderId, String payAmount) {
-        //支付dialog
-        mOilPayDialog = new OilPayDialog(mContext, getBaseActivity(), stationsBean,
-                oilPriceListBean, oilNoPosition, gunNoPosition, orderId, payAmount);
-        mOilPayDialog.setOnItemClickedListener(new OilPayDialog.OnItemClickedListener() {
-            @Override
-            public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
-//                GasStationLocationTipsDialog gasStationLocationTipsDialog =
-//                        new GasStationLocationTipsDialog(getContext(), mBinding.getRoot(), "成都加油站");
-//                gasStationLocationTipsDialog.show();
-                List<OilPayTypeEntity> data = adapter.getData();
-                for (OilPayTypeEntity item : data) {
-                    item.setSelect(false);
-                }
-                data.get(position).setSelect(true);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCloseAllClick() {
-                closeDialog();
-            }
-
-            @Override
-            public void onPayOrderClick(String payType, String orderId, String payAmount) {
-                mViewModel.payOrder(payType, orderId, payAmount);
-            }
-        });
-
-        mOilPayDialog.show();
     }
 
     private void showFailLocation() {
@@ -1309,12 +1021,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        loadLocalLife(true);
+
     }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//        mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
         getHomeOil();
         mViewModel.getOftenOils();
 
@@ -1325,7 +1036,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.getHomeProduct();
 
         loadBanner();
-        loadLocalLife(false);
         refreshLayout.finishRefresh();
     }
 
@@ -1345,26 +1055,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             mOilNumDialog.dismiss();
             mOilNumDialog = null;
         }
-        if (mOilGunDialog != null) {
-            mOilGunDialog.dismiss();
-            mOilGunDialog = null;
-        }
-        if (mOilAmountDialog != null) {
-            mOilAmountDialog.dismiss();
-            mOilAmountDialog = null;
-        }
-        if (mOilCouponDialog != null) {
-            mOilCouponDialog.dismiss();
-            mOilCouponDialog = null;
-        }
-        if (mOilTipsDialog != null) {
-            mOilTipsDialog.dismiss();
-            mOilTipsDialog = null;
-        }
-        if (mOilPayDialog != null) {
-            mOilPayDialog.dismiss();
-            mOilPayDialog = null;
-        }
         if (mLocationTipsDialog != null) {
             mLocationTipsDialog = null;
         }
@@ -1373,113 +1063,13 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         }
         isShowAmount = false;
         mOilNoPosition = 0;
-        //关掉以后重新刷新数据,否则再次打开时上下选中不一致
-//        mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
         getHomeOil();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        BusUtils.removeSticky(EventConstants.EVENT_JUMP_PAY_QUERY);
         BusUtils.removeSticky(EventConstants.EVENT_JUMP_HUNTER_CODE);
     }
 
-    protected void initWebViewClient() {
-        mBinding.payWebView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(final WebView webView, String url) {
-                if (!(url.startsWith("http") || url.startsWith("https"))) {
-                    return true;
-                }
-
-                isShouldAutoOpenWeb = false;
-                /**
-                 * 推荐采用的新的二合一接口(payInterceptorWithUrl),只需调用一次
-                 */
-                final PayTask task = new PayTask(getActivity());
-                boolean isIntercepted = task.payInterceptorWithUrl(url, true,
-                        result -> runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                jumpToPayResultAct(result.getResultCode(), result.getResultCode());
-                            }
-                        }));
-
-                /**
-                 * 判断是否成功拦截
-                 * 若成功拦截，则无需继续加载该URL；否则继续加载
-                 */
-                if (!isIntercepted) {   //如果不使用sdk直接将url抛出到浏览器
-                    UiUtils.openPhoneWebUrl(getBaseActivity(), url);
-                }
-                return true;
-            }
-        });
-    }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        /*
-//         * 支付控件返回字符串:success、fail、cancel 分别代表支付成功，支付失败，支付取消
-//         */
-//
-//        if (data == null) {
-//            return;
-//        }
-//        String str = data.getExtras().getString("pay_result");
-//        if (!TextUtils.isEmpty(str)) {
-//            if (str.equalsIgnoreCase("success")) {
-//                //如果想对结果数据校验确认，直接去商户后台查询交易结果，
-//                //校验支付结果需要用到的参数有sign、data、mode(测试或生产)，sign和data可以在result_data获取到
-//                /**
-//                 * result_data参数说明：
-//                 * sign —— 签名后做Base64的数据
-//                 * data —— 用于签名的原始数据
-//                 *      data中原始数据结构：
-//                 *      pay_result —— 支付结果success，fail，cancel
-//                 *      tn —— 订单号
-//                 */
-////            msg = "云闪付支付成功";
-//                PayListenerUtils.getInstance().addSuccess();
-//            } else if (str.equalsIgnoreCase("fail")) {
-////            msg = "云闪付支付失败！";
-//                PayListenerUtils.getInstance().addFail();
-//            } else if (str.equalsIgnoreCase("cancel")) {
-////            msg = "用户取消了云闪付支付";
-//                PayListenerUtils.getInstance().addCancel();
-//
-//            }
-//        }
-//
-//    }
-
-    @Override
-    public void onSuccess() {
-        RefuelingPayResultActivity.openPayResultPage(getActivity(),
-                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
-        PayListenerUtils.getInstance().removeListener(this);
-        closeDialog();
-    }
-
-    @Override
-    public void onFail() {
-        RefuelingPayResultActivity.openPayResultPage(getActivity(),
-                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
-        PayListenerUtils.getInstance().removeListener(this);
-        closeDialog();
-    }
-
-    @Override
-    public void onCancel() {
-        Toasty.info(getActivity(), "支付取消").show();
-        PayListenerUtils.getInstance().removeListener(this);
-        closeDialog();
-    }
 }

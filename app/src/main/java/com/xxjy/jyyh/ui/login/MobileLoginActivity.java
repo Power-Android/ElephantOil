@@ -1,6 +1,5 @@
 package com.xxjy.jyyh.ui.login;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextPaint;
@@ -24,12 +23,9 @@ import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityMobileLoginBinding;
-import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.ui.MainActivity;
-import com.xxjy.jyyh.ui.oil.OilDetailActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.UiUtils;
-import com.xxjy.jyyh.utils.symanager.SYConfigUtils;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
 import com.xxjy.jyyh.utils.umengmanager.UMengLoginWx;
 import com.xxjy.jyyh.utils.umengmanager.UMengManager;

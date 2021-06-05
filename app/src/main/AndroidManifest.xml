@@ -140,9 +140,6 @@
             android:name=".ui.search.SearchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.oil.OilDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.pay.PayResultActivity"
             android:screenOrientation="portrait" />
         <activity

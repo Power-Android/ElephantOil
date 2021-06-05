@@ -493,10 +493,4 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
             mGasStationTipsDialog = null;
         }
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        BusUtils.removeSticky(EventConstants.EVENT_JUMP_PAY_QUERY);
-    }
 }
