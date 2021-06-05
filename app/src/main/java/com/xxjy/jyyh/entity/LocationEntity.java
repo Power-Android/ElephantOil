@@ -12,6 +12,8 @@ public class LocationEntity {
     private String city;        //市
     private String district;    //区
     private String address;     //地址
+    private String cityCode;   //城市code
+    private String adCode;   //区code
     private boolean isSuccess;
 
     public boolean isSuccess() {
@@ -60,5 +62,37 @@ public class LocationEntity {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public double getmLat() {
+        return mLat;
+    }
+
+    public void setmLat(double mLat) {
+        this.mLat = mLat;
+    }
+
+    public double getmLng() {
+        return mLng;
+    }
+
+    public void setmLng(double mLng) {
+        this.mLng = mLng;
+    }
+
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public String getAdCode() {
+        return adCode;
+    }
+
+    public void setAdCode(String adCode) {
+        this.adCode = adCode;
     }
 }

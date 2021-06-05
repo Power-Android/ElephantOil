@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.SpanUtils;
-import com.qmuiteam.qmui.util.QMUIDeviceHelper;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MineTabAdapter;
@@ -24,6 +23,7 @@ import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.UserBean;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
+import com.xxjy.jyyh.ui.order.CarServeOrderListActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
 import com.xxjy.jyyh.ui.order.OtherOrderListActivity;
 import com.xxjy.jyyh.ui.setting.SettingActivity;
@@ -190,7 +190,8 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                         getActivity().startActivity(new Intent(getContext(), OrderListActivity.class));
                         break;
                     case R.id.local_life_order_layout:
-                        getActivity().startActivity(new Intent(getContext(), OtherOrderListActivity.class).putExtra("isIntegral", false));
+//                        getActivity().startActivity(new Intent(getContext(), OtherOrderListActivity.class).putExtra("isIntegral", false));
+                        getActivity().startActivity(new Intent(getContext(), CarServeOrderListActivity.class));
                         break;
                     case R.id.customer_service_view:
                         if (customerServiceDialog == null) {

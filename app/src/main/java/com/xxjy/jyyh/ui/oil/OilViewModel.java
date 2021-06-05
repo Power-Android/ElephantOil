@@ -6,7 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
+import com.xxjy.jyyh.entity.AreaListBean;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CarServeCategoryListBean;
+import com.xxjy.jyyh.entity.CarServeStoreListBean;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.MonthCouponEntity;
 import com.xxjy.jyyh.entity.MultiplePriceBean;
@@ -44,6 +47,9 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public MutableLiveData<Float> balanceLiveData = new MutableLiveData<>();
     public MutableLiveData<String> createOrderLiveData = new MutableLiveData<>();
     public MutableLiveData<RedeemEntity> redeemLiveData = new MutableLiveData<>();
+    public MutableLiveData<AreaListBean> cityListLiveData = new MutableLiveData<>();
+    public MutableLiveData<CarServeCategoryListBean> productCategoryLiveData = new MutableLiveData<>();
+    public MutableLiveData<CarServeStoreListBean> storeListLiveData = new MutableLiveData<>();
 
 
     public void getOrderNews() {
@@ -61,9 +67,9 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     }
 
     public void getOilStations1(String appLatitude, String appLongitude, String oilNo, String orderBy,
-                               String distance, String pageNum, String pageSize, String gasName, String method, String gasIds) {
+                                String distance, String pageNum, String pageSize, String gasName, String method, String gasIds) {
         mRespository.getOilStations1(oilStationLiveData1, appLatitude,
-                appLongitude, oilNo, orderBy, distance, pageNum, pageSize, gasName, method,gasIds);
+                appLongitude, oilNo, orderBy, distance, pageNum, pageSize, gasName, method, gasIds);
     }
 
     public void getBanners() {
@@ -76,29 +82,30 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
 
     public void getMultiplePrice(String amount, String gasId, String oilNo, String isUserBill,
                                  String platId, String businessAmount, String monthCouponId,
-                                 boolean isUseCoupon, boolean isUseBusinessCoupon, String productIds){
+                                 boolean isUseCoupon, boolean isUseBusinessCoupon, String productIds) {
         mRespository.getMultiplePrice(amount, gasId, oilNo, isUserBill, platId,
                 businessAmount, monthCouponId, isUseCoupon, isUseBusinessCoupon, productIds,
                 multiplePriceLiveData);
     }
 
-    public void getMonthCoupon(String gasId){
+    public void getMonthCoupon(String gasId) {
         mRespository.getMonthCoupon(gasId, monthCouponLiveData);
     }
 
-    public void getDefaultPrice(String gasId, String oilNo){
+    public void getDefaultPrice(String gasId, String oilNo) {
         mRespository.getDefaultPrice(gasId, oilNo, defaultPriceLiveData);
     }
 
-    public void getPlatformCoupon(String amount, String gasId, String oilNo){
+    public void getPlatformCoupon(String amount, String gasId, String oilNo) {
         mRespository.getPlatformCoupon(amount, gasId, oilNo, platformCouponLiveData);
     }
-    public void getBusinessCoupon(String amount, String gasId, String oilNo){
+
+    public void getBusinessCoupon(String amount, String gasId, String oilNo) {
         mRespository.getBusinessCoupon(amount, gasId, oilNo, businessCouponLiveData);
     }
 
 
-    public void getBalance(){
+    public void getBalance() {
         mRespository.getBalance(balanceLiveData);
     }
 
@@ -106,13 +113,23 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
                             String gunNo, String oilNo, String oilName, String gasName, String priceGun,
                             String priceUnit, String oilType, String phone, String xxCouponId, String czbCouponId,
                             String czbCouponAmount, String xxMonthCouponId, String xxMonthCouponAmount,
-                            boolean isAddMonthId, boolean isAddMonthAmouont, String productIds, String productAmount){
+                            boolean isAddMonthId, boolean isAddMonthAmouont, String productIds, String productAmount) {
         mRespository.createOrder(amount, payAmount, usedBalance, gasId, gunNo, oilNo, oilName, gasName,
                 priceGun, priceUnit, oilType, phone, xxCouponId, czbCouponId, czbCouponAmount,
-                xxMonthCouponId, xxMonthCouponAmount, isAddMonthId, isAddMonthAmouont,productIds, productAmount, createOrderLiveData);
+                xxMonthCouponId, xxMonthCouponAmount, isAddMonthId, isAddMonthAmouont, productIds, productAmount, createOrderLiveData);
     }
 
     public void getRedeem(String gasId) {
         mRespository.getRedeem(gasId, redeemLiveData);
+    }
+
+    public void getAreaList(String cityCode) {
+        mRespository.getAreaList(cityCode, cityListLiveData);
+    }
+    public void getProductCategory() {
+        mRespository.getProductCategory(productCategoryLiveData);
+    }
+    public void getCarServeStoreList(int pageIndex,String cityCode,String areaCode,long productCategoryId,int status) {
+        mRespository.getCarServeStoreList(storeListLiveData, pageIndex, cityCode, areaCode, productCategoryId, status);
     }
 }

@@ -212,7 +212,7 @@ public class OtherOrderListActivity extends BindingActivity<ActivityOtherOrderLi
         mBinding.tabView.addTab(tabBuilder.setText("支付失败").build(this));
 
         int space = QMUIDisplayHelper.dp2px(this, 12);
-        mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 0), false, false));
+        mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
         mBinding.tabView.setItemSpaceInScrollMode(space);
         mBinding.tabView.setPadding(space, 0, space, 0);
         mBinding.tabView.setMode(QMUITabSegment.MODE_FIXED);

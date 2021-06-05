@@ -242,4 +242,9 @@ public interface JsOperationMethods {
      *
      */
     void showCustomerService();
+
+    /**
+     * 导航
+     */
+    void toNavigation(String longitude,String latitude,String destination);
 }
