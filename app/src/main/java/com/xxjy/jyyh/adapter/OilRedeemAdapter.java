@@ -28,12 +28,14 @@ public class OilRedeemAdapter extends BaseMultiItemQuickAdapter<RedeemEntity.Pro
     public static final int TYPENORMAL = 1;
     public static final int TYPECAR = 2;
     public static final int TYPENORMAL1 = 3;
+    public static final int TYPENORMAL2 = 4;
 
     public OilRedeemAdapter(@Nullable List<RedeemEntity.ProductOilGasListBean> data) {
         super(data);
         addItemType(TYPENORMAL, R.layout.adapter_oil_redeem);
         addItemType(TYPECAR, R.layout.adapter_oil_redeem_car);
         addItemType(TYPENORMAL1, R.layout.adapter_oil_redeem);
+        addItemType(TYPENORMAL2, R.layout.adapter_oil_redeem);
     }
 
     @Override

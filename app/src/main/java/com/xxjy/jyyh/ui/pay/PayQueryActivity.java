@@ -10,7 +10,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityPayQueryBinding;
 
-public class PayQueryActivity extends BindingActivity<ActivityPayQueryBinding, PayResultViewModel> {
+public class PayQueryActivity extends BindingActivity<ActivityPayQueryBinding, CarServePayResultViewModel> {
 
     private String mOrderNo;
     private String mOrderPayNo;

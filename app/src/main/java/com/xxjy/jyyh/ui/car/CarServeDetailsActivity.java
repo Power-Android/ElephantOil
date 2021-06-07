@@ -31,6 +31,7 @@ import com.xxjy.jyyh.databinding.ActivityCarServeDetailsBinding;
 import com.xxjy.jyyh.dialog.CarServeCouponDialog;
 import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CarServeCouponBean;
 import com.xxjy.jyyh.entity.CarServeCouponListBean;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.CardStoreInfoVoBean;
@@ -65,6 +66,9 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
     private String storeNo;
     private double distance;
+
+    private CarServeCouponBean selectCarServeCouponBean;
+    private CarServeProductsBean selectCarServeProductsBean;
 
     @Override
     protected void initView() {
@@ -106,29 +110,24 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
             }
         });
-        mBinding.tabServeClassView.setOnTabClickListener(new QMUIBasicTabSegment.OnTabClickListener() {
-            @Override
-            public boolean onTabClick(QMUITabView tabView, int index) {
+        mBinding.tabServeClassView.setOnTabClickListener((tabView, index) -> {
 
-                adapter.setNewData(productCategory.get(classData.get(index)));
-                adapter.setSelectPosition(0);
-                return false;
-            }
+            adapter.setNewData(productCategory.get(classData.get(index)));
+            adapter.setSelectPosition(0);
+            return false;
         });
-        adapter.setOnSelectListener(new CarServeProjectListAdapter.OnSelectListener() {
-            @Override
-            public void onSelect(CarServeProductsBean data) {
-                mBinding.floatLayout.removeAllViews();
-                addTagView(data.getProductAttribute().getCarTypeName(), mBinding.floatLayout);
-                addTagView(data.getProductAttribute().getHasAppointment() == 0 ? "无需电话预约" : "需提前电话预约", mBinding.floatLayout);
-                if (data.getProductAttribute().getHasNowRefund() == 1) {
-                    addTagView("随时退", mBinding.floatLayout);
-                }
-                if (data.getProductAttribute().getExpires() != 0) {
-                    addTagView(data.getProductAttribute().getExpires() + "天有效", mBinding.floatLayout);
-                }
-                mBinding.decView.setText(data.getDescription());
+        adapter.setOnSelectListener(data -> {
+            selectCarServeProductsBean = data;
+            mBinding.floatLayout.removeAllViews();
+            addTagView(data.getProductAttribute().getCarTypeName(), mBinding.floatLayout);
+            addTagView(data.getProductAttribute().getHasAppointment() == 0 ? "无需电话预约" : "需提前电话预约", mBinding.floatLayout);
+            if (data.getProductAttribute().getHasNowRefund() == 1) {
+                addTagView("随时退", mBinding.floatLayout);
             }
+            if (data.getProductAttribute().getExpires() != 0) {
+                addTagView(data.getProductAttribute().getExpires() + "天有效", mBinding.floatLayout);
+            }
+            mBinding.decView.setText(data.getDescription());
         });
     }
 
@@ -139,16 +138,19 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 finish();
                 break;
             case R.id.buy_view:
-                startActivity(new Intent(this, CarServeConfirmOrderActivity.class));
+             if(mCardStoreInfoVo==null||selectCarServeProductsBean==null){
+                 return;
+             }
+             CarServeConfirmOrderActivity.openPage(this,mCardStoreInfoVo,selectCarServeProductsBean,selectCarServeCouponBean);
                 break;
             case R.id.phone_view:
                 if (mCardStoreInfoVo == null) {
                     return;
                 }
                 Uri phoneUri = Uri.parse("tel:" + mCardStoreInfoVo.getPhone());
-                Intent intent = new Intent(Intent.ACTION_DIAL, phoneUri);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
+                Intent intent2= new Intent(Intent.ACTION_DIAL, phoneUri);
+                if (intent2.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent2);
                 }
                 break;
             case R.id.navigation_view:
@@ -174,6 +176,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 mCarServeCouponDialog.setOnItemClickedListener(new CarServeCouponDialog.OnItemClickedListener() {
                     @Override
                     public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position) {
+                        selectCarServeCouponBean= mCarServeCouponListBean.getRecords().get(position);
                         selectCouponId = mCarServeCouponListBean.getRecords().get(position).getId();
                         mBinding.couponNameView.setText(mCarServeCouponListBean.getRecords().get(position).getTitle());
                     }
@@ -182,6 +185,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                     public void onNoCouponClick() {
                         selectCouponId = 0;
                         mBinding.couponNameView.setText("选择优惠券");
+                        selectCarServeCouponBean=null;
                     }
                 });
                 break;
@@ -216,7 +220,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 mBinding.couponLayout.setVisibility(View.VISIBLE);
                 mBinding.couponNameView.setText(data.getRecords().get(0).getTitle());
                 selectCouponId = data.getRecords().get(0).getId();
-
+                selectCarServeCouponBean=data.getRecords().get(0);
 
             }else{
                 mBinding.couponLayout.setVisibility(View.GONE);

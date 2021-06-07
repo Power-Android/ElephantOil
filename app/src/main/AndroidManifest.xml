@@ -140,7 +140,7 @@
             android:name=".ui.search.SearchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.pay.PayResultActivity"
+            android:name=".ui.pay.CarServePayResultActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.order.OrderDetailsActivity"

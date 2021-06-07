@@ -28,7 +28,7 @@ public interface CarServeApiService {
     String COUPON_USABLE = BASE_URL + "cs/api/v1/customer/coupon/list/usable";
 
     //创建车服订单
-    String COMMIT_ORDER = BASE_URL + "oil/api/v1/customer/car/order";
+    String COMMIT_ORDER = BASE_URL + "oil/api/v1/customer/car/createOrder";
 
 
     //车服订单列表
@@ -37,7 +37,20 @@ public interface CarServeApiService {
     String CANCEL_ORDER = BASE_URL + "oil/api/v1/customer/car/order/cancel";
 
     //查询车服搭售加油卡信息：入口,商品
+    // TODO: 2021/6/5
 //    String TYING_PRODUCT = BASE_URL + "api/tiein/v1/queryTieinSaleCfInfo";
     String TYING_PRODUCT = "http://192.168.1.84:8833/api/tiein/v1/queryTieinSaleCfInfo";
+
+    //收银台payment cashier
+    String PAYMENT_CASHIER = BASE_URL + "oil/api/v1/customer/pay/method";
+
+    //订单支付
+    String PAYMENT_ORDER = BASE_URL + "oil/api/v1/customer/pay/payment";
+
+    //获取订单支付结果
+    String PAYMENT_RESULT = BASE_URL + "oil/api/v1/customer/pay/payment/result";
+    //车服订单详情
+    String ORDER_INFO = BASE_URL + "oil/api/v1/customer/car/order/";
+
 
 }

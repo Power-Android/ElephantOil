@@ -1,6 +1,8 @@
 package com.xxjy.jyyh.entity;
 
-public class CarServeCouponBean {
+import java.io.Serializable;
+
+public class CarServeCouponBean  implements Serializable {
     private long id;
     private long userId;
     private String phone;

@@ -14,6 +14,7 @@ import java.util.List;
 public class RedeemEntity implements Serializable {
 
     private List<EntranceListBean> entranceList;
+    private List<EntranceListBean> entranceCfList;
     private Integer entranceListSize;
     private String gasName;
     private String h5url;
@@ -24,6 +25,14 @@ public class RedeemEntity implements Serializable {
     private List<PurchaseQuantityListBean> purchaseQuantityList;
     private String totalPriority;
     private String totalPriorityName;
+
+    public List<EntranceListBean> getEntranceCfList() {
+        return entranceCfList;
+    }
+
+    public void setEntranceCfList(List<EntranceListBean> entranceCfList) {
+        this.entranceCfList = entranceCfList;
+    }
 
     public List<EntranceListBean> getEntranceList() {
         return entranceList;

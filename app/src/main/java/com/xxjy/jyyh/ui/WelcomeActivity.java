@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.LogUtils;
@@ -213,8 +214,12 @@ public class WelcomeActivity extends BindingActivity<ActivityWelcomeBinding,Bann
     private void getAdInfo() {
         mViewModel.getBannerOfPostion(BannerPositionConstants.APP_START_AD).observe(this,data ->{
             if(data!=null&&data.size()>0){
+            if(TimeUtils.getNowMills()>TimeUtils.string2Date(data.get(0).getStartTime()).getTime()&&TimeUtils.getNowMills()<TimeUtils.string2Date(data.get(0).getEndTime()).getTime()){
                 mAdImageUrl = data.get(0).getImgUrl();
+
                 mAdLinkInfo =data.get(0).getLink();
+            }
+
             }
 //            handler.sendEmptyMessageDelayed(MSG_WHAT_TRY_SHOW_GUIDE, 2000);
         });

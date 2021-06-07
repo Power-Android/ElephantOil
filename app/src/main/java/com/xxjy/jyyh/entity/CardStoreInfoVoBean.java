@@ -1,8 +1,9 @@
 package com.xxjy.jyyh.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CardStoreInfoVoBean {
+public class CardStoreInfoVoBean implements Serializable {
     private int id;
     private String storeNo;
     private String thirdNo;

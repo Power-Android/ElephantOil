@@ -1,6 +1,8 @@
 package com.xxjy.jyyh.entity;
 
-public class CarServeProductAttributeBean {
+import java.io.Serializable;
+
+public class CarServeProductAttributeBean implements Serializable {
 
     private int hasAppointment;
     private int expires;

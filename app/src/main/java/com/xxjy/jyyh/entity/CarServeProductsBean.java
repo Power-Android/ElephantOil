@@ -1,7 +1,9 @@
 package com.xxjy.jyyh.entity;
 
-public class CarServeProductsBean {
-    private int id;
+import java.io.Serializable;
+
+public class CarServeProductsBean implements Serializable {
+    private long id;
     private String name;
     private int categoryId;
     private String storeNo;
@@ -49,11 +51,11 @@ public class CarServeProductsBean {
         this.productAttribute = productAttribute;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

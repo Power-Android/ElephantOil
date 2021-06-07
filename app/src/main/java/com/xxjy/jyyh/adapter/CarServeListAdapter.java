@@ -36,27 +36,6 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
     protected void convert(@NonNull BaseViewHolder helper, CarServeStoreBean item) {
 
 
-//        if (!item.isIsSign()) {
-//            helper.setTextColor(R.id.item_name_tv, Color.parseColor("#323334"))
-//                    .setTextColor(R.id.item_address_tv, Color.parseColor("#A0A0A0"))
-//                    .setTextColor(R.id.item_original_tv, Color.parseColor("#A0A0A0"))
-//                    .setTextColor(R.id.item_navigation_tv, Color.parseColor("#555555"))
-//                    .setTextColor(R.id.item_address_tv, Color.parseColor("#A0A0A0"));
-//            helper.getView(R.id.parent_layout).setBackground(null);
-//            ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
-//            helper.getView(R.id.type_view).setVisibility(View.GONE);
-//        } else {
-//            helper.setTextColor(R.id.item_name_tv, Color.parseColor("#1676FF"))
-//                    .setTextColor(R.id.item_address_tv, Color.parseColor("#5478AC"))
-//                    .setTextColor(R.id.item_original_tv, Color.parseColor("#5478AC"))
-//                    .setTextColor(R.id.item_navigation_tv, Color.parseColor("#323334"))
-//                    .setTextColor(R.id.item_address_tv, Color.parseColor("#5478AC"));
-//            ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
-//
-//            helper.getView(R.id.parent_layout).setBackgroundResource(R.drawable.ic_oil_station_bg);
-//            helper.getView(R.id.type_view).setVisibility(View.VISIBLE);
-//
-//        }
 
         Glide.with(mContext)
                 .load(item.getCardStoreInfoVo().getStorePicture())
@@ -96,14 +75,8 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
         int textViewPadding2 = QMUIDisplayHelper.dp2px(context, 2);
         textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
-//        if (!isSign) {
         textView.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         textView.setBackgroundResource(R.drawable.shape_stroke_station_tag);
-//        } else {
-//            textView.setTextColor(ContextCompat.getColor(context, R.color.white));
-//            textView.setBackgroundResource(R.drawable.shape_soild_station_tag);
-//        }
-
         textView.setText(content);
         floatLayout.addView(textView);
     }
