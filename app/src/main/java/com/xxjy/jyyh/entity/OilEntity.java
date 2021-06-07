@@ -11,7 +11,34 @@ import java.util.List;
  */
 public class OilEntity implements Serializable {
 
+    private Integer hasStore; //查询附近(默认70km)是否有车服门店 1 存在;0 不存在
+    private Integer nearest;  //查询最近的是油站还是门店 1 展示油站;0 展示门店
     private List<StationsBean> stations;
+    private CarServeStoreDetailsBean storeRecordVo;
+
+    public Integer getHasStore() {
+        return hasStore;
+    }
+
+    public void setHasStore(Integer hasStore) {
+        this.hasStore = hasStore;
+    }
+
+    public Integer getNearest() {
+        return nearest;
+    }
+
+    public void setNearest(Integer nearest) {
+        this.nearest = nearest;
+    }
+
+    public CarServeStoreDetailsBean getStoreRecordVo() {
+        return storeRecordVo;
+    }
+
+    public void setStoreRecordVo(CarServeStoreDetailsBean storeRecordVo) {
+        this.storeRecordVo = storeRecordVo;
+    }
 
     public List<StationsBean> getStations() {
         return stations;
@@ -20,6 +47,8 @@ public class OilEntity implements Serializable {
     public void setStations(List<StationsBean> stations) {
         this.stations = stations;
     }
+
+
 
     public static class StationsBean implements Serializable{
         private String cityName;
@@ -440,4 +469,5 @@ public class OilEntity implements Serializable {
             }
         }
     }
+
 }

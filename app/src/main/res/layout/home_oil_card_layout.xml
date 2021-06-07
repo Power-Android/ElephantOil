@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/dp_200"
     android:id="@+id/oilview"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/recommend_station_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_200"
         app:layout_constraintTop_toTopOf="parent">
         <TextView
             android:id="@+id/oil_name_tv"
@@ -109,14 +109,15 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tag_recycler_view"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="5dp"
             android:minHeight="@dimen/dp_40"
             android:layout_marginEnd="@dimen/dp_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/oil_img_iv_1"
-            app:layout_constraintTop_toBottomOf="@+id/oil_num_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/oil_num_tv"
+            app:layout_constraintBottom_toTopOf="@+id/quick_oil_tv"/>
 
         <com.youth.banner.Banner
             android:id="@+id/tag_banner"
@@ -144,17 +145,15 @@
         <TextView
             android:id="@+id/quick_oil_tv"
             android:layout_width="@dimen/dp_225"
-            android:layout_height="@dimen/dp_40"
+            android:layout_height="@dimen/dp_38"
             android:layout_marginStart="@dimen/common_margin"
             android:layout_marginEnd="@dimen/common_margin"
-            android:layout_marginTop="@dimen/common_margin"
             android:background="@drawable/shape_blue_20radius"
             android:gravity="center"
             android:text="一键加油"
             android:textColor="@color/white"
             android:textSize="14sp"
-            android:layout_marginBottom="@dimen/dp_25"
-            app:layout_constraintTop_toBottomOf="@+id/tag_recycler_view"
+            android:layout_marginBottom="@dimen/dp_15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -179,6 +178,7 @@
             android:layout_marginStart="@dimen/common_margin"
             android:layout_marginTop="@dimen/dp_20"
             app:riv_corner_radius="@dimen/dp_5"
+            android:scaleType="fitXY"
             android:src="@drawable/default_img_bg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

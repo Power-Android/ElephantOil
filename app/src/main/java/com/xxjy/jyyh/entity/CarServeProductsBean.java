@@ -23,6 +23,15 @@ public class CarServeProductsBean {
     private String deletedStatus;
     private String categoryName;
     private CarServeProductAttributeBean productAttribute;
+    private boolean isSelect;
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
 
     public String getCategoryName() {
         return categoryName;

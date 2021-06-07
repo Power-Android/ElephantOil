@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/dp_200"
+    android:id="@+id/carview"
+    android:visibility="visible"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/car_img_iv_1"
@@ -10,6 +12,7 @@
         android:layout_marginStart="@dimen/common_margin"
         android:layout_marginTop="@dimen/dp_20"
         app:riv_corner_radius="@dimen/dp_5"
+        android:scaleType="fitXY"
         android:src="@drawable/default_img_bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -68,34 +71,33 @@
         android:textSize="@dimen/sp_12"
         app:layout_constraintStart_toEndOf="@+id/car_address_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tag_recycler_view"/>
+        app:layout_constraintTop_toTopOf="@+id/float_layout"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tag_recycler_view"
+    <com.qmuiteam.qmui.widget.QMUIFloatLayout
+        android:id="@+id/float_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_12"
         android:minHeight="@dimen/dp_40"
         app:layout_constraintEnd_toStartOf="@+id/car_navigation_tv"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/car_img_iv_1"
-        app:layout_constraintTop_toBottomOf="@+id/car_img_iv_1" />
+        app:layout_constraintTop_toBottomOf="@+id/car_img_iv_1"
+        app:qmui_maxNumber="2" />
 
     <TextView
         android:id="@+id/quick_car_tv"
         android:layout_width="@dimen/dp_225"
-        android:layout_height="@dimen/dp_40"
+        android:layout_height="@dimen/dp_38"
         android:layout_marginStart="@dimen/common_margin"
         android:layout_marginEnd="@dimen/common_margin"
-        android:layout_marginTop="@dimen/common_margin"
         android:background="@drawable/shape_blue_20radius"
         android:gravity="center"
         android:text="一键养护"
         android:textColor="@color/white"
         android:textSize="14sp"
-        android:layout_marginBottom="@dimen/dp_25"
-        app:layout_constraintTop_toBottomOf="@+id/tag_recycler_view"
+        android:layout_marginBottom="@dimen/dp_15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

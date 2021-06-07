@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_36"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_car_price_cl"
+    android:background="@drawable/select_oil_check_bg">
+    <TextView
+        android:id="@+id/item_orin_price_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¥0.00"
+        android:textColor="#FE2110"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/item_price_tv"/>
+    <TextView
+        android:id="@+id/item_price_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¥0.00"
+        android:textSize="@dimen/dp_12"
+        android:textColor="#828282"
+        android:layout_marginStart="@dimen/dp_6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/item_orin_price_tv"
+        app:layout_constraintStart_toEndOf="@id/item_orin_price_tv"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

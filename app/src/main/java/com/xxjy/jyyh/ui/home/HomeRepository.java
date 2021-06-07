@@ -5,12 +5,12 @@ import android.text.TextUtils;
 import androidx.lifecycle.MutableLiveData;
 
 import com.amap.api.location.AMapLocation;
-import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.ProductMapKeyConstants;
 import com.xxjy.jyyh.constants.UserConstants;
+import com.xxjy.jyyh.entity.HomeMenuEntity;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
@@ -19,7 +19,6 @@ import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.QueryRefuelJobEntity;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
-import com.xxjy.jyyh.utils.toastlib.MyToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,9 +162,24 @@ public class HomeRepository extends BaseRepository {
                 .subscribe(s -> receiverCouponLiveData.postValue(s)));
     }
 
-    public void getHomeCar(MutableLiveData<String> homeCarLiveData) {
-        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/tiein/v1/queryTieinSaleCfInfo")
-                .asResponse(String.class)
-                .subscribe(s -> homeCarLiveData.postValue(s)));
+    public void getHomeCard(double lat, double lng, String gasId,
+                           MutableLiveData<OilEntity> homeOilLiveData) {
+        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/tiein/v1/queryHomeCardInfo")
+                .add(Constants.LATITUDE, lat, lat != 0)
+                .add(Constants.LONGTIDUE, lng, lng != 0)
+                .add(Constants.GAS_STATION_ID, gasId, !TextUtils.isEmpty(gasId))
+                .asResponse(OilEntity.class)
+                .subscribe(homeCardEntity -> homeOilLiveData.postValue(homeCardEntity)));
+    }
+
+    public void getMenu(MutableLiveData<List<HomeMenuEntity>> menuLiveData) {
+        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/tiein/v1/queryHomeKingKongDistrict")
+                .asResponseList(HomeMenuEntity.class)
+                .subscribe(new Consumer<List<HomeMenuEntity>>() {
+                    @Override
+                    public void accept(List<HomeMenuEntity> menuEntityList) throws Throwable {
+                        menuLiveData.postValue(menuEntityList);
+                    }
+                }));
     }
 }

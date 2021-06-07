@@ -9,13 +9,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -36,6 +39,8 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.QMUIFloatLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
@@ -56,18 +61,18 @@ import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentHomeBinding;
 import com.xxjy.jyyh.databinding.HomeCarCardLayoutBinding;
 import com.xxjy.jyyh.databinding.HomeOilCardLayoutBinding;
+import com.xxjy.jyyh.dialog.CarServiceDialog;
 import com.xxjy.jyyh.dialog.GasStationLocationTipsDialog;
 import com.xxjy.jyyh.dialog.LocationTipsDialog;
 import com.xxjy.jyyh.dialog.NavigationDialog;
-import com.xxjy.jyyh.dialog.OilAmountDialog;
-import com.xxjy.jyyh.dialog.OilCouponDialog;
-import com.xxjy.jyyh.dialog.OilGunDialog;
 import com.xxjy.jyyh.dialog.OilMonthRuleDialog;
 import com.xxjy.jyyh.dialog.OilNumDialog;
-import com.xxjy.jyyh.dialog.OilPayDialog;
-import com.xxjy.jyyh.dialog.OilTipsDialog;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CarServeStoreBean;
+import com.xxjy.jyyh.entity.CarServeStoreDetailsBean;
+import com.xxjy.jyyh.entity.CardStoreInfoVoBean;
 import com.xxjy.jyyh.entity.EventEntity;
+import com.xxjy.jyyh.entity.HomeMenuEntity;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
@@ -132,14 +137,19 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private String couponId = "";
     private OilMonthRuleDialog mOilMonthRuleDialog;
     private MineViewModel mineViewModel;
-    private final String[] titles = new String[]{"油站", "车服"};
-    private final List<View> mList = new ArrayList<>(2);
+    private String[] titles = new String[]{"油站", "车服"};
+    private List<View> mList = new ArrayList<>();
     private View mOilView;
     private View mCarView;
     private HomeOilCardLayoutBinding mOilCardBinding;
     private HomeCarCardLayoutBinding mCarCardBinding;
-    private List<String> menuList = new ArrayList<>();
+    private List<HomeMenuEntity> menuList = new ArrayList<>();
     private HomeMenuAdapter mHomeMenuAdapter;
+    private CardStoreInfoVoBean mCardStoreInfoVo;
+    private MyViewPagerAdapter mPagerAdapter;
+    private CommonNavigator mCommonNavigator;
+    private CarServiceDialog mCarServiceDialog;
+    private CarServeStoreDetailsBean mStoreRecordVo;
 
     //猎人码跳转
     @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_HUNTER_CODE, sticky = true)
@@ -207,7 +217,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //        mBinding.toolbar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         BusUtils.register(this);
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
-
+        loadBanner();
         //tab
         initMagicIndicator();
 
@@ -236,13 +246,29 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_station_tag, mOilTagList);
         mOilCardBinding.tagRecyclerView.setAdapter(mFlexAdapter);
 
-        //菜单列表
-        for (int i = 0; i < 4; i++) {
-            menuList.add("");
-        }
+        //菜单
         mBinding.menuRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
         mHomeMenuAdapter = new HomeMenuAdapter(R.layout.adapter_home_menu, menuList);
         mBinding.menuRecyclerView.setAdapter(mHomeMenuAdapter);
+        mHomeMenuAdapter.setOnItemClickListener((adapter, view, position) -> {
+            List<HomeMenuEntity> data = adapter.getData();
+            switch (data.get(position).getType()){
+                case 0://h5
+                    WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(position).getUrl());
+                    break;
+                case 1://加油优惠
+                    break;
+                case 2://汽车养护
+                    break;
+                case 3://幸运转盘
+                    break;
+                case 4://加油赚钱
+                    break;
+                default:
+                    break;
+            }
+        });
+        mViewModel.getMenu();
 
         //积分豪礼
         mBinding.exchangeRecyclerView.setLayoutManager(
@@ -262,7 +288,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //        mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         mViewModel.getHomeProduct();
-        loadBanner();
         mOilCardBinding.tagBanner.setAdapter(new HomeTopLineAdapter(new ArrayList<>(), true))
                 .setOrientation(Banner.VERTICAL)
                 .setUserInputEnabled(false);
@@ -278,21 +303,21 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilCardBinding = HomeOilCardLayoutBinding.bind(mOilView);
         mCarCardBinding = HomeCarCardLayoutBinding.bind(mCarView);
 
-        MyViewPagerAdapter adapter = new MyViewPagerAdapter(titles, mList);
+        mPagerAdapter = new MyViewPagerAdapter(titles, mList);
         mBinding.viewPager.setOffscreenPageLimit(1);
-        mBinding.viewPager.setAdapter(adapter);
+        mBinding.viewPager.setAdapter(mPagerAdapter);
 
 
-        CommonNavigator commonNavigator = new CommonNavigator(mContext);
+        mCommonNavigator = new CommonNavigator(mContext);
 
         mBinding.indicator.setVisibility(View.VISIBLE);
-        commonNavigator.setFollowTouch(true);
+        mCommonNavigator.setFollowTouch(true);
 
-        commonNavigator.setAdjustMode(true);
+        mCommonNavigator.setAdjustMode(true);
         int padding = 70;
-        commonNavigator.setLeftPadding(padding);
-        commonNavigator.setRightPadding(padding);
-        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
+        mCommonNavigator.setLeftPadding(padding);
+        mCommonNavigator.setRightPadding(padding);
+        mCommonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
                 return mList.size();
@@ -323,7 +348,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 return indicator;
             }
         });
-        mBinding.indicator.setNavigator(commonNavigator);
+        mBinding.indicator.setNavigator(mCommonNavigator);
         ViewPagerHelper.bind(mBinding.indicator, mBinding.viewPager);
 
     }
@@ -360,9 +385,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //            LogUtils.e("2222", "VISIBLE");
 //            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
 //            mBinding.noLocationLayout.setVisibility(View.GONE);
-            //首页油站
-            mViewModel.getHomeOil(mLat, mLng, Constants.HUNTER_GAS_ID);
-            mViewModel.getHomeCar();
+            //首页卡片
+            mViewModel.getHomeCard(mLat, mLng, Constants.HUNTER_GAS_ID);
         }
 //    }
     }
@@ -383,7 +407,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                                 .error(R.drawable.bg_banner_error))
                                         .into(holder.imageView);
                                 holder.imageView.setOnClickListener(v -> {
-                                    if(TextUtils.isEmpty(data.getLink())){
+                                    if (TextUtils.isEmpty(data.getLink())) {
                                         return;
                                     }
                                     if (data.getLink().contains("/monthCard")) {
@@ -513,6 +537,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilCardBinding.quickOilTv.setOnClickListener(this::onViewClicked);
         mOilCardBinding.oilview.setOnClickListener(this::onViewClicked);
         mOilCardBinding.oilNumTv.setOnClickListener(this::onViewClicked);
+        mCarCardBinding.quickCarTv.setOnClickListener(this::onViewClicked);
+        mCarCardBinding.carview.setOnClickListener(this::onViewClicked);
+
         mBinding.searchIv.setOnClickListener(this::onViewClicked);
         mBinding.awardTv.setOnClickListener(this::onViewClicked);
         mBinding.otherOilTv.setOnClickListener(this::onViewClicked);
@@ -615,6 +642,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 intent.setData(uri);
                 startActivity(intent);
                 break;
+            case R.id.quick_car_tv://车门店下单
+                showCarDialog(mStoreRecordVo);
+                break;
+            case R.id.carview://跳转门店详情
+                break;
         }
     }
 
@@ -638,53 +670,116 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
         });
 
-        //优选油站
-        mViewModel.homeOilLiveData.observe(this, oilEntity -> {
-            if (oilEntity == null || oilEntity.getStations() == null ||
-                    oilEntity.getStations().size() <= 0 || oilEntity.getStations().get(0).getOilPriceList() == null) {
-                return;
-            }
-            mOilCardBinding.noLocationLayout.setVisibility(View.GONE);
-            mOilCardBinding.recommendStationLayout.setVisibility(View.VISIBLE);
-
-            mStationsBean = oilEntity.getStations().get(0);
-            Glide.with(mContext).load(mStationsBean.getGasTypeImg()).into(mOilCardBinding.oilImgIv1);
-            mOilCardBinding.oilNameTv.setText(mStationsBean.getGasName());
-            mOilCardBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
-            if (mStationsBean != null) {
-                mOilCardBinding.oilCurrentPriceTv.setText(mStationsBean.getPriceYfq());
-                mOilCardBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getPriceGun());
-                mOilCardBinding.oilNumTv.setText(mStationsBean.getOilName());
-            }
-
-            for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
-                if (mStationsBean.getOilNo().equals(String.valueOf(mStationsBean.getOilPriceList().get(i).getOilNo()))) {
-                    mStationsBean.getOilPriceList().get(i).setSelected(true);
+        //首页卡片
+        mViewModel.homeOilLiveData.observe(this, new Observer<OilEntity>() {
+            @Override
+            public void onChanged(OilEntity oilEntity) {
+                if (oilEntity == null || oilEntity.getStations() == null ||
+                        oilEntity.getStations().size() <= 0 || oilEntity.getStations().get(0).getOilPriceList() == null) {
+                    return;
                 }
-            }
+                mStoreRecordVo = oilEntity.getStoreRecordVo();
+                if (oilEntity.getNearest() == 1) {//展示油站
+                    mBinding.viewPager.setCurrentItem(0);
+                } else {//展示门店
+                    if (oilEntity.getHasStore() == 1) {//70km内有门店
+                        if (mList.size() == 1){
+                            titles = new String[]{"油站", "车服"};
+                            mCarView = null;
+                            mCarView = View.inflate(mContext, R.layout.home_car_card_layout, null);
+                            mCarCardBinding = HomeCarCardLayoutBinding.bind(mCarView);
+                            mList.add(mCarView);
+                            mBinding.viewPager.setNoScroll(true);
+                            mCommonNavigator.setAdjustMode(true);
+                            mCommonNavigator.notifyDataSetChanged();
+                            mPagerAdapter.refreshData(titles, mList);
+                            mBinding.viewPager.setAdapter(mPagerAdapter);
+                        }
+                        mBinding.viewPager.setCurrentItem(1);
+                    }else {
+                        titles = new String[]{"油站"};
+                        if (mList.size() > 1){
+                            mList.remove(1);
+                            mBinding.viewPager.removeViewAt(1);
+                            mBinding.viewPager.setNoScroll(false);
+                        }
+                        mCommonNavigator.setAdjustMode(false);
+                        mCommonNavigator.notifyDataSetChanged();
+                        mPagerAdapter.refreshData(titles, mList);
+                        mBinding.viewPager.setCurrentItem(0);
+                    }
+                }
 
-            mOilCardBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
-            mOilCardBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-            if (mStationsBean.getCzbLabels() != null && mStationsBean.getCzbLabels().size() > 0) {
-                mOilTagList = mStationsBean.getCzbLabels();
-                mFlexAdapter.setNewData(mOilTagList);
-                mOilCardBinding.tagRecyclerView.setVisibility(View.VISIBLE);
-            } else {
-                mOilCardBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
-                orderMsg();
-            }
-            //常去油站
-            if (UserConstants.getIsLogin()) {
-                mViewModel.getOftenOils();
-            }
-            //加油任务
-            mViewModel.getRefuelJob();
-//            mViewModel.getRefuelJob("DH000011510");
-            mViewModel.checkDistance(mStationsBean.getGasId());
+                if (oilEntity.getHasStore() == 1) {//最近是否有门店
+                    //车服卡片
+                    mCardStoreInfoVo = oilEntity.getStoreRecordVo().getCardStoreInfoVo();
+                    Glide.with(mContext).load(mCardStoreInfoVo.getStorePicture()).into(mCarCardBinding.carImgIv1);
+                    mCarCardBinding.carNameTv.setText(mCardStoreInfoVo.getStoreName());
+                    mCarCardBinding.carAddressTv.setText(mCardStoreInfoVo.getAddress());
+                    mCarCardBinding.carTimeTv.setText("营业时间：每天" + mCardStoreInfoVo.getOpenStart() + "-" + mCardStoreInfoVo.getEndStart());
+                    mCarCardBinding.carNavigationTv.setText(String.format("%.2f", mCardStoreInfoVo.getDistance() / 1000d) + "KM");
+                    mCarCardBinding.floatLayout.setMinimumHeight(QMUIDisplayHelper.dp2px(mContext, 40));
+                    mCarCardBinding.floatLayout.removeAllViews();
+                    if (mCardStoreInfoVo.getCategoryNameList() != null && mCardStoreInfoVo.getCategoryNameList().size() > 0) {
+                        for (String lab : mCardStoreInfoVo.getCategoryNameList()) {
+                            TextView textView = new TextView(mContext);
+                            textView.setMinHeight(QMUIDisplayHelper.dp2px(mContext, 20));
+                            int textViewPadding = QMUIDisplayHelper.dp2px(mContext, 5);
+                            int textViewPadding2 = QMUIDisplayHelper.dp2px(mContext, 3);
+                            textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
+                            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
+                            textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                            textView.setBackgroundResource(R.drawable.shape_stroke_station_tag);
+                            textView.setText(lab);
+                            mCarCardBinding.floatLayout.addView(textView);
+                        }
+                        mCarCardBinding.floatLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        mCarCardBinding.floatLayout.setVisibility(View.INVISIBLE);
+                    }
+                }
 
-            EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
-                    TrackingConstant.HOME_MAIN, "", "gas_id=" + mStationsBean.getGasId());
+                //油站卡片
+                mOilCardBinding.noLocationLayout.setVisibility(View.GONE);
+                mOilCardBinding.recommendStationLayout.setVisibility(View.VISIBLE);
 
+                mStationsBean = oilEntity.getStations().get(0);
+                Glide.with(mContext).load(mStationsBean.getGasTypeImg()).into(mOilCardBinding.oilImgIv1);
+                mOilCardBinding.oilNameTv.setText(mStationsBean.getGasName());
+                mOilCardBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
+                if (mStationsBean != null) {
+                    mOilCardBinding.oilCurrentPriceTv.setText(mStationsBean.getPriceYfq());
+                    mOilCardBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getPriceGun());
+                    mOilCardBinding.oilNumTv.setText(mStationsBean.getOilName());
+                }
+
+                for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
+                    if (mStationsBean.getOilNo().equals(String.valueOf(mStationsBean.getOilPriceList().get(i).getOilNo()))) {
+                        mStationsBean.getOilPriceList().get(i).setSelected(true);
+                    }
+                }
+
+                mOilCardBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
+                mOilCardBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+                if (mStationsBean.getCzbLabels() != null && mStationsBean.getCzbLabels().size() > 0) {
+                    mOilTagList = mStationsBean.getCzbLabels();
+                    mFlexAdapter.setNewData(mOilTagList);
+                    mOilCardBinding.tagRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    mOilCardBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
+                    orderMsg();
+                }
+                //常去油站
+                if (UserConstants.getIsLogin()) {
+                    mViewModel.getOftenOils();
+                }
+                //加油任务
+                mViewModel.getRefuelJob();
+                mViewModel.checkDistance(mStationsBean.getGasId());
+
+                EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
+                        TrackingConstant.HOME_MAIN, "", "gas_id=" + mStationsBean.getGasId());
+            }
         });
 
         //常去油站
@@ -707,6 +802,16 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                 .putExtra(Constants.GAS_STATION_ID, ((OfentEntity) adapter.getItem(position)).getGasId())));
             } else {
                 mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
+            }
+        });
+
+        //菜单栏
+        mViewModel.menuLiveData.observe(this, new Observer<List<HomeMenuEntity>>() {
+            @Override
+            public void onChanged(List<HomeMenuEntity> menuEntityList) {
+                menuList = menuEntityList;
+                mHomeMenuAdapter.setNewData(menuEntityList);
+                mHomeMenuAdapter.notifyDataSetChanged();
             }
         });
 
@@ -781,7 +886,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mBinding.taskNumTv3.setText("第" + data.getCoupons().get(2).getNumber() + "单");
                 SpanUtils.with(mBinding.oilTaskNum)
                         .append("当前已加油")
-                        .append(" " + (Math.max(data.getProgress() - data.getUsable(), 0))  + " ")
+                        .append(" " + (Math.max(data.getProgress() - data.getUsable(), 0)) + " ")
                         .setForegroundColor(getResources().getColor(R.color.color_3E3D))
                         .append("单")
                         .create();
@@ -1017,11 +1122,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     closeDialog();
                     break;
             }
-
         });
         mGasStationTipsDialog.show();
     }
 
+    private void showCarDialog(CarServeStoreDetailsBean carServeStoreBean){
+        mCarServiceDialog = new CarServiceDialog(mContext, carServeStoreBean);
+        mCarServiceDialog.show();
+    }
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
 
@@ -1035,6 +1143,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         if (mStationsBean != null) {
             mViewModel.checkDistance(mStationsBean.getGasId());
         }
+        mViewModel.getMenu();
         mViewModel.getRefuelJob();
         mViewModel.getHomeProduct();
 
@@ -1063,6 +1172,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         }
         if (mGasStationTipsDialog != null) {
             mGasStationTipsDialog = null;
+        }
+        if (mCarServiceDialog != null){
+            mCarServiceDialog = null;
         }
         isShowAmount = false;
         mOilNoPosition = 0;

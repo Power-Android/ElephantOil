@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
+import com.xxjy.jyyh.entity.HomeMenuEntity;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
@@ -32,7 +33,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<PayOrderEntity> payOrderLiveData = new MutableLiveData<>();
     public MutableLiveData<OilDistanceEntity> distanceLiveData = new MutableLiveData<>();
     public MutableLiveData<List<OilEntity.StationsBean>> storeLiveData = new MutableLiveData<>();
-    public MutableLiveData<String> homeCarLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<HomeMenuEntity>> menuLiveData = new MutableLiveData<>();
 
 
     public HomeViewModel(@NonNull Application application) {
@@ -41,10 +42,6 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getLocation() {
         mRespository.getLocation(locationLiveData);
-    }
-
-    public void getHomeOil(double lat, double lng,String gasId) {
-        mRespository.getHomeOil(lat, lng, gasId,homeOilLiveData);
     }
 
     public void getOftenOils() {
@@ -75,7 +72,11 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         mRespository.receiverJobCoupon(id, couponId, receiverCouponLiveData);
     }
 
-    public void getHomeCar() {
-        mRespository.getHomeCar(homeCarLiveData);
+    public void getHomeCard(double lat, double lng,String gasId) {
+        mRespository.getHomeCard(lat, lng, gasId, homeOilLiveData);
+    }
+
+    public void getMenu() {
+        mRespository.getMenu(menuLiveData);
     }
 }

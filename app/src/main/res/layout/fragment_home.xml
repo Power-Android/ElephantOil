@@ -149,7 +149,7 @@
                             app:layout_constraintBottom_toBottomOf="@+id/indicator"
                             app:layout_constraintEnd_toEndOf="parent"
                             android:layout_marginEnd="@dimen/dp_29"/>
-                        <androidx.viewpager.widget.ViewPager
+                        <com.xxjy.jyyh.wight.NoScrollViewPager
                             android:id="@+id/view_pager"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_200"

@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import com.blankj.utilcode.util.LogUtils;
 
 import java.util.List;
 
@@ -43,14 +46,11 @@ public class MyViewPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View v = mViews.get(position);
-//        if (v.getParent() == null)
-//        container.addView(v);
-
-        ViewGroup parent = (ViewGroup) v.getParent();
+        ViewGroup parent = (ViewGroup) mViews.get(position).getParent();
         if (parent != null) {
-            parent.removeAllViews();
+            parent.removeView(mViews.get(position));
         }
+        View v = mViews.get(position);
         container.addView(v);
         return v;
     }
@@ -58,5 +58,11 @@ public class MyViewPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
+    }
+
+    public void refreshData(String[] mTitles, List<View> mViews){
+        this.mTitles = mTitles;
+        this.mViews = mViews;
+        notifyDataSetChanged();
     }
 }
