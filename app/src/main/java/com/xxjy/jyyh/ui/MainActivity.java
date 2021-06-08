@@ -268,6 +268,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                 if (mHomeFragment != null) {
                     transaction.hide(mHomeFragment);
                 }
+                break;
             case Constants.TYPE_OIL:
                 if (mOilFragment != null) {
                     transaction.hide(mOilFragment);
