@@ -140,6 +140,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                 @Override
                 public void onCloseAllClick() {
                     unifiedPaymentCashierDialog.dismiss();
+                    finish();
                 }
 
                 @Override
@@ -171,8 +172,8 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                         boolean urlCanUse = UiUtils.checkZhifubaoSdkCanPayUrl(this,
                                 payOrderEntity.getUrl(),
                                 h5PayResultModel -> {//直接跳转支付宝
-                                    jumpToPayResultAct(payOrderEntity.getOrderPayNo(),
-                                            payOrderEntity.getOrderNo());
+                                    jumpToPayResultAct(payOrderEntity.getPayId(),
+                                            payOrderEntity.getOrderId());
                                 });
                         if (!urlCanUse) {//外部浏览器打开
                             isShouldAutoOpenWeb = true;
@@ -199,7 +200,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                 //                BusUtils.postSticky(EventConstants.EVENT_JUMP_PAY_QUERY, payOrderEntity);
                 mPayOrderEntity = payOrderEntity;
             } else if (payOrderEntity.getResult() == 1) {//支付成功
-                jumpToPayResultAct(payOrderEntity.getOrderPayNo(), payOrderEntity.getOrderNo());
+                jumpToPayResultAct(payOrderEntity.getPayId(), payOrderEntity.getOrderId());
             } else {
                 showToastWarning(payOrderEntity.getMsg());
             }
@@ -356,7 +357,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
     @Override
     public void onSuccess() {
         CarServePayResultActivity.openPayResultPage(this,
-                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
+                mPayOrderEntity.getOrderId(), mPayOrderEntity.getPayId(), false, true);
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
     }
@@ -364,7 +365,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
     @Override
     public void onFail() {
         CarServePayResultActivity.openPayResultPage(this,
-                mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
+                mPayOrderEntity.getOrderId(), mPayOrderEntity.getPayId(), false, true);
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
     }

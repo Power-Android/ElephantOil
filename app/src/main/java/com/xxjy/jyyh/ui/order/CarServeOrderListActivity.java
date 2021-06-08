@@ -50,7 +50,7 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.titleLayout.tvTitle.setText("车生活订单");
         carServeOrderListAdapter = new CarServeOrderListAdapter(R.layout.adapter_car_serve_order_layout, carServeOrderBeanList);
-            mBinding.recyclerView.setAdapter(carServeOrderListAdapter);
+        mBinding.recyclerView.setAdapter(carServeOrderListAdapter);
         carServeOrderListAdapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
         carServeOrderListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                 @Override
@@ -58,7 +58,7 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
                     mPosition = position;
                     switch (view.getId()) {
                         case R.id.continue_pay_view:
-//                            WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((RefuelOrderBean) adapter.getItem(position)).getLink() + "&showCashier=true");
+                            WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink() + "&showCashier=true");
                             break;
                         case R.id.cancel_order_view:
                             productCancelOrder(((CarServeOrderBean) adapter.getItem(position)).getOrderId());
@@ -75,7 +75,7 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
         carServeOrderListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((RefuelOrderBean) adapter.getItem(position)).getLink());
+                    WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink());
                 }
             });
         initTab();
@@ -176,7 +176,7 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
         tabBuilder.setColor(Color.parseColor("#3d3d3d"), Color.parseColor("#1676FF"));
         mBinding.tabView.addTab(tabBuilder.setText("全部").build(this));
         mBinding.tabView.addTab(tabBuilder.setText("待使用").build(this));
-        mBinding.tabView.addTab(tabBuilder.setText("待支付").build(this));
+//        mBinding.tabView.addTab(tabBuilder.setText("待支付").build(this));
 
         int space = QMUIDisplayHelper.dp2px(this, 12);
         mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));

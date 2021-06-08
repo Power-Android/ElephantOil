@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.CarServeApiService;
+import com.xxjy.jyyh.entity.CarServeOrderBean;
 import com.xxjy.jyyh.entity.PayResultEntity;
 
 import io.reactivex.rxjava3.functions.Consumer;
@@ -27,10 +28,9 @@ public class CarServePayResultRepository extends BaseRepository {
 
         );
     }
-    public void getOrderInfo(String orderId, MutableLiveData<String> payResultLiveData) {
-        addDisposable(RxHttp.get(CarServeApiService.PAYMENT_RESULT)
-                .add("orderId", orderId)
-                .asResponse(String.class)
+    public void getOrderInfo(String orderId, MutableLiveData<CarServeOrderBean> payResultLiveData) {
+        addDisposable(RxHttp.get(CarServeApiService.ORDER_INFO+orderId)
+                .asResponse(CarServeOrderBean.class)
                 .subscribe(data -> payResultLiveData.postValue(data))
 
         );

@@ -30,6 +30,28 @@ public class CarServeOrderBean {
     private String verificationCode;
     private int verificationStatus;
     private String verificationStatusName;
+    private String exDetailLink;
+
+    private String description;
+    private String endHoliday;
+    private String openHoliday;
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getExDetailLink() {
+        return exDetailLink;
+    }
+
+    public void setExDetailLink(String exDetailLink) {
+        this.exDetailLink = exDetailLink;
+    }
 
     public String getBuyTime() {
         return buyTime;

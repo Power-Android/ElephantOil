@@ -15,6 +15,12 @@
         android:title="加油省钱"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/navigation_car_serve"
+        android:enabled="true"
+        android:icon="@drawable/selector_car_serve"
+        android:title="特惠洗车"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/navigation_integral"
         android:enabled="true"
         android:icon="@drawable/selector_integral"

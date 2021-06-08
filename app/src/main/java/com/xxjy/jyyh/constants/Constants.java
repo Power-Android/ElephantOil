@@ -52,8 +52,9 @@ public class Constants {
     public static final String CURRENT_FRAGMENT_KEY = "current_fragment";
     public static final int TYPE_HOME = 0;
     public static final int TYPE_OIL = 1;
-    public static final int TYPE_INTEGRAL = 2;
-    public static final int TYPE_MINE = 3;
+    public static final int TYPE_CAR_SERVE = 2;
+    public static final int TYPE_INTEGRAL = 3;
+    public static final int TYPE_MINE = 4;
 
     //回退事件
     public static final long DOUBLE_INTERVAL_TIME = 2000;

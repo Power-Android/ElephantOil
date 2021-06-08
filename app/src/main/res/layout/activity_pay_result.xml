@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_17"
                     android:text="支付中，请稍后"
+                    android:gravity="center"
                     android:textColor="@color/color_34"
                     android:textSize="@dimen/sp_18"
                     android:textStyle="bold" />
@@ -104,7 +105,7 @@
                 android:id="@+id/order_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -157,6 +158,14 @@
                         android:text=""
                         android:textColor="#363636"
                         android:textSize="@dimen/sp_15" />
+                    <TextView
+                        android:id="@+id/coupon_desc_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_12"
+                        android:text=""
+                        android:textColor="#323334"
+                        android:textSize="@dimen/sp_14" />
 
                     <TextView
                         android:id="@+id/time_view"

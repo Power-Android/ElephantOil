@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -61,7 +62,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
     private CarServeCouponDialog mCarServeCouponDialog;
     private CarServeCouponListBean mCarServeCouponListBean;
-    private long selectCouponId=0;
+    private long selectCouponId = 0;
 
 
     private String storeNo;
@@ -114,6 +115,16 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
             adapter.setNewData(productCategory.get(classData.get(index)));
             adapter.setSelectPosition(0);
+            if (!classData.get(index).equals("洗车")) {
+                mBinding.couponLayout.setVisibility(View.GONE);
+            } else {
+                if (mCarServeCouponListBean.getRecords().size() > 0) {
+                    mBinding.couponLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.couponLayout.setVisibility(View.GONE);
+                }
+
+            }
             return false;
         });
         adapter.setOnSelectListener(data -> {
@@ -138,17 +149,17 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 finish();
                 break;
             case R.id.buy_view:
-             if(mCardStoreInfoVo==null||selectCarServeProductsBean==null){
-                 return;
-             }
-             CarServeConfirmOrderActivity.openPage(this,mCardStoreInfoVo,selectCarServeProductsBean,selectCarServeCouponBean);
+                if (mCardStoreInfoVo == null || selectCarServeProductsBean == null) {
+                    return;
+                }
+                CarServeConfirmOrderActivity.openPage(this, mCardStoreInfoVo, selectCarServeProductsBean, selectCarServeCouponBean);
                 break;
             case R.id.phone_view:
                 if (mCardStoreInfoVo == null) {
                     return;
                 }
                 Uri phoneUri = Uri.parse("tel:" + mCardStoreInfoVo.getPhone());
-                Intent intent2= new Intent(Intent.ACTION_DIAL, phoneUri);
+                Intent intent2 = new Intent(Intent.ACTION_DIAL, phoneUri);
                 if (intent2.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent2);
                 }
@@ -168,15 +179,15 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 }
                 break;
             case R.id.coupon_layout:
-                if(mCarServeCouponDialog==null){
-                    mCarServeCouponDialog = new CarServeCouponDialog(this,selectCouponId);
+                if (mCarServeCouponDialog == null) {
+                    mCarServeCouponDialog = new CarServeCouponDialog(this, selectCouponId);
                 }
-                mCarServeCouponDialog.dispatchData(mCarServeCouponListBean.getRecords(),selectCouponId);
+                mCarServeCouponDialog.dispatchData(mCarServeCouponListBean.getRecords(), selectCouponId);
                 mCarServeCouponDialog.show();
                 mCarServeCouponDialog.setOnItemClickedListener(new CarServeCouponDialog.OnItemClickedListener() {
                     @Override
                     public void onOilCouponClick(BaseQuickAdapter adapter, View view, int position) {
-                        selectCarServeCouponBean= mCarServeCouponListBean.getRecords().get(position);
+                        selectCarServeCouponBean = mCarServeCouponListBean.getRecords().get(position);
                         selectCouponId = mCarServeCouponListBean.getRecords().get(position).getId();
                         mBinding.couponNameView.setText(mCarServeCouponListBean.getRecords().get(position).getTitle());
                     }
@@ -185,7 +196,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                     public void onNoCouponClick() {
                         selectCouponId = 0;
                         mBinding.couponNameView.setText("选择优惠券");
-                        selectCarServeCouponBean=null;
+                        selectCarServeCouponBean = null;
                     }
                 });
                 break;
@@ -214,21 +225,29 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
         });
 
-        mViewModel.usableCouponLiveData.observe(this,data->{
+        mViewModel.usableCouponLiveData.observe(this, data -> {
             mCarServeCouponListBean = data;
-            if(data.getRecords()!=null&&data.getRecords().size()>0){
+            if (data.getRecords() != null && data.getRecords().size() > 0) {
                 mBinding.couponLayout.setVisibility(View.VISIBLE);
                 mBinding.couponNameView.setText(data.getRecords().get(0).getTitle());
                 selectCouponId = data.getRecords().get(0).getId();
-                selectCarServeCouponBean=data.getRecords().get(0);
-
-            }else{
+                selectCarServeCouponBean = data.getRecords().get(0);
+            } else {
                 mBinding.couponLayout.setVisibility(View.GONE);
             }
 
         });
     }
 
+    private void changeCouponLayout(String productType) {
+        for (CarServeCouponBean bean : mCarServeCouponListBean.getRecords()) {
+            if (TextUtils.equals(productType, bean.getCouponType())) {
+                mBinding.couponLayout.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
+
+    }
 
     private void initBanner() {
         mBinding.bannerView.setVisibility(View.VISIBLE);

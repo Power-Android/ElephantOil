@@ -50,7 +50,7 @@ public interface CarServeApiService {
     //获取订单支付结果
     String PAYMENT_RESULT = BASE_URL + "oil/api/v1/customer/pay/payment/result";
     //车服订单详情
-    String ORDER_INFO = BASE_URL + "oil/api/v1/customer/car/order/";
+    String ORDER_INFO = BASE_URL + "oil/api/v1/customer/car/order/detail/";
 
 
 }

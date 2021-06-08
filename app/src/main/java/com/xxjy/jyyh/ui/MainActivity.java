@@ -29,6 +29,7 @@ import com.xxjy.jyyh.dialog.NoticeTipsDialog;
 import com.xxjy.jyyh.dialog.VersionUpDialog;
 import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.dialog.HomeAdDialog;
+import com.xxjy.jyyh.ui.car.CarServeFragment;
 import com.xxjy.jyyh.ui.home.HomeFragment;
 import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.integral.IntegralFragment;
@@ -54,6 +55,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     private long clickTime;
     private HomeFragment mHomeFragment;
     private OilFragment mOilFragment;
+    private CarServeFragment mCarServeFragment;
     private IntegralFragment mIntergralFragment;
     private MineFragment mMineFragment;
     private FragmentTransaction mTransaction;
@@ -71,21 +73,6 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_CHANGE_FRAGMENT)) {
             TrackingConstant.OIL_MAIN_TYPE = "1";
             mBinding.navView.setSelectedItemId(R.id.navigation_oil);
-//            mTransaction = getSupportFragmentManager().beginTransaction();
-//            if (mHomeFragment != null) {
-//                mTransaction.hide(mHomeFragment);
-//            }
-//            if (mOilFragment != null) {
-//                mTransaction.hide(mOilFragment);
-//            }
-//            if (mIntergralFragment != null) {
-//                mTransaction.hide(mIntergralFragment);
-//            }
-//            if (mMineFragment != null) {
-//                mTransaction.hide(mMineFragment);
-//            }
-//
-//            showFragment(Constants.TYPE_INTEGRAL);
         } else if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_TO_INTEGRAL_FRAGMENT)) {
             mBinding.navView.setSelectedItemId(R.id.navigation_integral);
         }
@@ -122,6 +109,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         BusUtils.register(this);
         mHomeFragment = null;
         mOilFragment = null;
+        mCarServeFragment = null;
         mIntergralFragment = null;
         mMineFragment = null;
 
@@ -192,9 +180,12 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                     mBinding.navView.setSelectedItemId(R.id.navigation_oil);
                     break;
                 case 2:
-                    mBinding.navView.setSelectedItemId(R.id.navigation_integral);
+                    mBinding.navView.setSelectedItemId(R.id.navigation_car_serve);
                     break;
                 case 3:
+                    mBinding.navView.setSelectedItemId(R.id.navigation_integral);
+                    break;
+                case 4:
                     mBinding.navView.setSelectedItemId(R.id.navigation_mine);
                     break;
             }
@@ -210,6 +201,9 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                     break;
                 case R.id.navigation_oil:
                     showFragment(Constants.TYPE_OIL);
+                    break;
+                case R.id.navigation_car_serve:
+                    showFragment(Constants.TYPE_CAR_SERVE);
                     break;
                 case R.id.navigation_integral:
                     showFragment(Constants.TYPE_INTEGRAL);
@@ -241,6 +235,12 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                     mTransaction.add(R.id.fragment_group, mOilFragment);
                 }
                 mTransaction.show(mOilFragment);
+            case Constants.TYPE_CAR_SERVE:
+                if (mCarServeFragment == null) {
+                    mCarServeFragment = CarServeFragment.getInstance();
+                    mTransaction.add(R.id.fragment_group, mCarServeFragment);
+                }
+                mTransaction.show(mCarServeFragment);
                 break;
             case Constants.TYPE_INTEGRAL:
                 if (mIntergralFragment == null) {
@@ -270,6 +270,11 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             case Constants.TYPE_OIL:
                 if (mOilFragment != null) {
                     transaction.hide(mOilFragment);
+                }
+                break;
+            case Constants.TYPE_CAR_SERVE:
+                if (mCarServeFragment != null) {
+                    transaction.hide(mCarServeFragment);
                 }
                 break;
             case Constants.TYPE_INTEGRAL:

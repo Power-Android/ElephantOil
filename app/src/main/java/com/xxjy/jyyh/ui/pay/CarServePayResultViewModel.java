@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseViewModel;
+import com.xxjy.jyyh.entity.CarServeOrderBean;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
 import com.xxjy.jyyh.entity.PayResultEntity;
 
@@ -22,7 +23,7 @@ public class CarServePayResultViewModel extends BaseViewModel<CarServePayResultR
     }
 
     public MutableLiveData<PayResultEntity> payResultLiveData = new MutableLiveData<>();
-    public MutableLiveData<String> orderLiveData = new MutableLiveData<>();
+    public MutableLiveData<CarServeOrderBean> orderLiveData = new MutableLiveData<>();
 
     public void getPayResult(String orderNo, String orderPayNo) {
         mRespository.getPayResult(orderNo, orderPayNo, payResultLiveData);
