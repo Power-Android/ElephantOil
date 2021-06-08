@@ -26,6 +26,7 @@ import com.xxjy.jyyh.constants.PayTypeConstants;
 import com.xxjy.jyyh.databinding.ActivityCarServeConfirmOrderBinding;
 import com.xxjy.jyyh.dialog.QueryDialog;
 import com.xxjy.jyyh.dialog.UnifiedPaymentCashierDialog;
+import com.xxjy.jyyh.entity.CarServeCommitOrderBean;
 import com.xxjy.jyyh.entity.CarServeCouponBean;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.CardStoreInfoVoBean;
@@ -50,7 +51,7 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarServeConfirmOrderBinding, CarServeViewModel>implements IPayListener {
+public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarServeConfirmOrderBinding, CarServeViewModel> implements IPayListener {
 
 
     private CardStoreInfoVoBean mCardStoreInfoVo;
@@ -63,14 +64,17 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
     private List<ProductIdEntity> mProductIdList = new ArrayList<>();
     private String mJsonStr = "";//搭售商品ids
     private QueryDialog mQueryDialog;
-    private double allProductPrice=0;
-    private double carServePrice=0;
+    private double allProductPrice = 0;
+    private double carServePrice = 0;
     private UnifiedPaymentCashierDialog unifiedPaymentCashierDialog;
 
     //是否需要跳转支付确认页
     private boolean shouldJump = false;
     private PayOrderEntity mPayOrderEntity;
     private boolean isShouldAutoOpenWeb = false;    //标记是否应该自动打开浏览器进行支付
+
+    private CarServeCommitOrderBean mCarServeCommitOrderBean;
+
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.backIv, true);
@@ -83,7 +87,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
 
     @Override
     protected void initListener() {
-        ClickUtils.applyGlobalDebouncing(mBinding.createOrderTv,this::onViewClicked);
+        ClickUtils.applyGlobalDebouncing(mBinding.createOrderTv, this::onViewClicked);
         mBinding.backIv.setOnClickListener(this::onViewClicked);
 
     }
@@ -95,10 +99,14 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                 finish();
                 break;
             case R.id.create_order_tv:
-                commitOrder(mCardStoreInfoVo.getId()+"",selectCarServeProductsBean.getId()+"",
-                        (Double.parseDouble(selectCarServeProductsBean.getSalePrice())+allProductPrice)+"",
-                        selectCarServeCouponBean==null?"":selectCarServeCouponBean.getCouponType(),selectCarServeCouponBean==null?-1:selectCarServeCouponBean.getId(),
-                        selectCarServeCouponBean==null?"":selectCarServeCouponBean.getCouponValue()+"",mJsonStr);
+                if (mCarServeCommitOrderBean != null) {
+                    showPay(mCarServeCommitOrderBean);
+                } else {
+                    commitOrder(mCardStoreInfoVo.getId() + "", selectCarServeProductsBean.getId() + "",
+                            (Double.parseDouble(selectCarServeProductsBean.getSalePrice()) + allProductPrice) + "",
+                            selectCarServeCouponBean == null ? "" : selectCarServeCouponBean.getCouponType(), selectCarServeCouponBean == null ? -1 : selectCarServeCouponBean.getId(),
+                            selectCarServeCouponBean == null ? "" : selectCarServeCouponBean.getCouponValue() + "", mJsonStr);
+                }
                 break;
         }
     }
@@ -128,26 +136,9 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                 mBinding.redeemCl.setVisibility(View.GONE);
             }
         });
-        mViewModel.commitOrderLiveData.observe(this,data->{
-            unifiedPaymentCashierDialog = new UnifiedPaymentCashierDialog(this,data.getOrderId(),data.getRealMoney()+"",UnifiedPaymentCashierDialog.CARS_CODE);
-            unifiedPaymentCashierDialog.show();
-            unifiedPaymentCashierDialog.setOnItemClickedListener(new UnifiedPaymentCashierDialog.OnItemClickedListener() {
-                @Override
-                public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
-
-                }
-
-                @Override
-                public void onCloseAllClick() {
-                    unifiedPaymentCashierDialog.dismiss();
-                    finish();
-                }
-
-                @Override
-                public void onPayOrderClick(String payType, String orderId, String payAmount) {
-                    mViewModel.payOrder(payType, orderId, payAmount);
-                }
-            });
+        mViewModel.commitOrderLiveData.observe(this, data -> {
+            mCarServeCommitOrderBean = data;
+            showPay(data);
         });
 
         //支付结果回调
@@ -253,11 +244,11 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                     public void onRefuse() {
                         mOilRedeemAdapter.setSelected(position);
                         mProductIdList.clear();
-                        allProductPrice=0;
+                        allProductPrice = 0;
                         for (int i = 0; i < data.size(); i++) {
                             if (data.get(i).isSelected()) {
                                 mProductIdList.add(new ProductIdEntity(data.get(i).getProductId() + "", "1"));
-                            allProductPrice=allProductPrice+Double.parseDouble(data.get(i).getRedeemPrice());
+                                allProductPrice = allProductPrice + Double.parseDouble(data.get(i).getRedeemPrice());
                             }
                         }
                         mJsonStr = GsonUtils.toJson(mProductIdList);
@@ -269,11 +260,11 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
             } else {
                 mOilRedeemAdapter.setSelected(position);
                 mProductIdList.clear();
-                allProductPrice=0;
+                allProductPrice = 0;
                 for (int i = 0; i < data.size(); i++) {
                     if (data.get(i).isSelected()) {
                         mProductIdList.add(new ProductIdEntity(data.get(i).getProductId() + "", "1"));
-                        allProductPrice=allProductPrice+Double.parseDouble(data.get(i).getRedeemPrice());
+                        allProductPrice = allProductPrice + Double.parseDouble(data.get(i).getRedeemPrice());
                     }
                 }
                 mJsonStr = GsonUtils.toJson(mProductIdList);
@@ -282,19 +273,21 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
         });
     }
 
-    private void refreshPrice(){
-        mBinding.currentPriceTv.setText("实付：¥"+(carServePrice+allProductPrice));
+    private void refreshPrice() {
+        mBinding.currentPriceTv.setText("实付：¥" + (carServePrice + allProductPrice));
     }
 
     private void tyingProduct() {
         mViewModel.tyingProduct();
     }
-    private void commitOrder(String storeId,String productId,
-                             String realMoney, String couponType,long couponId,
-                             String couponAmount,String sku){
-        mViewModel.commitOrder(storeId, productId, realMoney,  couponType, couponId, couponAmount, sku);
+
+    private void commitOrder(String storeId, String productId,
+                             String realMoney, String couponType, long couponId,
+                             String couponAmount, String sku) {
+        mViewModel.commitOrder(storeId, productId, realMoney, couponType, couponId, couponAmount, sku);
 
     }
+
     private void showJump(PayOrderEntity orderEntity) {
         if (orderEntity == null) return;
         if (shouldJump) {
@@ -306,15 +299,40 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
         }
     }
 
+    private void showPay(CarServeCommitOrderBean data) {
+        if (unifiedPaymentCashierDialog == null) {
+            unifiedPaymentCashierDialog = new UnifiedPaymentCashierDialog(this, data.getOrderId(), data.getRealMoney() + "", UnifiedPaymentCashierDialog.CARS_CODE);
+        }
+        unifiedPaymentCashierDialog.show();
+        unifiedPaymentCashierDialog.setOnItemClickedListener(new UnifiedPaymentCashierDialog.OnItemClickedListener() {
+            @Override
+            public void onOilPayTypeClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+
+            @Override
+            public void onCloseAllClick() {
+                unifiedPaymentCashierDialog.dismiss();
+                finish();
+            }
+
+            @Override
+            public void onPayOrderClick(String payType, String orderId, String payAmount) {
+                mViewModel.payOrder(payType, orderId, payAmount);
+            }
+        });
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         showJump(mPayOrderEntity);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unifiedPaymentCashierDialog=null;
+        unifiedPaymentCashierDialog = null;
     }
 
     @Override
@@ -378,12 +396,13 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
     }
 
     private void closeDialog() {
-        if (unifiedPaymentCashierDialog!= null) {
+        if (unifiedPaymentCashierDialog != null) {
             unifiedPaymentCashierDialog.dismiss();
             unifiedPaymentCashierDialog = null;
         }
 
     }
+
     public static void openPage(Context context, CardStoreInfoVoBean mCardStoreInfoVo, CarServeProductsBean selectCarServeProductsBean, CarServeCouponBean selectCarServeCouponBean) {
         Intent intent = new Intent(context, CarServeConfirmOrderActivity.class);
         intent.putExtra("store", mCardStoreInfoVo);

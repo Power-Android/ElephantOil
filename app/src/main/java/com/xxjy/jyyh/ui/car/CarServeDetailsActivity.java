@@ -9,10 +9,12 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.bumptech.glide.Glide;
@@ -27,6 +29,7 @@ import com.qmuiteam.qmui.widget.tab.QMUITabSegment;
 import com.qmuiteam.qmui.widget.tab.QMUITabView;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.CarServeProjectListAdapter;
+import com.xxjy.jyyh.adapter.SelectCarServeClassAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityCarServeDetailsBinding;
 import com.xxjy.jyyh.dialog.CarServeCouponDialog;
@@ -57,7 +60,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
     private List<String> bannerData = new ArrayList<>();
     private List<CarServeProductsBean> serveData = new ArrayList<>();
     private Map<String, List<CarServeProductsBean>> productCategory;
-    private CarServeProjectListAdapter adapter;
+    private CarServeProjectListAdapter carServeProjectListAdapter;
     private CardStoreInfoVoBean mCardStoreInfoVo;
 
     private CarServeCouponDialog mCarServeCouponDialog;
@@ -71,6 +74,8 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
     private CarServeCouponBean selectCarServeCouponBean;
     private CarServeProductsBean selectCarServeProductsBean;
 
+    private SelectCarServeClassAdapter selectCarServeClassAdapter;
+
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.backView);
@@ -80,8 +85,13 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
         distance = getIntent().getDoubleExtra("distance", 0d);
 
         mBinding.serveDataRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CarServeProjectListAdapter(R.layout.adapter_car_serve_project_list, serveData);
-        mBinding.serveDataRecyclerview.setAdapter(adapter);
+        carServeProjectListAdapter = new CarServeProjectListAdapter(R.layout.adapter_car_serve_project_list, serveData);
+        mBinding.serveDataRecyclerview.setAdapter(carServeProjectListAdapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        mBinding.tabServeClassView.setLayoutManager(linearLayoutManager);
+
         getStoreInfo();
 
         getUsableCoupon();
@@ -111,23 +121,23 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
             }
         });
-        mBinding.tabServeClassView.setOnTabClickListener((tabView, index) -> {
-
-            adapter.setNewData(productCategory.get(classData.get(index)));
-            adapter.setSelectPosition(0);
-            if (!classData.get(index).equals("洗车")) {
-                mBinding.couponLayout.setVisibility(View.GONE);
-            } else {
-                if (mCarServeCouponListBean.getRecords().size() > 0) {
-                    mBinding.couponLayout.setVisibility(View.VISIBLE);
-                } else {
-                    mBinding.couponLayout.setVisibility(View.GONE);
-                }
-
-            }
-            return false;
-        });
-        adapter.setOnSelectListener(data -> {
+//        mBinding.tabServeClassView.setOnTabClickListener((tabView, index) -> {
+//
+//            adapter.setNewData(productCategory.get(classData.get(index)));
+//            adapter.setSelectPosition(0);
+//            if (!classData.get(index).equals("洗车")) {
+//                mBinding.couponLayout.setVisibility(View.GONE);
+//            } else {
+//                if (mCarServeCouponListBean.getRecords().size() > 0) {
+//                    mBinding.couponLayout.setVisibility(View.VISIBLE);
+//                } else {
+//                    mBinding.couponLayout.setVisibility(View.GONE);
+//                }
+//
+//            }
+//            return false;
+//        });
+        carServeProjectListAdapter.setOnSelectListener(data -> {
             selectCarServeProductsBean = data;
             mBinding.floatLayout.removeAllViews();
             addTagView(data.getProductAttribute().getCarTypeName(), mBinding.floatLayout);
@@ -219,8 +229,8 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
             if (data.getProductCategory() != null) {
                 classData = new ArrayList<>(data.getProductCategory().keySet());
                 initTab();
-                adapter.setNewData(data.getProductCategory().get(classData.get(0)));
-                adapter.setSelectPosition(0);
+                carServeProjectListAdapter.setNewData(data.getProductCategory().get(classData.get(0)));
+                carServeProjectListAdapter.setSelectPosition(0);
             }
 
         });
@@ -268,27 +278,47 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
     }
 
     private void initTab() {
-        mBinding.tabServeClassView.reset();
-        mBinding.tabServeClassView.notifyDataChanged();
-        if (tabBuilder != null) {
-            tabBuilder = null;
-        }
-        tabBuilder = mBinding.tabServeClassView.tabBuilder().setGravity(Gravity.CENTER);
-        tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 15), QMUIDisplayHelper.sp2px(this, 15));
-        tabBuilder.setColor(Color.parseColor("#313233"), Color.parseColor("#1676FF"));
-        tabBuilder.setTypeface(Typeface.DEFAULT_BOLD, Typeface.DEFAULT_BOLD);
-//        mBinding.tabView.getTabCount();
-        for (String str : classData) {
-            mBinding.tabServeClassView.addTab(tabBuilder.setText(str).build(this));
-        }
+//        mBinding.tabServeClassView.reset();
+//        mBinding.tabServeClassView.notifyDataChanged();
+//        if (tabBuilder != null) {
+//            tabBuilder = null;
+//        }
+//        tabBuilder = mBinding.tabServeClassView.tabBuilder().setGravity(Gravity.CENTER);
+//        tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 15), QMUIDisplayHelper.sp2px(this, 15));
+//        tabBuilder.setColor(Color.parseColor("#313233"), Color.parseColor("#1676FF"));
+//        tabBuilder.setTypeface(Typeface.DEFAULT_BOLD, Typeface.DEFAULT_BOLD);
+////        mBinding.tabView.getTabCount();
+//        for (String str : classData) {
+//            mBinding.tabServeClassView.addTab(tabBuilder.setText(str).build(this));
+//        }
+//
+//        int space = QMUIDisplayHelper.dp2px(this, 25);
+//        mBinding.tabServeClassView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
+//        mBinding.tabServeClassView.setItemSpaceInScrollMode(space);
+//        mBinding.tabServeClassView.setPadding(space, 0, space, 0);
+//        mBinding.tabServeClassView.setMode(QMUITabSegment.MODE_SCROLLABLE);
+//        mBinding.tabServeClassView.notifyDataChanged();
+//        mBinding.tabServeClassView.selectTab(0);
+        selectCarServeClassAdapter = new SelectCarServeClassAdapter(R.layout.adapter_select_car_serve_class,classData);
+        selectCarServeClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                selectCarServeClassAdapter.setSelectPosition(position);
+                carServeProjectListAdapter.setNewData(productCategory.get(classData.get(position)));
+                carServeProjectListAdapter.setSelectPosition(0);
+            if (!classData.get(position).equals("洗车")) {
+                mBinding.couponLayout.setVisibility(View.GONE);
+            } else {
+                if (mCarServeCouponListBean.getRecords().size() > 0) {
+                    mBinding.couponLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.couponLayout.setVisibility(View.GONE);
+                }
 
-        int space = QMUIDisplayHelper.dp2px(this, 25);
-        mBinding.tabServeClassView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
-        mBinding.tabServeClassView.setItemSpaceInScrollMode(space);
-        mBinding.tabServeClassView.setPadding(space, 0, space, 0);
-        mBinding.tabServeClassView.setMode(QMUITabSegment.MODE_SCROLLABLE);
-        mBinding.tabServeClassView.notifyDataChanged();
-        mBinding.tabServeClassView.selectTab(0);
+            }
+            }
+        });
+        mBinding.tabServeClassView.setAdapter(selectCarServeClassAdapter);
     }
 
     private void addTagView(String content, QMUIFloatLayout floatLayout) {

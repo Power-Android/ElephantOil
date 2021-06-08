@@ -161,6 +161,7 @@
                                 android:layout_height="@dimen/dp_107"
                                 android:layout_marginLeft="@dimen/dp_12"
                                 android:layout_marginRight="@dimen/dp_12"
+                                android:layout_marginTop="@dimen/dp_10"
                                 app:banner_auto_loop="true"
                                 app:banner_indicator_height="@dimen/dp_2"
                                 app:banner_indicator_margin="@dimen/dp_2"

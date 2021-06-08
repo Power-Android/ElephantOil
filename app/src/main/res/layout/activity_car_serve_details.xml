@@ -109,10 +109,13 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
-                <com.qmuiteam.qmui.widget.tab.QMUITabSegment2
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tab_serve_class_view"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_40" />
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:layout_height="@dimen/dp_45" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/serve_data_recyclerview"
