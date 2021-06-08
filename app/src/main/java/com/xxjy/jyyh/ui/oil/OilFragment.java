@@ -91,11 +91,8 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         return new OilFragment();
     }
 
-    private final String[] titles = new String[]{"加油特惠", "洗车特惠"};
     private OilStationListAdapter adapter;
-    private CarServeListAdapter carServeAdapter;
     private List<OilEntity.StationsBean> data = new ArrayList<>();
-    private List<CarServeStoreBean> carServeData = new ArrayList<>();
     private SelectOilNumDialog selectOilNumDialog;
     private SelectDistanceDialog selectDistanceDialog;
     private SelectSortDialog mSelectSortDialog;
@@ -110,17 +107,6 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
 
     private CustomerServiceDialog customerServiceDialog;
 
-    //-------------车服start----------------
-    private SelectAreaDialog mSelectAreaDialog;
-    private SelectBusinessStatusDialog mSelectBusinessStatusDialog;
-    private SelectProductCategoryDialog mSelectProductCategoryDialog;
-
-    private int pageIndex=1;
-    private String cityCode;
-    private String areaCode;
-    private long productCategoryId = -1;
-    private int status=0;
-    //-----------车服end--------------
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -181,7 +167,6 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.refreshview.setEnableLoadMore(false);
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new OilStationListAdapter(R.layout.adapter_oil_station_list, data);
-        carServeAdapter = new CarServeListAdapter(R.layout.adapter_car_serve_list, carServeData);
         mBinding.recyclerView.setAdapter(adapter);
 
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -225,45 +210,6 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 });
             }
         });
-        carServeAdapter.setOnItemClickListener((adapter, view, position) -> {
-
-            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                @Override
-                public void onLogin() {
-                    List<CarServeStoreBean> data = adapter.getData();
-//                    Intent intent = new Intent(mContext, OilDetailActivity.class);
-                    Intent intent = new Intent(mContext, CarServeDetailsActivity.class);
-                    intent.putExtra("no", data.get(position).getCardStoreInfoVo().getStoreNo());
-                    intent.putExtra("distance",data.get(position).getCardStoreInfoVo().getDistance());
-                    startActivity(intent);
-                }
-            });
-
-        });
-        carServeAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                List<CarServeStoreBean> data = adapter.getData();
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        switch (view.getId()) {
-                            case R.id.navigation_ll:
-                                if (MapIntentUtils.isPhoneHasMapNavigation()) {
-                                    NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
-                                            data.get(position).getCardStoreInfoVo().getLatitude(), data.get(position).getCardStoreInfoVo().getLongitude(),
-                                            data.get(position).getCardStoreInfoVo().getStoreName());
-                                    navigationDialog.show();
-                                } else {
-                                    showToastWarning("您当前未安装地图软件，请先安装");
-                                }
-                                break;
-                        }
-
-                    }
-                });
-            }
-        });
 
         mBinding.msgBanner.setAdapter(new TopLineAdapter(new ArrayList<>(), true))
                 .setOrientation(Banner.VERTICAL)
@@ -274,11 +220,6 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         loadData(false);
 
         getBanners();
-        //110100
-        cityCode = UserConstants.getCityCode();
-        getAreaList(cityCode);
-        getProductCategory();
-        loadCarServeData(false);
     }
 
     @Override
@@ -287,47 +228,31 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
-                    isScrollTop = true;
                     mBinding.searchLayout.setVisibility(View.VISIBLE);
-                    mBinding.search2Layout.setVisibility(View.VISIBLE);
-                    mBinding.tabLayout.setBackgroundColor(Color.parseColor("#00000000"));
-//                    mBinding.popupLayout.setBackgroundColor(Color.parseColor("#00000000"));
-//                    mBinding.oilSelectDistanceTv.setTextColor(Color.parseColor("#FFFFFF"));
-//                    mBinding.oilSortOilNumTv.setTextColor(Color.parseColor("#FFFFFF"));
-//                    mBinding.oilSelectDistanceFirstTv.setTextColor(Color.parseColor("#FFFFFF"));
-//                    mBinding.image1.setImageResource(R.drawable.icon_down_arrow_white);
-//                    mBinding.image2.setImageResource(R.drawable.icon_down_arrow_white);
-//                    mBinding.image3.setImageResource(R.drawable.icon_down_arrow_white);
-//
+                    mBinding.popupLayout.setBackgroundColor(Color.parseColor("#00000000"));
+                    mBinding.oilSelectDistanceTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    mBinding.oilSortOilNumTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    mBinding.oilSelectDistanceFirstTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    mBinding.image1.setImageResource(R.drawable.icon_down_arrow_white);
+                    mBinding.image2.setImageResource(R.drawable.icon_down_arrow_white);
+                    mBinding.image3.setImageResource(R.drawable.icon_down_arrow_white);
                 } else {
-                    isScrollTop = false;
                     mBinding.searchLayout.setVisibility(View.GONE);
-                    mBinding.search2Layout.setVisibility(View.GONE);
-                    mBinding.tabLayout.setBackgroundColor(Color.parseColor("#F5F5F5"));
-
-//                    mBinding.popupLayout.setBackgroundColor(Color.parseColor("#F5F5F5"));
-//                    mBinding.oilSelectDistanceTv.setTextColor(Color.parseColor("#323334"));
-//                    mBinding.oilSortOilNumTv.setTextColor(Color.parseColor("#323334"));
-//                    mBinding.oilSelectDistanceFirstTv.setTextColor(Color.parseColor("#323334"));
-//                    mBinding.image1.setImageResource(R.drawable.icon_down_arrow);
-//                    mBinding.image2.setImageResource(R.drawable.icon_down_arrow);
-//                    mBinding.image3.setImageResource(R.drawable.icon_down_arrow);
-//
-//
-//
+                    mBinding.popupLayout.setBackgroundColor(Color.parseColor("#F5F5F5"));
+                    mBinding.oilSelectDistanceTv.setTextColor(Color.parseColor("#323334"));
+                    mBinding.oilSortOilNumTv.setTextColor(Color.parseColor("#323334"));
+                    mBinding.oilSelectDistanceFirstTv.setTextColor(Color.parseColor("#323334"));
+                    mBinding.image1.setImageResource(R.drawable.icon_down_arrow);
+                    mBinding.image2.setImageResource(R.drawable.icon_down_arrow);
+                    mBinding.image3.setImageResource(R.drawable.icon_down_arrow);
                 }
-                changeTab(isScrollTop);
             }
         });
 
         mBinding.refreshview.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                if(isOilServe){
                     loadData(true);
-                }else{
-                    loadCarServeData(true);
-                }
 
 
             }
@@ -337,7 +262,6 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 getOrderNews();
                 getBanners();
                 loadData(false);
-                loadCarServeData(false);
 
             }
         });
@@ -351,12 +275,6 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.closeView.setOnClickListener(this::onViewClicked);
         mBinding.openView.setOnClickListener(this::onViewClicked);
 
-        mBinding.tab1View.setOnClickListener(this::onViewClicked);
-        mBinding.tab2View.setOnClickListener(this::onViewClicked);
-
-        mBinding.carCitySelectLayout.setOnClickListener(this::onViewClicked);
-        mBinding.carBusinessStatusLayout.setOnClickListener(this::onViewClicked);
-        mBinding.carServeSelectLayout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -427,116 +345,11 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 intent.setData(uri);
                 startActivity(intent);
                 break;
-            case R.id.tab_1_view:
-                isOilServe = true;
-                changeTab(isScrollTop);
-                mBinding.recyclerView.setAdapter(adapter);
-                mBinding.refreshview.resetNoMoreData();
-                break;
-            case R.id.tab_2_view:
-                isOilServe = false;
-                changeTab(isScrollTop);
-                mBinding.recyclerView.setAdapter(carServeAdapter);
-                mBinding.refreshview.resetNoMoreData();
-                break;
 
-            case R.id.car_city_select_layout:
-                if (mSelectAreaDialog == null) {
-                   return;
-                }
-                mSelectAreaDialog.show();
-                mSelectAreaDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
-                    areaCode = data.getAreaCode();
-                    mBinding.carCitySelectTv.setText(data.getArea());
-                    mSelectAreaDialog.setSelectPosition(position);
-                    loadCarServeData(false);
-                });
-                break;
-            case R.id.car_serve_select_layout:
-                if (mSelectProductCategoryDialog == null) {
-                   return;
-                }
-                mSelectProductCategoryDialog.show();
-                mSelectProductCategoryDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
-                    productCategoryId = data.getId();
-                    mBinding.carServeSelectTv.setText(data.getName());
-                    mSelectAreaDialog.setSelectPosition(position);
-                    loadCarServeData(false);
-                });
-                break;
-            case R.id.car_business_status_layout:
-                if (mSelectBusinessStatusDialog == null) {
-                    mSelectBusinessStatusDialog = new SelectBusinessStatusDialog(getContext(), mBinding.carTabSelectLayout, mBinding.getRoot());
-                }
-                mSelectBusinessStatusDialog.show();
-                mSelectBusinessStatusDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
-                    status= data.getStatus();
-                    mBinding.carBusinessStatusTv.setText(data.getName());
-                    mSelectBusinessStatusDialog.setSelectPosition(position);
-                    loadCarServeData(false);
-                });
-                break;
         }
     }
 
-    private void changeTab(boolean isTop) {
-        if (isOilServe) {
-            if (isTop) {
-                mBinding.tab1View.setTextColor(Color.parseColor("#FFFFFF"));
-                mBinding.tab1IndexView.setBackgroundResource(R.drawable.shape_tab_index_white);
-                mBinding.tab2View.setTextColor(Color.parseColor("#80FFFFFF"));
-                mBinding.tab2IndexView.setBackgroundResource(R.drawable.shape_tab_index_white);
-            } else {
-                mBinding.tab1View.setTextColor(Color.parseColor("#212121"));
-                mBinding.tab1IndexView.setBackgroundResource(R.drawable.shape_tab_index);
-                mBinding.tab2View.setTextColor(Color.parseColor("#808080"));
-                mBinding.tab2IndexView.setBackgroundResource(R.drawable.shape_tab_index);
-            }
 
-
-            mBinding.tab1View.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            mBinding.tab1IndexView.setVisibility(View.VISIBLE);
-            mBinding.tab2View.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            mBinding.tab2IndexView.setVisibility(View.INVISIBLE);
-            mBinding.tabSelectLayout.setVisibility(View.VISIBLE);
-            mBinding.carTabSelectLayout.setVisibility(View.GONE);
-        } else {
-            if (isTop) {
-                mBinding.tab1View.setTextColor(Color.parseColor("#80FFFFFF"));
-                mBinding.tab1IndexView.setBackgroundResource(R.drawable.shape_tab_index_white);
-                mBinding.tab2View.setTextColor(Color.parseColor("#FFFFFF"));
-                mBinding.tab2IndexView.setBackgroundResource(R.drawable.shape_tab_index_white);
-            } else {
-                mBinding.tab1View.setTextColor(Color.parseColor("#808080"));
-                mBinding.tab1IndexView.setBackgroundResource(R.drawable.shape_tab_index);
-                mBinding.tab2View.setTextColor(Color.parseColor("#212121"));
-                mBinding.tab2IndexView.setBackgroundResource(R.drawable.shape_tab_index);
-            }
-
-
-            mBinding.tab1View.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-            mBinding.tab1IndexView.setVisibility(View.INVISIBLE);
-            mBinding.tab2View.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-            mBinding.tab2IndexView.setVisibility(View.VISIBLE);
-            mBinding.tabSelectLayout.setVisibility(View.GONE);
-            mBinding.carTabSelectLayout.setVisibility(View.VISIBLE);
-
-        }
-
-
-    }
-
-    private void screenTab(boolean isTop, boolean isCarServe) {
-        if (isTop) {
-            mBinding.tab1View.setTextColor(Color.parseColor("#FFFFFF"));
-            mBinding.tab1IndexView.setBackgroundResource(R.drawable.shape_tab_index_white);
-        } else {
-            mBinding.tab1View.setTextColor(Color.parseColor("#FFFFFF"));
-            mBinding.tab1IndexView.setBackgroundResource(R.drawable.shape_tab_index_white);
-        }
-
-
-    }
 
     private void requestPermission() {
         PermissionUtils.permission(
@@ -658,39 +471,10 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 mBinding.refreshview.finishLoadMoreWithNoMoreData();
                 mBinding.noResultLayout.setVisibility(View.VISIBLE);
             } else {
-                pageIndex--;
                 mBinding.refreshview.finishLoadMoreWithNoMoreData();
             }
         });
 
-        mViewModel.cityListLiveData.observe(this,data ->{
-
-            mSelectAreaDialog = new SelectAreaDialog(getContext(),mBinding.carTabSelectLayout, mBinding.getRoot(),data.getAreasList());
-
-        });
-        mViewModel.productCategoryLiveData.observe(this,data->{
-            mSelectProductCategoryDialog = new SelectProductCategoryDialog(getContext(),mBinding.carTabSelectLayout, mBinding.getRoot(),data.getRecords());
-
-        });
-        mViewModel.storeListLiveData.observe(this, dataStations -> {
-            if (dataStations != null && dataStations.getRecords() != null && dataStations.getRecords().size() > 0) {
-                if (pageIndex == 1) {
-                    carServeAdapter.setNewData(dataStations.getRecords());
-                    mBinding.refreshview.setEnableLoadMore(true);
-                    mBinding.refreshview.finishRefresh(true);
-                } else {
-                    carServeAdapter.addData(dataStations.getRecords());
-                    mBinding.refreshview.finishLoadMore(true);
-                }
-                mBinding.noResultLayout.setVisibility(View.GONE);
-            } else if (pageIndex == 1) {
-                mBinding.refreshview.finishLoadMoreWithNoMoreData();
-                mBinding.noResultLayout.setVisibility(View.VISIBLE);
-            } else {
-                pageIndex--;
-                mBinding.refreshview.finishLoadMoreWithNoMoreData();
-            }
-        });
     }
 
     private void loadData(boolean isLoadMore) {
@@ -702,19 +486,6 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         } else {
             pageNum = 1;
             getOilStations();
-
-        }
-
-    }
-    private void loadCarServeData(boolean isLoadMore) {
-        if (isLoadMore) {
-            pageIndex++;
-            getCarServeStoreList();
-
-
-        } else {
-            pageIndex = 1;
-            getCarServeStoreList();
 
         }
 
@@ -739,14 +510,4 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mViewModel.getBanners();
     }
 
-    private void getAreaList(String cityCode){
-        mViewModel.getAreaList(cityCode);
-    }
-    //获取车服服务分类
-    private void getProductCategory(){
-        mViewModel.getProductCategory();
-    }
-    private void getCarServeStoreList(){
-        mViewModel.getCarServeStoreList(pageIndex, cityCode, areaCode, productCategoryId, status);
-    }
 }

@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.ui.order;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityOtherOrderListBinding;
 import com.xxjy.jyyh.entity.IntegralOrderBean;
 import com.xxjy.jyyh.entity.RefuelOrderBean;
+import com.xxjy.jyyh.ui.mine.MyCouponActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 
 import java.util.ArrayList;
@@ -77,7 +79,7 @@ public class OtherOrderListActivity extends BindingActivity<ActivityOtherOrderLi
             lifeOrderList();
         }else{
             mBinding.titleLayout.tvTitle.setText("权益订单");
-            integralOrderAdapter = new IntegralOrderListAdapter(R.layout.adapter_order_layout, refuelOrderData);
+            integralOrderAdapter = new IntegralOrderListAdapter(R.layout.adapter_integral_order_layout, refuelOrderData);
             mBinding.recyclerView.setAdapter(integralOrderAdapter);
             integralOrderAdapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
             integralOrderAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -91,15 +93,21 @@ public class OtherOrderListActivity extends BindingActivity<ActivityOtherOrderLi
                         case R.id.cancel_order_view:
                             productCancelOrder(((RefuelOrderBean) adapter.getItem(position)).getOrderId());
                             break;
+                        case R.id.go_coupon_view:
+                            startActivity(new Intent(OtherOrderListActivity.this, MyCouponActivity.class));
+                            break;
+                        case R.id.go_detail_view:
+                            WebViewActivity.openRealUrlWebActivity(OtherOrderListActivity.this, ((RefuelOrderBean) adapter.getItem(position)).getLink());
+                            break;
                     }
                 }
             });
-            integralOrderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    WebViewActivity.openRealUrlWebActivity(OtherOrderListActivity.this, ((RefuelOrderBean) adapter.getItem(position)).getLink());
-                }
-            });
+//            integralOrderAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                    WebViewActivity.openRealUrlWebActivity(OtherOrderListActivity.this, ((RefuelOrderBean) adapter.getItem(position)).getLink());
+//                }
+//            });
             integralOrderList();
         }
         initTab();

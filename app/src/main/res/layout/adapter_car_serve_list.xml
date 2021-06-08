@@ -7,11 +7,11 @@
     android:layout_marginRight="@dimen/dp_12"
     android:layout_marginBottom="@dimen/dp_8">
 
-    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="@dimen/dp_125"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,11 +56,11 @@
                     android:layout_height="@dimen/dp_21"
                     android:layout_alignParentBottom="true"
                     android:gravity="center"
+                    android:text="休息中"
                     android:textColor="#FFFDFD"
                     android:textSize="@dimen/sp_11"
                     android:visibility="invisible"
-                    android:text="休息中"
-                    app:qmui_backgroundColor="@color/colorAccent"
+                    app:qmui_backgroundColor="#B30076FB"
                     app:qmui_radiusBottomLeft="@dimen/dp_5"
                     app:qmui_radiusBottomRight="@dimen/dp_5" />
             </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
@@ -96,10 +96,11 @@
                 android:textColor="#637280"
                 android:textSize="@dimen/sp_11"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/navigation_ll"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/item_oil_img_layout"
-                app:layout_constraintTop_toBottomOf="@+id/item_name_tv"
-                app:layout_constraintEnd_toStartOf="@+id/navigation_ll"/>
+                app:layout_constraintTop_toBottomOf="@+id/item_name_tv" />
+
             <TextView
                 android:id="@+id/item_business_hours_tv"
                 android:layout_width="0dp"
@@ -107,13 +108,13 @@
                 android:layout_marginStart="@dimen/common_margin"
                 android:layout_marginTop="@dimen/dp_15"
                 android:layout_marginEnd="@dimen/common_margin"
+                android:drawableLeft="@drawable/ic_business_hours"
+                android:drawablePadding="@dimen/dp_5"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="营业时间：每天09:00-22:00"
                 android:textColor="#828282"
                 android:textSize="@dimen/sp_11"
-                android:drawableLeft="@drawable/ic_business_hours"
-                android:drawablePadding="@dimen/dp_5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/item_oil_img_layout"
@@ -153,7 +154,6 @@
             </LinearLayout>
 
 
-
             <com.qmuiteam.qmui.widget.QMUIFloatLayout
                 android:id="@+id/float_layout"
                 android:layout_width="0dp"
@@ -179,7 +179,46 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
+        <View
+            android:id="@+id/line_view"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:visibility="gone"
+            android:background="#EBEBEB" />
+
+        <RelativeLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_7"
+            android:paddingBottom="@dimen/dp_7"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_17"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:src="@drawable/ic_car_serve_tag"/>
+
+            <TextView
+                android:id="@+id/desc_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_toEndOf="@+id/image_view"
+                android:text="洗车低至 ¥28元起"
+                android:textSize="@dimen/sp_13"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

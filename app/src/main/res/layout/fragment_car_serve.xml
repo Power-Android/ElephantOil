@@ -134,7 +134,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/dp_6"
-                                        android:text="搜索加油站名称"
+                                        android:text="搜索车服门店名称"
                                         android:textColor="@color/color_A0"
                                         android:textSize="@dimen/sp_13" />
                                 </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
@@ -154,33 +154,6 @@
                                     android:src="@drawable/ic_message" />
                             </LinearLayout>
 
-                            <LinearLayout
-                                android:id="@+id/news_layout"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp">
-
-                                <ImageView
-                                    android:id="@+id/msg_iv"
-                                    android:layout_width="@dimen/dp_14"
-                                    android:layout_height="@dimen/dp_10"
-                                    android:layout_marginLeft="@dimen/dp_13"
-                                    android:layout_marginRight="@dimen/dp_5"
-                                    android:src="@drawable/ic_notic" />
-
-                                <com.youth.banner.Banner
-                                    android:id="@+id/msg_banner"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/dp_25"
-                                    android:layout_marginStart="@dimen/dp_4"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toEndOf="@+id/view4"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </LinearLayout>
                             <!--轮播图-->
                             <com.youth.banner.Banner
                                 android:id="@+id/banner"
@@ -204,6 +177,7 @@
                             android:id="@+id/popup_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@color/color_F5"
                             android:orientation="vertical"
                             app:layout_collapseMode="pin"
                             app:layout_scrollFlags="snap|exitUntilCollapsed">
@@ -215,7 +189,6 @@
                                 android:id="@+id/car_tab_select_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/color_F5"
                                 android:orientation="horizontal"
                                 android:visibility="visible"
                                 android:paddingTop="@dimen/dp_17"
@@ -325,7 +298,7 @@
                                         android:layout_width="@dimen/dp_17"
                                         android:layout_height="@dimen/dp_18"
                                         android:layout_marginEnd="@dimen/common_margin"
-                                        android:src="@drawable/icon_search" />
+                                        android:src="@drawable/icon_search_white" />
                                 </LinearLayout>
                             </LinearLayout>
 

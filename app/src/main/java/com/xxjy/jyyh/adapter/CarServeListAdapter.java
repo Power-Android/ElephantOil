@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.blankj.utilcode.util.SpanUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -34,7 +35,6 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, CarServeStoreBean item) {
-
 
 
         Glide.with(mContext)
@@ -65,7 +65,19 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
             helper.getView(R.id.float_layout).setVisibility(View.GONE);
         }
         helper.addOnClickListener(R.id.navigation_ll);
-
+        if (item.getProducts() != null && item.getProducts().size() > 0) {
+            helper.getView(R.id.line_view).setVisibility(View.VISIBLE);
+            helper.getView(R.id.bottom_layout).setVisibility(View.VISIBLE);
+            SpanUtils.with((TextView) helper.getView(R.id.desc_view))
+                    .append("洗车低至 ")
+                    .append("¥"+item.getProducts().get(0).getSalePrice()+"元")
+                    .setForegroundColor(Color.parseColor("#FE1300"))
+                    .append("起")
+                    .create();
+        } else {
+            helper.getView(R.id.line_view).setVisibility(View.GONE);
+            helper.getView(R.id.bottom_layout).setVisibility(View.GONE);
+        }
 
     }
 

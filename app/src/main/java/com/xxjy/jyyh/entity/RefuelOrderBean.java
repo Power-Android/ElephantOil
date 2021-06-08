@@ -64,6 +64,15 @@ public class RefuelOrderBean {
     private String realRefundAmount;
 
     private String tips;
+    private int trialType;
+
+    public int getTrialType() {
+        return trialType;
+    }
+
+    public void setTrialType(int trialType) {
+        this.trialType = trialType;
+    }
 
     public String getTips() {
         return tips;

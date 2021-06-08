@@ -80,7 +80,6 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
     }
 
     private CarServeListAdapter carServeAdapter;
-    private List<OilEntity.StationsBean> data = new ArrayList<>();
     private List<CarServeStoreBean> carServeData = new ArrayList<>();
     private double mLng, mLat;
     private boolean isScrollTop = false;
@@ -202,9 +201,6 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
             }
         });
 
-        mBinding.msgBanner.setAdapter(new TopLineAdapter(new ArrayList<>(), true))
-                .setOrientation(Banner.VERTICAL)
-                .setUserInputEnabled(false);
 
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
 
@@ -222,12 +218,27 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
-                    isScrollTop = true;
                     mBinding.search2Layout.setVisibility(View.VISIBLE);
+                    mBinding.popupLayout.setBackgroundColor(Color.parseColor("#00000000"));
+                    mBinding.carCitySelectTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    mBinding.carServeSelectTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    mBinding.carSelectDistanceFirstTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    mBinding.carBusinessStatusTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    mBinding.carImage1.setImageResource(R.drawable.icon_down_arrow_white);
+                    mBinding.carImage2.setImageResource(R.drawable.icon_down_arrow_white);
+                    mBinding.carImage3.setImageResource(R.drawable.icon_down_arrow_white);
+                    mBinding.carImage4.setImageResource(R.drawable.icon_down_arrow_white);
                 } else {
-                    isScrollTop = false;
                     mBinding.search2Layout.setVisibility(View.GONE);
-
+                    mBinding.popupLayout.setBackgroundColor(Color.parseColor("#F5F5F5"));
+                    mBinding.carCitySelectTv.setTextColor(Color.parseColor("#323334"));
+                    mBinding.carServeSelectTv.setTextColor(Color.parseColor("#323334"));
+                    mBinding.carSelectDistanceFirstTv.setTextColor(Color.parseColor("#323334"));
+                    mBinding.carBusinessStatusTv.setTextColor(Color.parseColor("#323334"));
+                    mBinding.carImage1.setImageResource(R.drawable.icon_down_arrow);
+                    mBinding.carImage2.setImageResource(R.drawable.icon_down_arrow);
+                    mBinding.carImage3.setImageResource(R.drawable.icon_down_arrow);
+                    mBinding.carImage4.setImageResource(R.drawable.icon_down_arrow);
                 }
             }
         });
