@@ -36,6 +36,31 @@ public class CarServeOrderBean {
     private String endHoliday;
     private String openHoliday;
 
+    private String qrcodeBase64;
+
+    public String getEndHoliday() {
+        return endHoliday;
+    }
+
+    public void setEndHoliday(String endHoliday) {
+        this.endHoliday = endHoliday;
+    }
+
+    public String getOpenHoliday() {
+        return openHoliday;
+    }
+
+    public void setOpenHoliday(String openHoliday) {
+        this.openHoliday = openHoliday;
+    }
+
+    public String getQrcodeBase64() {
+        return qrcodeBase64;
+    }
+
+    public void setQrcodeBase64(String qrcodeBase64) {
+        this.qrcodeBase64 = qrcodeBase64;
+    }
 
     public String getDescription() {
         return description;

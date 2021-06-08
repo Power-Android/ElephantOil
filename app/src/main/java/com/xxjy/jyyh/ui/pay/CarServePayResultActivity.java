@@ -8,11 +8,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
+import android.text.Html;
 import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
@@ -21,6 +23,7 @@ import com.xxjy.jyyh.databinding.ActivityPayResultBinding;
 import com.xxjy.jyyh.ui.order.CarServeOrderListActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
 import com.xxjy.jyyh.ui.order.OtherOrderListActivity;
+import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 import com.xxjy.jyyh.wight.MyCountDownTime;
@@ -54,11 +57,15 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
                 getPayResult();
             }
         });
+        mBinding.goHomeView.setText(Html.fromHtml("<u>返回首页 ></u>"));//下划线
     }
 
     @Override
     protected void initListener() {
         mBinding.checkView.setOnClickListener(this::onViewClicked);
+        mBinding.goOrderView.setOnClickListener(this::onViewClicked);
+        mBinding.goHomeView.setOnClickListener(this::onViewClicked);
+        mBinding.goEquityOrderView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -119,17 +126,18 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
 
         });
         mViewModel.orderLiveData.observe(this, data -> {
-            mBinding.payingLayout.setVisibility(View.GONE);
-            mBinding.orderLayout.setVisibility(View.VISIBLE);
+
+
             if(data!=null){
+                mBinding.payingLayout.setVisibility(View.GONE);
+                mBinding.orderLayout.setVisibility(View.VISIBLE);
                 mBinding.productNameView.setText(data.getProductName());
                 mBinding.shopNameView.setText(data.getStoreName());
                 mBinding.couponCodeView.setText("券码："+data.getVerificationCode());
                 mBinding.couponDescView.setText(data.getDescription());
-//                mBinding.timeView.setText(data.get);
+                mBinding.timeView.setText("有效期至:"+ data.getPayTime().substring(0,10)+" - "+data.getExpireTime().substring(0,10));
+                GlideUtils.loadImage(this,data.getQrcodeBase64(),mBinding.qrcodeImageView);
             }
-
-
         });
     }
 

@@ -10,6 +10,7 @@ import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.CarServeApiService;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.entity.AreaListBean;
+import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.CarServeCategoryListBean;
 import com.xxjy.jyyh.entity.CarServeCommitOrderBean;
 import com.xxjy.jyyh.entity.CarServeCouponListBean;
@@ -17,6 +18,8 @@ import com.xxjy.jyyh.entity.CarServeStoreDetailsBean;
 import com.xxjy.jyyh.entity.CarServeStoreListBean;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.RedeemEntity;
+
+import java.util.List;
 
 import rxhttp.RxHttp;
 
@@ -109,4 +112,5 @@ public class CarServeRepository extends BaseRepository {
                 .subscribe( s -> liveData.postValue(s))
         );
     }
+
 }

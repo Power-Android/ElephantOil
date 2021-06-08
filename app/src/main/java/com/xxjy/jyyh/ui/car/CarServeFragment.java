@@ -29,6 +29,7 @@ import com.xxjy.jyyh.adapter.OilStationListAdapter;
 import com.xxjy.jyyh.adapter.TopLineAdapter;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BindingFragment;
+import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentCarServeBinding;
@@ -46,6 +47,7 @@ import com.xxjy.jyyh.entity.CarServeStoreBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
+import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
 import com.xxjy.jyyh.ui.oil.OilViewModel;
@@ -94,6 +96,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
     private String areaCode;
     private long productCategoryId = -1;
     private int status=0;
+    private BannerViewModel bannerViewModel;
     //-----------车服end--------------
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -203,7 +206,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                 .setOrientation(Banner.VERTICAL)
                 .setUserInputEnabled(false);
 
-
+        bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
 
 //        getBanners();
         //110100
@@ -376,31 +379,31 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
             }
         });
 
-//        mViewModel.bannersLiveData.observe(this, data -> {
-//            if (data != null && data.size() > 0) {
-//                mBinding.banner.setVisibility(View.VISIBLE);
-//                //banner
-//                mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
-//                    @Override
-//                    public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
-//                        Glide.with(holder.imageView)
-//                                .load(data.getImgUrl())
-//                                .apply(new RequestOptions()
-//                                        .placeholder(R.drawable.bg_banner_loading)
-//                                        .error(R.drawable.bg_banner_error))
-//                                .into(holder.imageView);
-//                        holder.imageView.setOnClickListener(v -> {
-//                            NaviActivityInfo.disPathIntentFromUrl((MainActivity) getActivity(), data.getLink());
-//                        });
-//                    }
-//                }).addBannerLifecycleObserver(this)
-//                        .setIndicator(new RectangleIndicator(mContext));
-//            } else {
-//                mBinding.banner.setVisibility(View.GONE);
-//            }
-//
-//
-//        });
+        bannerViewModel.getBannerOfPostion(BannerPositionConstants.CAR_SERVE_LIST).observe(this, data -> {
+            if (data != null) {
+                mBinding.banner.setVisibility(View.VISIBLE);
+                //banner
+                mBinding.banner.setAdapter(new BannerImageAdapter<BannerBean>(data) {
+                    @Override
+                    public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
+                        Glide.with(holder.imageView)
+                                .load(data.getImgUrl())
+                                .apply(new RequestOptions()
+                                        .placeholder(R.drawable.bg_banner_loading)
+                                        .error(R.drawable.bg_banner_error))
+                                .into(holder.imageView);
+                        holder.imageView.setOnClickListener(v -> {
+                            NaviActivityInfo.disPathIntentFromUrl((MainActivity) getActivity(), data.getLink());
+                        });
+                    }
+                }).addBannerLifecycleObserver(this)
+                        .setIndicator(new RectangleIndicator(mContext));
+            } else {
+                mBinding.banner.setVisibility(View.GONE);
+            }
+
+
+        });
 
 
         mViewModel.cityListLiveData.observe(this,data ->{
