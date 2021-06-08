@@ -59,6 +59,8 @@ public class OilEntity implements Serializable {
         private String gasName;
         private Integer gasType;
         private String gasTypeImg;
+        private String gasLogoBig;
+        private String gasLogoSmall;
         private String gasTypeName;
         private int isInvoice;
         private boolean isSign;
@@ -77,6 +79,22 @@ public class OilEntity implements Serializable {
         private List<GunNosBean> gunNos;
         private List<OilPriceListBean> oilPriceList;
         private List<String> topImgList;
+
+        public String getGasLogoBig() {
+            return gasLogoBig;
+        }
+
+        public void setGasLogoBig(String gasLogoBig) {
+            this.gasLogoBig = gasLogoBig;
+        }
+
+        public String getGasLogoSmall() {
+            return gasLogoSmall;
+        }
+
+        public void setGasLogoSmall(String gasLogoSmall) {
+            this.gasLogoSmall = gasLogoSmall;
+        }
 
         public boolean isSign() {
             return isSign;

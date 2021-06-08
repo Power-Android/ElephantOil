@@ -17,6 +17,7 @@ import com.amap.api.location.DPoint;
 import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
@@ -355,6 +356,7 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
 
         mViewModel.oilLiveData.observe(this, stationsBean -> {
             mStationsBean = stationsBean;
+            Glide.with(this).load(stationsBean.getGasLogoBig()).into(mBinding.oilImgIv);
             mBinding.oilNameTv.setText(mStationsBean.getGasName());
             mBinding.oilTagIv.setVisibility(stationsBean.isIsSign() ? View.VISIBLE : View.INVISIBLE);
             mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());

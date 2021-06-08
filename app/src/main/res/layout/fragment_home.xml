@@ -33,7 +33,7 @@
                         android:id="@+id/top_banner"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_240"
-                        android:background="@color/color_76FF"
+                        android:background="@color/transparent"
                         app:banner_auto_loop="true"
                         app:banner_indicator_gravity="center"
                         app:banner_indicator_height="@dimen/dp_2"
@@ -152,10 +152,10 @@
                         <com.xxjy.jyyh.wight.NoScrollViewPager
                             android:id="@+id/view_pager"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_200"
-                            android:layout_marginStart="@dimen/dp_12"
-                            android:layout_marginEnd="@dimen/dp_12"
-                            android:background="@drawable/shape_white_15radius"
+                            android:layout_height="@dimen/dp_205"
+                            android:layout_marginStart="@dimen/dp_8"
+                            android:layout_marginEnd="@dimen/dp_8"
+                            android:background="@drawable/home_card_bg"
                             app:layout_constraintTop_toBottomOf="@+id/indicator"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -180,14 +180,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_gravity="center"
                     app:layout_constraintTop_toTopOf="parent" />
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/menu_recycler_view"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/dp_10"
-                    android:layout_marginStart="@dimen/dp_12"
-                    android:layout_marginEnd="@dimen/dp_12"
-                    android:background="@drawable/shape_white_15radius"/>
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:layout_marginEnd="@dimen/dp_8"
+                    android:paddingBottom="@dimen/dp_5"
+                    android:background="@drawable/home_menu_bg">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/menu_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dp_10" />
+                </RelativeLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/integral_rl"

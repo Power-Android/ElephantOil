@@ -235,6 +235,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                     mTransaction.add(R.id.fragment_group, mOilFragment);
                 }
                 mTransaction.show(mOilFragment);
+                break;
             case Constants.TYPE_CAR_SERVE:
                 if (mCarServeFragment == null) {
                     mCarServeFragment = CarServeFragment.getInstance();

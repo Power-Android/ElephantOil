@@ -78,6 +78,7 @@ import com.xxjy.jyyh.entity.OfentEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilTypeEntity;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.car.CarServeDetailsActivity;
 import com.xxjy.jyyh.ui.integral.BannerViewModel;
 import com.xxjy.jyyh.ui.mine.MineViewModel;
 import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
@@ -646,6 +647,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 showCarDialog(mStoreRecordVo);
                 break;
             case R.id.carview://跳转门店详情
+                Intent intent1 = new Intent(mContext, CarServeDetailsActivity.class);
+                intent1.putExtra("no", mStoreRecordVo.getCardStoreInfoVo().getStoreNo());
+                intent1.putExtra("distance", mStoreRecordVo.getCardStoreInfoVo().getDistance());
+                startActivity(intent1);
                 break;
         }
     }
@@ -737,6 +742,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     } else {
                         mCarCardBinding.floatLayout.setVisibility(View.INVISIBLE);
                     }
+                    mCarCardBinding.carview.setVisibility(View.VISIBLE);
                 }
 
                 //油站卡片

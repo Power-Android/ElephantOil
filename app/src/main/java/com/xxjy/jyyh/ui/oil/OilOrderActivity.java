@@ -326,6 +326,11 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     }
                 });
             }else {
+                if (data.get(position).getTrialType() == 2){//车服门店单选
+                    for (int i = 0; i < data.size(); i++) {
+                        data.get(i).setSelected(false);
+                    }
+                }
                 mOilRedeemAdapter.setSelected(position);
                 mProductIdList.clear();
                 for (int i = 0; i < data.size(); i++) {
@@ -1041,7 +1046,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     Glide.with(OilOrderActivity.this).load(entranceList.get(0).getIcon()).into(mBinding.redeemView3);
                     mBinding.redeemView4.setText(entranceList.get(0).getTitle());
                     mBinding.redeemView5.setText(entranceList.get(0).getSubtitle());
-                    if (entranceList.get(0).getType() == 2){
+                    if (entranceList.get(0).getType() == 2){//车服门店
                         mBinding.redeemView6.setVisibility(View.VISIBLE);
                         mBinding.redeemView5.setTextColor(getResources().getColor(R.color.color_9A));
                     }else {

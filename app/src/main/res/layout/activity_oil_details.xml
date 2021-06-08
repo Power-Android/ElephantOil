@@ -38,7 +38,8 @@
                 android:id="@+id/oil_img_iv"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_225"
-                android:src="@color/color_76FF"
+                android:scaleType="fitXY"
+                android:src="@color/transparent"
                 app:layout_constraintTop_toTopOf="parent"/>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_1"
@@ -365,14 +366,22 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/price_desc_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="@dimen/dp_60"
+                    android:minHeight="@dimen/dp_60"
+                    android:background="@drawable/shape_f9f9_4radius"
+                    app:layout_constraintTop_toBottomOf="@+id/price_layout"/>
                 <View
                     android:id="@+id/dotted_line_view1"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@drawable/ic_dotted_line"
-                    app:layout_constraintTop_toBottomOf="@+id/price_layout" />
+                    android:layout_marginTop="@dimen/dp_7"
+                    app:layout_constraintTop_toBottomOf="@+id/price_desc_recycler" />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout
                 android:id="@+id/oil_tag_layout"
