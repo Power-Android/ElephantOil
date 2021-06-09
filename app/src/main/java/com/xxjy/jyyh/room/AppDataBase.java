@@ -7,6 +7,7 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.xxjy.jyyh.entity.IntegralHistoryEntity;
+import com.xxjy.jyyh.entity.SearchCarServeHistoryEntity;
 import com.xxjy.jyyh.entity.SearchHistoryEntity;
 
 import java.util.Iterator;
@@ -18,7 +19,7 @@ import java.util.List;
  * @project CIIP
  * @description:
  */
-@Database(entities = {SearchHistoryEntity.class, IntegralHistoryEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {SearchHistoryEntity.class, IntegralHistoryEntity.class,SearchCarServeHistoryEntity.class}, version = 1, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
 
     public abstract SearchOilDao getSearchHistoryDao();
@@ -109,6 +110,52 @@ public abstract class AppDataBase extends RoomDatabase {
                     searchHistory.get(i).setId(i + 1);
                 }
                 getSearchIntegralHistoryDao().insertAll(searchHistory);
+                return true;
+            }
+        }
+        return false;
+    }
+    public abstract SearchCarServeDao getSearchCarServeHistoryDao();
+
+    public List<SearchCarServeHistoryEntity> getSearchCarServeHistory() {
+        return getSearchCarServeHistoryDao().getAll();
+    }
+
+    public void insertCarServeData(String name) {
+        if (historyDataForward2(name)) {
+            return;
+        }
+        getSearchCarServeHistoryDao().insert(new SearchCarServeHistoryEntity(name));
+    }
+
+    public void upDateCarServeData(String name) {
+        getSearchCarServeHistoryDao().update(new SearchCarServeHistoryEntity(name));
+    }
+
+    public void deleteAllCarServeData() {
+        getSearchCarServeHistoryDao().deleteAll();
+    }
+
+    /**
+     * 历史数据前移
+     *
+     * @return 返回true表示查询的数据已存在，只需将其前移到第一项历史记录，否则需要增加新的历史记录
+     */
+    private boolean historyDataForward2(String name) {
+        //重复搜索时进行历史记录前移
+        List<SearchCarServeHistoryEntity> searchHistory = getSearchCarServeHistory();
+        Iterator<SearchCarServeHistoryEntity> iterator = searchHistory.iterator();
+        //不要在foreach循环中进行元素的remove、add操作，使用Iterator模式
+        while (iterator.hasNext()) {
+            SearchCarServeHistoryEntity historyEntity = iterator.next();
+            if (historyEntity.getStoreName().equals(name)) {
+                searchHistory.remove(historyEntity);
+                searchHistory.add(0, historyEntity);
+                getSearchCarServeHistoryDao().deleteAll();
+                for (int i = 0; i < searchHistory.size(); i++) {
+                    searchHistory.get(i).setId(i + 1);
+                }
+                getSearchCarServeHistoryDao().insertAll(searchHistory);
                 return true;
             }
         }

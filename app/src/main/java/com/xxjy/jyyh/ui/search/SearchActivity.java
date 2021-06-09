@@ -19,6 +19,7 @@ import com.google.android.flexbox.JustifyContent;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.IntegralHistoryAdapter;
 import com.xxjy.jyyh.adapter.MyViewPagerAdapter;
+import com.xxjy.jyyh.adapter.SearchCarServeHistoryAdapter;
 import com.xxjy.jyyh.adapter.SearchHistoryAdapter;
 import com.xxjy.jyyh.adapter.SearchRecommendAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
@@ -28,6 +29,7 @@ import com.xxjy.jyyh.databinding.ActivitySearchBinding;
 import com.xxjy.jyyh.dialog.QueryDialog;
 import com.xxjy.jyyh.entity.IntegralHistoryEntity;
 import com.xxjy.jyyh.entity.RecomdEntity;
+import com.xxjy.jyyh.entity.SearchCarServeHistoryEntity;
 import com.xxjy.jyyh.entity.SearchHistoryEntity;
 import com.xxjy.jyyh.room.DBInstance;
 import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
@@ -46,16 +48,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends BindingActivity<ActivitySearchBinding, SearchViewModel> {
-    private final String[] titles = new String[]{"搜油站", "搜权益"};
+    private final String[] titles = new String[]{"搜油站", "搜权益","搜车服"};
     private final List<View> mList = new ArrayList<>(2);
     private View mOilView;
     private View mInterestView;
+    private View mCarServeView;
     private List<RecomdEntity> mOilRecommendList = new ArrayList<>();
     private List<SearchHistoryEntity> mOilHistoryList = new ArrayList<>();
     private List<RecomdEntity> mInterestRecommendList = new ArrayList<>();
     private List<IntegralHistoryEntity> mInterestHistoryList = new ArrayList<>();
+    private List<SearchCarServeHistoryEntity> mCarServeHistoryList = new ArrayList<>();
     private SearchHistoryAdapter mOilHistoryAdapter;
     private IntegralHistoryAdapter mInterestHistoryAdapter;
+    private SearchCarServeHistoryAdapter mSearchCarServeHistoryAdapter;
     private QueryDialog mQueryDialog;
     private SearchRecommendAdapter mOilRecommendAdapter;
     private SearchRecommendAdapter mInterestRecommendAdapter;
@@ -72,10 +77,13 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
     private void initMagicIndicator() {
         mOilView = View.inflate(this, R.layout.oil_recommend_layout, null);
         mInterestView = View.inflate(this, R.layout.integral_interest_layout, null);
+        mCarServeView = View.inflate(this, R.layout.car_serve_layout, null);
         mList.add(mOilView);
         mList.add(mInterestView);
+        mList.add(mCarServeView);
         initOilView();
         initIntegralView();
+        initCarServeView();
 
         initDao();
         MyViewPagerAdapter adapter = new MyViewPagerAdapter(titles, mList);
@@ -159,6 +167,16 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
             mInterestView.findViewById(R.id.interest_history_title).setVisibility(View.GONE);
             mInterestView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.GONE);
         }
+        mCarServeHistoryList = DBInstance.getInstance().getSearchCarServeHistory();
+        if (mCarServeHistoryList != null && mCarServeHistoryList.size() > 0) {
+            mSearchCarServeHistoryAdapter.setNewData(mCarServeHistoryList);
+            mSearchCarServeHistoryAdapter.notifyDataSetChanged();
+            mCarServeView.findViewById(R.id.interest_history_title).setVisibility(View.VISIBLE);
+            mCarServeView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.VISIBLE);
+        } else {
+            mCarServeView.findViewById(R.id.interest_history_title).setVisibility(View.GONE);
+            mCarServeView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -184,7 +202,7 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         oilHistoryRecyclerView.setAdapter(mOilHistoryAdapter);
         mOilHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
-            intent.putExtra("type", mBinding.viewPager.getCurrentItem() == 0 ? "1" : "2");
+            intent.putExtra("type", (mBinding.viewPager.getCurrentItem()+1)+"");
             intent.putExtra("content", ((SearchHistoryEntity) adapter.getItem(position)).getGasName());
             startActivity(intent);
         });
@@ -216,7 +234,30 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         interestHistoryRecyclerView.setAdapter(mInterestHistoryAdapter);
         mInterestHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
-            intent.putExtra("type", mBinding.viewPager.getCurrentItem() == 0 ? "1" : "2");
+            intent.putExtra("type", (mBinding.viewPager.getCurrentItem()+1)+"");
+            intent.putExtra("content", ((IntegralHistoryEntity) adapter.getItem(position)).getIntegralName());
+            startActivity(intent);
+        });
+
+        mInterestView.findViewById(R.id.interest_history_delete_iv).setOnClickListener(this::onViewClicked);
+    }
+    /**
+     * 初始化搜权益view
+     */
+    private void initCarServeView() {
+
+
+        RecyclerView interestHistoryRecyclerView = mCarServeView.findViewById(R.id.interest_history_recycler_view);
+        FlexboxLayoutManager flexboxLayoutManager1 = new FlexboxLayoutManager(this);
+        flexboxLayoutManager1.setFlexDirection(FlexDirection.ROW);
+        flexboxLayoutManager1.setJustifyContent(JustifyContent.FLEX_START);
+        flexboxLayoutManager1.setAlignItems(AlignItems.FLEX_START);
+        interestHistoryRecyclerView.setLayoutManager(flexboxLayoutManager1);
+        mInterestHistoryAdapter = new IntegralHistoryAdapter(R.layout.adapter_search_tag, mInterestHistoryList);
+        interestHistoryRecyclerView.setAdapter(mInterestHistoryAdapter);
+        mInterestHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
+            intent.putExtra("type", (mBinding.viewPager.getCurrentItem()+1)+"");
             intent.putExtra("content", ((IntegralHistoryEntity) adapter.getItem(position)).getIntegralName());
             startActivity(intent);
         });
@@ -240,10 +281,15 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                     mBinding.searchEt.setHint("搜索油站名称");
                     EventTrackingManager.getInstance().tracking(SearchActivity.this, SearchActivity.this, String.valueOf(++Constants.PV_ID),
                             TrackingConstant.SEARCH_BOX, "", "type=1");
-                } else {
+                } else if(position ==1){
                     mBinding.searchEt.setHint("搜索权益名称");
                     EventTrackingManager.getInstance().tracking(SearchActivity.this, SearchActivity.this, String.valueOf(++Constants.PV_ID),
                             TrackingConstant.SEARCH_BOX, "", "type=2");
+                }else{
+                    mBinding.searchEt.setHint("搜索车服名称");
+                    EventTrackingManager.getInstance().tracking(SearchActivity.this, SearchActivity.this, String.valueOf(++Constants.PV_ID),
+                            TrackingConstant.SEARCH_BOX, "", "type=3");
+
                 }
             }
 
@@ -274,12 +320,15 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                 KeyboardUtils.hideSoftInput(this);
                 if (mBinding.viewPager.getCurrentItem() == 0) {
                     DBInstance.getInstance().insertData(mBinding.searchEt.getText().toString());
-                } else {
+                } else if(mBinding.viewPager.getCurrentItem() == 1){
                     DBInstance.getInstance().insertIntegralData(mBinding.searchEt.getText().toString());
+                }else{
+                    DBInstance.getInstance().insertCarServeData(mBinding.searchEt.getText().toString());
+
                 }
                 initDao();
                 Intent intent = new Intent(this, SearchResultActivity.class);
-                intent.putExtra("type", mBinding.viewPager.getCurrentItem() == 0 ? "1" : "2");
+                intent.putExtra("type", (mBinding.viewPager.getCurrentItem()+1)+"");
                 intent.putExtra("content", mBinding.searchEt.getText().toString());
                 startActivity(intent);
                 break;
