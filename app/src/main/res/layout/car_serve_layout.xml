@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
         <TextView
-            android:id="@+id/interest_history_title"
+            android:id="@+id/car_history_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="历史搜索"
@@ -23,15 +23,15 @@
             app:layout_constraintTop_toTopOf="parent"
             />
         <ImageView
-            android:id="@+id/interest_history_delete_iv"
+            android:id="@+id/car_history_delete_iv"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:src="@drawable/delete_icon"
             android:paddingEnd="@dimen/common_margin"
             android:paddingStart="@dimen/common_margin"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/interest_history_title"
-            app:layout_constraintBottom_toBottomOf="@id/interest_history_title"/>
+            app:layout_constraintTop_toTopOf="@+id/car_history_title"
+            app:layout_constraintBottom_toBottomOf="@id/car_history_title"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/interest_history_recycler_view"
             android:layout_width="match_parent"
@@ -39,6 +39,6 @@
             android:layout_marginTop="@dimen/common_margin"
             android:layout_marginStart="@dimen/common_margin"
             android:layout_marginEnd="@dimen/common_margin"
-            app:layout_constraintTop_toBottomOf="@+id/interest_history_title"/>
+            app:layout_constraintTop_toBottomOf="@+id/car_history_title"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

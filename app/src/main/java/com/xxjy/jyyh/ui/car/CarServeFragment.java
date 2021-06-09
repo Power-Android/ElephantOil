@@ -274,7 +274,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
         switch (view.getId()) {
             case R.id.search_layout:
             case R.id.top_search_layout:
-                startActivity(new Intent(getContext(), SearchActivity.class));
+                startActivity(new Intent(getContext(), SearchActivity.class).putExtra("type","carserve"));
 
                 break;
             case R.id.customer_service_view:
@@ -476,6 +476,6 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
         mViewModel.getProductCategory();
     }
     private void getCarServeStoreList(){
-        mViewModel.getCarServeStoreList(pageIndex, cityCode, areaCode, productCategoryId, status);
+        mViewModel.getCarServeStoreList(pageIndex, cityCode, areaCode, productCategoryId, status,"");
     }
 }

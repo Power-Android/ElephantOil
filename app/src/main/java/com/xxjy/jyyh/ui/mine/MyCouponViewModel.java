@@ -22,6 +22,7 @@ public class MyCouponViewModel extends BaseViewModel<MyCouponRepository> {
     public MutableLiveData<List<CouponBean>> disablePlatformCouponLiveData = new MutableLiveData<>();
     public MutableLiveData<List<CouponBean>> disableBusinessCouponLiveData = new MutableLiveData<>();
     public MutableLiveData<Response> exchangeCouponLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> carServeCouponLiveData = new MutableLiveData<>();
     public void getPlatformCouponVOs(int canUse){
         mRespository.getPlatformCouponVOs( canUse==1?platformCouponLiveData:disablePlatformCouponLiveData,canUse);
     }
@@ -30,6 +31,9 @@ public class MyCouponViewModel extends BaseViewModel<MyCouponRepository> {
     }
     public void exchangeCoupon(String couponCode){
         mRespository.exchangeCoupon( exchangeCouponLiveData,couponCode);
+    }
+    public void carServeCoupon( int currentUsable){
+        mRespository.carServeCoupon( carServeCouponLiveData,currentUsable);
     }
 
 }

@@ -140,6 +140,9 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         if (!TextUtils.isEmpty(mType) && TextUtils.equals(mType, "integral")){
             mBinding.viewPager.setCurrentItem(1);
             mBinding.searchEt.setHint("搜索权益名称");
+        }else if(!TextUtils.isEmpty(mType) && TextUtils.equals(mType, "carserve")){
+            mBinding.viewPager.setCurrentItem(2);
+            mBinding.searchEt.setHint("搜索车服门店名称");
         }
 
         mViewModel.getRecomnd("2");//2油站热门推荐 1权益热门推荐
@@ -171,11 +174,11 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         if (mCarServeHistoryList != null && mCarServeHistoryList.size() > 0) {
             mSearchCarServeHistoryAdapter.setNewData(mCarServeHistoryList);
             mSearchCarServeHistoryAdapter.notifyDataSetChanged();
-            mCarServeView.findViewById(R.id.interest_history_title).setVisibility(View.VISIBLE);
-            mCarServeView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.VISIBLE);
+            mCarServeView.findViewById(R.id.car_history_title).setVisibility(View.VISIBLE);
+            mCarServeView.findViewById(R.id.car_history_delete_iv).setVisibility(View.VISIBLE);
         } else {
-            mCarServeView.findViewById(R.id.interest_history_title).setVisibility(View.GONE);
-            mCarServeView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.GONE);
+            mCarServeView.findViewById(R.id.car_history_title).setVisibility(View.GONE);
+            mCarServeView.findViewById(R.id.car_history_delete_iv).setVisibility(View.GONE);
         }
     }
 
@@ -242,7 +245,7 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         mInterestView.findViewById(R.id.interest_history_delete_iv).setOnClickListener(this::onViewClicked);
     }
     /**
-     * 初始化搜权益view
+     * 初始化搜车服view
      */
     private void initCarServeView() {
 
@@ -253,16 +256,16 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
         flexboxLayoutManager1.setJustifyContent(JustifyContent.FLEX_START);
         flexboxLayoutManager1.setAlignItems(AlignItems.FLEX_START);
         interestHistoryRecyclerView.setLayoutManager(flexboxLayoutManager1);
-        mInterestHistoryAdapter = new IntegralHistoryAdapter(R.layout.adapter_search_tag, mInterestHistoryList);
-        interestHistoryRecyclerView.setAdapter(mInterestHistoryAdapter);
-        mInterestHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
+        mSearchCarServeHistoryAdapter = new SearchCarServeHistoryAdapter(R.layout.adapter_search_tag, mCarServeHistoryList);
+        interestHistoryRecyclerView.setAdapter(mSearchCarServeHistoryAdapter);
+        mSearchCarServeHistoryAdapter.setOnItemClickListener((adapter, view, position) -> {
             Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
             intent.putExtra("type", (mBinding.viewPager.getCurrentItem()+1)+"");
-            intent.putExtra("content", ((IntegralHistoryEntity) adapter.getItem(position)).getIntegralName());
+            intent.putExtra("content", ((SearchCarServeHistoryEntity) adapter.getItem(position)).getStoreName());
             startActivity(intent);
         });
 
-        mInterestView.findViewById(R.id.interest_history_delete_iv).setOnClickListener(this::onViewClicked);
+        mCarServeView.findViewById(R.id.car_history_delete_iv).setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -362,6 +365,25 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
                         mInterestView.findViewById(R.id.interest_history_title).setVisibility(View.GONE);
                         mInterestView.findViewById(R.id.interest_history_delete_iv).setVisibility(View.GONE);
                         mInterestHistoryAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onRefuse() {
+
+                    }
+                });
+                break;
+            case R.id.car_history_delete_iv:
+                mQueryDialog = new QueryDialog(this);
+                mQueryDialog.show();
+                mQueryDialog.setOnConfirmListener(new QueryDialog.OnConfirmListener() {
+                    @Override
+                    public void onConfirm() {
+                        DBInstance.getInstance().deleteAllIntegralData();
+                        mCarServeHistoryList.clear();
+                        mCarServeView.findViewById(R.id.car_history_title).setVisibility(View.GONE);
+                        mCarServeView.findViewById(R.id.car_history_delete_iv).setVisibility(View.GONE);
+                        mSearchCarServeHistoryAdapter.notifyDataSetChanged();
                     }
 
                     @Override

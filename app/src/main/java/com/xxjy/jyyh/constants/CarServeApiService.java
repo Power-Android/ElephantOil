@@ -26,6 +26,8 @@ public interface CarServeApiService {
 
     //当前可用优惠券分页列表-门店详情使用
     String COUPON_USABLE = BASE_URL + "cs/api/v1/customer/coupon/list/usable";
+    //优惠券列表
+    String COUPON_LIST = BASE_URL + "cs/api/v1/customer/coupon/list";
 
     //创建车服订单
     String COMMIT_ORDER = BASE_URL + "oil/api/v1/customer/car/createOrder";
@@ -51,6 +53,5 @@ public interface CarServeApiService {
     String PAYMENT_RESULT = BASE_URL + "oil/api/v1/customer/pay/payment/result";
     //车服订单详情
     String ORDER_INFO = BASE_URL + "oil/api/v1/customer/car/order/detail/";
-
 
 }

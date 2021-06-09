@@ -98,7 +98,7 @@ public class CarServeRepository extends BaseRepository {
                         .subscribe( s -> productCategoryLiveData.postValue(s))
         );
     }
-    public void getCarServeStoreList(MutableLiveData<CarServeStoreListBean> liveData, int pageIndex, String cityCode, String areaCode, long productCategoryId, int status) {
+    public void getCarServeStoreList(MutableLiveData<CarServeStoreListBean> liveData, int pageIndex, String cityCode, String areaCode, long productCategoryId, int status,String storeName) {
         addDisposable(RxHttp.postJson(CarServeApiService.GET_STORE_LIST)
                 .add("pageIndex",pageIndex)
                 .add("pageSize",10)
@@ -108,6 +108,7 @@ public class CarServeRepository extends BaseRepository {
                 .add("latitude", UserConstants.getLatitude())
                 .add("productCategoryId",productCategoryId,productCategoryId!=-1)
                 .add("status",status,status!=-1)
+                .add("storeName",storeName,!TextUtils.isEmpty(storeName))
                 .asCarServeResponse(CarServeStoreListBean.class)
                 .subscribe( s -> liveData.postValue(s))
         );

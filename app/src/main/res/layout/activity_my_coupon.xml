@@ -25,8 +25,7 @@
 
         <include
             android:id="@+id/title_layout"
-            layout="@layout/top_title_layout"
-            />
+            layout="@layout/top_title_layout" />
 
         <!--    <com.qmuiteam.qmui.widget.tab.QMUITabSegment-->
         <!--        android:id="@+id/tab_view"-->
@@ -34,19 +33,77 @@
         <!--        android:layout_height="@dimen/dp_40"-->
         <!--        android:layout_marginTop="@dimen/dp_10"-->
         <!--       />-->
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:qmui_radiusBottomLeft="17dp"
-            app:qmui_radiusBottomRight="17dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/search_cl"
             app:qmui_backgroundColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/search_cl">
+            app:qmui_radiusBottomLeft="17dp"
+            app:qmui_radiusBottomRight="17dp">
 
             <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_44" />
-        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
+
+
+            <RadioGroup
+                android:id="@+id/status_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp">
+
+
+                    <RadioButton
+                        android:id="@+id/useable_view"
+                        android:layout_width="0dp"
+                        android:layout_height="26dp"
+                        android:layout_margin="9dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_coupon_bt"
+                        android:checked="false"
+                        android:gravity="center"
+                        android:text="可使用"
+                        android:textAlignment="center"
+                        android:textColor="@color/selector_coupon_bt"
+                        android:button="@null"
+                        android:textSize="12sp" />
+                    <RadioButton
+                        android:id="@+id/to_be_use_view"
+                        android:layout_width="0dp"
+                        android:layout_height="26dp"
+                        android:layout_margin="9dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_coupon_bt"
+                        android:checked="false"
+                        android:gravity="center"
+                        android:text="待使用"
+                        android:textAlignment="center"
+                        android:textColor="@color/selector_coupon_bt"
+                        android:button="@null"
+                        android:textSize="12sp" />
+                    <RadioButton
+                        android:id="@+id/used_view"
+                        android:layout_width="0dp"
+                        android:layout_height="26dp"
+                        android:layout_margin="9dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_coupon_bt"
+                        android:checked="false"
+                        android:gravity="center"
+                        android:text="已使用/过期"
+                        android:textAlignment="center"
+                        android:textColor="@color/selector_coupon_bt"
+                        android:button="@null"
+                        android:textSize="12sp" />
+            </RadioGroup>
+
+        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
 
         <androidx.viewpager.widget.ViewPager

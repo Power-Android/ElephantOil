@@ -67,7 +67,7 @@ public class CarServeViewModel extends BaseViewModel<CarServeRepository> {
     public void getProductCategory() {
         mRespository.getProductCategory(productCategoryLiveData);
     }
-    public void getCarServeStoreList(int pageIndex,String cityCode,String areaCode,long productCategoryId,int status) {
-        mRespository.getCarServeStoreList(storeListLiveData, pageIndex, cityCode, areaCode, productCategoryId, status);
+    public void getCarServeStoreList(int pageIndex,String cityCode,String areaCode,long productCategoryId,int status,String storeName) {
+        mRespository.getCarServeStoreList(storeListLiveData, pageIndex, cityCode, areaCode, productCategoryId, status,storeName);
     }
 }

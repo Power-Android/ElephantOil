@@ -13,23 +13,32 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.adapter.CarServeListAdapter;
 import com.xxjy.jyyh.adapter.OilStationListAdapter;
 import com.xxjy.jyyh.adapter.SearchIntegralAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivitySearchResultBinding;
+import com.xxjy.jyyh.dialog.NavigationDialog;
+import com.xxjy.jyyh.dialog.SelectAreaDialog;
+import com.xxjy.jyyh.dialog.SelectBusinessStatusDialog;
 import com.xxjy.jyyh.dialog.SelectDistanceDialog;
 import com.xxjy.jyyh.dialog.SelectOilNumDialog;
+import com.xxjy.jyyh.dialog.SelectProductCategoryDialog;
+import com.xxjy.jyyh.entity.CarServeStoreBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.ProductBean;
 import com.xxjy.jyyh.room.DBInstance;
+import com.xxjy.jyyh.ui.car.CarServeDetailsActivity;
+import com.xxjy.jyyh.ui.car.CarServeViewModel;
 import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
 import com.xxjy.jyyh.ui.oil.OilViewModel;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
 import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +65,18 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
     private String integralType = "1";//权益type 1 是 综合  2 是价格 3 是销量
     private SearchIntegralAdapter mIntegralAdapter;
 
+
+    private CarServeViewModel carServeViewModel;
+    private CarServeListAdapter carServeAdapter;
+    private List<CarServeStoreBean> carServeData = new ArrayList<>();
+    private String cityCode;
+    private String areaCode;
+    private long productCategoryId = -1;
+    private int status=0;
+    private String storeName;
+    private SelectAreaDialog mSelectAreaDialog;
+    private SelectBusinessStatusDialog mSelectBusinessStatusDialog;
+    private SelectProductCategoryDialog mSelectProductCategoryDialog;
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.backIv, false);
@@ -103,7 +124,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
                     TrackingConstant.SEARCH_LIST, "", "type=1");
 
-        } else {
+        } else if(TextUtils.equals("2", mType)){
             mBinding.tab1Tv.setText("综合");
             mBinding.tab1Tv.setTextColor(getResources().getColor(R.color.color_76FF));
             mBinding.tab1Iv.setVisibility(View.GONE);
@@ -127,6 +148,30 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
             EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
                     TrackingConstant.SEARCH_LIST, "", "type=2");
+        }else{
+            carServeViewModel =new  ViewModelProvider(this).get(CarServeViewModel.class);
+            mBinding.searchEt.setHint("搜索车服门店名称");
+            mBinding.carTabSelectLayout.setVisibility(View.VISIBLE);
+            mBinding.tabLayout.setVisibility(View.GONE);
+
+            mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            carServeAdapter = new CarServeListAdapter(R.layout.adapter_car_serve_list, carServeData);
+            mBinding.recyclerView.setAdapter(carServeAdapter);
+            carServeAdapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
+            carServeAdapter.setOnItemClickListener((adapter, view, position) -> {
+                List<ProductBean> data = adapter.getData();
+                if (!TextUtils.isEmpty(data.get(position).getLink())) {
+                    WebViewActivity.openRealUrlWebActivity(SearchResultActivity.this,
+                            data.get(position).getLink());
+                }
+            });
+
+            cityCode = UserConstants.getCityCode();
+            getAreaList(cityCode);
+            getProductCategory();
+            loadCarServeData(false);
+
+
         }
     }
 
@@ -144,6 +189,51 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 mBinding.searchTv.callOnClick();
             }
             return true;
+        });
+
+
+        mBinding.carCitySelectLayout.setOnClickListener(this::onViewClicked);
+        mBinding.carBusinessStatusLayout.setOnClickListener(this::onViewClicked);
+        mBinding.carServeSelectLayout.setOnClickListener(this::onViewClicked);
+
+        carServeAdapter.setOnItemClickListener((adapter, view, position) -> {
+
+            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                @Override
+                public void onLogin() {
+                    List<CarServeStoreBean> data = adapter.getData();
+//                    Intent intent = new Intent(mContext, OilDetailActivity.class);
+                    Intent intent = new Intent(SearchResultActivity.this, CarServeDetailsActivity.class);
+                    intent.putExtra("no", data.get(position).getCardStoreInfoVo().getStoreNo());
+                    intent.putExtra("distance",data.get(position).getCardStoreInfoVo().getDistance());
+                    startActivity(intent);
+                }
+            });
+
+        });
+        carServeAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                List<CarServeStoreBean> data = adapter.getData();
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        switch (view.getId()) {
+                            case R.id.navigation_ll:
+                                if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                                    NavigationDialog navigationDialog = new NavigationDialog(SearchResultActivity.this,
+                                            data.get(position).getCardStoreInfoVo().getLatitude(), data.get(position).getCardStoreInfoVo().getLongitude(),
+                                            data.get(position).getCardStoreInfoVo().getStoreName());
+                                    navigationDialog.show();
+                                } else {
+                                    showToastWarning("您当前未安装地图软件，请先安装");
+                                }
+                                break;
+                        }
+
+                    }
+                });
+            }
         });
     }
 
@@ -225,14 +315,55 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     getOilStations(UserConstants.getLatitude(), UserConstants.getLongitude(), mCheckOilGasId,
                             firstDistanceOrPrice ? "1" : "2", distance == -1 ? null : String.valueOf(distance * 1000),
                             String.valueOf(pageNum), String.valueOf(pageSize), mContent, "sb");
-                } else {
+                } else if(TextUtils.equals("2",mType)) {
                     DBInstance.getInstance().insertIntegralData(mContent);
                     pageNum = 1;
                     getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
+                }else{
+                    pageNum=1;
+                    getCarServeStoreList();
                 }
                 break;
             case R.id.back_iv:
                 finish();
+                break;
+
+
+            case R.id.car_city_select_layout:
+                if (mSelectAreaDialog == null) {
+                   return;
+                }
+                mSelectAreaDialog.show();
+                mSelectAreaDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
+                    areaCode = data.getAreaCode();
+                    mBinding.carCitySelectTv.setText(data.getArea());
+                    mSelectAreaDialog.setSelectPosition(position);
+                    loadCarServeData(false);
+                });
+                break;
+            case R.id.car_serve_select_layout:
+                if (mSelectProductCategoryDialog == null) {
+                   return;
+                }
+                mSelectProductCategoryDialog.show();
+                mSelectProductCategoryDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
+                    productCategoryId = data.getId();
+                    mBinding.carServeSelectTv.setText(data.getName());
+                    mSelectAreaDialog.setSelectPosition(position);
+                    loadCarServeData(false);
+                });
+                break;
+            case R.id.car_business_status_layout:
+                if (mSelectBusinessStatusDialog == null) {
+                    mSelectBusinessStatusDialog = new SelectBusinessStatusDialog(getContext(), mBinding.carTabSelectLayout, mBinding.getRoot());
+                }
+                mSelectBusinessStatusDialog.show();
+                mSelectBusinessStatusDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
+                    status= data.getStatus();
+                    mBinding.carBusinessStatusTv.setText(data.getName());
+                    mSelectBusinessStatusDialog.setSelectPosition(position);
+                    loadCarServeData(false);
+                });
                 break;
         }
     }
@@ -324,6 +455,37 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 mBinding.refreshView.finishLoadMoreWithNoMoreData();
             }
         });
+
+        //车服
+
+        carServeViewModel.cityListLiveData.observe(this,data ->{
+
+            mSelectAreaDialog = new SelectAreaDialog(getContext(),mBinding.carTabSelectLayout, mBinding.getRoot(),data.getAreasList());
+
+        });
+        carServeViewModel.productCategoryLiveData.observe(this,data->{
+            mSelectProductCategoryDialog = new SelectProductCategoryDialog(getContext(),mBinding.carTabSelectLayout, mBinding.getRoot(),data.getRecords());
+
+        });
+        carServeViewModel.storeListLiveData.observe(this, dataStations -> {
+            if (dataStations != null && dataStations.getRecords() != null && dataStations.getRecords().size() > 0) {
+                if (pageNum == 1) {
+                    carServeAdapter.setNewData(dataStations.getRecords());
+                    mBinding.refreshView.setEnableLoadMore(true);
+                    mBinding.refreshView.finishRefresh(true);
+                } else {
+                    carServeAdapter.addData(dataStations.getRecords());
+                    mBinding.refreshView.finishLoadMore(true);
+                }
+                mBinding.noResultLayout.setVisibility(View.GONE);
+            } else if (pageNum == 1) {
+                mBinding.refreshView.finishLoadMoreWithNoMoreData();
+                mBinding.noResultLayout.setVisibility(View.VISIBLE);
+            } else {
+                pageNum--;
+                mBinding.refreshView.finishLoadMoreWithNoMoreData();
+            }
+        });
     }
 
     @Override
@@ -348,7 +510,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     firstDistanceOrPrice ? "1" : "2", distance == -1 ? null : String.valueOf(distance * 1000),
                     String.valueOf(pageNum), String.valueOf(pageSize), mContent, "sb");
 
-        } else {
+        } else if(TextUtils.equals("2", mType)) {
             if (isLoadMore) {
                 pageNum++;
             } else {
@@ -356,6 +518,33 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 mBinding.refreshView.finishRefresh();
             }
             getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
+        }else{
+            loadCarServeData(isLoadMore);
         }
+    }
+
+    private void loadCarServeData(boolean isLoadMore) {
+        if (isLoadMore) {
+            pageNum++;
+            getCarServeStoreList();
+        } else {
+            pageNum = 1;
+            getCarServeStoreList();
+        }
+
+    }
+
+
+
+
+    private void getAreaList(String cityCode){
+        carServeViewModel.getAreaList(cityCode);
+    }
+    //获取车服服务分类
+    private void getProductCategory(){
+        carServeViewModel.getProductCategory();
+    }
+    private void getCarServeStoreList(){
+        carServeViewModel.getCarServeStoreList(pageNum, cityCode, areaCode, productCategoryId, status,mContent);
     }
 }

@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.CarServeApiService;
+import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.http.Response;
 
@@ -32,6 +34,16 @@ public class MyCouponRepository extends BaseRepository {
         addDisposable(RxHttp.postForm(ApiService.EXCHANGE_COUPON)
                 .add("couponCode",couponCode)
                 .asCodeResponse(Response.class)
+                .subscribe(data -> exchangeCouponLiveData.postValue(data))
+        );
+    }
+    public void carServeCoupon(MutableLiveData<String> exchangeCouponLiveData, int currentUsable){
+        addDisposable(RxHttp.postJson(CarServeApiService.COUPON_LIST)
+                .add("pageIndex",1)
+                .add("pageSize",10000)
+                .add("currentUsable",currentUsable)
+                .addHeader("token", UserConstants.getToken())
+                .asCarServeResponse(String.class)
                 .subscribe(data -> exchangeCouponLiveData.postValue(data))
         );
     }
