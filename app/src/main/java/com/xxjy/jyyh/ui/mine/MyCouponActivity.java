@@ -87,6 +87,8 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
     private boolean isPlatformShowAdd = false;
     private boolean isBusinessShowAdd = false;
 
+    //可使用 1 待时用 2 已使用/过期 3
+
     @Override
     protected void initView() {
         mBinding.titleLayout.tvTitle.setText("我的优惠券");
