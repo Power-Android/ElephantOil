@@ -132,8 +132,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private GasStationLocationTipsDialog mGasStationTipsDialog;
     private LocationTipsDialog mLocationTipsDialog;
     private BannerViewModel bannerViewModel;
-    private int mOilNoPosition;
     private int mOilGunPosition = -1;
+    private int mOilNo;
     private boolean isShowAmount = false;
     private String couponId = "";
     private OilMonthRuleDialog mOilMonthRuleDialog;
@@ -254,16 +254,17 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mHomeMenuAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<HomeMenuEntity> data = adapter.getData();
             switch (data.get(position).getType()){
-                case 0://h5
-                    WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(position).getUrl());
-                    break;
                 case 1://加油优惠
+                    BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
+                            new EventEntity(EventConstants.EVENT_TO_OIL_FRAGMENT));
                     break;
                 case 2://汽车养护
+                    BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
+                            new EventEntity(EventConstants.EVENT_TO_CAR_FRAGMENT));
                     break;
                 case 3://幸运转盘
-                    break;
                 case 4://加油赚钱
+                    WebViewActivity.openRealUrlWebActivity(getBaseActivity(), data.get(position).getUrl());
                     break;
                 default:
                     break;
@@ -540,6 +541,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilCardBinding.oilNumTv.setOnClickListener(this::onViewClicked);
         mCarCardBinding.quickCarTv.setOnClickListener(this::onViewClicked);
         mCarCardBinding.carview.setOnClickListener(this::onViewClicked);
+        mCarCardBinding.carNavigationTv.setOnClickListener(this::onViewClicked);
 
         mBinding.searchIv.setOnClickListener(this::onViewClicked);
         mBinding.awardTv.setOnClickListener(this::onViewClicked);
@@ -562,14 +564,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         switch (view.getId()) {
             case R.id.quick_oil_tv:
             case R.id.oil_num_tv:
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        if (mStationsBean != null && mStationsBean.getOilPriceList().size() > 0) {
-                            showNumDialog(mStationsBean);
-                        } else {
-                            showToastWarning("暂无加油信息~");
-                        }
+                LoginHelper.login(getContext(), () -> {
+                    if (mStationsBean != null && mStationsBean.getOilPriceList().size() > 0) {
+                        showNumDialog(mStationsBean);
+                    } else {
+                        showToastWarning("暂无加油信息~");
                     }
                 });
 
@@ -594,25 +593,34 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
 //                break;
             case R.id.other_oil_tv:
+            case R.id.go_more_oil_view:
                 BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
                         new EventEntity(EventConstants.EVENT_CHANGE_FRAGMENT));
                 break;
             case R.id.oil_navigation_tv:
-
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        if (MapIntentUtils.isPhoneHasMapNavigation()) {
-                            NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
-                                    mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
-                                    mStationsBean.getGasName());
-                            navigationDialog.show();
-                        } else {
-                            showToastWarning("您当前未安装地图软件，请先安装");
-                        }
+                LoginHelper.login(getContext(), () -> {
+                    if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                        NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
+                                mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
+                                mStationsBean.getGasName());
+                        navigationDialog.show();
+                    } else {
+                        showToastWarning("您当前未安装地图软件，请先安装");
                     }
                 });
 
+                break;
+            case R.id.car_navigation_tv:
+                LoginHelper.login(getContext(), () -> {
+                    if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                        NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
+                                mStoreRecordVo.getCardStoreInfoVo().getLatitude(), mStoreRecordVo.getCardStoreInfoVo().getLongitude(),
+                                mStoreRecordVo.getCardStoreInfoVo().getStoreName());
+                        navigationDialog.show();
+                    } else {
+                        showToastWarning("您当前未安装地图软件，请先安装");
+                    }
+                });
                 break;
             case R.id.location_iv:
             case R.id.address_tv:
@@ -623,19 +631,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         new EventEntity(EventConstants.EVENT_TO_INTEGRAL_FRAGMENT));
                 break;
             case R.id.sign_in_iv:
-
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        TrackingConstant.OIL_MAIN_TYPE = "5";
-                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.SIGN_IN_URL);
-                    }
+                LoginHelper.login(getContext(), () -> {
+                    TrackingConstant.OIL_MAIN_TYPE = "5";
+                    WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.SIGN_IN_URL);
                 });
 
-                break;
-            case R.id.go_more_oil_view:
-                BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
-                        new EventEntity(EventConstants.EVENT_CHANGE_FRAGMENT));
                 break;
             case R.id.go_location_view:
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -644,13 +644,19 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 startActivity(intent);
                 break;
             case R.id.quick_car_tv://车门店下单
-                showCarDialog(mStoreRecordVo);
+                LoginHelper.login(mContext, () -> {
+                    if (mStoreRecordVo != null && mStoreRecordVo.getCardStoreInfoVo() != null){
+                        showCarDialog(mStoreRecordVo);
+                    }
+                });
                 break;
             case R.id.carview://跳转门店详情
-                Intent intent1 = new Intent(mContext, CarServeDetailsActivity.class);
-                intent1.putExtra("no", mStoreRecordVo.getCardStoreInfoVo().getStoreNo());
-                intent1.putExtra("distance", mStoreRecordVo.getCardStoreInfoVo().getDistance());
-                startActivity(intent1);
+                LoginHelper.login(mContext, () -> {
+                    Intent intent1 = new Intent(mContext, CarServeDetailsActivity.class);
+                    intent1.putExtra("no", mStoreRecordVo.getCardStoreInfoVo().getStoreNo());
+                    intent1.putExtra("distance", mStoreRecordVo.getCardStoreInfoVo().getDistance());
+                    startActivity(intent1);
+                });
                 break;
         }
     }
@@ -762,6 +768,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
                     if (mStationsBean.getOilNo().equals(String.valueOf(mStationsBean.getOilPriceList().get(i).getOilNo()))) {
                         mStationsBean.getOilPriceList().get(i).setSelected(true);
+                        mOilNo = mStationsBean.getOilPriceList().get(i).getOilNo();
                     }
                 }
 
@@ -993,7 +1000,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     oilPriceList.get(i).setSelected(false);
                 }
                 oilPriceList.get(0).setSelected(true);
-                mOilNoPosition = 0;
+                mOilNo = oilPriceList.get(0).getOilNo();
                 mOilGunPosition = 0;
                 oilNumAdapter.setNewData(oilPriceList);
                 oilGunAdapter.setNewData(oilPriceList.get(mOilGunPosition).getGunNos());
@@ -1015,7 +1022,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
                     }
                 }
-                mOilNoPosition = position;
+                mOilNo = data.get(position).getOilNo();
                 mOilGunPosition = 0;
                 isShowAmount = false;
                 oilGunAdapter.setNewData(data.get(position).getGunNos());
@@ -1053,7 +1060,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                     TrackingConstant.GAS_GUN_NO, "", "type=1");
                             Intent intent = new Intent(getContext(), OilOrderActivity.class);
                             intent.putExtra("stationsBean", (Serializable) mStationsBean);
-                            intent.putExtra("oilNo", oilNumAdapter.getData().get(mOilNoPosition).getOilNo());
+                            intent.putExtra("oilNo", mOilNo);
                             intent.putExtra("gunNo", oilGunAdapter.getData().get(mOilGunPosition).getGunNo());
                             startActivity(intent);
                             closeDialog();
@@ -1122,7 +1129,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
                     Intent intent = new Intent(getContext(), OilOrderActivity.class);
                     intent.putExtra("stationsBean", (Serializable) mStationsBean);
-                    intent.putExtra("oilNo", oilNumAdapter.getData().get(mOilNoPosition).getOilNo());
+                    intent.putExtra("oilNo", mOilNo);
                     intent.putExtra("gunNo", oilGunAdapter.getData().get(mOilGunPosition).getGunNo());
                     startActivity(intent);
                     closeDialog();
@@ -1183,7 +1190,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             mCarServiceDialog = null;
         }
         isShowAmount = false;
-        mOilNoPosition = 0;
         getHomeOil();
     }
 

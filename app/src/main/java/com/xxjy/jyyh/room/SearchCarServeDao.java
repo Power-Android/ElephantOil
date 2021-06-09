@@ -8,7 +8,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.xxjy.jyyh.entity.SearchCarServeHistoryEntity;
-import com.xxjy.jyyh.entity.SearchHistoryEntity;
 
 import java.util.List;
 

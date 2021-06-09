@@ -19,7 +19,7 @@ import java.util.List;
  * @project CIIP
  * @description:
  */
-@Database(entities = {SearchHistoryEntity.class, IntegralHistoryEntity.class,SearchCarServeHistoryEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {SearchHistoryEntity.class, IntegralHistoryEntity.class, SearchCarServeHistoryEntity.class}, version = 1, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
 
     public abstract SearchOilDao getSearchHistoryDao();
@@ -115,6 +115,7 @@ public abstract class AppDataBase extends RoomDatabase {
         }
         return false;
     }
+
     public abstract SearchCarServeDao getSearchCarServeHistoryDao();
 
     public List<SearchCarServeHistoryEntity> getSearchCarServeHistory() {

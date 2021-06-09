@@ -75,6 +75,10 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             mBinding.navView.setSelectedItemId(R.id.navigation_oil);
         } else if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_TO_INTEGRAL_FRAGMENT)) {
             mBinding.navView.setSelectedItemId(R.id.navigation_integral);
+        }else if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_TO_OIL_FRAGMENT)){
+            mBinding.navView.setSelectedItemId(R.id.navigation_oil);
+        }else if (TextUtils.equals(event.getEvent(), EventConstants.EVENT_TO_CAR_FRAGMENT)){
+            mBinding.navView.setSelectedItemId(R.id.navigation_car_serve);
         }
     }
 

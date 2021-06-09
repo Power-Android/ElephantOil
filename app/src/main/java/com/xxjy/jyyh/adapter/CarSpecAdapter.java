@@ -26,7 +26,7 @@ public class CarSpecAdapter extends BaseQuickAdapter<CarServeProductsBean, BaseV
 
     @Override
     protected void convert(@NonNull @NotNull BaseViewHolder helper, CarServeProductsBean item) {
-        helper.setText(R.id.item_oil_type_tv, item.getCategoryName());
+        helper.setText(R.id.item_oil_type_tv, item.getName());
         helper.getView(R.id.item_oil_type_tv).setSelected(item.isSelect());
     }
 }

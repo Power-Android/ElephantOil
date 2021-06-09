@@ -20,8 +20,8 @@ public class SearchCarServeHistoryEntity implements Serializable {
 
     private String storeName;
 
-    public SearchCarServeHistoryEntity(String gasName) {
-        this.storeName = gasName;
+    public SearchCarServeHistoryEntity(String storeName) {
+        this.storeName = storeName;
     }
 
     public long getId() {
