@@ -130,8 +130,6 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
             }
         });
 
-
-
         initNavigationView();
         new Handler().postDelayed(() -> {
             if (!UserConstants.getIsLogin()) {

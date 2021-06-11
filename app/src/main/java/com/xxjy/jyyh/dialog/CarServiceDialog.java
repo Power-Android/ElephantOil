@@ -140,6 +140,8 @@ public class CarServiceDialog extends BottomSheetDialog {
             CarServeConfirmOrderActivity.openPage(mContext, mCardStoreInfoVo.getCardStoreInfoVo(), mCarServeProductsBean, null);
             dismiss();
         });
+
+        mBinding.cancelIv.setOnClickListener(v -> dismiss());
     }
 
     @Override

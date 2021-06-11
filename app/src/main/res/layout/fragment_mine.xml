@@ -8,7 +8,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_600"
-        android:background="@color/white"
+        android:background="@color/color_F5"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -17,7 +17,8 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srlEnableLoadMore="false">
+        app:srlEnableLoadMore="false"
+        app:srlEnableOverScrollDrag="true">
 
         <com.scwang.smart.refresh.header.ClassicsHeader
             android:layout_width="match_parent"
@@ -27,7 +28,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/top_title_layout"
@@ -81,88 +82,65 @@
                 <View
                     android:id="@+id/bg_view"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/bg_mine_top_2"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/card_layout"
+                    android:id="@+id/vip_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="69dp"
+                    android:layout_height="74dp"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
-                    android:background="@drawable/bg_mine_card"
+                    android:background="@drawable/bg_mine_vip_card"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/bg_view"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
-                    <ImageView
-                        android:id="@+id/card_tag_view"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="14dp"
-                        android:src="@drawable/ic_card_tag"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
                     <TextView
-                        android:id="@+id/card_name_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="9dp"
-                        android:text="小象省钱月卡"
-                        android:textColor="@color/color_18"
-                        android:textSize="@dimen/sp_14"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@+id/card_tag_view"
-                        app:layout_constraintTop_toTopOf="@+id/card_tag_view" />
-
-                    <TextView
-                        android:id="@+id/card_money_view_2"
+                        android:id="@+id/vip_money_view_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="9dp"
                         android:text="已省0.00元"
-                        android:textColor="@color/color_3D"
+                        android:textColor="@color/color_689"
                         android:textSize="@dimen/sp_12"
-                        android:visibility="invisible"
-                        app:layout_constraintStart_toEndOf="@+id/card_name_view"
-                        app:layout_constraintTop_toTopOf="@+id/card_name_view" />
+                        android:visibility="visible"
+                        android:layout_marginStart="125dp"
+                        android:layout_marginTop="17dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                     <TextView
-                        android:id="@+id/card_money_view"
+                        android:id="@+id/vip_money_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="9dp"
-                        android:text="到手立省"
-                        android:textColor="@color/color_3D"
+                        android:layout_marginLeft="14dp"
+                        android:text="你有加油、洗车省2000+的特权领取"
+                        android:textColor="@color/color_689"
                         android:textSize="@dimen/sp_12"
-                        android:visibility="invisible"
-                        app:layout_constraintStart_toEndOf="@+id/card_tag_view"
-                        app:layout_constraintTop_toBottomOf="@+id/card_name_view" />
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/vip_money_view_2"/>
 
-                    <TextView
-                        android:id="@+id/receive_bt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="21dp"
-                        android:layout_marginTop="16dp"
+                    <ImageView
+                        android:id="@+id/vip_receive_bt"
+                        android:layout_width="73dp"
+                        android:layout_height="23dp"
                         android:layout_marginRight="12dp"
                         android:alpha="0.8"
-                        android:background="@drawable/shape_solid_11radius"
+                        android:src="@drawable/vip_join_iv"
                         android:gravity="center"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-                        android:text="立即领卡"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_12"
+                        android:layout_marginBottom="@dimen/dp_5"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -173,9 +151,7 @@
                 android:layout_marginTop="@dimen/dp_40"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                >
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.qmuiteam.qmui.widget.QMUIRadiusImageView
                     android:id="@+id/photo_view"
@@ -225,17 +201,17 @@
             <LinearLayout
                 android:id="@+id/bottom_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
+                android:layout_height="wrap_content"
+                android:background="@color/color_F5"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_1">
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_76"
+                    android:background="@drawable/shape_bottom_white_6radius"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -422,16 +398,14 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginEnd="@dimen/dp_12"
+                    android:background="@drawable/shape_white_6raduis"
                     android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:background="@color/color_F5" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -442,13 +416,6 @@
                         android:textColor="@color/color_34"
                         android:textSize="@dimen/sp_14"
                         android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_0_5"
-                        android:layout_marginLeft="@dimen/dp_12"
-                        android:layout_marginTop="@dimen/dp_13"
-                        android:background="@color/color_EE" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -537,18 +504,90 @@
 
                 </LinearLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/card_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/bg_mine_card"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/card_tag_view"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="16dp"
+                        android:src="@drawable/ic_card_tag"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/card_name_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="9dp"
+                        android:text="小象省钱月卡"
+                        android:textColor="@color/color_18"
+                        android:textSize="@dimen/sp_14"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/card_tag_view"
+                        app:layout_constraintTop_toTopOf="@+id/card_tag_view" />
+
+                    <TextView
+                        android:id="@+id/card_money_view_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="9dp"
+                        android:text="已省0.00元"
+                        android:textColor="@color/color_3D"
+                        android:textSize="@dimen/sp_12"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toEndOf="@+id/card_name_view"
+                        app:layout_constraintTop_toTopOf="@+id/card_name_view" />
+
+                    <TextView
+                        android:id="@+id/card_money_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="9dp"
+                        android:text="到手立省"
+                        android:textColor="@color/color_3D"
+                        android:textSize="@dimen/sp_12"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toEndOf="@+id/card_tag_view"
+                        app:layout_constraintTop_toBottomOf="@+id/card_name_view" />
+
+                    <TextView
+                        android:id="@+id/receive_bt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="21dp"
+                        android:layout_marginRight="12dp"
+                        android:alpha="0.8"
+                        android:background="@drawable/shape_solid_11radius"
+                        android:gravity="center"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:text="立即领卡"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:id="@+id/more_service_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_12"
+                    android:background="@drawable/shape_white_6raduis"
                     android:orientation="vertical"
-                    android:visibility="invisible">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:background="@color/color_F5" />
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -560,13 +599,6 @@
                         android:textSize="@dimen/sp_14"
                         android:textStyle="bold" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_0_5"
-                        android:layout_marginLeft="@dimen/dp_12"
-                        android:layout_marginTop="@dimen/dp_13"
-                        android:background="@color/color_EE" />
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
@@ -577,74 +609,74 @@
 
                 </LinearLayout>
 
-                <!--                <LinearLayout-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:orientation="vertical">-->
-                <!--                    <View-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="8dp"-->
-                <!--                        android:background="@color/color_F5" />-->
-                <!--                    <TextView-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginLeft="@dimen/dp_12"-->
-                <!--                        android:layout_marginTop="@dimen/dp_15"-->
-                <!--                        android:text="热门活动"-->
-                <!--                        android:textColor="@color/color_34"-->
-                <!--                        android:textSize="@dimen/sp_14"-->
-                <!--                        android:textStyle="bold" />-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/shape_white_6raduis"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:layout_marginEnd="@dimen/dp_12"
+                    android:paddingBottom="@dimen/dp_20"
+                    android:orientation="vertical">
 
-                <!--                    <View-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="@dimen/dp_0_5"-->
-                <!--                        android:layout_marginLeft="@dimen/dp_12"-->
-                <!--                        android:layout_marginTop="@dimen/dp_13"-->
-                <!--                        android:background="@color/color_EE" />-->
-                <!--                    -->
-                <!--                    <LinearLayout-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:orientation="horizontal"-->
-                <!--                        android:layout_marginTop="@dimen/dp_13"-->
-                <!--                        android:layout_marginLeft="@dimen/dp_15"-->
-                <!--                        android:layout_marginRight="@dimen/dp_15">-->
-                <!--                        <com.qmuiteam.qmui.widget.QMUIRadiusImageView-->
-                <!--                            android:layout_width="0dp"-->
-                <!--                            android:layout_height="@dimen/dp_88"-->
-                <!--                            android:layout_weight="1"-->
-                <!--                            android:layout_marginRight="@dimen/dp_5"-->
-                <!--                            app:qmui_corner_radius="@dimen/dp_10"-->
-                <!--                            app:qmui_border_width="0dp"-->
-                <!--                            android:background="@color/color_EE"-->
-                <!--                            />-->
-                <!--                        <com.qmuiteam.qmui.widget.QMUIRadiusImageView-->
-                <!--                            android:layout_width="0dp"-->
-                <!--                            android:layout_height="@dimen/dp_88"-->
-                <!--                            android:layout_weight="1"-->
-                <!--                            app:qmui_corner_radius="@dimen/dp_10"-->
-                <!--                            app:qmui_border_width="0dp"-->
-                <!--                            android:background="@color/color_EE"-->
-                <!--                           />-->
-                <!--                    </LinearLayout>-->
-                <!--                </LinearLayout>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:text="热门活动"
+                        android:textColor="@color/color_34"
+                        android:textSize="@dimen/sp_14"
+                        android:textStyle="bold" />
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:layout_marginTop="@dimen/dp_12"
+                        android:layout_marginRight="@dimen/dp_12"
+                        android:orientation="horizontal">
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/hot_iv1"
+                            android:layout_width="@dimen/dp_157"
+                            android:layout_height="@dimen/dp_88"
+                            android:layout_weight="1"
+                            android:background="@color/color_EE"
+                            app:riv_corner_radius="@dimen/dp_10"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/hot_iv2"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/hot_iv2"
+                            android:layout_width="@dimen/dp_157"
+                            android:layout_height="@dimen/dp_88"
+                            android:layout_weight="1"
+                            android:background="@color/color_EE"
+                            app:riv_corner_radius="@dimen/dp_10"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/hot_iv1"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:text="4亿车主都爱用的加油省钱神器"
+                android:textColor="@color/color_99"
+                android:textSize="@dimen/sp_11"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_20"
-        android:text="4亿车主都爱用的加油省钱神器"
-        android:textColor="@color/color_99"
-        android:textSize="@dimen/sp_11"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <RelativeLayout
         android:id="@+id/notice_layout"

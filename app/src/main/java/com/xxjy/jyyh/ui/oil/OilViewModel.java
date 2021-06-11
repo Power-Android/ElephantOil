@@ -50,6 +50,7 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public MutableLiveData<AreaListBean> cityListLiveData = new MutableLiveData<>();
     public MutableLiveData<CarServeCategoryListBean> productCategoryLiveData = new MutableLiveData<>();
     public MutableLiveData<CarServeStoreListBean> storeListLiveData = new MutableLiveData<>();
+    public MutableLiveData<RedeemEntity> dragViewLiveData = new MutableLiveData<>();
 
 
     public void getOrderNews() {
@@ -131,5 +132,9 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     }
     public void getCarServeStoreList(int pageIndex,String cityCode,String areaCode,long productCategoryId,int status) {
         mRespository.getCarServeStoreList(storeListLiveData, pageIndex, cityCode, areaCode, productCategoryId, status);
+    }
+
+    public void getDragViewInfo() {
+        mRespository.getDragViewInfo(dragViewLiveData);
     }
 }

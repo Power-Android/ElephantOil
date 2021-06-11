@@ -25,6 +25,24 @@ public class RedeemEntity implements Serializable {
     private List<PurchaseQuantityListBean> purchaseQuantityList;
     private String totalPriority;
     private String totalPriorityName;
+    private String imgUrl;
+    private String link;
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     public List<EntranceListBean> getEntranceCfList() {
         return entranceCfList;

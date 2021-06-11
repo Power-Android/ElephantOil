@@ -66,6 +66,9 @@ public class ApiService {
     //平台优惠券
     public static final String PLATFORM_COUPON = "api/coupon/v1/getPlatformCouponVOs";
     public static final String PLATFORM_COUPON_LIST = "api/coupon/v1/getPlatformCouponList";
+    public static final String PLATFORM_COUPON_LIST1 = "api/coupon/v1/getMyCouponList";
+    //优惠券数量
+    public static final String GET_COUPON_NUM = "api/coupon/v1/getMyCouponNumber";
     //油站默认快捷价格
     public static final String OIL_PRICE_DEFAULT = "api/gasPublic/buyPriceDefault";
     //油站优惠券互斥
@@ -161,7 +164,16 @@ public class ApiService {
     public static final String RECEIVE_OIL_JOB_COUPON = "api/activeCommon/receiveOilJobCoupon";
     //获取搭售列表
     public static final String QUERY_SALE_INFO = "api/tiein/v1/queryTieinSaleInfo";
-
+    //获取会员卡信息
+    public static final String GET_MEMBER_CARD_INFO = "api/v1/member/getMemberBuyIndex";
+    //获取会员卡有效期
+    public static final String GET_MEMBER_CARD = "api/v1/member/getMemberCard";
+    //首页卡片
+    public static final String HOME_CARD_INFO = "api/tiein/v1/queryHomeCardInfo";
+    //首页菜单
+    public static final String HOME_MENU_INFO = "api/tiein/v1/queryHomeKingKongDistrict";
+    //浮窗接口
+    public static final String DRAG_INFO = "api/v1/member/floatingWindow";
 
 
 

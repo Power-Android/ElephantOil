@@ -31,6 +31,7 @@ import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -57,6 +58,7 @@ import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.EventConstants;
+import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentHomeBinding;
 import com.xxjy.jyyh.databinding.HomeCarCardLayoutBinding;
@@ -151,6 +153,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private CommonNavigator mCommonNavigator;
     private CarServiceDialog mCarServiceDialog;
     private CarServeStoreDetailsBean mStoreRecordVo;
+    private boolean isIntegral = true;
 
     //猎人码跳转
     @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_HUNTER_CODE, sticky = true)
@@ -253,7 +256,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.menuRecyclerView.setAdapter(mHomeMenuAdapter);
         mHomeMenuAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<HomeMenuEntity> data = adapter.getData();
-            switch (data.get(position).getType()){
+            switch (data.get(position).getType()) {
                 case 1://加油优惠
                     BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
                             new EventEntity(EventConstants.EVENT_TO_OIL_FRAGMENT));
@@ -370,9 +373,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     }
 
     private void queryUserInfo() {
-
         mineViewModel.queryUserInfo();
-
     }
 
     private void getHomeOil() {
@@ -645,7 +646,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 break;
             case R.id.quick_car_tv://车门店下单
                 LoginHelper.login(mContext, () -> {
-                    if (mStoreRecordVo != null && mStoreRecordVo.getCardStoreInfoVo() != null){
+                    if (mStoreRecordVo != null && mStoreRecordVo.getCardStoreInfoVo() != null) {
                         showCarDialog(mStoreRecordVo);
                     }
                 });
@@ -694,7 +695,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mBinding.viewPager.setCurrentItem(0);
                 } else {//展示门店
                     if (oilEntity.getHasStore() == 1) {//70km内有门店
-                        if (mList.size() == 1){
+                        if (mList.size() == 1) {
                             titles = new String[]{"油站", "车服"};
                             mCarView = null;
                             mCarView = View.inflate(mContext, R.layout.home_car_card_layout, null);
@@ -707,9 +708,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                             mBinding.viewPager.setAdapter(mPagerAdapter);
                         }
                         mBinding.viewPager.setCurrentItem(1);
-                    }else {
+                    } else {
                         titles = new String[]{"油站"};
-                        if (mList.size() > 1){
+                        if (mList.size() > 1) {
                             mList.remove(1);
                             mBinding.viewPager.removeViewAt(1);
                             mBinding.viewPager.setNoScroll(false);
@@ -962,10 +963,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             } else {
                 if (TextUtils.isEmpty(data.getMonthCardExpireDate())) {
                     WebViewActivity.openWebActivity((MainActivity) getActivity(), Constants.BUY_MONTH_CARD_URL);
-
                 } else {
                     WebViewActivity.openWebActivity((MainActivity) getActivity(), Constants.BUY_IN_ADVANCE_MONTH_CARD_URL);
-
                 }
             }
         });
@@ -1139,10 +1138,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mGasStationTipsDialog.show();
     }
 
-    private void showCarDialog(CarServeStoreDetailsBean carServeStoreBean){
+    private void showCarDialog(CarServeStoreDetailsBean carServeStoreBean) {
         mCarServiceDialog = new CarServiceDialog(mContext, carServeStoreBean);
         mCarServiceDialog.show();
     }
+
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
 
@@ -1186,7 +1186,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         if (mGasStationTipsDialog != null) {
             mGasStationTipsDialog = null;
         }
-        if (mCarServiceDialog != null){
+        if (mCarServiceDialog != null) {
             mCarServiceDialog = null;
         }
         isShowAmount = false;

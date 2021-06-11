@@ -10,6 +10,7 @@ import com.xxjy.jyyh.base.BaseViewModel;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.MonthCardBean;
 import com.xxjy.jyyh.entity.UserBean;
+import com.xxjy.jyyh.entity.VipInfoEntity;
 
 import java.util.List;
 
@@ -29,6 +30,8 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
     public MutableLiveData<List<BannerBean>> bannersLiveData = new MutableLiveData<>();
     public MutableLiveData<UserBean> userLiveData = new MutableLiveData<>();
     public MutableLiveData<MonthCardBean> monthEquityInfoLiveData = new MutableLiveData<>();
+    public MutableLiveData<VipInfoEntity> vipInfoLiveData = new MutableLiveData<>();
+    public MutableLiveData<VipInfoEntity> vipLiveData = new MutableLiveData<>();
     public void queryUserInfo(){
         mRespository.queryUserInfo( userLiveData);
     }
@@ -43,5 +46,13 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
 
     public void getMonthEquityInfo() {
         mRespository.getMonthEquityInfo(monthEquityInfoLiveData);
+    }
+
+    public void getVipInfo() {
+        mRespository.getVipInfo(vipInfoLiveData);
+    }
+
+    public void getVip() {
+        mRespository.getVip(vipLiveData);
     }
 }

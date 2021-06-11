@@ -7,8 +7,6 @@
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:qmui_radiusTopLeft="@dimen/dp_18"
-            app:qmui_radiusTopRight="@dimen/dp_18"
             app:qmui_backgroundColor="@color/color_F5"
             android:orientation="vertical"
             >

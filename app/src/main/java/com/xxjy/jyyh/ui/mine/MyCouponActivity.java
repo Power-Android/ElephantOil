@@ -12,11 +12,13 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIKeyboardHelper;
@@ -26,13 +28,18 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.CarServeCouponAdapter;
+import com.xxjy.jyyh.adapter.MyCarServeAdapter;
 import com.xxjy.jyyh.adapter.MyCouponAdapter;
 import com.xxjy.jyyh.adapter.MyViewPagerAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.EventConstants;
 import com.xxjy.jyyh.databinding.ActivityMyCouponBinding;
+import com.xxjy.jyyh.entity.CarCouponEntity;
 import com.xxjy.jyyh.entity.CarServeCouponBean;
 import com.xxjy.jyyh.entity.CouponBean;
+import com.xxjy.jyyh.entity.CouponNumEntity;
+import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.oil.CouponOilStationsActivity;
 import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
@@ -47,6 +54,8 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,13 +66,10 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
     private final List<View> mList = new ArrayList<>(4);
     private List<CouponBean> data = new ArrayList<>();
     private List<CouponBean> data2 = new ArrayList<>();
-    private List<CarServeCouponBean> data3 = new ArrayList<>();
-    private List<CouponBean> unCanData = new ArrayList<>();
-    private List<CouponBean> unCanData2 = new ArrayList<>();
-    private List<CarServeCouponBean> unCanData3 = new ArrayList<>();
+    private List<CarCouponEntity.RecordsBean> data3 = new ArrayList<>();
     private MyCouponAdapter platformCouponAdapter;
     private MyCouponAdapter businessCouponAdapter;
-    private CarServeCouponAdapter carServeCouponAdapter;
+    private MyCarServeAdapter carServeCouponAdapter;
 
     private View mPlatformCoupon;
     private View mBusinessCoupon;
@@ -84,16 +90,22 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
     private int platformCanUse = 1;
     private int businessCanUse = 1;
 
-    private boolean isPlatformShowAdd = false;
-    private boolean isBusinessShowAdd = false;
+    private int viewPosition = 0;
+    private CouponNumEntity mCouponNumEntity1;
+    private CouponNumEntity mCouponNumEntity2;
 
     //可使用 1 待时用 2 已使用/过期 3
 
     @Override
     protected void initView() {
+        BarUtils.setStatusBarColor(this, getResources().getColor(R.color.white));
         mBinding.titleLayout.tvTitle.setText("我的优惠券");
+        mBinding.titleLayout.tbToolbar.setBackgroundColor(getResources().getColor(R.color.white));
         mBinding.titleLayout.tbToolbar.setNavigationOnClickListener(v -> finish());
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
+        BusUtils.register(this);
+        mViewModel.getCouponNum1(1);
+        mViewModel.getCouponNum2(2);
 
         mPlatformCoupon = View.inflate(this, R.layout.coupon_platform, null);
         mBusinessCoupon = View.inflate(this, R.layout.coupon_business, null);
@@ -165,7 +177,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
         mCarServeRecyclerView = mCarServeCoupon.findViewById(R.id.recycler_view);
         mCarServeRefreshView = mCarServeCoupon.findViewById(R.id.refresh_view);
         mCarServeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        carServeCouponAdapter = new CarServeCouponAdapter(R.layout.adapter_car_serve_coupon, data3);
+        carServeCouponAdapter = new MyCarServeAdapter(R.layout.adapter_my_car_coupon, data3);
         carServeCouponAdapter.setEmptyView(R.layout.empty_coupon_layout, mCarServeRecyclerView);
         mCarServeRecyclerView.setAdapter(carServeCouponAdapter);
 
@@ -173,10 +185,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
         convertEdit = mExchangeCoupon.findViewById(R.id.convert_edit);
         getPlatformCouponVOs(platformCanUse);
         getBusinessCoupons(businessCanUse);
-        getPlatformCouponVOs(0);
-        getBusinessCoupons(0);
-
-
+        getCarServeCoupons();
     }
 
     @Override
@@ -184,17 +193,37 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
         mPlatformRefreshView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//                isPlatformShowAdd = false;
-                getPlatformCouponVOs(platformCanUse);
+                mViewModel.getCouponNum1(1);
+                mViewModel.getCouponNum2(2);
+                if (viewPosition == 0){
+                    getPlatformCouponVOs(platformCanUse);
+                }else if (viewPosition == 1){
+                    getBusinessCoupons(businessCanUse);
+                }else if (viewPosition == 2){
+
+                }
             }
         });
         mBusinessRefreshView.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//                isBusinessShowAdd = false;
-                getBusinessCoupons(businessCanUse);
+                if (viewPosition == 0){
+                    getPlatformCouponVOs(platformCanUse);
+                }else if (viewPosition == 1){
+                    getBusinessCoupons(businessCanUse);
+                }else if (viewPosition == 2){
+
+                }
             }
         });
+
+        mCarServeRefreshView.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
+                getCarServeCoupons();
+            }
+        });
+
         convertBtn.setOnClickListener(this::onViewClicked);
 
         platformCouponAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -245,11 +274,17 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
                     if (TextUtils.isEmpty(oilStations)) {
                         MainActivity.openMainActAndClearTaskJump(MyCouponActivity.this, 1);
                         finish();
-
                     }
 
                 }
 
+            }
+        });
+
+        carServeCouponAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (view.getId() == R.id.item_use_tv){
+                MainActivity.openMainActAndClearTaskJump(MyCouponActivity.this, 2);
+                finish();
             }
         });
 
@@ -261,17 +296,23 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 
             @Override
             public void onPageSelected(int position) {
-
+                viewPosition = position;
                 switch (position) {
                     case 0:
                         mBinding.statusLayout.setVisibility(View.VISIBLE);
-
+                        mBinding.useableView.setText(String.format("可使用(%s张)",
+                                TextUtils.isEmpty(mCouponNumEntity1.getUse()) ? 0 : mCouponNumEntity1.getUse()));
+                        mBinding.toBeUseView.setText(String.format("待使用(%s张)", TextUtils.isEmpty(mCouponNumEntity1.getWait()) ? 0 : mCouponNumEntity1.getWait()));
                         break;
                     case 1:
                         mBinding.statusLayout.setVisibility(View.VISIBLE);
+                        mBinding.useableView.setText(String.format("可使用(%s张)",
+                                TextUtils.isEmpty(mCouponNumEntity2.getUse()) ? 0 : mCouponNumEntity2.getUse()));
+                        mBinding.toBeUseView.setText(String.format("待使用(%s张)",
+                                TextUtils.isEmpty(mCouponNumEntity2.getWait()) ? 0 : mCouponNumEntity2.getWait()));
                         break;
                     case 2:
-                        mBinding.statusLayout.setVisibility(View.VISIBLE);
+                        mBinding.statusLayout.setVisibility(View.GONE);
                         break;
                     case 3:
                         mBinding.statusLayout.setVisibility(View.GONE);
@@ -284,20 +325,38 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 
             }
         });
-        mBinding.statusLayout.check(R.id.useable_view);
         mBinding.statusLayout.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.useable_view:
-
+                    setStatusData(1);
                     break;
                 case R.id.to_be_use_view:
-
+                    setStatusData(2);
                     break;
                 case R.id.used_view:
-
+                    setStatusData(0);
                     break;
             }
         });
+
+        mBinding.statusLayout.check(R.id.useable_view);
+
+    }
+
+    private void setStatusData(int status){
+        switch (viewPosition){
+            case 0:
+                platformCanUse = status;
+                getPlatformCouponVOs(status);
+                break;
+            case 1:
+                businessCanUse = status;
+                getBusinessCoupons(status);
+                break;
+            case 2:
+                getCarServeCoupons();
+                break;
+        }
     }
 
     @Override
@@ -329,29 +388,29 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 
         });
 
-        mViewModel.disablePlatformCouponLiveData.observe(this, data -> {
-
-            if (data != null && data.size() > 0) {
-                unCanData.addAll(data);
-            } else {
-            }
-
-
-        });
-        mViewModel.disableBusinessCouponLiveData.observe(this, data -> {
-
-            if (data != null && data.size() > 0) {
-                unCanData2.addAll(data);
-            } else {
-
+        mViewModel.carServeCouponLiveData.observe(this, carCouponEntity -> {
+            mCarServeRefreshView.finishRefresh();
+            if (carCouponEntity.getRecords() != null && carCouponEntity.getRecords().size() > 0){
+                carServeCouponAdapter.setNewData(carCouponEntity.getRecords());
             }
         });
+
         mViewModel.exchangeCouponLiveData.observe(this, data -> {
             if (data.getCode() == 1) {
                 showToastSuccess("兑换成功");
             } else {
                 showToastError("兑换失败");
             }
+        });
+
+        mViewModel.couponNumLiveData1.observe(this, couponNumEntity -> {
+            mCouponNumEntity1 = couponNumEntity;
+            mBinding.useableView.setText(String.format("可使用(%s张)", mCouponNumEntity1.getUse()));
+            mBinding.toBeUseView.setText(String.format("待使用(%s张)", mCouponNumEntity1.getWait()));
+        });
+
+        mViewModel.couponNumLiveData2.observe(this, couponNumEntity -> {
+            mCouponNumEntity2 = couponNumEntity;
         });
     }
 
@@ -362,6 +421,10 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 
     private void getBusinessCoupons(int businessCanUse) {
         mViewModel.getBusinessCoupons(businessCanUse);
+    }
+
+    private void getCarServeCoupons(){
+        mViewModel.carServeCoupon();
     }
 
     private void exchangeCoupon(String couponCode) {

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.blankj.utilcode.util.BarUtils;
@@ -21,6 +22,7 @@ import com.xxjy.jyyh.databinding.FragmentMineBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.UserBean;
+import com.xxjy.jyyh.entity.VipInfoEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.order.CarServeOrderListActivity;
@@ -36,6 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewModel> {
+
+    private String mUserCardId = "";
+
     public static MineFragment getInstance() {
         return new MineFragment();
     }
@@ -54,6 +59,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             if (UserConstants.getIsLogin()) {
                 queryUserInfo();
                 getMonthEquityInfo();
+                getVipInfo();
             }
         }
     }
@@ -65,6 +71,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         if (UserConstants.getIsLogin()) {
             queryUserInfo();
             getMonthEquityInfo();
+            getVipInfo();
         } else {
             mBinding.photoView.setImageResource(R.drawable.default_img_bg);
             mBinding.nameView.setText("登录注册");
@@ -152,6 +159,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             if (UserConstants.getIsLogin()) {
                 queryUserInfo();
                 getMonthEquityInfo();
+                getVipInfo();
             } else {
                 mBinding.refreshview.finishRefresh();
             }
@@ -175,6 +183,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.closeNoticeView.setOnClickListener(this::onViewClicked);
         mBinding.openView.setOnClickListener(this::onViewClicked);
         mBinding.receiveBt.setOnClickListener(this::onViewClicked);
+        mBinding.vipReceiveBt.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -213,7 +222,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                         LoginHelper.login(mContext, new LoginHelper.CallBack() {
                             @Override
                             public void onLogin() {
-
+                                
                             }
                         });
                         break;
@@ -243,7 +252,10 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                             return;
                         }
                         WebViewActivity.openRealUrlWebActivity(getBaseActivity(), userBean.getMonthCardBuyUrl());
-
+                        break;
+                    case R.id.vip_receive_bt:
+                        String url = "https://tcore.qqgyhk.com/membership";
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), url + (!TextUtils.isEmpty(mUserCardId) ? "?id=" + mUserCardId : ""));
                         break;
                 }
             }
@@ -265,7 +277,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             mBinding.integralView.setText(NumberUtils.format(Double.parseDouble(data.getIntegralBalance()), 0));
             mBinding.balanceView.setText(data.getBalance());
 //            mBinding.userPhoneView.setVisibility(View.VISIBLE);
-            setHeight(!data.isHasBuyOldMonthCoupon());
+//            setHeight(!data.isHasBuyOldMonthCoupon());
             SpanUtils.with(mBinding.couponView)
 
                     .append("" + data.getCouponsSize())
@@ -329,18 +341,41 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             }
 
         });
+
+        mViewModel.vipLiveData.observe(this, new Observer<VipInfoEntity>() {
+            @Override
+            public void onChanged(VipInfoEntity s) {
+                setHeight(true);
+                if (TextUtils.isEmpty(s.getUserCardId())){
+                    mBinding.vipMoneyView2.setVisibility(View.INVISIBLE);
+                    mBinding.vipReceiveBt.setImageResource(R.drawable.vip_join_iv);
+                }else {
+                    mUserCardId = s.getUserCardId();
+                    mBinding.vipMoneyView2.setVisibility(View.VISIBLE);
+                    mBinding.vipMoneyView.setText("有效期至：" + s.getExpire());
+                    mBinding.vipReceiveBt.setImageResource(R.drawable.vip_look_icon);
+                }
+            }
+        });
+
+        mViewModel.vipInfoLiveData.observe(this, new Observer<VipInfoEntity>() {
+            @Override
+            public void onChanged(VipInfoEntity s) {
+                mBinding.vipMoneyView.setText(s.getDescription());
+            }
+        });
     }
 
     private void setHeight(boolean isHeight) {
         if (isHeight) {
             ViewGroup.LayoutParams params = mBinding.layout1.getLayoutParams();
-            params.height = QMUIDisplayHelper.dpToPx(125);
+            params.height = QMUIDisplayHelper.dpToPx(135);
             mBinding.layout1.setLayoutParams(params);
             ViewGroup.LayoutParams params2 = mBinding.bgView.getLayoutParams();
-            params2.height = QMUIDisplayHelper.dpToPx(125);
+            params2.height = QMUIDisplayHelper.dpToPx(135);
             mBinding.bgView.setLayoutParams(params2);
-            mBinding.bgView.setBackgroundResource(R.drawable.bg_mine_top);
-            mBinding.cardLayout.setVisibility(View.VISIBLE);
+            mBinding.bgView.setBackgroundResource(R.drawable.bg_mine_top_4);
+            mBinding.vipLayout.setVisibility(View.VISIBLE);
         } else {
             ViewGroup.LayoutParams params = mBinding.layout1.getLayoutParams();
             params.height = QMUIDisplayHelper.dpToPx(70);
@@ -349,9 +384,8 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             params2.height = QMUIDisplayHelper.dpToPx(70);
             mBinding.bgView.setLayoutParams(params2);
             mBinding.bgView.setBackgroundResource(R.drawable.bg_mine_top_2);
-            mBinding.cardLayout.setVisibility(View.GONE);
+            mBinding.vipLayout.setVisibility(View.GONE);
         }
-
     }
 
     private void getBannerOfPostion() {
@@ -364,5 +398,10 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 
     private void getMonthEquityInfo() {
         mViewModel.getMonthEquityInfo();
+    }
+
+    private void getVipInfo(){
+        mViewModel.getVip();
+        mViewModel.getVipInfo();
     }
 }

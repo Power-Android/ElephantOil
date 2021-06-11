@@ -15,6 +15,15 @@ public class UserBean {
     private boolean hasBuyOldMonthCoupon;
     private String monthCardTotalDiscount;
     private String monthCardExpireDate;
+    private boolean eVipOpenFlag;
+
+    public boolean iseVipOpenFlag() {
+        return eVipOpenFlag;
+    }
+
+    public void seteVipOpenFlag(boolean eVipOpenFlag) {
+        this.eVipOpenFlag = eVipOpenFlag;
+    }
 
     public String getMonthCardTotalDiscount() {
         return monthCardTotalDiscount;

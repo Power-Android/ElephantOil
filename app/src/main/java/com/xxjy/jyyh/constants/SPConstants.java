@@ -95,4 +95,10 @@ public class SPConstants {
      *新人红包弹窗
      */
     public static final String NEW_USER_RED_PACKET = "new_user_red_packet";
+
+    /**
+     * 今天是否展示悬浮窗
+     */
+    public static final String IS_TODAY = "is_today";
+
 }

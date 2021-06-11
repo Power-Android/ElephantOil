@@ -164,7 +164,7 @@ public class HomeRepository extends BaseRepository {
 
     public void getHomeCard(double lat, double lng, String gasId,
                            MutableLiveData<OilEntity> homeOilLiveData) {
-        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/tiein/v1/queryHomeCardInfo")
+        addDisposable(RxHttp.postForm(ApiService.HOME_CARD_INFO)
                 .add(Constants.LATITUDE, lat, lat != 0)
                 .add(Constants.LONGTIDUE, lng, lng != 0)
                 .add(Constants.GAS_STATION_ID, gasId, !TextUtils.isEmpty(gasId))
@@ -173,13 +173,8 @@ public class HomeRepository extends BaseRepository {
     }
 
     public void getMenu(MutableLiveData<List<HomeMenuEntity>> menuLiveData) {
-        addDisposable(RxHttp.postForm("http://192.168.1.84:8833/api/tiein/v1/queryHomeKingKongDistrict")
+        addDisposable(RxHttp.postForm(ApiService.HOME_MENU_INFO)
                 .asResponseList(HomeMenuEntity.class)
-                .subscribe(new Consumer<List<HomeMenuEntity>>() {
-                    @Override
-                    public void accept(List<HomeMenuEntity> menuEntityList) throws Throwable {
-                        menuLiveData.postValue(menuEntityList);
-                    }
-                }));
+                .subscribe(menuEntityList -> menuLiveData.postValue(menuEntityList)));
     }
 }

@@ -186,10 +186,11 @@ public class CouponBean implements MultiItemEntity {
 
     @Override
     public int getItemType() {
-        if(TextUtils.isEmpty(pointReduce)||TextUtils.equals(pointReduce,"0")){
-            return 0;
-        }else{
-            return 1;
-        }
+        return 0;
+//        if(TextUtils.isEmpty(pointReduce)||TextUtils.equals(pointReduce,"0")){
+//            return 0;
+//        }else{
+//            return 1;
+//        }
     }
 }

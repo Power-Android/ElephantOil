@@ -275,4 +275,11 @@ public class OilRepository extends BaseRepository {
                 .subscribe( s -> liveData.postValue(s))
         );
     }
+
+    public void getDragViewInfo(MutableLiveData<RedeemEntity> dragViewLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.DRAG_INFO)
+                        .asResponse(RedeemEntity.class)
+                        .subscribe( s -> dragViewLiveData.postValue(s))
+        );
+    }
 }
