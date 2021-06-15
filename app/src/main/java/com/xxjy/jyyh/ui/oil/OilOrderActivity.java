@@ -21,6 +21,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SpanUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.rxjava.rxlife.RxLife;
@@ -768,6 +769,16 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         });
 
         mBinding.createOrderTv.setOnClickListener(view -> {
+            List<RedeemEntity.ProductOilGasListBean> data = mOilRedeemAdapter.getData();
+            if (Float.parseFloat(mBinding.amountEt.getText().toString()) < 100 && data.get(0).getTrialType() == 2){
+                for (int i = 0; i < data.size(); i++) {
+                    if (data.get(i).isSelected()){
+                        showToastInfo("满100元加油金额可勾选洗车服务下单");
+                        return;
+                    }
+                }
+            }
+
             UiUtils.canClickViewStateDelayed(view, 1000);
             mViewModel.createOrder(mBinding.amountEt.getText().toString(), mMultiplePriceBean.getDuePrice(),
                     mMultiplePriceBean.getBalancePrice(), mStationsBean.getGasId(), String.valueOf(mStationsBean.getOilPriceList().get(mOilNoPosition).
