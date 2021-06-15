@@ -212,7 +212,7 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
                 mBinding.productNameView.setText(data.getProductName());
                 mBinding.shopNameView.setText(data.getStoreName());
                 mBinding.couponCodeView.setText("券码："+data.getVerificationCode());
-                mBinding.couponDescView.setText(data.getDescription());
+                mBinding.couponDescView.setText(data.getCarTypeDesc());
                 mBinding.timeView.setText("有效期至:"+ data.getPayTime().substring(0,10)+" - "+data.getExpireTime().substring(0,10));
                 GlideUtils.loadImage(this,data.getQrcodeBase64(),mBinding.qrcodeImageView);
             }

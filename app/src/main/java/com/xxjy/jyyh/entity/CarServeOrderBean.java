@@ -37,6 +37,15 @@ public class CarServeOrderBean {
     private String openHoliday;
 
     private String qrcodeBase64;
+    private String carTypeDesc;
+
+    public String getCarTypeDesc() {
+        return carTypeDesc;
+    }
+
+    public void setCarTypeDesc(String carTypeDesc) {
+        this.carTypeDesc = carTypeDesc;
+    }
 
     public String getEndHoliday() {
         return endHoliday;
