@@ -254,8 +254,8 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                         WebViewActivity.openRealUrlWebActivity(getBaseActivity(), userBean.getMonthCardBuyUrl());
                         break;
                     case R.id.vip_receive_bt:
-                        String url = "https://tcore.qqgyhk.com/membership";
-                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), url + (!TextUtils.isEmpty(mUserCardId) ? "?id=" + mUserCardId : ""));
+                        String url = "https://tcore.qqgyhk.com/membership?id=1";
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), url);
                         break;
                 }
             }
@@ -361,7 +361,9 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mViewModel.vipInfoLiveData.observe(this, new Observer<VipInfoEntity>() {
             @Override
             public void onChanged(VipInfoEntity s) {
-                mBinding.vipMoneyView.setText(s.getDescription());
+                if (!TextUtils.isEmpty(s.getDescription())){
+                    mBinding.vipMoneyView.setText(s.getDescription());
+                }
             }
         });
     }
@@ -402,6 +404,8 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 
     private void getVipInfo(){
         mViewModel.getVip();
-        mViewModel.getVipInfo();
+        if (TextUtils.isEmpty(mUserCardId)){
+            mViewModel.getVipInfo();
+        }
     }
 }
