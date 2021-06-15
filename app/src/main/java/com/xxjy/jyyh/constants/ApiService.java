@@ -164,6 +164,8 @@ public class ApiService {
     public static final String RECEIVE_OIL_JOB_COUPON = "api/activeCommon/receiveOilJobCoupon";
     //获取搭售列表
     public static final String QUERY_SALE_INFO = "api/tiein/v1/queryTieinSaleInfo";
+    //获取搭售列表
+    public static final String QUERY_SALE_INFO_CAR_SERVE = "api/tiein/v1/queryTieinSaleCfInfo";
     //获取会员卡信息
     public static final String GET_MEMBER_CARD_INFO = "api/v1/member/getMemberBuyIndex";
     //获取会员卡有效期

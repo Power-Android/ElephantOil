@@ -17,10 +17,12 @@ import rxhttp.RxHttp;
  */
 public class RefuelingPayResultRepository extends BaseRepository {
 
-    public void getPayResult(String orderNo, String orderPayNo, MutableLiveData<PayResultEntity> payResultLiveData) {
+    public void getPayResult(String orderNo, String orderPayNo, String latitude,String longitude, MutableLiveData<PayResultEntity> payResultLiveData) {
         addDisposable(RxHttp.postForm(ApiService.PAY_ORDER_RESULT)
                 .add("orderNo", orderNo)
                 .add("orderPayNo", orderPayNo)
+                .add("latitude", latitude)
+                .add("longitude", longitude)
                 .asResponse(PayResultEntity.class)
                 .subscribe(new Consumer<PayResultEntity>() {
                     @Override

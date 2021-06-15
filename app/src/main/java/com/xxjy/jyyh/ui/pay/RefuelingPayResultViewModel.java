@@ -22,8 +22,8 @@ public class RefuelingPayResultViewModel extends BaseViewModel<RefuelingPayResul
         super(application);
     }
 
-    public void getPayResult(String orderNo, String orderPayNo) {
-        mRespository.getPayResult(orderNo, orderPayNo, payResultLiveData);
+    public void getPayResult(String orderNo, String orderPayNo,String latitude,String longitude) {
+        mRespository.getPayResult(orderNo, orderPayNo,latitude,longitude, payResultLiveData);
     }
 
     public void getHomeProduct() {

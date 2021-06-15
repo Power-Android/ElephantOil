@@ -87,7 +87,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         mBinding.searchEt.setText(mContent);
 
         mOilViewModel = new ViewModelProvider(this).get(OilViewModel.class);
-
+        carServeViewModel =new  ViewModelProvider(this).get(CarServeViewModel.class);
         if (TextUtils.equals("1", mType)) {
             mBinding.tab1Tv.setText("距离不限");
             mBinding.tab2Tv.setText("全部");
@@ -149,7 +149,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
                     TrackingConstant.SEARCH_LIST, "", "type=2");
         }else{
-            carServeViewModel =new  ViewModelProvider(this).get(CarServeViewModel.class);
+
             mBinding.searchEt.setHint("搜索车服门店名称");
             mBinding.carTabSelectLayout.setVisibility(View.VISIBLE);
             mBinding.tabLayout.setVisibility(View.GONE);
@@ -165,7 +165,45 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                             data.get(position).getLink());
                 }
             });
+            carServeAdapter.setOnItemClickListener((adapter, view, position) -> {
 
+                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                    @Override
+                    public void onLogin() {
+                        List<CarServeStoreBean> data = adapter.getData();
+//                    Intent intent = new Intent(mContext, OilDetailActivity.class);
+                        Intent intent = new Intent(SearchResultActivity.this, CarServeDetailsActivity.class);
+                        intent.putExtra("no", data.get(position).getCardStoreInfoVo().getStoreNo());
+                        intent.putExtra("distance",data.get(position).getCardStoreInfoVo().getDistance());
+                        startActivity(intent);
+                    }
+                });
+
+            });
+            carServeAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                @Override
+                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                    List<CarServeStoreBean> data = adapter.getData();
+                    LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                        @Override
+                        public void onLogin() {
+                            switch (view.getId()) {
+                                case R.id.navigation_ll:
+                                    if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                                        NavigationDialog navigationDialog = new NavigationDialog(SearchResultActivity.this,
+                                                data.get(position).getCardStoreInfoVo().getLatitude(), data.get(position).getCardStoreInfoVo().getLongitude(),
+                                                data.get(position).getCardStoreInfoVo().getStoreName());
+                                        navigationDialog.show();
+                                    } else {
+                                        showToastWarning("您当前未安装地图软件，请先安装");
+                                    }
+                                    break;
+                            }
+
+                        }
+                    });
+                }
+            });
             cityCode = UserConstants.getCityCode();
             getAreaList(cityCode);
             getProductCategory();
@@ -196,45 +234,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         mBinding.carBusinessStatusLayout.setOnClickListener(this::onViewClicked);
         mBinding.carServeSelectLayout.setOnClickListener(this::onViewClicked);
 
-        carServeAdapter.setOnItemClickListener((adapter, view, position) -> {
 
-            LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                @Override
-                public void onLogin() {
-                    List<CarServeStoreBean> data = adapter.getData();
-//                    Intent intent = new Intent(mContext, OilDetailActivity.class);
-                    Intent intent = new Intent(SearchResultActivity.this, CarServeDetailsActivity.class);
-                    intent.putExtra("no", data.get(position).getCardStoreInfoVo().getStoreNo());
-                    intent.putExtra("distance",data.get(position).getCardStoreInfoVo().getDistance());
-                    startActivity(intent);
-                }
-            });
-
-        });
-        carServeAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                List<CarServeStoreBean> data = adapter.getData();
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                    @Override
-                    public void onLogin() {
-                        switch (view.getId()) {
-                            case R.id.navigation_ll:
-                                if (MapIntentUtils.isPhoneHasMapNavigation()) {
-                                    NavigationDialog navigationDialog = new NavigationDialog(SearchResultActivity.this,
-                                            data.get(position).getCardStoreInfoVo().getLatitude(), data.get(position).getCardStoreInfoVo().getLongitude(),
-                                            data.get(position).getCardStoreInfoVo().getStoreName());
-                                    navigationDialog.show();
-                                } else {
-                                    showToastWarning("您当前未安装地图软件，请先安装");
-                                }
-                                break;
-                        }
-
-                    }
-                });
-            }
-        });
     }
 
     @Override

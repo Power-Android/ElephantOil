@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.TimeUtils;
@@ -19,22 +20,29 @@ import com.bumptech.glide.request.RequestOptions;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.PayResultBannerAdapter;
+import com.xxjy.jyyh.adapter.PayResultProductAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.ActivityRefuelingPayResultBinding;
+import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CardStoreInfoVoBean;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.PayResultEntity;
+import com.xxjy.jyyh.entity.PayResultProductBean;
 import com.xxjy.jyyh.ui.MainActivity;
+import com.xxjy.jyyh.ui.car.CarServeDetailsActivity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
 import com.xxjy.jyyh.ui.order.OtherOrderListActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
 import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.xxjy.jyyh.wight.MyCountDownTime;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
@@ -49,7 +57,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
     private List<PayResultEntity.ActiveParamsBean.BannerBean> data = new ArrayList<>();
     private List<HomeProductEntity.FirmProductsVoBean> mExchangeList = new ArrayList<>();
-//    private PayResultBannerAdapter payResultBannerAdapter;
+    //    private PayResultBannerAdapter payResultBannerAdapter;
     private String mOrderNo;
     private String mOrderPayNo;
     private HomeExchangeAdapter mExchangeAdapter;
@@ -65,6 +73,10 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
     private boolean isLocalLife = false;
     private boolean isAppPay = false;
     private String mGasId;
+
+    private PayResultProductAdapter payResultProductAdapter;
+    private List<PayResultProductBean> payResultProductBeanList = new ArrayList<>();
+    private CardStoreInfoVoBean cardStoreInfoVoBean;
 
     @Override
     protected void initView() {
@@ -82,7 +94,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
             mBinding.numView.setVisibility(View.GONE);
             mBinding.stationNameView.setText("消费商户：--");
         }
-        if(isAppPay){
+        if (isAppPay) {
             mBinding.checkBtLayout.setVisibility(View.GONE);
             mCountDownTime.start();
 
@@ -111,6 +123,11 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
         mBinding.timeView.setText(TimeUtils.date2String(TimeUtils.getNowDate(), "MM月dd日 HH:mm:ss"));
 //        mBinding.tryAgainView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 //        mBinding.tryAgainView.getPaint().setAntiAlias(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        mBinding.productRecyclerview.setLayoutManager(linearLayoutManager);
+        payResultProductAdapter = new PayResultProductAdapter(payResultProductBeanList);
+        mBinding.productRecyclerview.setAdapter(payResultProductAdapter);
 
         mHomeViewModel.getHomeProduct();
 
@@ -129,7 +146,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
             public void onFinish() {
                 mBinding.waitTimeView.setVisibility(View.GONE);
 //                mBinding.timeView.setText(TimeUtils.date2String(TimeUtils.getNowDate(), "MM月dd日 HH:mm:ss"));
-                mViewModel.getPayResult(mOrderNo, mOrderPayNo);
+                mViewModel.getPayResult(mOrderNo, mOrderPayNo, UserConstants.getLatitude(), UserConstants.getLongitude());
             }
         });
 //        mCountDownTime.start();
@@ -189,35 +206,72 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
         mBinding.goEquityOrderView.setOnClickListener(this::onViewClicked);
         mBinding.tv1.setOnClickListener(this::onViewClicked);
         mBinding.tv2.setOnClickListener(this::onViewClicked);
+        mBinding.carServeShopAddressNavigationView.setOnClickListener(this::onViewClicked);
+        mBinding.useView.setOnClickListener(this::onViewClicked);
+        mBinding.goMoreOilView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.go_order_view:
-                if(isLocalLife){
+                if (isLocalLife) {
                     startActivity(new Intent(this, OrderListActivity.class).putExtra("type", 2));
-                }else{
+                } else {
                     startActivity(new Intent(this, OrderListActivity.class).putExtra("type", 0));
                 }
 
                 finish();
                 break;
             case R.id.go_home_view:
-                if (UserConstants.getGoneIntegral()){
+                if (UserConstants.getGoneIntegral()) {
                     UiUtils.jumpToHome(this, Constants.TYPE_OIL);
-                }else {
+                } else {
                     UiUtils.jumpToHome(this, Constants.TYPE_HOME);
                 }
                 finish();
                 break;
             case R.id.go_equity_order_view:
                 startActivity(new Intent(this, OtherOrderListActivity.class).putExtra("isIntegral", true));
+               finish();
                 break;
             case R.id.tv1:
             case R.id.tv2:
                 mCountDownTime.start();
                 mBinding.checkBtLayout.setVisibility(View.GONE);
+                break;
+            case R.id.car_serve_shop_address_navigation_view:
+                if(cardStoreInfoVoBean==null){
+                    return;
+                }
+                if (MapIntentUtils.isPhoneHasMapNavigation()) {
+                    NavigationDialog navigationDialog = new NavigationDialog(this,
+                            cardStoreInfoVoBean.getLatitude(), cardStoreInfoVoBean.getLongitude(),
+                            cardStoreInfoVoBean.getStoreName());
+                    navigationDialog.show();
+                } else {
+                    showToastWarning("您当前未安装地图软件，请先安装");
+                }
+
+                break;
+            case R.id.use_view:
+                if(cardStoreInfoVoBean==null){
+                    return;
+                }
+                Intent intent = new Intent(this, CarServeDetailsActivity.class);
+                intent.putExtra("no", cardStoreInfoVoBean.getStoreNo());
+                intent.putExtra("distance",cardStoreInfoVoBean.getDistance());
+                startActivity(intent);
+                finish();
+
+                break;
+            case R.id.go_more_oil_view:
+                if (UserConstants.getGoneIntegral()) {
+                    UiUtils.jumpToHome(this, Constants.TYPE_CAR_SERVE);
+                } else {
+                    UiUtils.jumpToHome(this, Constants.TYPE_HOME);
+                }
+                finish();
                 break;
 
         }
@@ -232,13 +286,35 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                 mBinding.integralLl.setVisibility(View.VISIBLE);
             }
 //搭售商品
-            if(resultEntity.getProductParams()!=null){
-                if(resultEntity.getProductParams().getType()==2){
+            if (resultEntity.getProductParams() != null) {
+                if (resultEntity.getProductParams().getType() == 2) {
                     mBinding.goEquityOrderView.setVisibility(View.VISIBLE);
 
-                }else{
+                } else {
                     mBinding.goEquityOrderView.setVisibility(View.GONE);
                 }
+
+                if (resultEntity.getProductParams().getStoreRecordVo() != null) {
+                    mBinding.carServeLayout.setVisibility(View.VISIBLE);
+                    cardStoreInfoVoBean = resultEntity.getProductParams().getStoreRecordVo().getCardStoreInfoVo();
+                    GlideUtils.loadImage(this, cardStoreInfoVoBean.getStorePicture(), mBinding.carServeShopImageView);
+                    mBinding.carServeShopNameView.setText(cardStoreInfoVoBean.getStoreName());
+                    mBinding.carServeShopAddressView.setText(cardStoreInfoVoBean.getAddress());
+                    mBinding.carServeShopAddressNavigationView.setText(String.format("%.2f", cardStoreInfoVoBean.getDistance() / 1000d) + "KM");
+                } else {
+                    mBinding.carServeLayout.setVisibility(View.GONE);
+
+                }
+
+
+                if (resultEntity.getProductParams().getProductResult() != null && resultEntity.getProductParams().getProductResult().size() > 0) {
+                    mBinding.productLayout.setVisibility(View.VISIBLE);
+                    payResultProductAdapter.setNewData(resultEntity.getProductParams().getProductResult());
+                } else {
+                    mBinding.productLayout.setVisibility(View.GONE);
+                }
+
+
             }
 
             switch (resultEntity.getResult()) {
@@ -275,17 +351,17 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 //                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null) {
 //                        payResultBannerAdapter.setNewData(resultEntity.getActiveParams().getBanner());
 //                    }
-                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null&&resultEntity.getActiveParams().getBanner().size()>0) {
-                       mBinding.banner.setVisibility(View.VISIBLE);
+                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null && resultEntity.getActiveParams().getBanner().size() > 0) {
+                        mBinding.banner.setVisibility(View.VISIBLE);
                         initBanner(resultEntity.getActiveParams().getBanner());
-                    }else{
+                    } else {
                         mBinding.banner.setVisibility(View.GONE);
                     }
-                    if (resultEntity.getGasParams() != null){
+                    if (resultEntity.getGasParams() != null) {
                         mGasId = resultEntity.getGasParams().getGasId();
                     }
                     EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.GAS_PAY_RESULT, "", "gas_id=" + mGasId +";type=3");
+                            TrackingConstant.GAS_PAY_RESULT, "", "gas_id=" + mGasId + ";type=3");
 
                     break;
                 case 0://处理中
@@ -298,11 +374,11 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     mBinding.btLayout.setVisibility(View.VISIBLE);
                     mBinding.queryStatusView.setText(resultEntity.getMsg());
                     mBinding.fallMoney.setText("--");
-                    if (resultEntity.getGasParams() != null){
+                    if (resultEntity.getGasParams() != null) {
                         mGasId = resultEntity.getGasParams().getGasId();
                     }
                     EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.GAS_PAY_RESULT, "", "gas_id=" + mGasId +";type=2");
+                            TrackingConstant.GAS_PAY_RESULT, "", "gas_id=" + mGasId + ";type=2");
 //                    mBinding.decView.setText("请和加油员确认您的油机金额");
 //                    mBinding.tagView.setText("预计下单可获得");
 //                    mBinding.integralTv.setText(resultEntity.getIntegral() + "");
@@ -310,10 +386,10 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 //                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null) {
 //                        payResultBannerAdapter.setNewData(resultEntity.getActiveParams().getBanner());
 //                    }
-                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null&&resultEntity.getActiveParams().getBanner().size()>0) {
-                       mBinding.banner.setVisibility(View.VISIBLE);
+                    if (resultEntity.getActiveParams() != null && resultEntity.getActiveParams().getBanner() != null && resultEntity.getActiveParams().getBanner().size() > 0) {
+                        mBinding.banner.setVisibility(View.VISIBLE);
                         initBanner(resultEntity.getActiveParams().getBanner());
-                    }else{
+                    } else {
                         mBinding.banner.setVisibility(View.GONE);
                     }
                     break;
@@ -344,7 +420,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
     }
 
-    private void initBanner(List<PayResultEntity.ActiveParamsBean.BannerBean> data){
+    private void initBanner(List<PayResultEntity.ActiveParamsBean.BannerBean> data) {
         //banner
         mBinding.banner.setAdapter(new BannerImageAdapter<PayResultEntity.ActiveParamsBean.BannerBean>(data) {
             @Override
@@ -358,7 +434,6 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                 holder.imageView.setOnClickListener(v -> {
 
                     WebViewActivity.openWebActivity(RefuelingPayResultActivity.this, data.getLink());
-
 
 
                 });
@@ -382,6 +457,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
         intent.putExtra("isLocalLife", isLocalLife);
         activity.startActivity(intent);
     }
+
     public static void openPayResultPage(Activity activity, String orderNo, String orderPayNo,
                                          boolean isLocalLife, boolean isAppPay) {
         Intent intent = new Intent(activity, RefuelingPayResultActivity.class);

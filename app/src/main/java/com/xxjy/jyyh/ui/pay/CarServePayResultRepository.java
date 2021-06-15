@@ -18,10 +18,12 @@ import rxhttp.RxHttp;
  * @description:
  */
 public class CarServePayResultRepository extends BaseRepository {
-    public void getPayResult(String orderId, String payId, MutableLiveData<PayResultEntity> payResultLiveData) {
+    public void getPayResult(String orderId, String payId, String latitude,String longitude, MutableLiveData<PayResultEntity> payResultLiveData) {
         addDisposable(RxHttp.get(CarServeApiService.PAYMENT_RESULT)
                 .add("orderId", orderId)
                 .add("payId", payId)
+                .add("latitude", latitude)
+                .add("longitude", longitude)
                 .add("code", "04")
                 .asResponse(PayResultEntity.class)
                 .subscribe(resultEntity -> payResultLiveData.postValue(resultEntity))

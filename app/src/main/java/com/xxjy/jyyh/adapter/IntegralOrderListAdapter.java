@@ -37,12 +37,10 @@ public class IntegralOrderListAdapter extends BaseQuickAdapter<RefuelOrderBean, 
                 helper.getView(R.id.bt_layout).setVisibility(View.GONE);
                 helper.getView(R.id.bottom_layout_2).setVisibility(View.VISIBLE);
                 if(item.getTrialType()==2){
-
                     helper.getView(R.id.go_coupon_view).setVisibility(View.VISIBLE);
                 }else{
                     helper.getView(R.id.go_coupon_view).setVisibility(View.GONE);
                 }
-
 
                 break;
             case 2:

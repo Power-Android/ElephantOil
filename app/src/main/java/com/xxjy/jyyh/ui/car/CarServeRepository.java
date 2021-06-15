@@ -70,7 +70,7 @@ public class CarServeRepository extends BaseRepository {
         );
     }
     public void tyingProduct(MutableLiveData<RedeemEntity> liveData) {
-        addDisposable(RxHttp.postForm(CarServeApiService.TYING_PRODUCT)
+        addDisposable(RxHttp.postForm(ApiService.QUERY_SALE_INFO_CAR_SERVE)
                 .asResponse(RedeemEntity.class)
                 .subscribe(data -> liveData.postValue(data))
         );

@@ -141,6 +141,33 @@ public class PayResultEntity {
         private String productAmount;
         private String orderListH5Url;
         private int type;
+        private CarServeStoreBean storeRecordVo;
+        private List<PayResultProductBean> productResult;
+        private List<OilEntity.StationsBean> homeOilStations;
+
+        public List<OilEntity.StationsBean> getHomeOilStations() {
+            return homeOilStations;
+        }
+
+        public void setHomeOilStations(List<OilEntity.StationsBean> homeOilStations) {
+            this.homeOilStations = homeOilStations;
+        }
+
+        public CarServeStoreBean getStoreRecordVo() {
+            return storeRecordVo;
+        }
+
+        public void setStoreRecordVo(CarServeStoreBean storeRecordVo) {
+            this.storeRecordVo = storeRecordVo;
+        }
+
+        public List<PayResultProductBean> getProductResult() {
+            return productResult;
+        }
+
+        public void setProductResult(List<PayResultProductBean> productResult) {
+            this.productResult = productResult;
+        }
 
         public String getProductAmount() {
             return productAmount;

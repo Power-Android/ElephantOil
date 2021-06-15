@@ -25,8 +25,8 @@ public class CarServePayResultViewModel extends BaseViewModel<CarServePayResultR
     public MutableLiveData<PayResultEntity> payResultLiveData = new MutableLiveData<>();
     public MutableLiveData<CarServeOrderBean> orderLiveData = new MutableLiveData<>();
 
-    public void getPayResult(String orderNo, String orderPayNo) {
-        mRespository.getPayResult(orderNo, orderPayNo, payResultLiveData);
+    public void getPayResult(String orderNo, String orderPayNo, String latitude,String longitude) {
+        mRespository.getPayResult(orderNo, orderPayNo,  latitude, longitude, payResultLiveData);
     }
     public void getOrderInfo(String orderNo) {
         mRespository.getOrderInfo(orderNo, orderLiveData);

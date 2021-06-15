@@ -255,6 +255,172 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/car_serve_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp_12"
+                    android:paddingTop="@dimen/dp_20"
+                    android:paddingRight="@dimen/dp_12"
+                    android:paddingBottom="@dimen/dp_20"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="超值兑换成功！"
+                        android:textColor="@color/color_36"
+                        android:textSize="@dimen/sp_15"
+                        android:textStyle="bold" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginTop="@dimen/dp_11"
+                        android:background="#EAEAEA"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="推荐洗车门店"
+                            android:textColor="@color/color_36"
+                            android:textSize="@dimen/sp_13"
+                            android:layout_marginTop="@dimen/sp_11"
+                            />
+                        <TextView
+                            android:id="@+id/go_more_oil_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="查看更多>"
+                            android:layout_alignParentRight="true"
+                            android:textColor="#828282"
+                            android:textSize="@dimen/sp_11"
+                            android:layout_marginTop="@dimen/sp_11"
+                            />
+                    </RelativeLayout>
+                    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:padding="@dimen/dp_16"
+                        app:qmui_backgroundColor="#F3F3F3"
+                        app:qmui_radius="10dp">
+                        <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                            android:id="@+id/car_serve_shop_image_view"
+                            android:layout_width="@dimen/dp_54"
+                            android:layout_height="@dimen/dp_54"
+                            android:src="@drawable/default_img_bg"
+                            app:qmui_corner_radius="@dimen/dp_5"
+                            />
+<TextView
+    android:id="@+id/car_serve_shop_name_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/sp_15"
+    android:textColor="#1E1E1E"
+    android:layout_toEndOf="@+id/car_serve_shop_image_view"
+    android:layout_alignTop="@+id/car_serve_shop_image_view"
+    android:layout_marginTop="@dimen/dp_5"
+    android:layout_marginLeft="@dimen/dp_10"
+
+    android:text="店铺名称"/>
+                        <TextView
+                            android:id="@+id/car_serve_shop_address_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/sp_12"
+                            android:textColor="#838190"
+                            android:layout_toEndOf="@+id/car_serve_shop_image_view"
+                            android:layout_below="@+id/car_serve_shop_name_view"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginLeft="@dimen/dp_10"
+
+                            android:text="店铺名称"/>
+                        <TextView
+                            android:id="@+id/car_serve_shop_address_navigation_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/sp_12"
+                            android:textColor="#555555"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:drawableTop="@drawable/navigation_iv"
+                            android:layout_alignParentRight="true"
+                            android:text="0.00km"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/sp_12"
+                            android:textColor="#FE1300"
+                            android:layout_below="@+id/car_serve_shop_image_view"
+                            android:layout_marginTop="@dimen/dp_20"
+                            android:text="恭喜购买洗车券成功！可享受优惠洗车哦~"/>
+                        <TextView
+                            android:id="@+id/use_view"
+                            android:layout_width="@dimen/dp_74"
+                            android:layout_height="26dp"
+                            android:background="@drawable/shape_checked_bt"
+                            android:layout_below="@+id/car_serve_shop_address_navigation_view"
+                            android:checked="true"
+                            android:gravity="center"
+                            android:text="立即洗车"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:textSize="12sp" />
+                    </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/product_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp_12"
+                    android:paddingTop="@dimen/dp_20"
+                    android:paddingRight="@dimen/dp_12"
+                    android:paddingBottom="@dimen/dp_20"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="超值兑换成功！"
+                        android:textColor="@color/color_36"
+                        android:textSize="@dimen/sp_15"
+                        android:textStyle="bold" />
+
+                    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_14"
+                        android:minHeight="@dimen/dp_160"
+                        app:qmui_backgroundColor="#F3F3F3"
+                        app:qmui_radius="10dp">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/product_recyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_14"
+                        android:gravity="center"
+                        android:text="请现在与油站相关人员确定提取商品"
+                        android:textColor="#FE1300"
+                        android:textSize="@dimen/sp_12" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/price_layout_2"
