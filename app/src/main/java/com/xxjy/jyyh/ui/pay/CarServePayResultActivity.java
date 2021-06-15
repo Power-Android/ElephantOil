@@ -166,7 +166,7 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
                     if (data.getProductParams().getHomeOilStations()!= null&&data.getProductParams().getHomeOilStations().size()>0) {
                         mBinding.oilLayout.setVisibility(View.VISIBLE);
                         oilStationBean = data.getProductParams().getHomeOilStations().get(0);
-                        GlideUtils.loadImage(this, oilStationBean.getGasLogoSmall(), mBinding.oilStationImageView);
+                        GlideUtils.loadImage(this, oilStationBean.getGasTypeImg(), mBinding.oilStationImageView);
                         mBinding.oilStationNameView.setText(oilStationBean.getGasName());
                         mBinding.oilStationAddressView.setText(oilStationBean.getGasAddress());
                         mBinding.oilStationAddressNavigationView.setText(String.format("%.2f", oilStationBean.getDistance() ) + "KM");
