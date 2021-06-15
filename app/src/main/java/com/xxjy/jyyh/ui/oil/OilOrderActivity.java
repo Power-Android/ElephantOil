@@ -287,6 +287,10 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         mBinding.redeemRecycler.setAdapter(mOilRedeemAdapter);
         mOilRedeemAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<RedeemEntity.ProductOilGasListBean> data = adapter.getData();
+            if (Float.parseFloat(mBinding.amountEt.getText().toString()) < 100 && data.get(position).getTrialType() == 2){
+                showToastInfo("满100元加油金额可勾选洗车服务下单");
+                return;
+            }
             if (data.get(position).isSelected()){
                 if (mQueryDialog == null){
                     mQueryDialog = new QueryDialog(this);
