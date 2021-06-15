@@ -360,7 +360,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 mSelectBusinessStatusDialog.show();
                 mSelectBusinessStatusDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
                     status= data.getStatus();
-                    mBinding.carBusinessStatusTv.setText(data.getName());
+                    mBinding.carBusinessStatusTv.setText(data.getName().equals("全部")?"营业状态":data.getName());
                     mSelectBusinessStatusDialog.setSelectPosition(position);
                     loadCarServeData(false);
                 });
