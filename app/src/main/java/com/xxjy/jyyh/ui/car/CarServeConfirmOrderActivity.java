@@ -1,25 +1,18 @@
 package com.xxjy.jyyh.ui.car;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.blankj.utilcode.util.ClickUtils;
 import com.blankj.utilcode.util.GsonUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.luck.picture.lib.tools.DoubleUtils;
 import com.xxjy.jyyh.R;
-import com.xxjy.jyyh.adapter.CarServeDiscountAdapter;
-import com.xxjy.jyyh.adapter.OilDiscountAdapter;
 import com.xxjy.jyyh.adapter.OilRedeemAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.PayTypeConstants;
@@ -32,13 +25,10 @@ import com.xxjy.jyyh.entity.CarServeCouponBean;
 import com.xxjy.jyyh.entity.CarServeCouponListBean;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.CardStoreInfoVoBean;
-import com.xxjy.jyyh.entity.OilDiscountEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.ProductIdEntity;
 import com.xxjy.jyyh.entity.RedeemEntity;
-import com.xxjy.jyyh.ui.oil.OilOrderActivity;
 import com.xxjy.jyyh.ui.pay.CarServePayResultActivity;
-import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
@@ -49,7 +39,6 @@ import com.xxjy.jyyh.utils.pay.PayHelper;
 import com.xxjy.jyyh.utils.pay.PayListenerUtils;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 
-import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +78,8 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
         selectCarServeProductsBean = (CarServeProductsBean) getIntent().getSerializableExtra("product");
         selectCarServeCouponBean = (CarServeCouponBean) getIntent().getSerializableExtra("coupon");
         isFromDetail = getIntent().getBooleanExtra("from_detail",false);
+        carServePrice = Double.parseDouble(selectCarServeProductsBean.getSalePrice());
+        refreshPrice();
         initData();
         tyingProduct();
     }
@@ -243,18 +234,21 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                 carServePrice = selectCarServeCouponBean.getCouponValue();
                 selectCouponId = selectCarServeCouponBean.getId();
             } else {
-                if(isFromDetail){
-                    mBinding.couponLayout.setVisibility(View.VISIBLE);
-                    mBinding.couponNameView.setText("请选择优惠券");
-                }else{
+
                     if (selectCarServeProductsBean.getCategoryName().contains("洗车")) {
-                        mBinding.couponLayout.setVisibility(View.VISIBLE);
                         if (data.getRecords() != null && data.getRecords().size() > 0) {
                             if (mCarServeCouponListBean.getRecords().size() > 0) {
-                                mBinding.couponLayout.setVisibility(View.VISIBLE);
-                                mBinding.couponNameView.setText(data.getRecords().get(0).getTitle());
-                                selectCouponId = data.getRecords().get(0).getId();
-                                selectCarServeCouponBean = data.getRecords().get(0);
+                                if(isFromDetail){
+                                    mBinding.couponLayout.setVisibility(View.VISIBLE);
+                                    mBinding.couponNameView.setText("请选择优惠券");
+                                }else{
+                                    mBinding.couponLayout.setVisibility(View.VISIBLE);
+                                    mBinding.couponNameView.setText(data.getRecords().get(0).getTitle());
+                                    selectCouponId = data.getRecords().get(0).getId();
+                                    selectCarServeCouponBean = data.getRecords().get(0);
+                                    carServePrice = selectCarServeCouponBean.getCouponValue();
+                                }
+
                             } else {
                                 mBinding.couponLayout.setVisibility(View.VISIBLE);
                                 mBinding.couponNameView.setText("暂无优惠券");
@@ -263,11 +257,10 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                     } else {
                         mBinding.couponLayout.setVisibility(View.GONE);
                         carServePrice = Double.parseDouble(selectCarServeProductsBean.getSalePrice());
-                    }
                 }
 
-
             }
+            refreshPrice();
 
 
 
@@ -373,7 +366,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
         if (shouldJump) {
             shouldJump = false;
             CarServePayResultActivity.openPayResultPage(this,
-                    orderEntity.getOrderNo(), orderEntity.getOrderPayNo());
+                    orderEntity.getOrderId(), orderEntity.getPayId());
             closeDialog();
             finish();
         }

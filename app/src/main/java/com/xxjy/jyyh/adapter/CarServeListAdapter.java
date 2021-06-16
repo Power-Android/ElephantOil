@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.SpanUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -23,8 +24,10 @@ import com.qmuiteam.qmui.widget.QMUIFloatLayout;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.entity.CarServeStoreBean;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.utils.Util;
 
 import java.util.List;
+
 
 
 public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, BaseViewHolder> {
@@ -51,6 +54,24 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
                 .setText(R.id.item_navigation_tv, String.format("%.2f", item.getCardStoreInfoVo().getDistance() / 1000d) + "KM")
                 .setText(R.id.item_business_hours_tv, "营业时间：每天" + item.getCardStoreInfoVo().getOpenStart() + " - " + item.getCardStoreInfoVo().getEndStart())
                 .addOnClickListener(R.id.navigation_ll);
+        switch (item.getCardStoreInfoVo().getStatus()){
+            case 0:
+                helper.setVisible(R.id.shop_status_view, false );
+                break;
+            case 1:
+                helper.setVisible(R.id.shop_status_view, true );
+                helper.setText(R.id.shop_status_view,"休息中");
+                break;
+            case 2:
+                helper.setVisible(R.id.shop_status_view, true );
+                helper.setText(R.id.shop_status_view,"暂停营业");
+                break;
+            default:
+                helper.setVisible(R.id.shop_status_view, false );
+
+                break;
+
+        }
         helper.setVisible(R.id.shop_status_view, item.getCardStoreInfoVo().getStatus() == 0 ? false : true);
 
         ((QMUIFloatLayout) helper.getView(R.id.float_layout)).removeAllViews();
@@ -70,7 +91,7 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
             helper.getView(R.id.bottom_layout).setVisibility(View.VISIBLE);
             SpanUtils.with((TextView) helper.getView(R.id.desc_view))
                     .append("洗车低至 ")
-                    .append("¥"+item.getProducts().get(0).getSalePrice()+"元")
+                    .append("¥"+ Util.formatDouble(Double.parseDouble(item.getProducts().get(0).getSalePrice()))+"元")
                     .setForegroundColor(Color.parseColor("#FE1300"))
                     .append("起")
                     .create();

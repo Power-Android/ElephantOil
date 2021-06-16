@@ -19,6 +19,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
+import com.xxjy.jyyh.utils.Util;
 
 import java.util.List;
 
@@ -53,8 +54,8 @@ public class CarServeProjectListAdapter extends BaseQuickAdapter<CarServeProduct
                 )
                 .into((ImageView) helper.getView(R.id.img_iv));
         helper.setText(R.id.name_view, item.getName())
-                .setText(R.id.line_price_view, "¥" + item.getLinePrice())
-                .setText(R.id.sale_price_view, "¥" + item.getSalePrice());
+                .setText(R.id.line_price_view, "¥" + Util.formatDouble(Double.parseDouble(item.getLinePrice())))
+                .setText(R.id.sale_price_view, "¥" + Util.formatDouble(Double.parseDouble(item.getSalePrice())));
         ((TextView) helper.getView(R.id.line_price_view)).getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         if (mSelectPosition == helper.getAdapterPosition()) {
             helper.setImageResource(R.id.check_box, R.drawable.ic_checked);
