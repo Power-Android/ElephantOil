@@ -2,6 +2,7 @@ package com.xxjy.jyyh.adapter;
 
 
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -45,7 +46,7 @@ public class CarServeProjectListAdapter extends BaseQuickAdapter<CarServeProduct
     protected void convert(@NonNull BaseViewHolder helper, CarServeProductsBean item) {
 
         Glide.with(mContext)
-                .load(item.getCover())
+                .load(!TextUtils.isEmpty(item.getCover())?item.getCover():item.getDetailPic())
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .apply(new RequestOptions()
