@@ -137,6 +137,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
             shouldJump = false;
             RefuelingPayResultActivity.openPayResultPage(this,
                     orderEntity.getOrderNo(), orderEntity.getOrderPayNo());
+            clearData();
             closeDialog();
         }
     }
@@ -287,12 +288,12 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         mBinding.redeemRecycler.setAdapter(mOilRedeemAdapter);
         mOilRedeemAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<RedeemEntity.ProductOilGasListBean> data = adapter.getData();
-            if (data.get(position).isSelected()){
-                if (mQueryDialog == null){
+            if (data.get(position).isSelected()) {
+                if (mQueryDialog == null) {
                     mQueryDialog = new QueryDialog(this);
                     mQueryDialog.setContent(data.get(position).getName(), data.get(position).getRedeemPrice());
                     mQueryDialog.show();
-                }else {
+                } else {
                     mQueryDialog.setContent(data.get(position).getName(), data.get(position).getRedeemPrice());
                     mQueryDialog.show();
                 }
@@ -307,8 +308,8 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                         mOilRedeemAdapter.setSelected(position);
                         mProductIdList.clear();
                         for (int i = 0; i < data.size(); i++) {
-                            if (data.get(i).isSelected()){
-                                mProductIdList.add(new ProductIdEntity(data.get(i).getProductId()+"", "1"));
+                            if (data.get(i).isSelected()) {
+                                mProductIdList.add(new ProductIdEntity(data.get(i).getProductId() + "", "1"));
                             }
                         }
                         mJsonStr = GsonUtils.toJson(mProductIdList);
@@ -326,12 +327,12 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
 
                     }
                 });
-            }else {
-                if (Float.parseFloat(mBinding.amountEt.getText().toString()) < 100 && data.get(position).getTrialType() == 2){
+            } else {
+                if (Float.parseFloat(mBinding.amountEt.getText().toString()) < 100 && data.get(position).getTrialType() == 2) {
                     showToastInfo("满100元加油金额可勾选洗车服务下单");
                     return;
                 }
-                if (data.get(position).getTrialType() == 2){//车服门店单选
+                if (data.get(position).getTrialType() == 2) {//车服门店单选
                     for (int i = 0; i < data.size(); i++) {
                         data.get(i).setSelected(false);
                     }
@@ -339,8 +340,8 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 mOilRedeemAdapter.setSelected(position);
                 mProductIdList.clear();
                 for (int i = 0; i < data.size(); i++) {
-                    if (data.get(i).isSelected()){
-                        mProductIdList.add(new ProductIdEntity(data.get(i).getProductId()+"", "1"));
+                    if (data.get(i).isSelected()) {
+                        mProductIdList.add(new ProductIdEntity(data.get(i).getProductId() + "", "1"));
                     }
                 }
                 mJsonStr = GsonUtils.toJson(mProductIdList);
@@ -774,9 +775,9 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
 
         mBinding.createOrderTv.setOnClickListener(view -> {
             List<RedeemEntity.ProductOilGasListBean> data = mOilRedeemAdapter.getData();
-            if (Float.parseFloat(mBinding.amountEt.getText().toString()) < 100 && data.get(0).getTrialType() == 2){
+            if (Float.parseFloat(mBinding.amountEt.getText().toString()) < 100 && data.get(0).getTrialType() == 2) {
                 for (int i = 0; i < data.size(); i++) {
-                    if (data.get(i).isSelected()){
+                    if (data.get(i).isSelected()) {
                         showToastInfo("满100元加油金额可勾选洗车服务下单");
                         return;
                     }
@@ -1056,15 +1057,15 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         mViewModel.redeemLiveData.observe(this, new Observer<RedeemEntity>() {
             @Override
             public void onChanged(RedeemEntity redeemEntity) {
-                if (redeemEntity != null){
+                if (redeemEntity != null) {
                     List<RedeemEntity.EntranceListBean> entranceList = redeemEntity.getEntranceList();
                     Glide.with(OilOrderActivity.this).load(entranceList.get(0).getIcon()).into(mBinding.redeemView3);
                     mBinding.redeemView4.setText(entranceList.get(0).getTitle());
                     mBinding.redeemView5.setText(entranceList.get(0).getSubtitle());
-                    if (entranceList.get(0).getType() == 2){//车服门店
+                    if (entranceList.get(0).getType() == 2) {//车服门店
                         mBinding.redeemView6.setVisibility(View.VISIBLE);
                         mBinding.redeemView5.setTextColor(getResources().getColor(R.color.color_9A));
-                    }else {
+                    } else {
                         mBinding.redeemView6.setVisibility(View.GONE);
                         mBinding.redeemView5.setTextColor(getResources().getColor(R.color.color_76FF));
                     }
@@ -1073,7 +1074,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     mRedeemList = redeemEntity.getProductOilGasList();
                     mOilRedeemAdapter.setNewData(mRedeemList);
                     mOilRedeemAdapter.notifyDataSetChanged();
-                }else {
+                } else {
                     mBinding.redeemCl.setVisibility(View.GONE);
                 }
             }
@@ -1175,8 +1176,8 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
     }
 
     public void refreshMultiplePrice(String amount, String gasId, String oilNo, String isUserBill,
-                                 String platId, String businessAmount, String monthCouponId,
-                                 boolean isUseCoupon, boolean isUseBusinessCoupon, String productIds){
+                                     String platId, String businessAmount, String monthCouponId,
+                                     boolean isUseCoupon, boolean isUseBusinessCoupon, String productIds) {
         mViewModel.getMultiplePrice(amount, gasId, oilNo, isUserBill, platId, businessAmount, monthCouponId, isUseCoupon, isUseBusinessCoupon, productIds);
     }
 
@@ -1184,13 +1185,11 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         if (TextUtils.isEmpty(orderPayNo) && TextUtils.isEmpty(orderNo)) {
             return;
         }
-        mBinding.amountEt.getText().clear();
-        mViewModel.getRedeem(mStationsBean.getGasId());
-        refreshData();
         Intent intent = new Intent(this, RefuelingPayResultActivity.class);
         intent.putExtra("orderPayNo", orderPayNo);
         intent.putExtra("orderNo", orderNo);
         startActivity(intent);
+        clearData();
         closeDialog();
     }
 
@@ -1236,6 +1235,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         RefuelingPayResultActivity.openPayResultPage(this,
                 mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
         PayListenerUtils.getInstance().removeListener(this);
+        clearData();
         closeDialog();
     }
 
@@ -1244,6 +1244,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         RefuelingPayResultActivity.openPayResultPage(this,
                 mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
         PayListenerUtils.getInstance().removeListener(this);
+        clearData();
         closeDialog();
     }
 
@@ -1268,6 +1269,18 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
             mOilPayDialog = null;
         }
 
+        refreshData();
+    }
+
+    private void clearData() {
+        mBinding.amountEt.getText().clear();
+        //刷新快捷价格的选中状态
+        List<OilDefaultPriceEntity.DefaultAmountBean> data = mOilAmountAdapter.getData();
+        for (int i = 0; i < data.size(); i++) {
+            data.get(i).setSelected(false);
+        }
+        mOilAmountAdapter.notifyDataSetChanged();
+        mViewModel.getRedeem(mStationsBean.getGasId());
         refreshData();
     }
 }
