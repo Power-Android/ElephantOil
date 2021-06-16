@@ -166,7 +166,7 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
                     if (data.getProductParams().getHomeOilStations()!= null&&data.getProductParams().getHomeOilStations().size()>0) {
                         mBinding.oilLayout.setVisibility(View.VISIBLE);
                         oilStationBean = data.getProductParams().getHomeOilStations().get(0);
-                        GlideUtils.loadImage(this, oilStationBean.getGasLogoSmall(), mBinding.oilStationImageView);
+                        GlideUtils.loadImage(this, oilStationBean.getGasTypeImg(), mBinding.oilStationImageView);
                         mBinding.oilStationNameView.setText(oilStationBean.getGasName());
                         mBinding.oilStationAddressView.setText(oilStationBean.getGasAddress());
                         mBinding.oilStationAddressNavigationView.setText(String.format("%.2f", oilStationBean.getDistance() ) + "KM");
@@ -212,7 +212,7 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
                 mBinding.productNameView.setText(data.getProductName());
                 mBinding.shopNameView.setText(data.getStoreName());
                 mBinding.couponCodeView.setText("券码："+data.getVerificationCode());
-                mBinding.couponDescView.setText(data.getDescription());
+                mBinding.couponDescView.setText(data.getCarTypeDesc());
                 mBinding.timeView.setText("有效期至:"+ data.getPayTime().substring(0,10)+" - "+data.getExpireTime().substring(0,10));
                 GlideUtils.loadImage(this,data.getQrcodeBase64(),mBinding.qrcodeImageView);
             }
