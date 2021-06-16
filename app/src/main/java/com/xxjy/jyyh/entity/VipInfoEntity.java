@@ -26,6 +26,15 @@ public class VipInfoEntity {
     private String terminusCardNum;
     private String usableCount;
     private String description;
+    private String saveMoney;
+
+    public String getSaveMoney() {
+        return saveMoney;
+    }
+
+    public void setSaveMoney(String saveMoney) {
+        this.saveMoney = saveMoney;
+    }
 
     public String getDescription() {
         return description;

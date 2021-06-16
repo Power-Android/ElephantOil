@@ -266,7 +266,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
                 break;
             case R.id.go_more_oil_view:
-                UiUtils.jumpToHome(this, Constants.TYPE_OIL);
+                UiUtils.jumpToHome(this, Constants.TYPE_CAR_SERVE);
                 finish();
                 break;
 

@@ -151,7 +151,7 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
 
                 break;
             case R.id.go_more_oil_view:
-                UiUtils.jumpToHome(this, Constants.TYPE_CAR_SERVE);
+                UiUtils.jumpToHome(this, Constants.TYPE_OIL);
                 finish();
                 break;
         }

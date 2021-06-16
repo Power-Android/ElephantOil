@@ -2,6 +2,7 @@ package com.xxjy.jyyh.dialog;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -85,6 +86,8 @@ public class CarServiceDialog extends BottomSheetDialog {
         //服务价格
         mBinding.itemOrinPriceTv.setText("¥" + mList.get(0).getSalePrice());
         mBinding.itemPriceTv.setText("¥" + mList.get(0).getLinePrice());
+        mBinding.itemPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+
 
         //服务类型列表
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);

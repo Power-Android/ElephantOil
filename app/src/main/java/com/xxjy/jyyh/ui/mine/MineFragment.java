@@ -364,6 +364,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                 if (!TextUtils.isEmpty(s.getDescription())){
                     mBinding.vipMoneyView.setText(s.getDescription());
                 }
+                mBinding.vipMoneyView2.setText("已省" + s.getSaveMoney()+"元");
             }
         });
     }
