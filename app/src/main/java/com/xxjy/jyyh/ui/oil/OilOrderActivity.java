@@ -287,10 +287,6 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         mBinding.redeemRecycler.setAdapter(mOilRedeemAdapter);
         mOilRedeemAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<RedeemEntity.ProductOilGasListBean> data = adapter.getData();
-            if (Float.parseFloat(mBinding.amountEt.getText().toString()) < 100 && data.get(position).getTrialType() == 2){
-                showToastInfo("满100元加油金额可勾选洗车服务下单");
-                return;
-            }
             if (data.get(position).isSelected()){
                 if (mQueryDialog == null){
                     mQueryDialog = new QueryDialog(this);
@@ -331,6 +327,10 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     }
                 });
             }else {
+                if (Float.parseFloat(mBinding.amountEt.getText().toString()) < 100 && data.get(position).getTrialType() == 2){
+                    showToastInfo("满100元加油金额可勾选洗车服务下单");
+                    return;
+                }
                 if (data.get(position).getTrialType() == 2){//车服门店单选
                     for (int i = 0; i < data.size(); i++) {
                         data.get(i).setSelected(false);
@@ -1184,6 +1184,9 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         if (TextUtils.isEmpty(orderPayNo) && TextUtils.isEmpty(orderNo)) {
             return;
         }
+        mBinding.amountEt.getText().clear();
+        mViewModel.getRedeem(mStationsBean.getGasId());
+        refreshData();
         Intent intent = new Intent(this, RefuelingPayResultActivity.class);
         intent.putExtra("orderPayNo", orderPayNo);
         intent.putExtra("orderNo", orderNo);

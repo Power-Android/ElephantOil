@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_200"
     android:id="@+id/carview"
-    android:visibility="invisible"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/car_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_200"
         app:layout_constraintTop_toTopOf="parent">
@@ -108,5 +108,65 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/car_no_location_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_200"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/view1"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80"
+            android:src="@drawable/no_oil_icon"
+            android:layout_marginTop="@dimen/dp_25"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:id="@+id/view2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小象当前无法获取离您最近的门店信息呢！"
+            android:textSize="@dimen/sp_12"
+            android:textColor="#797979"
+            android:layout_marginTop="@dimen/common_margin"
+            app:layout_constraintTop_toBottomOf="@+id/view1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/go_more_car_view"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_27"
+            android:gravity="center"
+            android:text="查看更多门店"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/sp_11"
+            app:qmui_backgroundColor="@color/white"
+            app:qmui_borderWidth="0.5dp"
+            app:qmui_borderColor="@color/color_76FF"
+            app:qmui_radius="@dimen/dp_14"
+            android:layout_marginTop="@dimen/common_margin"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@+id/view2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/go_location_view"/>
 
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/car_go_location_view"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_27"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:gravity="center"
+            android:text="去授权"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_11"
+            android:layout_marginTop="@dimen/common_margin"
+            app:qmui_backgroundColor="@color/color_76FF"
+            app:qmui_borderWidth="0dp"
+            app:qmui_radius="@dimen/dp_14"
+            app:layout_constraintTop_toBottomOf="@+id/view2"
+            app:layout_constraintStart_toEndOf="@+id/go_more_oil_view"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

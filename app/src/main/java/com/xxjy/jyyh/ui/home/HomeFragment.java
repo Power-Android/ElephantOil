@@ -236,6 +236,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         } else {
             mOilCardBinding.noLocationLayout.setVisibility(View.VISIBLE);
             mOilCardBinding.recommendStationLayout.setVisibility(View.GONE);
+            mCarCardBinding.carNoLocationLayout.setVisibility(View.VISIBLE);
+            mCarCardBinding.carLayout.setVisibility(View.GONE);
         }
         getHomeOil();
         //请求定位权限
@@ -381,9 +383,13 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //        mLat = Double.parseDouble(UserConstants.getLatitude());
 //        mLng = Double.parseDouble(UserConstants.getLongitude());
 
-        if ((mLng == 0d || mLat == 0d) && TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
-            mOilCardBinding.recommendStationLayout.setVisibility(View.GONE);
-            mOilCardBinding.noLocationLayout.setVisibility(View.VISIBLE);
+        if ((mLng == 0d || mLat == 0d)) {
+            if (TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
+                mOilCardBinding.recommendStationLayout.setVisibility(View.GONE);
+                mOilCardBinding.noLocationLayout.setVisibility(View.VISIBLE);
+            }
+            mCarCardBinding.carNoLocationLayout.setVisibility(View.VISIBLE);
+            mCarCardBinding.carLayout.setVisibility(View.GONE);
         } else {
 //            LogUtils.e("2222", "VISIBLE");
 //            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
@@ -683,75 +689,77 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         });
 
         //首页卡片
-        mViewModel.homeOilLiveData.observe(this, new Observer<OilEntity>() {
-            @Override
-            public void onChanged(OilEntity oilEntity) {
-                if (oilEntity == null || oilEntity.getStations() == null ||
-                        oilEntity.getStations().size() <= 0 || oilEntity.getStations().get(0).getOilPriceList() == null) {
-                    return;
+        mViewModel.homeOilLiveData.observe(this, oilEntity -> {
+            mStoreRecordVo = oilEntity.getStoreRecordVo();
+
+            if (oilEntity.getHasStore() == 1) {//70km内有门店
+                if (mList.size() == 1) {
+                    titles = new String[]{"油站", "车服"};
+                    mCarView = null;
+                    mCarView = View.inflate(mContext, R.layout.home_car_card_layout, null);
+                    mCarCardBinding = HomeCarCardLayoutBinding.bind(mCarView);
+                    mList.add(mCarView);
+                    mBinding.viewPager.setNoScroll(true);
+                    mCommonNavigator.setAdjustMode(true);
+                    mCommonNavigator.notifyDataSetChanged();
+                    mPagerAdapter.refreshData(titles, mList);
+                    mBinding.viewPager.setAdapter(mPagerAdapter);
                 }
-                mStoreRecordVo = oilEntity.getStoreRecordVo();
                 if (oilEntity.getNearest() == 1) {//展示油站
                     mBinding.viewPager.setCurrentItem(0);
                 } else {//展示门店
-                    if (oilEntity.getHasStore() == 1) {//70km内有门店
-                        if (mList.size() == 1) {
-                            titles = new String[]{"油站", "车服"};
-                            mCarView = null;
-                            mCarView = View.inflate(mContext, R.layout.home_car_card_layout, null);
-                            mCarCardBinding = HomeCarCardLayoutBinding.bind(mCarView);
-                            mList.add(mCarView);
-                            mBinding.viewPager.setNoScroll(true);
-                            mCommonNavigator.setAdjustMode(true);
-                            mCommonNavigator.notifyDataSetChanged();
-                            mPagerAdapter.refreshData(titles, mList);
-                            mBinding.viewPager.setAdapter(mPagerAdapter);
-                        }
-                        mBinding.viewPager.setCurrentItem(1);
-                    } else {
-                        titles = new String[]{"油站"};
-                        if (mList.size() > 1) {
-                            mList.remove(1);
-                            mBinding.viewPager.removeViewAt(1);
-                            mBinding.viewPager.setNoScroll(false);
-                        }
-                        mCommonNavigator.setAdjustMode(false);
-                        mCommonNavigator.notifyDataSetChanged();
-                        mPagerAdapter.refreshData(titles, mList);
-                        mBinding.viewPager.setCurrentItem(0);
-                    }
+                    mBinding.viewPager.setCurrentItem(1);
                 }
-
-                if (oilEntity.getHasStore() == 1) {//最近是否有门店
-                    //车服卡片
-                    mCardStoreInfoVo = oilEntity.getStoreRecordVo().getCardStoreInfoVo();
-                    Glide.with(mContext).load(mCardStoreInfoVo.getStorePicture()).into(mCarCardBinding.carImgIv1);
-                    mCarCardBinding.carNameTv.setText(mCardStoreInfoVo.getStoreName());
-                    mCarCardBinding.carAddressTv.setText(mCardStoreInfoVo.getAddress());
-                    mCarCardBinding.carTimeTv.setText("营业时间：每天" + mCardStoreInfoVo.getOpenStart() + "-" + mCardStoreInfoVo.getEndStart());
-                    mCarCardBinding.carNavigationTv.setText(String.format("%.2f", mCardStoreInfoVo.getDistance() / 1000d) + "KM");
-                    mCarCardBinding.floatLayout.setMinimumHeight(QMUIDisplayHelper.dp2px(mContext, 40));
-                    mCarCardBinding.floatLayout.removeAllViews();
-                    if (mCardStoreInfoVo.getCategoryNameList() != null && mCardStoreInfoVo.getCategoryNameList().size() > 0) {
-                        for (String lab : mCardStoreInfoVo.getCategoryNameList()) {
-                            TextView textView = new TextView(mContext);
-                            textView.setMinHeight(QMUIDisplayHelper.dp2px(mContext, 20));
-                            int textViewPadding = QMUIDisplayHelper.dp2px(mContext, 5);
-                            int textViewPadding2 = QMUIDisplayHelper.dp2px(mContext, 3);
-                            textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
-                            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
-                            textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
-                            textView.setBackgroundResource(R.drawable.shape_stroke_station_tag);
-                            textView.setText(lab);
-                            mCarCardBinding.floatLayout.addView(textView);
-                        }
-                        mCarCardBinding.floatLayout.setVisibility(View.VISIBLE);
-                    } else {
-                        mCarCardBinding.floatLayout.setVisibility(View.INVISIBLE);
-                    }
-                    mCarCardBinding.carview.setVisibility(View.VISIBLE);
+            } else {
+                titles = new String[]{"油站"};
+                if (mList.size() > 1) {
+                    mList.remove(1);
+                    mBinding.viewPager.removeViewAt(1);
+                    mBinding.viewPager.setNoScroll(false);
                 }
+                mCommonNavigator.setAdjustMode(false);
+                mCommonNavigator.notifyDataSetChanged();
+                mPagerAdapter.refreshData(titles, mList);
+                mBinding.viewPager.setCurrentItem(0);
+            }
 
+            if (oilEntity.getHasStore() == 1 && oilEntity.getStoreRecordVo() != null &&
+                    oilEntity.getStoreRecordVo().getCardStoreInfoVo() != null) {//最近是否有门店
+                //车服卡片
+                mCardStoreInfoVo = oilEntity.getStoreRecordVo().getCardStoreInfoVo();
+                Glide.with(mContext).load(mCardStoreInfoVo.getStorePicture()).into(mCarCardBinding.carImgIv1);
+                mCarCardBinding.carNameTv.setText(mCardStoreInfoVo.getStoreName());
+                mCarCardBinding.carAddressTv.setText(mCardStoreInfoVo.getAddress());
+                mCarCardBinding.carTimeTv.setText("营业时间：每天" + mCardStoreInfoVo.getOpenStart() + "-" + mCardStoreInfoVo.getEndStart());
+                mCarCardBinding.carNavigationTv.setText(String.format("%.2f", mCardStoreInfoVo.getDistance() / 1000d) + "KM");
+                mCarCardBinding.floatLayout.setMinimumHeight(QMUIDisplayHelper.dp2px(mContext, 40));
+                mCarCardBinding.floatLayout.removeAllViews();
+                if (mCardStoreInfoVo.getCategoryNameList() != null && mCardStoreInfoVo.getCategoryNameList().size() > 0) {
+                    for (String lab : mCardStoreInfoVo.getCategoryNameList()) {
+                        TextView textView = new TextView(mContext);
+                        textView.setMinHeight(QMUIDisplayHelper.dp2px(mContext, 20));
+                        int textViewPadding = QMUIDisplayHelper.dp2px(mContext, 5);
+                        int textViewPadding2 = QMUIDisplayHelper.dp2px(mContext, 3);
+                        textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
+                        textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                        textView.setBackgroundResource(R.drawable.shape_stroke_station_tag);
+                        textView.setText(lab);
+                        mCarCardBinding.floatLayout.addView(textView);
+                    }
+                    mCarCardBinding.floatLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mCarCardBinding.floatLayout.setVisibility(View.INVISIBLE);
+                }
+                mCarCardBinding.carLayout.setVisibility(View.VISIBLE);
+                mCarCardBinding.carNoLocationLayout.setVisibility(View.GONE);
+            } else {
+                mCarCardBinding.carLayout.setVisibility(View.GONE);
+                mCarCardBinding.carNoLocationLayout.setVisibility(View.VISIBLE);
+            }
+
+            if (oilEntity.getStations() != null && oilEntity.getStations().get(0) != null &&
+                    oilEntity.getStations().get(0).getOilPriceList() != null ){
                 //油站卡片
                 mOilCardBinding.noLocationLayout.setVisibility(View.GONE);
                 mOilCardBinding.recommendStationLayout.setVisibility(View.VISIBLE);
