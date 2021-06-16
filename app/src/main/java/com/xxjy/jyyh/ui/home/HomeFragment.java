@@ -548,7 +548,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilCardBinding.oilNumTv.setOnClickListener(this::onViewClicked);
         mCarCardBinding.quickCarTv.setOnClickListener(this::onViewClicked);
         mCarCardBinding.carview.setOnClickListener(this::onViewClicked);
-        mCarCardBinding.carNavigationTv.setOnClickListener(this::onViewClicked);
 
         mBinding.searchIv.setOnClickListener(this::onViewClicked);
         mBinding.awardTv.setOnClickListener(this::onViewClicked);
@@ -566,6 +565,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilCardBinding.goLocationView.setOnClickListener(this::onViewClicked);
         mCarCardBinding.goMoreCarView.setOnClickListener(this::onViewClicked);
         mCarCardBinding.carGoLocationView.setOnClickListener(this::onViewClicked);
+        mCarCardBinding.carNavigationTv.setOnClickListener(this::onViewClicked);
     }
 
     @Override
