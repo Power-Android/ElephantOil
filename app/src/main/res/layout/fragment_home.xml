@@ -139,7 +139,7 @@
 
                         <net.lucode.hackware.magicindicator.MagicIndicator
                             android:id="@+id/indicator"
-                            android:layout_width="@dimen/dp_160"
+                            android:layout_width="@dimen/dp_170"
                             android:layout_height="@dimen/dp_40"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

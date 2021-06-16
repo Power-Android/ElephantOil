@@ -222,22 +222,22 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     mBinding.popupLayout.setBackgroundColor(Color.parseColor("#00000000"));
                     mBinding.carCitySelectTv.setTextColor(Color.parseColor("#FFFFFF"));
                     mBinding.carServeSelectTv.setTextColor(Color.parseColor("#FFFFFF"));
-                    mBinding.carSelectDistanceFirstTv.setTextColor(Color.parseColor("#FFFFFF"));
+//                    mBinding.carSelectDistanceFirstTv.setTextColor(Color.parseColor("#FFFFFF"));
                     mBinding.carBusinessStatusTv.setTextColor(Color.parseColor("#FFFFFF"));
                     mBinding.carImage1.setImageResource(R.drawable.icon_down_arrow_white);
                     mBinding.carImage2.setImageResource(R.drawable.icon_down_arrow_white);
-                    mBinding.carImage3.setImageResource(R.drawable.icon_down_arrow_white);
+//                    mBinding.carImage3.setImageResource(R.drawable.icon_down_arrow_white);
                     mBinding.carImage4.setImageResource(R.drawable.icon_down_arrow_white);
                 } else {
                     mBinding.search2Layout.setVisibility(View.GONE);
                     mBinding.popupLayout.setBackgroundColor(Color.parseColor("#F5F5F5"));
                     mBinding.carCitySelectTv.setTextColor(Color.parseColor("#323334"));
                     mBinding.carServeSelectTv.setTextColor(Color.parseColor("#323334"));
-                    mBinding.carSelectDistanceFirstTv.setTextColor(Color.parseColor("#323334"));
+//                    mBinding.carSelectDistanceFirstTv.setTextColor(Color.parseColor("#323334"));
                     mBinding.carBusinessStatusTv.setTextColor(Color.parseColor("#323334"));
                     mBinding.carImage1.setImageResource(R.drawable.icon_down_arrow);
                     mBinding.carImage2.setImageResource(R.drawable.icon_down_arrow);
-                    mBinding.carImage3.setImageResource(R.drawable.icon_down_arrow);
+//                    mBinding.carImage3.setImageResource(R.drawable.icon_down_arrow);
                     mBinding.carImage4.setImageResource(R.drawable.icon_down_arrow);
                 }
             }

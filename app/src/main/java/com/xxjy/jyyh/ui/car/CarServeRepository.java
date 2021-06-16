@@ -18,6 +18,7 @@ import com.xxjy.jyyh.entity.CarServeStoreDetailsBean;
 import com.xxjy.jyyh.entity.CarServeStoreListBean;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.RedeemEntity;
+import com.xxjy.jyyh.http.Response;
 
 import java.util.List;
 
@@ -55,6 +56,13 @@ public class CarServeRepository extends BaseRepository {
                 .add("couponAmount",couponAmount,!TextUtils.isEmpty(couponAmount))
                 .add("sku",sku,!TextUtils.isEmpty(sku)&&!TextUtils.equals("[]",sku))
                 .asResponse(CarServeCommitOrderBean.class)
+                .subscribe(data -> liveData.postValue(data))
+        );
+    }
+    public void cancelOrder(MutableLiveData<Response> liveData, String orderId) {
+        addDisposable(RxHttp.postForm(CarServeApiService.CANCEL_ORDER)
+                .add("orderId",orderId)
+                .asCodeResponse(Response.class)
                 .subscribe(data -> liveData.postValue(data))
         );
     }

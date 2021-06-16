@@ -11,4 +11,5 @@ public class PayTypeConstants {
     public static final String PAY_TYPE_WEIXIN_GZH = "wxjsapi";         //微信公众号
     public static final String PAY_TYPE_WEIXIN_XCX = "wxapplet";     //微信小程序
     public static final String PAY_TYPE_BALANCE = "balance";            //余额
+
 }

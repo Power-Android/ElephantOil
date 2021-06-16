@@ -69,6 +69,9 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
                             }
                             customerServiceDialog.show(view);
                             break;
+                        case R.id.check_coupon_code_view:
+                            WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink());
+                            break;
                     }
                 }
             });

@@ -22,6 +22,7 @@ import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.RedeemEntity;
+import com.xxjy.jyyh.http.Response;
 import com.xxjy.jyyh.jscalljava.jsbean.OrderBean;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class CarServeViewModel extends BaseViewModel<CarServeRepository> {
     public MutableLiveData<AreaListBean> cityListLiveData = new MutableLiveData<>();
     public MutableLiveData<CarServeCategoryListBean> productCategoryLiveData = new MutableLiveData<>();
     public MutableLiveData<CarServeStoreListBean> storeListLiveData = new MutableLiveData<>();
+    public MutableLiveData<Response> cancelOrderLiveData = new MutableLiveData<>();
 
     public void getStoreDetails(String storeNo) {
         mRespository.getStoreDetails(storeLiveData,storeNo);
@@ -53,6 +55,9 @@ public class CarServeViewModel extends BaseViewModel<CarServeRepository> {
                             String couponAmount,String sku) {
         mRespository.commitOrder(commitOrderLiveData, storeId, productId,
                  realMoney,  couponType, couponId, couponAmount, sku);
+    }
+    public void cancelOrder(String orderId) {
+        mRespository.cancelOrder(cancelOrderLiveData, orderId);
     }
     public void tyingProduct() {
         mRespository.tyingProduct(tyingProductLiveData);

@@ -266,11 +266,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
                 break;
             case R.id.go_more_oil_view:
-                if (UserConstants.getGoneIntegral()) {
-                    UiUtils.jumpToHome(this, Constants.TYPE_CAR_SERVE);
-                } else {
-                    UiUtils.jumpToHome(this, Constants.TYPE_HOME);
-                }
+                UiUtils.jumpToHome(this, Constants.TYPE_OIL);
                 finish();
                 break;
 

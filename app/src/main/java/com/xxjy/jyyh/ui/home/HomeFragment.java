@@ -564,6 +564,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.signInIv.setOnClickListener(this::onViewClicked);
         mOilCardBinding.goMoreOilView.setOnClickListener(this::onViewClicked);
         mOilCardBinding.goLocationView.setOnClickListener(this::onViewClicked);
+        mCarCardBinding.goMoreCarView.setOnClickListener(this::onViewClicked);
+        mCarCardBinding.carGoLocationView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -644,6 +646,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 });
 
                 break;
+            case R.id.car_go_location_view:
             case R.id.go_location_view:
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 Uri uri = Uri.fromParts("package", App.getContext().getPackageName(), null);
@@ -664,6 +667,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     intent1.putExtra("distance", mStoreRecordVo.getCardStoreInfoVo().getDistance());
                     startActivity(intent1);
                 });
+                break;
+            case R.id.go_more_car_view:
+                BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT,
+                        new EventEntity(EventConstants.EVENT_TO_CAR_FRAGMENT));
                 break;
         }
     }

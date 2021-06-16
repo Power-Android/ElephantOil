@@ -61,7 +61,7 @@ public class OrderListRepository extends BaseRepository {
                 .add("verificationStatus",verificationStatus,verificationStatus!=-1)
                 .add("pageNum",pageNum)
                 .add("pageSize",10)
-               .add("appId",CarServeApiService.APP_ID)
+                .add("appId",CarServeApiService.APP_ID)
                 .asResponse(CarServeOrderListBean.class)
                 .subscribe(data -> liveData.postValue(data))
         );

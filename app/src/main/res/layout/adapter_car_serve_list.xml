@@ -167,7 +167,7 @@
                 app:layout_constraintStart_toEndOf="@+id/item_oil_img_layout"
                 app:layout_constraintTop_toBottomOf="@+id/item_business_hours_tv"
                 app:qmui_childHorizontalSpacing="@dimen/dp_5"
-                app:qmui_maxNumber="2" />
+                 />
 
             <ImageView
                 android:id="@+id/type_view"

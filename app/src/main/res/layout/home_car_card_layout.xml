@@ -90,7 +90,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/car_img_iv_1"
             app:layout_constraintTop_toBottomOf="@+id/car_img_iv_1"
-            app:qmui_maxNumber="2" />
+           android:maxLines="1" />
 
         <TextView
             android:id="@+id/quick_car_tv"
@@ -150,7 +150,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@+id/view2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/go_location_view"/>
+            app:layout_constraintEnd_toStartOf="@+id/car_go_location_view"/>
 
         <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
             android:id="@+id/car_go_location_view"
@@ -166,7 +166,7 @@
             app:qmui_borderWidth="0dp"
             app:qmui_radius="@dimen/dp_14"
             app:layout_constraintTop_toBottomOf="@+id/view2"
-            app:layout_constraintStart_toEndOf="@+id/go_more_oil_view"
+            app:layout_constraintStart_toEndOf="@+id/go_more_car_view"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

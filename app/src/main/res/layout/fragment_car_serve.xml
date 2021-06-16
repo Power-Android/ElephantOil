@@ -241,28 +241,28 @@
                                         android:src="@drawable/icon_down_arrow_2" />
                                 </LinearLayout>
 
-                                <LinearLayout
-                                    android:id="@+id/car_distance_price_layout"
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:gravity="center">
+<!--                                <LinearLayout-->
+<!--                                    android:id="@+id/car_distance_price_layout"-->
+<!--                                    android:layout_width="0dp"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:layout_weight="1"-->
+<!--                                    android:gravity="center">-->
 
-                                    <TextView
-                                        android:id="@+id/car_select_distance_first_tv"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="距离优先"
-                                        android:textColor="@color/color_34"
-                                        android:textSize="@dimen/sp_13" />
+<!--                                    <TextView-->
+<!--                                        android:id="@+id/car_select_distance_first_tv"-->
+<!--                                        android:layout_width="wrap_content"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:text="距离优先"-->
+<!--                                        android:textColor="@color/color_34"-->
+<!--                                        android:textSize="@dimen/sp_13" />-->
 
-                                    <ImageView
-                                        android:id="@+id/car_image_3"
-                                        android:layout_width="@dimen/dp_6"
-                                        android:layout_height="@dimen/dp_5"
-                                        android:layout_marginLeft="@dimen/dp_7"
-                                        android:src="@drawable/icon_down_arrow_2" />
-                                </LinearLayout>
+<!--                                    <ImageView-->
+<!--                                        android:id="@+id/car_image_3"-->
+<!--                                        android:layout_width="@dimen/dp_6"-->
+<!--                                        android:layout_height="@dimen/dp_5"-->
+<!--                                        android:layout_marginLeft="@dimen/dp_7"-->
+<!--                                        android:src="@drawable/icon_down_arrow_2" />-->
+<!--                                </LinearLayout>-->
                                 <LinearLayout
                                     android:id="@+id/car_business_status_layout"
                                     android:layout_width="0dp"

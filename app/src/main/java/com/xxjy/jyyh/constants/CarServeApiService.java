@@ -36,7 +36,7 @@ public interface CarServeApiService {
     //车服订单列表
     String GET_ORDER_LIST = BASE_URL + "oil/api/v1/customer/car/order/list";
     //车服订单取消
-    String CANCEL_ORDER = BASE_URL + "oil/api/v1/customer/car/order/cancel";
+    String CANCEL_ORDER = BASE_URL + "oil/api/v1/customer/car/order/cancel/tiein";
 
     //查询车服搭售加油卡信息：入口,商品
     // TODO: 2021/6/5

@@ -217,7 +217,7 @@
                             android:layout_marginLeft="@dimen/dp_7"
                             android:layout_marginRight="@dimen/dp_7"
                             android:gravity="center"
-                            android:text="查看权益订单"
+                            android:text="查看加油权益订单"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/sp_14"
                             android:visibility="gone"

@@ -12,6 +12,7 @@ import android.text.Html;
 import android.view.View;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +28,8 @@ import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayResultProductBean;
 import com.xxjy.jyyh.ui.car.CarServeDetailsActivity;
+import com.xxjy.jyyh.ui.home.HomeViewModel;
+import com.xxjy.jyyh.ui.mine.MyCouponActivity;
 import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
 import com.xxjy.jyyh.ui.order.CarServeOrderListActivity;
 import com.xxjy.jyyh.ui.order.OrderListActivity;
@@ -46,9 +49,12 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
     private String mOrderPayNo;
     private MyCountDownTime mCountDownTime;
 
-    private OilEntity.StationsBean  oilStationBean;
+    private OilEntity.StationsBean oilStationBean;
     private PayResultProductAdapter payResultProductAdapter;
     private List<PayResultProductBean> payResultProductBeanList = new ArrayList<>();
+
+//    private HomeViewModel homeViewModel;
+
     @Override
     protected void initView() {
         mBinding.titleLayout.tvTitle.setText("支付结果");
@@ -79,6 +85,10 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
         mBinding.productRecyclerview.setLayoutManager(linearLayoutManager);
         payResultProductAdapter = new PayResultProductAdapter(payResultProductBeanList);
         mBinding.productRecyclerview.setAdapter(payResultProductAdapter);
+
+//        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
+
     }
 
     @Override
@@ -112,11 +122,11 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
                 finish();
                 break;
             case R.id.go_equity_order_view:
-                startActivity(new Intent(this, OtherOrderListActivity.class).putExtra("isIntegral", true));
+                startActivity(new Intent(this, MyCouponActivity.class));
                 finish();
                 break;
             case R.id.car_serve_shop_address_navigation_view:
-                if(oilStationBean==null){
+                if (oilStationBean == null) {
                     return;
                 }
                 if (MapIntentUtils.isPhoneHasMapNavigation()) {
@@ -130,22 +140,18 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
 
                 break;
             case R.id.use_view:
-                if(oilStationBean==null){
+                if (oilStationBean == null) {
                     return;
                 }
                 Intent intent = new Intent(this, OilDetailsActivity.class);
                 intent.putExtra(Constants.GAS_STATION_ID, oilStationBean.getGasId());
-                intent.putExtra(Constants.OIL_NUMBER_ID,oilStationBean.getOilNo());
+                intent.putExtra(Constants.OIL_NUMBER_ID, oilStationBean.getOilNo());
                 startActivity(intent);
                 finish();
 
                 break;
             case R.id.go_more_oil_view:
-                if (UserConstants.getGoneIntegral()) {
-                    UiUtils.jumpToHome(this, Constants.TYPE_CAR_SERVE);
-                } else {
-                    UiUtils.jumpToHome(this, Constants.TYPE_HOME);
-                }
+                UiUtils.jumpToHome(this, Constants.TYPE_CAR_SERVE);
                 finish();
                 break;
         }
@@ -163,13 +169,13 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
                         mBinding.goEquityOrderView.setVisibility(View.GONE);
                     }
 
-                    if (data.getProductParams().getHomeOilStations()!= null&&data.getProductParams().getHomeOilStations().size()>0) {
+                    if (data.getProductParams().getHomeOilStations() != null && data.getProductParams().getHomeOilStations().size() > 0) {
                         mBinding.oilLayout.setVisibility(View.VISIBLE);
                         oilStationBean = data.getProductParams().getHomeOilStations().get(0);
                         GlideUtils.loadImage(this, oilStationBean.getGasTypeImg(), mBinding.oilStationImageView);
                         mBinding.oilStationNameView.setText(oilStationBean.getGasName());
                         mBinding.oilStationAddressView.setText(oilStationBean.getGasAddress());
-                        mBinding.oilStationAddressNavigationView.setText(String.format("%.2f", oilStationBean.getDistance() ) + "KM");
+                        mBinding.oilStationAddressNavigationView.setText(String.format("%.2f", oilStationBean.getDistance()) + "KM");
                     } else {
                         mBinding.oilLayout.setVisibility(View.GONE);
                     }
@@ -206,15 +212,15 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
         mViewModel.orderLiveData.observe(this, data -> {
 
 
-            if(data!=null){
+            if (data != null) {
                 mBinding.payingLayout.setVisibility(View.GONE);
                 mBinding.orderLayout.setVisibility(View.VISIBLE);
                 mBinding.productNameView.setText(data.getProductName());
                 mBinding.shopNameView.setText(data.getStoreName());
-                mBinding.couponCodeView.setText("券码："+data.getVerificationCode());
+                mBinding.couponCodeView.setText("券码：" + data.getVerificationCode());
                 mBinding.couponDescView.setText(data.getCarTypeDesc());
-                mBinding.timeView.setText("有效期至:"+ data.getPayTime().substring(0,10)+" - "+data.getExpireTime().substring(0,10));
-                GlideUtils.loadImage(this,data.getQrcodeBase64(),mBinding.qrcodeImageView);
+                mBinding.timeView.setText("有效期至:" + data.getPayTime().substring(0, 10) + " - " + data.getExpireTime().substring(0, 10));
+                GlideUtils.loadImage(this, data.getQrcodeBase64(), mBinding.qrcodeImageView);
             }
         });
     }
@@ -228,8 +234,13 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
         }
     }
 
+    private void getOilStation(){
+        //首页卡片
+//        homeViewModel.getHomeCard(Double.parseDouble(UserConstants.getLatitude()),Double.parseDouble( UserConstants.getLongitude()),"");
+    }
+
     private void getPayResult() {
-        mViewModel.getPayResult(mOrderNo, mOrderPayNo,UserConstants.getLatitude(),UserConstants.getLongitude());
+        mViewModel.getPayResult(mOrderNo, mOrderPayNo, UserConstants.getLatitude(), UserConstants.getLongitude());
     }
 
     private void getOrderInfo() {
