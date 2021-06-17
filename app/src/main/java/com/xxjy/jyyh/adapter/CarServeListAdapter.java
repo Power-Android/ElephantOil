@@ -29,6 +29,7 @@ import com.xxjy.jyyh.entity.CarServeStoreBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.car.CarServeConfirmOrderActivity;
 import com.xxjy.jyyh.ui.car.CarServeDetailsActivity;
+import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.Util;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .apply(new RequestOptions()
-                        .error(R.drawable.default_img_bg)
+                        .error(R.drawable.ic_car_serve_store_image)
                 )
                 .into((ImageView) helper.getView(R.id.item_oil_img));
         helper.setText(R.id.item_name_tv, item.getCardStoreInfoVo().getStoreName())
@@ -103,7 +104,13 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
             carServeHomeProjectListAdapter.setOnSelectListener(new CarServeHomeProjectListAdapter.OnSelectListener() {
                 @Override
                 public void onSelect(CarServeProductsBean data) {
-                    CarServeConfirmOrderActivity.openPage(mContext,item.getCardStoreInfoVo(),data,null);
+                    LoginHelper.login(mContext, new LoginHelper.CallBack() {
+                        @Override
+                        public void onLogin() {
+                            CarServeConfirmOrderActivity.openPage(mContext,item.getCardStoreInfoVo(),data,null);
+                        }
+                    });
+
 
                 }
             });

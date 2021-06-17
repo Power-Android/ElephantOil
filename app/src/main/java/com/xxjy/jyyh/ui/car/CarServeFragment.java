@@ -477,6 +477,6 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
         mViewModel.getProductCategory();
     }
     private void getCarServeStoreList(){
-        mViewModel.getCarServeStoreList(pageIndex, cityCode, areaCode, productCategoryId, status,"");
+        mViewModel.getCarServeStoreList(pageIndex, TextUtils.isEmpty(cityCode)?"110100":cityCode, areaCode, productCategoryId, status,"");
     }
 }

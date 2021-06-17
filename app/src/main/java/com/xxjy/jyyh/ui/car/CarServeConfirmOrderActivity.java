@@ -40,6 +40,7 @@ import com.xxjy.jyyh.utils.pay.PayHelper;
 import com.xxjy.jyyh.utils.pay.PayListenerUtils;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -268,7 +269,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
     }
 
     private void initData() {
-        GlideUtils.loadImage(this, mCardStoreInfoVo.getStorePicture(), mBinding.shopImageView);
+        GlideUtils.loadImage(this, mCardStoreInfoVo.getStorePicture(), mBinding.shopImageView,R.drawable.ic_car_serve_store_image);
         mBinding.shopNameView.setText(mCardStoreInfoVo.getStoreName());
         mBinding.shopAddressView.setText(mCardStoreInfoVo.getAddress());
 
@@ -338,7 +339,8 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
     }
 
     private void refreshPrice() {
-        mBinding.currentPriceTv.setText("实付：¥" + (carServePrice + allProductPrice));
+//        BigDecimal.valueOf(allProductPrice).add(BigDecimal.valueOf(carServePrice));
+        mBinding.currentPriceTv.setText("实付：¥" + Util.formatDouble(BigDecimal.valueOf(allProductPrice).add(BigDecimal.valueOf(carServePrice)).doubleValue()));
     }
 
     private void tyingProduct() {

@@ -798,6 +798,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mOilCardBinding.tagRecyclerView.setVisibility(View.VISIBLE);
                     mOilCardBinding.tagBanner.setVisibility(View.GONE);
                 } else {
+                    LogUtils.e(mStationsBean.toString());
                     mOilCardBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
                     orderMsg();
                 }

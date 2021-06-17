@@ -186,7 +186,7 @@ public class Util {
 		return TextUtils.isDigitsOnly(appVersionName) ? "" : appVersionName;
 	}
 	public static String formatDouble(double d) {
-		BigDecimal bg = new BigDecimal(d).setScale(2, RoundingMode.DOWN);
+		BigDecimal bg =BigDecimal.valueOf(d).setScale(2, RoundingMode.DOWN);
 		double num = bg.doubleValue();
 		if (Math.round(num) - num == 0) {
 			return String.valueOf((long) num);

@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.entity.RedeemEntity;
+import com.xxjy.jyyh.utils.Util;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,8 +45,8 @@ public class OilRedeemAdapter extends BaseMultiItemQuickAdapter<RedeemEntity.Pro
                 .apply(new RequestOptions().error(R.drawable.default_img_bg)).into((ImageView) helper.getView(R.id.item_img_iv));
         helper.setText(R.id.item_name_tv, item.getName())
                 .setText(R.id.item_desc_tv, item.getProductDetail())
-                .setText(R.id.item_price_tv, "¥"+item.getRedeemPrice());
-        SpanUtils.with(helper.getView(R.id.item_orin_price_tv)).append("¥"+item.getCostPrice()).setStrikethrough().create();
+                .setText(R.id.item_price_tv, "¥"+ Util.formatDouble(Double.parseDouble(item.getRedeemPrice())));
+        SpanUtils.with(helper.getView(R.id.item_orin_price_tv)).append("¥"+Util.formatDouble(Double.parseDouble(item.getCostPrice()))).setStrikethrough().create();
 
         helper.setImageResource(R.id.item_check_box, item.isSelected() ? R.drawable.redeem_selected_icon : R.drawable.redeem_unslect_icon);
     }

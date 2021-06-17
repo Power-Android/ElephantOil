@@ -279,7 +279,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                         .load(data)
                         .apply(new RequestOptions()
                                 .placeholder(R.drawable.bg_banner_loading)
-                                .error(R.drawable.bg_banner_error))
+                                .error(R.drawable.ic_car_serve_store_image))
                         .into(holder.imageView);
             }
         }).addBannerLifecycleObserver(this)

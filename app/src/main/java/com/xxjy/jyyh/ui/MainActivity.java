@@ -160,6 +160,8 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                 }
 
             });
+        }else{
+            showNewUserDialog();
         }
 
 
@@ -401,17 +403,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
 
     }
 
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        disPathIntentMessage(intent);
-        jump(intent);
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
+    public void showNewUserDialog(){
         if(UserConstants.getIsLogin()){
             mViewModel.newUserStatus().observe(this, data -> {
                 if (data != null && data.getStatus()==1) {
@@ -427,6 +419,22 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         }
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        disPathIntentMessage(intent);
+        jump(intent);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        showNewUserDialog();
+    }
+
+
+
     /**
      * 打开首页并清空栈
      *
@@ -438,6 +446,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         activity.startActivity(intent);
 //        ActivityUtils.startHomeActivity();
     }
+
 
     /**
      * 打开首页并清空栈
