@@ -33,6 +33,7 @@ import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.UiUtils;
+import com.xxjy.jyyh.utils.Util;
 import com.xxjy.jyyh.utils.WXSdkManager;
 import com.xxjy.jyyh.utils.pay.IPayListener;
 import com.xxjy.jyyh.utils.pay.PayHelper;
@@ -271,10 +272,10 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
         mBinding.shopNameView.setText(mCardStoreInfoVo.getStoreName());
         mBinding.shopAddressView.setText(mCardStoreInfoVo.getAddress());
 
-        GlideUtils.loadImage(this, !TextUtils.isEmpty(selectCarServeProductsBean.getCover())?selectCarServeProductsBean.getCover():selectCarServeProductsBean.getDetailPic(), mBinding.productImageView);
+        GlideUtils.loadImage(this, selectCarServeProductsBean.getCover(), mBinding.productImageView,R.drawable.ic_car_default_product);
         mBinding.productNameView.setText(selectCarServeProductsBean.getName());
-        mBinding.productLinePriceView.setText("¥" + selectCarServeProductsBean.getLinePrice());
-        mBinding.productPriceView.setText("¥" + selectCarServeProductsBean.getSalePrice());
+        mBinding.productLinePriceView.setText("¥" + Util.formatDouble(Double.parseDouble(selectCarServeProductsBean.getLinePrice())));
+        mBinding.productPriceView.setText("¥" + Util.formatDouble(Double.parseDouble(selectCarServeProductsBean.getSalePrice())));
         mBinding.productLinePriceView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 
 

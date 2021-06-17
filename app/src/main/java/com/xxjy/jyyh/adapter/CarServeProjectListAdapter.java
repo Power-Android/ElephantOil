@@ -46,12 +46,12 @@ public class CarServeProjectListAdapter extends BaseQuickAdapter<CarServeProduct
     protected void convert(@NonNull BaseViewHolder helper, CarServeProductsBean item) {
 
         Glide.with(mContext)
-                .load(!TextUtils.isEmpty(item.getCover())?item.getCover():item.getDetailPic())
+                .load(item.getCover())
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .apply(new RequestOptions()
-                        .placeholder(R.drawable.ic_car_serve_default)
-                        .error(R.drawable.ic_car_serve_default)
+                        .placeholder(R.drawable.ic_car_default_product)
+                        .error(R.drawable.ic_car_default_product)
                 )
                 .into((ImageView) helper.getView(R.id.img_iv));
         helper.setText(R.id.name_view, item.getName())

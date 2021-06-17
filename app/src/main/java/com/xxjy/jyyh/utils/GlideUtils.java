@@ -99,6 +99,17 @@ public class GlideUtils extends AppGlideModule {
                 .into(imageView);
     }
     /**
+     * @describe 加载图片
+     * @param context   当前Activity的上下文对象
+     * @param imageView
+     */
+    public static void loadImage(Context context, String url, ImageView imageView,int defaultImageRes) {
+        Glide.with(context).load(url)
+                .error(defaultImageRes)
+                .apply(new RequestOptions().error(defaultImageRes))
+                .into(imageView);
+    }
+    /**
      * @describe 加载正方形图片
      * @param context   当前Activity的上下文对象
      * @param imageView
