@@ -202,7 +202,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
 //            mViewModel.getLocation();
             getLocation();
-
         } else {
             if (TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {//是否显示首页卡片
                 mOilCardBinding.noLocationLayout.setVisibility(View.VISIBLE);
@@ -720,16 +719,22 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mBinding.viewPager.setCurrentItem(1);
                 }
             } else {
-                titles = new String[]{"油站"};
-                if (mList.size() > 1) {
-                    mList.remove(1);
-                    mBinding.viewPager.removeViewAt(1);
-                    mBinding.viewPager.setNoScroll(false);
+                if (!PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)){
+                    mCarCardBinding.carNoLocationLayout.setVisibility(View.VISIBLE);
+                    mCarCardBinding.carLayout.setVisibility(View.GONE);
+                }else {
+                    titles = new String[]{"油站"};
+                    if (mList.size() > 1) {
+                        mList.remove(1);
+                        mBinding.viewPager.removeViewAt(1);
+                        mBinding.viewPager.setNoScroll(false);
+                    }
+                    mCommonNavigator.setAdjustMode(false);
+                    mCommonNavigator.notifyDataSetChanged();
+                    mPagerAdapter.refreshData(titles, mList);
+                    mBinding.viewPager.setCurrentItem(0);
                 }
-                mCommonNavigator.setAdjustMode(false);
-                mCommonNavigator.notifyDataSetChanged();
-                mPagerAdapter.refreshData(titles, mList);
-                mBinding.viewPager.setCurrentItem(0);
             }
 
             if (oilEntity.getHasStore() == 1 && oilEntity.getStoreRecordVo() != null &&

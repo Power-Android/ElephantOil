@@ -268,12 +268,13 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
         mBinding.carCitySelectLayout.setOnClickListener(this::onViewClicked);
         mBinding.carBusinessStatusLayout.setOnClickListener(this::onViewClicked);
         mBinding.carServeSelectLayout.setOnClickListener(this::onViewClicked);
+        mBinding.search2Layout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.search_layout:
+            case R.id.search_2_layout:
             case R.id.top_search_layout:
                 startActivity(new Intent(getContext(), SearchActivity.class).putExtra("type","carserve"));
 
