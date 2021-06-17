@@ -320,6 +320,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     areaCode = data.getAreaCode();
                     mBinding.carCitySelectTv.setText(data.getArea());
                     mSelectAreaDialog.setSelectPosition(position);
+                    mBinding.refreshview.resetNoMoreData();
                     loadCarServeData(false);
                 });
                 break;
@@ -332,6 +333,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     productCategoryId = data.getId();
                     mBinding.carServeSelectTv.setText(data.getName());
                     mSelectProductCategoryDialog.setSelectPosition(position);
+                    mBinding.refreshview.resetNoMoreData();
                     loadCarServeData(false);
                 });
                 break;
@@ -344,6 +346,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     status= data.getStatus();
                     mBinding.carBusinessStatusTv.setText(data.getName().equals("全部")?"营业状态":data.getName());
                     mSelectBusinessStatusDialog.setSelectPosition(position);
+                    mBinding.refreshview.resetNoMoreData();
                     loadCarServeData(false);
                 });
                 break;

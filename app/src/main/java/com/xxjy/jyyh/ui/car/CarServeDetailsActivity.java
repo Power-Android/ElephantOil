@@ -226,15 +226,18 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
             productCategory = data.getProductCategory();
             if (data.getProductCategory() != null) {
                 classData = new ArrayList<>(data.getProductCategory().keySet());
-                initTab();
-                carServeProjectListAdapter.setNewData(data.getProductCategory().get(classData.get(0)));
-                carServeProjectListAdapter.setSelectPosition(0);
-                selectClassPosition = 0;
-                if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
-                    mBinding.couponLayout.setVisibility(View.GONE);
-                } else {
-                    getUsableCoupon();
+                if(classData.size()>0){
+                    initTab();
+                    carServeProjectListAdapter.setNewData(data.getProductCategory().get(classData.get(0)));
+                    carServeProjectListAdapter.setSelectPosition(0);
+                    selectClassPosition = 0;
+                    if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
+                        mBinding.couponLayout.setVisibility(View.GONE);
+                    } else {
+                        getUsableCoupon();
+                    }
                 }
+
 
             }
 
