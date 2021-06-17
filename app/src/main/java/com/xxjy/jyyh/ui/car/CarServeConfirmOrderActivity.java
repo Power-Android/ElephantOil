@@ -236,7 +236,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                 selectCouponId = selectCarServeCouponBean.getId();
             } else {
 
-                    if (selectCarServeProductsBean.getCategoryName().contains("洗车")) {
+                    if (selectCarServeProductsBean.getCategoryId()==1) {//洗车
                         if (data.getRecords() != null && data.getRecords().size() > 0) {
                                 if(isFromDetail){
                                     mBinding.couponLayout.setVisibility(View.VISIBLE);

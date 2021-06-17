@@ -152,7 +152,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 if (mCardStoreInfoVo == null || selectCarServeProductsBean == null) {
                     return;
                 }
-                if (!TextUtils.equals(classData.get(selectClassPosition), "洗车")) {
+                if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
                     selectCarServeCouponBean = null;
                 }
                 CarServeConfirmOrderActivity.openPage(this, mCardStoreInfoVo, selectCarServeProductsBean, selectCarServeCouponBean,true);
@@ -230,7 +230,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 carServeProjectListAdapter.setNewData(data.getProductCategory().get(classData.get(0)));
                 carServeProjectListAdapter.setSelectPosition(0);
                 selectClassPosition = 0;
-                if (!classData.get(0).equals("洗车")) {
+                if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
                     mBinding.couponLayout.setVisibility(View.GONE);
                 } else {
                     getUsableCoupon();
@@ -243,7 +243,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
         mViewModel.usableCouponLiveData.observe(this, data -> {
             mCarServeCouponListBean = data;
             if (data.getRecords() != null && data.getRecords().size() > 0) {
-                if (!classData.get(selectClassPosition).equals("洗车")) {
+                if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
                     mBinding.couponLayout.setVisibility(View.GONE);
                 } else {
                         mBinding.couponLayout.setVisibility(View.VISIBLE);
@@ -296,7 +296,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 carServeProjectListAdapter.setNewData(productCategory.get(classData.get(position)));
                 carServeProjectListAdapter.setSelectPosition(0);
                 selectClassPosition = position;
-                if (!classData.get(position).equals("洗车")) {
+                if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
                     mBinding.couponLayout.setVisibility(View.GONE);
                 } else {
                     getUsableCoupon();

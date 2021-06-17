@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.SpanUtils;
@@ -22,8 +24,11 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIFloatLayout;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.CarServeStoreBean;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.ui.car.CarServeConfirmOrderActivity;
+import com.xxjy.jyyh.ui.car.CarServeDetailsActivity;
 import com.xxjy.jyyh.utils.Util;
 
 import java.util.List;
@@ -54,6 +59,8 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
                 .setText(R.id.item_navigation_tv, String.format("%.2f", item.getCardStoreInfoVo().getDistance() / 1000d) + "KM")
                 .setText(R.id.item_business_hours_tv, "营业时间：每天" + item.getCardStoreInfoVo().getOpenStart() + " - " + item.getCardStoreInfoVo().getEndStart())
                 .addOnClickListener(R.id.navigation_ll);
+
+
         switch (item.getCardStoreInfoVo().getStatus()){
             case 0:
                 helper.setVisible(R.id.shop_status_view, false );
@@ -88,16 +95,22 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
         helper.addOnClickListener(R.id.navigation_ll);
         if (item.getProducts() != null && item.getProducts().size() > 0) {
             helper.getView(R.id.line_view).setVisibility(View.VISIBLE);
-            helper.getView(R.id.bottom_layout).setVisibility(View.VISIBLE);
-            SpanUtils.with((TextView) helper.getView(R.id.desc_view))
-                    .append("洗车低至 ")
-                    .append("¥"+ Util.formatDouble(Double.parseDouble(item.getProducts().get(0).getSalePrice()))+"元")
-                    .setForegroundColor(Color.parseColor("#FE1300"))
-                    .append("起")
-                    .create();
+            helper.getView(R.id.product_recyclerview).setVisibility(View.VISIBLE);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+            ((RecyclerView)helper.getView(R.id.product_recyclerview)).setLayoutManager(linearLayoutManager);
+            CarServeHomeProjectListAdapter carServeHomeProjectListAdapter =new CarServeHomeProjectListAdapter(item.getProducts());
+            ((RecyclerView)helper.getView(R.id.product_recyclerview)).setAdapter(carServeHomeProjectListAdapter);
+            carServeHomeProjectListAdapter.setOnSelectListener(new CarServeHomeProjectListAdapter.OnSelectListener() {
+                @Override
+                public void onSelect(CarServeProductsBean data) {
+                    CarServeConfirmOrderActivity.openPage(mContext,item.getCardStoreInfoVo(),data,null);
+
+                }
+            });
+
         } else {
             helper.getView(R.id.line_view).setVisibility(View.GONE);
-            helper.getView(R.id.bottom_layout).setVisibility(View.GONE);
+            helper.getView(R.id.product_recyclerview).setVisibility(View.GONE);
         }
 
     }
@@ -109,7 +122,7 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
         textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
         textView.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-        textView.setBackgroundResource(R.drawable.shape_stroke_station_tag);
+        textView.setBackgroundResource(R.drawable.shape_stroke_station_tag_2);
         textView.setText(content);
         floatLayout.addView(textView);
     }

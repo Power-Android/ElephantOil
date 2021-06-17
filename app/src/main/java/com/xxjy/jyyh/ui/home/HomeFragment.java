@@ -779,7 +779,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mOilCardBinding.oilCurrentPriceTv.setText(mStationsBean.getPriceYfq());
                     mOilCardBinding.oilOriginalPriceTv.setText("油站价¥" + mStationsBean.getPriceGun());
                     mOilCardBinding.oilNumTv.setText(mStationsBean.getOilName());
-                }
+
 
                 for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
                     if (mStationsBean.getOilNo().equals(String.valueOf(mStationsBean.getOilPriceList().get(i).getOilNo()))) {
@@ -794,6 +794,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mOilTagList = mStationsBean.getCzbLabels();
                     mFlexAdapter.setNewData(mOilTagList);
                     mOilCardBinding.tagRecyclerView.setVisibility(View.VISIBLE);
+                    mOilCardBinding.tagBanner.setVisibility(View.GONE);
                 } else {
                     mOilCardBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
                     orderMsg();
@@ -808,6 +809,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
                 EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
                         TrackingConstant.HOME_MAIN, "", "gas_id=" + mStationsBean.getGasId());
+                }
             }
         });
 

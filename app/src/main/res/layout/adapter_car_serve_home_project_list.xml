@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+   >
+
+<LinearLayout
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingTop="@dimen/dp_4"
+    android:paddingBottom="@dimen/dp_4"
+    android:paddingRight="@dimen/dp_20"
+    android:paddingLeft="@dimen/dp_20"
+    >
+
+    <TextView
+        android:id="@+id/name_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_7"
+        android:textColor="#1E1E1E"
+        android:textSize="@dimen/sp_14"
+        android:textStyle="bold"
+        android:lines="1"
+        android:ellipsize="end"
+        android:text="--"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/line_price_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_7"
+        android:textColor="#A1A1A1"
+        android:textSize="@dimen/sp_13"
+        android:text="¥0"
+        />
+    <TextView
+        android:id="@+id/sale_price_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:textColor="#FE1530"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp_18"
+        android:text="¥0"
+        />
+    <TextView
+        android:id="@+id/buy_view"
+        android:layout_width="@dimen/dp_75"
+        android:layout_height="@dimen/dp_32"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:text="抢购"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@drawable/shape_checked_bt"
+       />
+</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

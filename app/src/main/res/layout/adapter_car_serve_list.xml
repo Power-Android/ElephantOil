@@ -33,8 +33,8 @@
             <!--                android:src="@drawable/ic_xx_yx_bg"/>-->
             <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
                 android:id="@+id/item_oil_img_layout"
-                android:layout_width="@dimen/dp_98"
-                android:layout_height="@dimen/dp_73"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_80"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="@dimen/dp_15"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,8 +43,8 @@
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/item_oil_img"
-                    android:layout_width="@dimen/dp_98"
-                    android:layout_height="@dimen/dp_73"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/dp_80"
 
                     android:scaleType="centerCrop"
                     android:src="@drawable/default_img_bg"
@@ -106,7 +106,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/common_margin"
-                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_5"
                 android:layout_marginEnd="@dimen/common_margin"
                 android:drawableLeft="@drawable/ic_business_hours"
                 android:drawablePadding="@dimen/dp_5"
@@ -116,7 +116,7 @@
                 android:textColor="#828282"
                 android:textSize="@dimen/sp_11"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/item_oil_img_layout"
                 app:layout_constraintTop_toBottomOf="@+id/item_address_tv" />
 
@@ -136,6 +136,7 @@
                 <ImageView
                     android:layout_width="@dimen/dp_13"
                     android:layout_height="@dimen/dp_13"
+                    android:visibility="invisible"
                     android:src="@drawable/navigation_iv" />
 
                 <TextView
@@ -159,7 +160,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/common_margin"
-                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_5"
                 android:layout_marginEnd="@dimen/common_margin"
                 android:gravity="left"
                 android:maxLines="1"
@@ -188,36 +189,14 @@
             android:layout_marginRight="@dimen/dp_16"
             android:visibility="gone"
             android:background="#EBEBEB" />
-
-        <RelativeLayout
-            android:id="@+id/bottom_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_10"
-            android:paddingTop="@dimen/dp_7"
-            android:paddingBottom="@dimen/dp_7"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/image_view"
-                android:layout_width="@dimen/dp_48"
-                android:layout_height="@dimen/dp_17"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_16"
-                android:src="@drawable/ic_car_serve_tag"/>
-
-            <TextView
-                android:id="@+id/desc_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:layout_toEndOf="@+id/image_view"
-                android:text="洗车低至 ¥28元起"
-                android:textSize="@dimen/sp_13"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/product_recyclerview"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp_6"
+    android:layout_marginBottom="@dimen/dp_8"
+    android:nestedScrollingEnabled="false"/>
     </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
 

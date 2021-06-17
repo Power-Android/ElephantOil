@@ -41,6 +41,9 @@ public class CarServeProjectListAdapter extends BaseQuickAdapter<CarServeProduct
             mOnSelectListener.onSelect(getItem(position));
         }
     }
+    public CarServeProductsBean getSelectData(){
+        return getItem(mSelectPosition);
+    }
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, CarServeProductsBean item) {
