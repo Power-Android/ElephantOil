@@ -106,7 +106,11 @@ public class CarServiceDialog extends BottomSheetDialog {
             data.get(position).setSelect(true);
             mCarTypeAdapter.notifyDataSetChanged();
 
+
             mList = mProductCategory.get(classData.get(selectPosition));
+            for (int i = 0; i < mList.size(); i++) {
+                mList.get(i).setSelect(false);
+            }
             mList.get(0).setSelect(true);
             mCarSpecAdapter.setNewData(mList);
 
