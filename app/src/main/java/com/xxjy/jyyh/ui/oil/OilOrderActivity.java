@@ -61,6 +61,7 @@ import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.ProductIdEntity;
 import com.xxjy.jyyh.entity.RedeemEntity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
+import com.xxjy.jyyh.ui.order.OrderDetailsViewModel;
 import com.xxjy.jyyh.ui.pay.RefuelingPayResultActivity;
 import com.xxjy.jyyh.ui.web.WeChatWebPayActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
@@ -115,6 +116,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
     private OilCouponDialog mOilCouponDialog;
     private OilPayDialog mOilPayDialog;
     private HomeViewModel mHomeViewModel;
+    private OrderDetailsViewModel orderDetailsViewModel;
     //是否需要跳转支付确认页
     private boolean shouldJump = false;
     private PayOrderEntity mPayOrderEntity;
@@ -153,6 +155,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         setTransparentStatusBar(mBinding.backIv, true);
         BusUtils.register(this);
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        orderDetailsViewModel = new ViewModelProvider(this).get(OrderDetailsViewModel.class);
 
         mStationsBean = (OilEntity.StationsBean) getIntent().getSerializableExtra("stationsBean");
         mOilNo = getIntent().getIntExtra("oilNo", 0);
@@ -844,6 +847,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 monthCouponId = "";//取消订单时 清空月度红包
                 mIsUseCoupon = true;
                 mViewModel.getMonthCoupon(mStationsBean.getGasId());
+                cancelOrder(orderId);
                 closeDialog();
             }
 
@@ -1174,6 +1178,10 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
             }
         });
     }
+    private void cancelOrder(String orderId) {
+        orderDetailsViewModel.cancelOrder(orderId);
+    }
+
 
     public void refreshMultiplePrice(String amount, String gasId, String oilNo, String isUserBill,
                                      String platId, String businessAmount, String monthCouponId,

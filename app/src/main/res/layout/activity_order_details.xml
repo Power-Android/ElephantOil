@@ -747,6 +747,7 @@
                 <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
                     android:id="@+id/continue_pay_view"
                     android:layout_width="wrap_content"
+                    android:visibility="gone"
                     android:layout_height="@dimen/dp_40"
                     android:layout_margin="@dimen/dp_6"
                     android:layout_weight="1"
