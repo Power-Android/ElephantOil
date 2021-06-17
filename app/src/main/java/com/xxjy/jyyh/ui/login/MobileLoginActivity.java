@@ -224,6 +224,7 @@ public class MobileLoginActivity extends BindingActivity<ActivityMobileLoginBind
 //                mBinding.userPhoneNumber.setText("");
 //                break;
             case R.id.login_for_wx:        //微信登录
+
                 loginForWx();
                 break;
             case R.id.user_invite_number_layout:        //邀请人手机号

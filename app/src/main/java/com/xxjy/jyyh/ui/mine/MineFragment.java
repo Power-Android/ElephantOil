@@ -405,8 +405,8 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 
     private void getVipInfo(){
         mViewModel.getVip();
-        if (TextUtils.isEmpty(mUserCardId)){
+//        if (TextUtils.isEmpty(mUserCardId)){
             mViewModel.getVipInfo();
-        }
+//        }
     }
 }

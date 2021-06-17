@@ -276,11 +276,11 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                 priceDescriptionDialog.show(mBinding.priceDescriptionLayout);
                 break;
             case R.id.close_iv:
-                SPUtils.getInstance().put(SPConstants.IS_TODAY, TimeUtils.getNowString());
                 mBinding.dragView.setVisibility(View.GONE);
                 break;
             case R.id.drag_view:
                 if (!TextUtils.isEmpty(mDragLink)) {
+                    SPUtils.getInstance().put(SPConstants.IS_TODAY, TimeUtils.getNowString());
                     WebViewActivity.openRealUrlWebActivity(this, mDragLink);
                 }
                 break;
@@ -402,7 +402,15 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
 
 //        mineViewModel.userLiveData.observe(this, userBean -> {
 //            if (userBean.iseVipOpenFlag()){
-//
+//                String nowMills = SPUtils.getInstance().getString(SPConstants.IS_TODAY);
+//                if (!TextUtils.isEmpty(nowMills)){
+//                    boolean today = TimeUtils.isToday(nowMills);
+//                    if (!today){
+//                        mBinding.dragView.setVisibility(View.VISIBLE);
+//                    }else {
+//                        mBinding.dragView.setVisibility(View.GONE);
+//                    }
+//                }
 //            }else {
 //                mBinding.dragView.setVisibility(View.GONE);
 //            }

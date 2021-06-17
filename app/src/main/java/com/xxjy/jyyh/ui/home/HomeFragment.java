@@ -387,6 +387,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             if (TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
                 mOilCardBinding.recommendStationLayout.setVisibility(View.GONE);
                 mOilCardBinding.noLocationLayout.setVisibility(View.VISIBLE);
+            }else {
+                mViewModel.getHomeCard(mLat, mLng, Constants.HUNTER_GAS_ID);
             }
             mCarCardBinding.carNoLocationLayout.setVisibility(View.VISIBLE);
             mCarCardBinding.carLayout.setVisibility(View.GONE);

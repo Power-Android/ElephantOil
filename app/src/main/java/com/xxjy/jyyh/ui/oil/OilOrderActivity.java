@@ -139,8 +139,8 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
             shouldJump = false;
             RefuelingPayResultActivity.openPayResultPage(this,
                     orderEntity.getOrderNo(), orderEntity.getOrderPayNo());
-            clearData();
             closeDialog();
+            clearData();
         }
     }
 
@@ -1197,8 +1197,8 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         intent.putExtra("orderPayNo", orderPayNo);
         intent.putExtra("orderNo", orderNo);
         startActivity(intent);
-        clearData();
         closeDialog();
+        clearData();
     }
 
     @Override
@@ -1243,8 +1243,8 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         RefuelingPayResultActivity.openPayResultPage(this,
                 mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
         PayListenerUtils.getInstance().removeListener(this);
-        clearData();
         closeDialog();
+        clearData();
     }
 
     @Override
@@ -1252,8 +1252,8 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         RefuelingPayResultActivity.openPayResultPage(this,
                 mPayOrderEntity.getOrderNo(), mPayOrderEntity.getOrderPayNo(), false, true);
         PayListenerUtils.getInstance().removeListener(this);
-        clearData();
         closeDialog();
+        clearData();
     }
 
     @Override
@@ -1261,6 +1261,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
         Toasty.info(this, "支付取消").show();
         PayListenerUtils.getInstance().removeListener(this);
         closeDialog();
+        clearData();
     }
 
     private void closeDialog() {
@@ -1281,14 +1282,17 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
     }
 
     private void clearData() {
-        mBinding.amountEt.getText().clear();
+//        mBinding.monthRedCheck.setChecked(false);
         //刷新快捷价格的选中状态
-        List<OilDefaultPriceEntity.DefaultAmountBean> data = mOilAmountAdapter.getData();
-        for (int i = 0; i < data.size(); i++) {
-            data.get(i).setSelected(false);
-        }
-        mOilAmountAdapter.notifyDataSetChanged();
-        mViewModel.getRedeem(mStationsBean.getGasId());
-        refreshData();
+//        List<OilDefaultPriceEntity.DefaultAmountBean> data = mOilAmountAdapter.getData();
+//        for (int i = 0; i < data.size(); i++) {
+//            data.get(i).setSelected(false);
+//        }
+//        mOilAmountAdapter.notifyDataSetChanged();
+//        mViewModel.getMonthCoupon(mStationsBean.getGasId());//获取月度红包
+//        mViewModel.getRedeem(mStationsBean.getGasId());
+//        mBinding.amountEt.getText().clear();
+//        refreshData();
+        finish();
     }
 }
