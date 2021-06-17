@@ -347,10 +347,10 @@
                             android:layout_below="@+id/car_serve_shop_name_view"
                             android:layout_marginLeft="@dimen/dp_10"
                             android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginRight="@dimen/dp_60"
                             android:layout_toEndOf="@+id/car_serve_shop_image_view"
-                            android:text="店铺名称"
+                            android:text=""
                             android:textColor="#838190"
-
                             android:textSize="@dimen/sp_12" />
 
                         <TextView

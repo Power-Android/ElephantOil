@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -330,7 +331,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                 mSelectProductCategoryDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
                     productCategoryId = data.getId();
                     mBinding.carServeSelectTv.setText(data.getName());
-                    mSelectAreaDialog.setSelectPosition(position);
+                    mSelectProductCategoryDialog.setSelectPosition(position);
                     loadCarServeData(false);
                 });
                 break;
@@ -469,7 +470,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
 //    }
 
     private void getAreaList(String cityCode){
-        mViewModel.getAreaList(cityCode);
+        mViewModel.getAreaList(TextUtils.isEmpty(cityCode)?"110100":cityCode);
     }
     //获取车服服务分类
     private void getProductCategory(){

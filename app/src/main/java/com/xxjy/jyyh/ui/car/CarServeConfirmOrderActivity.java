@@ -273,7 +273,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
         mBinding.shopNameView.setText(mCardStoreInfoVo.getStoreName());
         mBinding.shopAddressView.setText(mCardStoreInfoVo.getAddress());
 
-        GlideUtils.loadImage(this, selectCarServeProductsBean.getCover(), mBinding.productImageView);
+        GlideUtils.loadImage(this, !TextUtils.isEmpty(selectCarServeProductsBean.getCover())?selectCarServeProductsBean.getCover():selectCarServeProductsBean.getDetailPic(), mBinding.productImageView);
         mBinding.productNameView.setText(selectCarServeProductsBean.getName());
         mBinding.productLinePriceView.setText("¥" + selectCarServeProductsBean.getLinePrice());
         mBinding.productPriceView.setText("¥" + selectCarServeProductsBean.getSalePrice());
