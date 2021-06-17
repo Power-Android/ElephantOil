@@ -348,6 +348,8 @@
                             android:layout_marginLeft="@dimen/dp_10"
                             android:layout_marginTop="@dimen/dp_10"
                             android:layout_marginRight="@dimen/dp_60"
+                            android:lines="1"
+                            android:ellipsize="end"
                             android:layout_toEndOf="@+id/car_serve_shop_image_view"
                             android:text=""
                             android:textColor="#838190"

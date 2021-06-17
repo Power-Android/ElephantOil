@@ -237,7 +237,6 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
 
                     if (selectCarServeProductsBean.getCategoryName().contains("洗车")) {
                         if (data.getRecords() != null && data.getRecords().size() > 0) {
-                            if (mCarServeCouponListBean.getRecords().size() > 0) {
                                 if(isFromDetail){
                                     mBinding.couponLayout.setVisibility(View.VISIBLE);
                                     mBinding.couponNameView.setText("请选择优惠券");
@@ -249,10 +248,9 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                                     carServePrice = selectCarServeCouponBean.getCouponValue();
                                 }
 
-                            } else {
-                                mBinding.couponLayout.setVisibility(View.VISIBLE);
-                                mBinding.couponNameView.setText("暂无优惠券");
-                            }
+                        }else{
+                            mBinding.couponLayout.setVisibility(View.VISIBLE);
+                            mBinding.couponNameView.setText("暂无优惠券");
                         }
                     } else {
                         mBinding.couponLayout.setVisibility(View.GONE);
