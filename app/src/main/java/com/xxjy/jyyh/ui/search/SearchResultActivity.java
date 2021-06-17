@@ -349,7 +349,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 mSelectProductCategoryDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
                     productCategoryId = data.getId();
                     mBinding.carServeSelectTv.setText(data.getName());
-                    mSelectAreaDialog.setSelectPosition(position);
+                    mSelectProductCategoryDialog.setSelectPosition(position);
                     loadCarServeData(false);
                 });
                 break;
