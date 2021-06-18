@@ -101,10 +101,16 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 //        mineViewModel = new ViewModelProvider(this).get(MineViewModel.class);
 //        mineViewModel.queryUserInfo();
+        if (PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            mHomeViewModel.getLocation();
+        }else {
+            //首页油站
+            mViewModel.getOilDetail(mGasId, Double.parseDouble(UserConstants.getLatitude()),
+                    Double.parseDouble(UserConstants.getLongitude()));
+        }
         mViewModel.getDragViewInfo();
 
-        //首页油站
-        mViewModel.getOilDetail(mGasId, Double.parseDouble(UserConstants.getLatitude()), Double.parseDouble(UserConstants.getLongitude()));
 //        requestPermission();
 
         EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),

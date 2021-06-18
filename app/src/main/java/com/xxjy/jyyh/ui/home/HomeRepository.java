@@ -182,8 +182,11 @@ public class HomeRepository extends BaseRepository {
     }
 
     public void getOftenCars(MutableLiveData<List<OftenCarsEntity>> oftenCarsLiveData) {
-        addDisposable(RxHttp.postJson(CarServeApiService.OFENT_CAR_SERVE + CarServeApiService.APP_ID)
+        addDisposable(RxHttp.postJson(CarServeApiService.OFENT_CAR_SERVE)
                 .addHeader("token", UserConstants.getToken())
+                .add("appId", CarServeApiService.APP_ID)
+                .add("longitude", Double.parseDouble(UserConstants.getLongitude())==0d?"116.470866":UserConstants.getLongitude())
+                .add("latitude", Double.parseDouble(UserConstants.getLatitude())==0d?"39.911205":UserConstants.getLatitude())
                 .asCarServeResponseList(OftenCarsEntity.class)
                 .subscribe(new Consumer<List<OftenCarsEntity>>() {
                     @Override

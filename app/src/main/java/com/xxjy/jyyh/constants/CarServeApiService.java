@@ -4,10 +4,10 @@ import rxhttp.wrapper.annotation.DefaultDomain;
 
 public interface CarServeApiService {
     //默认正式服务器url
-    String CONFIG_RELEASE_URL = "http://api.dev.xiaoxiangjiayou.com/";
+    String CONFIG_RELEASE_URL = "https://api.dev.xiaoxiangjiayou.com/";
     String RELEASE_URL = CONFIG_RELEASE_URL ;
     //默认测试服务器url
-    String CONFIG_DEBUG_URL = "http://api.dev.xiaoxiangjiayou.com/";
+    String CONFIG_DEBUG_URL = "https://api.dev.xiaoxiangjiayou.com/";
     //    public static final String CONFIG_DEBUG_URL = "https://ccore.qqgyhk.com/";
     String DEBUG_URL = CONFIG_DEBUG_URL ;
 
@@ -54,6 +54,6 @@ public interface CarServeApiService {
     //车服订单详情
     String ORDER_INFO = BASE_URL + "oil/api/v1/customer/car/order/detail/";
     //首页常去车服门店
-    String OFENT_CAR_SERVE = BASE_URL + "cs/api/v1/customer/channel/store/use/list/";
+    String OFENT_CAR_SERVE = BASE_URL + "cs/api/v1/customer/channel/store/use/list";
 
 }
