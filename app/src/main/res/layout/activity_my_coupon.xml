@@ -65,7 +65,7 @@
                         android:background="@drawable/selector_coupon_bt"
                         android:checked="false"
                         android:gravity="center"
-                        android:text="待使用"
+                        android:text="待生效"
                         android:textAlignment="center"
                         android:textColor="@color/selector_coupon_bt"
                         android:button="@null"

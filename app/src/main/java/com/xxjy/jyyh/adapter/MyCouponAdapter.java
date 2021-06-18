@@ -60,7 +60,7 @@ public class MyCouponAdapter extends BaseMultiItemQuickAdapter<CouponBean, BaseV
                 helper.setTextColor(R.id.item_use_range_tv, mContext.getResources().getColor(R.color.color_AC));
                 helper.setTextColor(R.id.item_title_tv, mContext.getResources().getColor(R.color.color_AC));
                 helper.getView(R.id.use_view).setEnabled(false);
-                helper.setText(R.id.use_view, "待使用");
+                helper.setText(R.id.use_view, "待生效");
                 helper.getView(R.id.use_view).setVisibility(View.VISIBLE);
                 break;
             case 1:
