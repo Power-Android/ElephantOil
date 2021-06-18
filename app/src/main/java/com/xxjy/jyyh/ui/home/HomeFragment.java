@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.amap.api.location.CoordinateConverter;
 import com.amap.api.location.DPoint;
@@ -48,6 +49,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.HomeExchangeAdapter;
 import com.xxjy.jyyh.adapter.HomeMenuAdapter;
 import com.xxjy.jyyh.adapter.HomeOftenAdapter;
+import com.xxjy.jyyh.adapter.HomeOftenCarsAdapter;
 import com.xxjy.jyyh.adapter.HomeTopLineAdapter;
 import com.xxjy.jyyh.adapter.MyViewPagerAdapter;
 import com.xxjy.jyyh.adapter.OilGunAdapter;
@@ -77,6 +79,7 @@ import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.entity.HomeMenuEntity;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
+import com.xxjy.jyyh.entity.OftenCarsEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilTypeEntity;
 import com.xxjy.jyyh.ui.MainActivity;
@@ -154,6 +157,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private CarServiceDialog mCarServiceDialog;
     private CarServeStoreDetailsBean mStoreRecordVo;
     private boolean isIntegral = true;
+    private List<OftenCarsEntity> mCarOftenList = new ArrayList<>();
+
 
     //猎人码跳转
     @BusUtils.Bus(tag = EventConstants.EVENT_JUMP_HUNTER_CODE, sticky = true)
@@ -567,6 +572,29 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mCarCardBinding.goMoreCarView.setOnClickListener(this::onViewClicked);
         mCarCardBinding.carGoLocationView.setOnClickListener(this::onViewClicked);
         mCarCardBinding.carNavigationTv.setOnClickListener(this::onViewClicked);
+
+        mBinding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0 && mOftenList.size() > 1){
+                    mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
+                    mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
+                }else if (position == 1 && mCarOftenList.size() > 1){
+                    mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
+                    mBinding.oftenCarRecyclerView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -765,6 +793,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 } else {
                     mCarCardBinding.floatLayout.setVisibility(View.INVISIBLE);
                 }
+                //常去车服门店
+                mViewModel.getOftenCars();
+
                 mCarCardBinding.carLayout.setVisibility(View.VISIBLE);
                 mCarCardBinding.carNoLocationLayout.setVisibility(View.GONE);
             } else {
@@ -835,12 +866,49 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 HomeOftenAdapter oftenAdapter =
                         new HomeOftenAdapter(R.layout.adapter_often_layout, mOftenList);
                 mBinding.oftenOilRecyclerView.setAdapter(oftenAdapter);
-                mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
                 oftenAdapter.setOnItemClickListener((adapter, view, position) ->
                         startActivity(new Intent(getContext(), OilDetailsActivity.class)
                                 .putExtra(Constants.GAS_STATION_ID, ((OfentEntity) adapter.getItem(position)).getGasId())));
+                if (mBinding.viewPager.getCurrentItem() == 0){
+                    mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
+                }
             } else {
                 mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
+            }
+        });
+
+        //常去车服门店
+        mViewModel.oftenCarsLiveData.observe(this, new Observer<List<OftenCarsEntity>>() {
+            @Override
+            public void onChanged(List<OftenCarsEntity> oftenCarsList) {
+                if (oftenCarsList != null && oftenCarsList.size() > 0){
+                    mCarOftenList.clear();
+                    mCarOftenList = oftenCarsList;
+                    OftenCarsEntity oftenCarsEntity = new OftenCarsEntity();
+                    OftenCarsEntity.CardStoreInfoVoBean cardStoreInfoVoBean = new OftenCarsEntity.CardStoreInfoVoBean();
+                    cardStoreInfoVoBean.setStoreName("我最近常去：");
+                    oftenCarsEntity.setCardStoreInfoVo(cardStoreInfoVoBean);
+                    mCarOftenList.add(0, oftenCarsEntity);
+                    FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(mContext);
+                    flexboxLayoutManager.setFlexDirection(FlexDirection.ROW);
+                    flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START);
+                    flexboxLayoutManager.setAlignItems(AlignItems.FLEX_START);
+                    mBinding.oftenCarRecyclerView.setLayoutManager(flexboxLayoutManager);
+                    HomeOftenCarsAdapter oftenAdapter =
+                            new HomeOftenCarsAdapter(R.layout.adapter_often_layout, mCarOftenList);
+                    mBinding.oftenCarRecyclerView.setAdapter(oftenAdapter);
+                    oftenAdapter.setOnItemClickListener((adapter, view, position) -> {
+                        Intent intent1 = new Intent(mContext, CarServeDetailsActivity.class);
+                        intent1.putExtra("no", mCarOftenList.get(position).getCardStoreInfoVo().getStoreNo());
+                        intent1.putExtra("distance", mCarOftenList.get(position).getCardStoreInfoVo().getDistance());
+                        startActivity(intent1);
+                    });
+                    if (mBinding.viewPager.getCurrentItem() == 1){
+                        mBinding.oftenCarRecyclerView.setVisibility(View.VISIBLE);
+                    }
+                }else {
+                    mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
+                }
             }
         });
 

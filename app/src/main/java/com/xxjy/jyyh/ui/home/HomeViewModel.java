@@ -10,6 +10,7 @@ import com.xxjy.jyyh.entity.HomeMenuEntity;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
+import com.xxjy.jyyh.entity.OftenCarsEntity;
 import com.xxjy.jyyh.entity.OilDistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
@@ -34,6 +35,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<OilDistanceEntity> distanceLiveData = new MutableLiveData<>();
     public MutableLiveData<List<OilEntity.StationsBean>> storeLiveData = new MutableLiveData<>();
     public MutableLiveData<List<HomeMenuEntity>> menuLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<OftenCarsEntity>> oftenCarsLiveData = new MutableLiveData<>();
 
 
     public HomeViewModel(@NonNull Application application) {
@@ -78,5 +80,9 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getMenu() {
         mRespository.getMenu(menuLiveData);
+    }
+
+    public void getOftenCars() {
+        mRespository.getOftenCars(oftenCarsLiveData);
     }
 }

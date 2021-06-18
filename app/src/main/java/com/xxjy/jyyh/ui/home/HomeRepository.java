@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.amap.api.location.AMapLocation;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.CarServeApiService;
 import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.ProductMapKeyConstants;
 import com.xxjy.jyyh.constants.UserConstants;
@@ -14,10 +15,12 @@ import com.xxjy.jyyh.entity.HomeMenuEntity;
 import com.xxjy.jyyh.entity.HomeProductEntity;
 import com.xxjy.jyyh.entity.LocationEntity;
 import com.xxjy.jyyh.entity.OfentEntity;
+import com.xxjy.jyyh.entity.OftenCarsEntity;
 import com.xxjy.jyyh.entity.OilDistanceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.QueryRefuelJobEntity;
+import com.xxjy.jyyh.http.HeaderUtils;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
 
 import java.util.ArrayList;
@@ -163,7 +166,7 @@ public class HomeRepository extends BaseRepository {
     }
 
     public void getHomeCard(double lat, double lng, String gasId,
-                           MutableLiveData<OilEntity> homeOilLiveData) {
+                            MutableLiveData<OilEntity> homeOilLiveData) {
         addDisposable(RxHttp.postForm(ApiService.HOME_CARD_INFO)
                 .add(Constants.LATITUDE, lat, lat != 0)
                 .add(Constants.LONGTIDUE, lng, lng != 0)
@@ -176,5 +179,18 @@ public class HomeRepository extends BaseRepository {
         addDisposable(RxHttp.postForm(ApiService.HOME_MENU_INFO)
                 .asResponseList(HomeMenuEntity.class)
                 .subscribe(menuEntityList -> menuLiveData.postValue(menuEntityList)));
+    }
+
+    public void getOftenCars(MutableLiveData<List<OftenCarsEntity>> oftenCarsLiveData) {
+        addDisposable(RxHttp.postJson(CarServeApiService.OFENT_CAR_SERVE + CarServeApiService.APP_ID)
+                .addHeader("token", UserConstants.getToken())
+                .asCarServeResponseList(OftenCarsEntity.class)
+                .subscribe(new Consumer<List<OftenCarsEntity>>() {
+                    @Override
+                    public void accept(List<OftenCarsEntity> s) throws Throwable {
+                        oftenCarsLiveData.postValue(s);
+                    }
+                })
+        );
     }
 }
