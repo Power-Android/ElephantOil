@@ -47,8 +47,8 @@ public class CarServeViewModel extends BaseViewModel<CarServeRepository> {
     public void getStoreDetails(String storeNo) {
         mRespository.getStoreDetails(storeLiveData,storeNo);
     }
-    public void getUsableCoupon() {
-        mRespository.getUsableCoupon(usableCouponLiveData);
+    public void getUsableCoupon(int categoryId) {
+        mRespository.getUsableCoupon(usableCouponLiveData,categoryId);
     }
     public void commitOrder(String storeId,String productId,
                             String realMoney, String couponType,long couponId,

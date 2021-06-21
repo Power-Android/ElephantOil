@@ -139,6 +139,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 addTagView(data.getProductAttribute().getExpires() + "天有效", mBinding.floatLayout);
             }
             mBinding.decView.setText(data.getDescription());
+            getUsableCoupon(selectCarServeProductsBean.getCategoryId());
         });
     }
 
@@ -234,7 +235,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                     if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
                         mBinding.couponLayout.setVisibility(View.GONE);
                     } else {
-                        getUsableCoupon();
+                        getUsableCoupon(carServeProjectListAdapter.getSelectData().getCategoryId());
                     }
                 }
 
@@ -255,8 +256,13 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                         selectCarServeCouponBean = data.getRecords().get(0);
                 }
             } else {
-                mBinding.couponLayout.setVisibility(View.VISIBLE);
-                mBinding.couponNameView.setText("暂无优惠券");
+                if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
+                    mBinding.couponLayout.setVisibility(View.GONE);
+                }else{
+                    mBinding.couponLayout.setVisibility(View.VISIBLE);
+                    mBinding.couponNameView.setText("暂无优惠券");
+                }
+
             }
 
         });
@@ -302,7 +308,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
                     mBinding.couponLayout.setVisibility(View.GONE);
                 } else {
-                    getUsableCoupon();
+                    getUsableCoupon(carServeProjectListAdapter.getSelectData().getCategoryId());
                 }
 
 
@@ -328,8 +334,8 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
         mViewModel.getStoreDetails(storeNo);
     }
 
-    private void getUsableCoupon() {
-        mViewModel.getUsableCoupon();
+    private void getUsableCoupon(int categoryId) {
+        mViewModel.getUsableCoupon(categoryId);
     }
 
 }
