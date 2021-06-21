@@ -33,10 +33,11 @@ public class CarServeRepository extends BaseRepository {
                 .subscribe(data -> liveData.postValue(data))
         );
     }
-    public void getUsableCoupon(MutableLiveData<CarServeCouponListBean> liveData) {
+    public void getUsableCoupon(MutableLiveData<CarServeCouponListBean> liveData,int categoryId) {
         addDisposable(RxHttp.postJson(CarServeApiService.COUPON_USABLE)
                 .add("pageIndex",1)
                 .add("pageSize",100)
+                .add("categoryId",categoryId)
                 .addHeader("token", UserConstants.getToken())
                 .asCarServeResponse(CarServeCouponListBean.class)
                 .subscribe(data -> liveData.postValue(data))

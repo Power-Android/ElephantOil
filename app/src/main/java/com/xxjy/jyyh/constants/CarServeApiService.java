@@ -39,7 +39,6 @@ public interface CarServeApiService {
     String CANCEL_ORDER = BASE_URL + "oil/api/v1/customer/car/order/cancel/tiein";
 
     //查询车服搭售加油卡信息：入口,商品
-    // TODO: 2021/6/5
     String TYING_PRODUCT = BASE_URL + "api/tiein/v1/queryTieinSaleCfInfo";
 //    String TYING_PRODUCT = "http://192.168.1.84:8833/api/tiein/v1/queryTieinSaleCfInfo";
 
