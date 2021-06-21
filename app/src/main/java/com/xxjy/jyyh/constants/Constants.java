@@ -27,6 +27,7 @@ public class Constants {
     public static final String BUY_MONTH_CARD_URL = CONFIG_BASE_URL + "oil/monthCardBuy";
     public static final String BUY_IN_ADVANCE_MONTH_CARD_URL = CONFIG_BASE_URL + "oil/monthCard";
     public static final String NEW_USER_GIFT_URL = CONFIG_BASE_URL + "oil/newUserGift";
+    public static final String VIP_URL = CONFIG_BASE_URL + "membership?id=1";
 
 
     /**

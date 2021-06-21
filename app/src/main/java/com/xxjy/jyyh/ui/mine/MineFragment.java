@@ -17,6 +17,7 @@ import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.MineTabAdapter;
 import com.xxjy.jyyh.base.BindingFragment;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentMineBinding;
 import com.xxjy.jyyh.dialog.CustomerServiceDialog;
@@ -254,8 +255,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                         WebViewActivity.openRealUrlWebActivity(getBaseActivity(), userBean.getMonthCardBuyUrl());
                         break;
                     case R.id.vip_receive_bt:
-                        String url = "https://tcore.qqgyhk.com/membership?id=1";
-                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), url);
+                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.VIP_URL);
                         break;
                 }
             }
@@ -342,30 +342,22 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 
         });
 
-        mViewModel.vipLiveData.observe(this, new Observer<VipInfoEntity>() {
-            @Override
-            public void onChanged(VipInfoEntity s) {
-                setHeight(true);
-                if (TextUtils.isEmpty(s.getUserCardId())){
-                    mBinding.vipMoneyView2.setVisibility(View.INVISIBLE);
-                    mBinding.vipReceiveBt.setImageResource(R.drawable.vip_join_iv);
-                }else {
-                    mUserCardId = s.getUserCardId();
-                    mBinding.vipMoneyView2.setVisibility(View.VISIBLE);
-                    mBinding.vipMoneyView.setText("有效期至：" + s.getExpire());
-                    mBinding.vipReceiveBt.setImageResource(R.drawable.vip_look_icon);
-                }
-            }
-        });
-
-        mViewModel.vipInfoLiveData.observe(this, new Observer<VipInfoEntity>() {
-            @Override
-            public void onChanged(VipInfoEntity s) {
+        mViewModel.vipInfoLiveData.observe(this, s -> {
+            setHeight(true);
+            if (TextUtils.isEmpty(s.getUserCardId())){
+                mBinding.vipMoneyView2.setVisibility(View.INVISIBLE);
+                mBinding.vipReceiveBt.setImageResource(R.drawable.vip_join_iv);
                 if (!TextUtils.isEmpty(s.getDescription())){
                     mBinding.vipMoneyView.setText(s.getDescription());
                 }
+            }else {
+                mUserCardId = s.getUserCardId();
+                mBinding.vipMoneyView2.setVisibility(View.VISIBLE);
                 mBinding.vipMoneyView2.setText("已省" + s.getSaveMoney()+"元");
+                mBinding.vipMoneyView.setText("有效期至：" + s.getExpire());
+                mBinding.vipReceiveBt.setImageResource(R.drawable.vip_look_icon);
             }
+
         });
     }
 
@@ -404,9 +396,6 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     }
 
     private void getVipInfo(){
-        mViewModel.getVip();
-//        if (TextUtils.isEmpty(mUserCardId)){
             mViewModel.getVipInfo();
-//        }
     }
 }
