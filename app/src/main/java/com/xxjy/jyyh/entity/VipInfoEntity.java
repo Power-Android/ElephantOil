@@ -15,7 +15,7 @@ public class VipInfoEntity {
     private Boolean awardFlag;
     private Integer cardNum;
     private String userCardId;
-    private String expire;
+    private String expireTime;
     private String id;
     private String inviteAmount;
     private String inviteNum;
@@ -53,11 +53,11 @@ public class VipInfoEntity {
     }
 
     public String getExpire() {
-        return expire;
+        return expireTime;
     }
 
     public void setExpire(String expire) {
-        this.expire = expire;
+        this.expireTime = expire;
     }
 
     public String getId() {
