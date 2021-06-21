@@ -31,7 +31,6 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
     public MutableLiveData<UserBean> userLiveData = new MutableLiveData<>();
     public MutableLiveData<MonthCardBean> monthEquityInfoLiveData = new MutableLiveData<>();
     public MutableLiveData<VipInfoEntity> vipInfoLiveData = new MutableLiveData<>();
-    public MutableLiveData<VipInfoEntity> vipLiveData = new MutableLiveData<>();
     public void queryUserInfo(){
         mRespository.queryUserInfo( userLiveData);
     }
@@ -52,7 +51,4 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
         mRespository.getVipInfo(vipInfoLiveData);
     }
 
-    public void getVip() {
-        mRespository.getVip(vipLiveData);
-    }
 }

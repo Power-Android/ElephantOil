@@ -69,16 +69,4 @@ public class MineRepository extends BaseRepository {
         );
     }
 
-    public void getVip(MutableLiveData<VipInfoEntity> vipLiveData) {
-        addDisposable(RxHttp.postForm(ApiService.GET_MEMBER_CARD_INFO)
-                .add("cardId", "1")
-                .asResponse(VipInfoEntity.class)
-                .subscribe(new Consumer<VipInfoEntity>() {
-                    @Override
-                    public void accept(VipInfoEntity s) throws Throwable {
-                        vipLiveData.postValue(s);
-                    }
-                })
-        );
-    }
 }
