@@ -10,7 +10,6 @@ import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.CarServeApiService;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.entity.AreaListBean;
-import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.CarServeCategoryListBean;
 import com.xxjy.jyyh.entity.CarServeCommitOrderBean;
 import com.xxjy.jyyh.entity.CarServeCouponListBean;
@@ -19,8 +18,7 @@ import com.xxjy.jyyh.entity.CarServeStoreListBean;
 import com.xxjy.jyyh.entity.PayOrderEntity;
 import com.xxjy.jyyh.entity.RedeemEntity;
 import com.xxjy.jyyh.http.Response;
-
-import java.util.List;
+import com.xxjy.jyyh.utils.locationmanger.GPSUtil;
 
 import rxhttp.RxHttp;
 
@@ -113,8 +111,8 @@ public class CarServeRepository extends BaseRepository {
                 .add("pageSize",10)
                 .add("cityCode",cityCode)
                 .add("areaCode",areaCode,!TextUtils.equals("-1",areaCode))
-                .add("longitude", Double.parseDouble(UserConstants.getLongitude())==0d?"116.470866":UserConstants.getLongitude())
-                .add("latitude", Double.parseDouble(UserConstants.getLatitude())==0d?"39.911205":UserConstants.getLatitude())
+                .add("longitude", GPSUtil.gcj02_To_Bd09(Double.parseDouble(UserConstants.getLongitude())==0d?116.470866:Double.parseDouble(UserConstants.getLongitude()), Double.parseDouble(UserConstants.getLatitude())==0d?39.911205:Double.parseDouble(UserConstants.getLatitude())).longitude )
+                .add("latitude", GPSUtil.gcj02_To_Bd09(Double.parseDouble(UserConstants.getLongitude())==0d?116.470866:Double.parseDouble(UserConstants.getLongitude()), Double.parseDouble(UserConstants.getLatitude())==0d?39.911205:Double.parseDouble(UserConstants.getLatitude())).latitude )
                 .add("productCategoryId",productCategoryId,productCategoryId!=-1)
                 .add("status",status,status!=-1)
                 .add("storeName",storeName,!TextUtils.isEmpty(storeName))

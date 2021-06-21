@@ -247,11 +247,11 @@ public class JsOperation implements JsOperationMethods {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                if (mActivity instanceof WebViewActivity) {
+                if (mActivity instanceof WebViewActivity) {
 //                    LogUtils.e(intentInfo);
-//                    WebViewActivity webViewActivity = (WebViewActivity) mActivity;
-//                    webViewActivity.startAliPay(intentInfo);
-//                }
+                    WebViewActivity webViewActivity = (WebViewActivity) mActivity;
+                    webViewActivity.startAliPay(intentInfo);
+                }
             }
         });
     }

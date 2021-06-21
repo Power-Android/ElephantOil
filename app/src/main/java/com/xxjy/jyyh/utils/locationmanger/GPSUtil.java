@@ -6,6 +6,11 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
 
+import com.amap.api.maps.CoordinateConverter;
+import com.amap.api.maps.model.LatLng;
+import com.xxjy.jyyh.app.App;
+
+
 /**
  * 车主邦
  * ---------------------------
@@ -43,5 +48,21 @@ public class GPSUtil {
         } catch (PendingIntent.CanceledException e) {
             e.printStackTrace();
         }
+    }
+    /**
+     * 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换算法 将 GCJ-02 坐标转换成 BD-09 坐标
+     *
+     * @param lat
+     * @param lon
+     */
+    public static LatLng   gcj02_To_Bd09(double lat, double lon) {
+        CoordinateConverter converter  = new CoordinateConverter(App.getContext());
+// CoordType.GPS 待转换坐标类型
+        converter.from(CoordinateConverter.CoordType.BAIDU);
+// sourceLatLng待转换坐标点 LatLng类型
+        converter.coord(new LatLng(lat,lon));
+// 执行转换操作
+        LatLng desLatLng = converter.convert();
+        return desLatLng;
     }
 }
