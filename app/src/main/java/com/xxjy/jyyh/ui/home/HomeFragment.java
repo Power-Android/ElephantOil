@@ -584,9 +584,16 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 if (position == 0 && mOftenList.size() > 1){
                     mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
                     mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
-                }else if (position == 1 && mCarOftenList.size() > 1){
+                }else {
+                    mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
+                    mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
+                }
+                if (position == 1 && mCarOftenList.size() > 1){
                     mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
                     mBinding.oftenCarRecyclerView.setVisibility(View.VISIBLE);
+                }else {
+                    mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
+                    mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
                 }
             }
 

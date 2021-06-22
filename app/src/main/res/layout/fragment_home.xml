@@ -184,6 +184,7 @@
                     android:paddingEnd="@dimen/dp_10"
                     android:paddingBottom="@dimen/dp_5"
                     android:visibility="gone"
+                    android:layout_marginTop="@dimen/dp_m_5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -200,6 +201,7 @@
                     android:paddingEnd="@dimen/dp_10"
                     android:paddingBottom="@dimen/dp_5"
                     android:visibility="gone"
+                    android:layout_marginTop="@dimen/dp_m_5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -331,7 +333,7 @@
                 <ImageView
                     android:id="@+id/banner_2"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_70"
+                    android:layout_height="70dp"
                     android:layout_marginLeft="@dimen/dp_12"
                     android:layout_marginRight="@dimen/dp_12"
                     android:scaleType="fitXY"
@@ -340,7 +342,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/oil_task_cl"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_160"
+                    android:layout_height="160dp"
                     android:layout_marginLeft="@dimen/dp_12"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_12"

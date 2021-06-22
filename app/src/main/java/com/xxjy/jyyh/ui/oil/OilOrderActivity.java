@@ -132,6 +132,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
     private String mJsonStr = "";//搭售商品ids
     private String mProductAmount;
     private QueryDialog mQueryDialog;
+    private boolean isFirstIn = true;
 
     private void showJump(PayOrderEntity orderEntity) {
         if (orderEntity == null) return;
@@ -170,8 +171,13 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 mStationsBean.getOilPriceList().get(i).setSelected(true);
                 mBinding.oilNameTv.setText(mStationsBean.getGasName());
                 mBinding.oilAddressTv.setText(mStationsBean.getGasAddress());
-                mBinding.oilPriceTv.setText("¥" + mStationsBean.getOilPriceList().get(mOilNoPosition).getPriceYfq() + "起");
-                mBinding.oilStationPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+                SpanUtils.with(mBinding.oilPriceTv)
+                        .append("¥" + mStationsBean.getOilPriceList().get(mOilNoPosition).getPriceYfq())
+                        .append("起")
+                        .setFontSize(12, true)
+                        .create();
+//                mBinding.oilPriceTv.setText("¥" + mStationsBean.getOilPriceList().get(mOilNoPosition).getPriceYfq() + "起");
+//                mBinding.oilStationPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
                 mBinding.oilStationPriceTv.setText("油站价 ¥" + mStationsBean.getOilPriceList().get(mOilNoPosition).getPriceGun());
                 mBinding.oilNumTv.setText(mStationsBean.getOilPriceList().get(mOilNoPosition).getOilName());
                 for (int k = 0; k < mStationsBean.getOilPriceList().get(i).getGunNos().size(); k++) {
@@ -964,7 +970,6 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     mDiscountAdapter.getData().get(3).setUseBill(false);
                 }
 
-
                 mDiscountAdapter.notifyDataSetChanged();
 
                 mBinding.createOrderTv.setEnabled(
@@ -978,6 +983,12 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
             public void onChanged(OilDefaultPriceEntity defaultPriceEntity) {
                 List<OilDefaultPriceEntity.DefaultAmountBean> defaultAmount = defaultPriceEntity.getDefaultAmount();
                 mOilAmountAdapter.setNewData(defaultAmount);
+                if (isFirstIn){
+                    //进来默认200加油金额
+                    mBinding.amountEt.setText("200");
+                    isFirstIn = false;
+                    refreshData();
+                }
             }
         });
 

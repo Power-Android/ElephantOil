@@ -31,6 +31,7 @@
             android:singleLine="true"
             android:textColor="#1D1D1D"
             android:textSize="@dimen/sp_16"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/car_img_iv_1"
