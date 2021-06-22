@@ -95,13 +95,13 @@
                 <ImageView
                     android:layout_width="@dimen/dp_13"
                     android:layout_height="@dimen/dp_13"
+                    android:layout_marginEnd="@dimen/dp_3_5"
                     android:src="@drawable/navigation_iv" />
 
                 <TextView
                     android:id="@+id/item_navigation_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_2_5"
                     android:ellipsize="marquee"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
