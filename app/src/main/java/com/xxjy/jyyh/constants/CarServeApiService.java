@@ -4,7 +4,7 @@ import rxhttp.wrapper.annotation.DefaultDomain;
 
 public interface CarServeApiService {
     //默认正式服务器url
-    String CONFIG_RELEASE_URL = "https://api-dev.xiaoxiangjiayou.com/";
+    String CONFIG_RELEASE_URL = "https://api.xiaoxiangjiayou.com/";
     String RELEASE_URL = CONFIG_RELEASE_URL ;
     //默认测试服务器url
     String CONFIG_DEBUG_URL = "https://api-dev.xiaoxiangjiayou.com/";

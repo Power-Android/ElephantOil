@@ -202,6 +202,10 @@ public interface JsOperationMethods {
      */
     void toHomePage();
     /**
+     * 车服首页
+     */
+    void toCarServePage();
+    /**
      * 商城首页
      */
     void toIntegralHomePage();

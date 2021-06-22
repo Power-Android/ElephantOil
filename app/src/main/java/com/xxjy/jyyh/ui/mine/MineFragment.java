@@ -185,6 +185,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.openView.setOnClickListener(this::onViewClicked);
         mBinding.receiveBt.setOnClickListener(this::onViewClicked);
         mBinding.vipReceiveBt.setOnClickListener(this::onViewClicked);
+        mBinding.vipLayout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -255,6 +256,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                         WebViewActivity.openRealUrlWebActivity(getBaseActivity(), userBean.getMonthCardBuyUrl());
                         break;
                     case R.id.vip_receive_bt:
+                    case R.id.vip_layout:
                         WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.VIP_URL);
                         break;
                 }
