@@ -66,7 +66,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/shop_name_view"
-                        android:layout_marginTop="@dimen/dp_13"
+                        android:layout_marginTop="8dp"
                         android:text="地址"
                         android:textColor="@color/color_55"
                         android:textSize="@dimen/sp_12" />
@@ -76,7 +76,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/shop_address_view"
-                        android:layout_marginTop="@dimen/dp_13"
+                        android:layout_marginTop="8dp"
                         android:text="营业时间：08:00-19:00  |   距您大约：0.0km"
                         android:textColor="@color/color_63"
                         android:textSize="@dimen/sp_12" />

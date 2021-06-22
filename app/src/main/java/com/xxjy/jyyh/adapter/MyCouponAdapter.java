@@ -55,10 +55,10 @@ public class MyCouponAdapter extends BaseMultiItemQuickAdapter<CouponBean, BaseV
             case 0:
                 helper.getView(R.id.mask_view).setVisibility(View.GONE);
                 helper.getView(R.id.status_view).setVisibility(View.GONE);
-                helper.setTextColor(R.id.money_tag, mContext.getResources().getColor(R.color.color_AC));
-                helper.setTextColor(R.id.item_coupon_amount, mContext.getResources().getColor(R.color.color_AC));
-                helper.setTextColor(R.id.item_use_range_tv, mContext.getResources().getColor(R.color.color_AC));
-                helper.setTextColor(R.id.item_title_tv, mContext.getResources().getColor(R.color.color_AC));
+                helper.setTextColor(R.id.money_tag, mContext.getResources().getColor(R.color.color_EA3323));
+                helper.setTextColor(R.id.item_coupon_amount, mContext.getResources().getColor(R.color.color_EA3323));
+                helper.setTextColor(R.id.item_use_range_tv, mContext.getResources().getColor(R.color.color_34));
+                helper.setTextColor(R.id.item_title_tv, Color.parseColor("#1E1E1E"));
                 helper.getView(R.id.use_view).setEnabled(false);
                 helper.setText(R.id.use_view, "待生效");
                 helper.getView(R.id.use_view).setVisibility(View.VISIBLE);
@@ -66,8 +66,8 @@ public class MyCouponAdapter extends BaseMultiItemQuickAdapter<CouponBean, BaseV
             case 1:
                 helper.getView(R.id.mask_view).setVisibility(View.GONE);
                 helper.getView(R.id.status_view).setVisibility(View.GONE);
-                helper.setTextColor(R.id.money_tag, mContext.getResources().getColor(R.color.color_6431));
-                helper.setTextColor(R.id.item_coupon_amount, mContext.getResources().getColor(R.color.color_6431));
+                helper.setTextColor(R.id.money_tag, mContext.getResources().getColor(R.color.color_EA3323));
+                helper.setTextColor(R.id.item_coupon_amount, mContext.getResources().getColor(R.color.color_EA3323));
                 helper.setTextColor(R.id.item_use_range_tv, mContext.getResources().getColor(R.color.color_34));
                 helper.setTextColor(R.id.item_title_tv, Color.parseColor("#1E1E1E"));
                 helper.getView(R.id.use_view).setEnabled(true);

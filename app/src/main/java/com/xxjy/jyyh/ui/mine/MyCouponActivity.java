@@ -134,9 +134,10 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
             public IPagerTitleView getTitleView(Context context, final int index) {
                 SettingLayout simplePagerTitleView = new SettingLayout(context);
                 simplePagerTitleView.setText(titles[index]);
-                simplePagerTitleView.setTextViewSize(13, 13);
                 simplePagerTitleView.setmNormalColor(getResources().getColor(R.color.color_34));
                 simplePagerTitleView.setmSelectedColor(getResources().getColor(R.color.colorAccent));
+                simplePagerTitleView.setTextViewSize(13,13);
+                simplePagerTitleView.setSelectedStyle(true);
                 simplePagerTitleView.setOnClickListener(v -> mBinding.viewPager.setCurrentItem(index));
 
                 return simplePagerTitleView;

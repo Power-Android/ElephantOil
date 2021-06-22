@@ -175,14 +175,14 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
 
     private void initTab() {
         QMUITabBuilder tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
-        tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 13), QMUIDisplayHelper.sp2px(this, 13));
-        tabBuilder.setColor(Color.parseColor("#3d3d3d"), Color.parseColor("#1676FF"));
+        tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 16), QMUIDisplayHelper.sp2px(this, 16));
+        tabBuilder.setColor(Color.parseColor("#323334"), Color.parseColor("#1676FF"));
         mBinding.tabView.addTab(tabBuilder.setText("全部").build(this));
         mBinding.tabView.addTab(tabBuilder.setText("待使用").build(this));
 //        mBinding.tabView.addTab(tabBuilder.setText("待支付").build(this));
 
         int space = QMUIDisplayHelper.dp2px(this, 12);
-        mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
+        mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 3), false, true));
         mBinding.tabView.setItemSpaceInScrollMode(space);
         mBinding.tabView.setPadding(space, 0, space, 0);
         mBinding.tabView.setMode(QMUITabSegment.MODE_FIXED);

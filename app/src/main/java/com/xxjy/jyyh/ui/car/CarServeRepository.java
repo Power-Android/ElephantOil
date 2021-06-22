@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.amap.api.maps.model.LatLng;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.CarServeApiService;
@@ -106,13 +107,14 @@ public class CarServeRepository extends BaseRepository {
         );
     }
     public void getCarServeStoreList(MutableLiveData<CarServeStoreListBean> liveData, int pageIndex, String cityCode, String areaCode, long productCategoryId, int status,String storeName) {
+        LatLng latLng =  GPSUtil.gcj02_To_Bd09( Double.parseDouble(UserConstants.getLatitude())==0d?39.911205:Double.parseDouble(UserConstants.getLatitude()),Double.parseDouble(UserConstants.getLongitude())==0d?116.470866:Double.parseDouble(UserConstants.getLongitude()));
         addDisposable(RxHttp.postJson(CarServeApiService.GET_STORE_LIST)
                 .add("pageIndex",pageIndex)
                 .add("pageSize",10)
                 .add("cityCode",cityCode)
                 .add("areaCode",areaCode,!TextUtils.equals("-1",areaCode))
-                .add("longitude", GPSUtil.gcj02_To_Bd09(Double.parseDouble(UserConstants.getLongitude())==0d?116.470866:Double.parseDouble(UserConstants.getLongitude()), Double.parseDouble(UserConstants.getLatitude())==0d?39.911205:Double.parseDouble(UserConstants.getLatitude())).longitude )
-                .add("latitude", GPSUtil.gcj02_To_Bd09(Double.parseDouble(UserConstants.getLongitude())==0d?116.470866:Double.parseDouble(UserConstants.getLongitude()), Double.parseDouble(UserConstants.getLatitude())==0d?39.911205:Double.parseDouble(UserConstants.getLatitude())).latitude )
+                .add("longitude", latLng.longitude )
+                .add("latitude", latLng.latitude )
                 .add("productCategoryId",productCategoryId,productCategoryId!=-1)
                 .add("status",status,status!=-1)
                 .add("storeName",storeName,!TextUtils.isEmpty(storeName))

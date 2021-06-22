@@ -29,7 +29,7 @@
             <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_44"
+                android:layout_height="30dp"
                 android:background="@color/white"/>
 
 

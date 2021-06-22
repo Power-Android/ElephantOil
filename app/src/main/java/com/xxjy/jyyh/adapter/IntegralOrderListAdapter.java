@@ -23,7 +23,7 @@ public class IntegralOrderListAdapter extends BaseQuickAdapter<RefuelOrderBean, 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, RefuelOrderBean item) {
 
-        helper.setText(R.id.item_time_view, item.getCreateTime())
+        helper.setText(R.id.item_time_view, "购买时间："+item.getCreateTime())
                 .setText(R.id.item_status_view, item.getStatusName())
                 .setText(R.id.item_price_view, (TextUtils.isEmpty(item.getFinalIntegral()) || Double.parseDouble(item.getFinalIntegral()) == 0d) ? "支付金额:" + item.getFinalPayment() + "元" : "支付金额" + item.getFinalIntegral() + "积分+" + item.getFinalPayment() + "元")
                 .setText(R.id.item_title_view, item.getProductName());

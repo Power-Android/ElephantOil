@@ -3,6 +3,7 @@ package com.xxjy.jyyh.ui.order;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
 
@@ -213,7 +214,8 @@ public class OtherOrderListActivity extends BindingActivity<ActivityOtherOrderLi
     private void initTab(){
         QMUITabBuilder tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
         tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 13), QMUIDisplayHelper.sp2px(this, 13));
-        tabBuilder.setColor(Color.parseColor("#3d3d3d"), Color.parseColor("#1676FF"));
+        tabBuilder.setColor(Color.parseColor("#323334"), Color.parseColor("#1676FF"));
+        tabBuilder.setTypeface(Typeface.DEFAULT,Typeface.DEFAULT_BOLD);
         mBinding.tabView.addTab(tabBuilder.setText("全部").build(this));
         mBinding.tabView.addTab(tabBuilder.setText("待支付").build(this));
         mBinding.tabView.addTab(tabBuilder.setText("支付成功").build(this));

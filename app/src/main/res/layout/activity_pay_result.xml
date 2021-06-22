@@ -247,10 +247,10 @@
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="@color/white"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/dp_12"
-                    android:paddingTop="@dimen/dp_20"
-                    android:paddingRight="@dimen/dp_12"
-                    android:paddingBottom="@dimen/dp_20"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="12dp"
+                    android:paddingBottom="20dp"
                     android:visibility="gone">
 
                     <TextView
@@ -258,12 +258,12 @@
                         android:layout_height="wrap_content"
                         android:text="超值兑换成功！"
                         android:textColor="@color/color_36"
-                        android:textSize="@dimen/sp_15"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
-                        android:layout_marginTop="@dimen/dp_11"
+                        android:layout_marginTop="11dp"
                         android:background="#EAEAEA"/>
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -273,8 +273,8 @@
                             android:layout_height="wrap_content"
                             android:text="推荐洗车门店"
                             android:textColor="@color/color_36"
-                            android:textSize="@dimen/sp_13"
-                            android:layout_marginTop="@dimen/sp_11"
+                            android:textSize="13sp"
+                            android:layout_marginTop="11dp"
                             />
                         <TextView
                             android:id="@+id/go_more_oil_view"
@@ -283,49 +283,49 @@
                             android:text="查看更多>"
                             android:layout_alignParentRight="true"
                             android:textColor="#828282"
-                            android:textSize="@dimen/sp_11"
-                            android:layout_marginTop="@dimen/sp_11"
+                            android:textSize="11sp"
+                            android:layout_marginTop="11dp"
                             />
                     </RelativeLayout>
                     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:padding="@dimen/dp_16"
+                        android:layout_marginTop="10dp"
+                        android:padding="16dp"
                         app:qmui_backgroundColor="#F3F3F3"
                         app:qmui_radius="10dp">
                         <com.qmuiteam.qmui.widget.QMUIRadiusImageView
                             android:id="@+id/oil_station_image_view"
-                            android:layout_width="@dimen/dp_54"
-                            android:layout_height="@dimen/dp_54"
+                            android:layout_width="54dp"
+                            android:layout_height="54dp"
                             android:src="@drawable/default_img_bg"
-                            app:qmui_corner_radius="@dimen/dp_5"
+                            app:qmui_corner_radius="5dp"
                             />
                         <TextView
                             android:id="@+id/oil_station_name_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/sp_15"
+                            android:textSize="15sp"
                             android:textColor="#1E1E1E"
                             android:layout_toEndOf="@+id/oil_station_image_view"
                             android:layout_alignTop="@+id/oil_station_image_view"
-                            android:layout_marginTop="@dimen/dp_5"
-                            android:layout_marginLeft="@dimen/dp_10"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="10dp"
 
                             android:text="店铺名称"/>
                         <TextView
                             android:id="@+id/oil_station_address_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/sp_12"
+                            android:textSize="12sp"
                             android:textColor="#838190"
                             android:lines="1"
                             android:ellipsize="end"
-                            android:layout_marginRight="@dimen/dp_60"
+                            android:layout_marginRight="60dp"
                             android:layout_toEndOf="@+id/oil_station_image_view"
                             android:layout_below="@+id/oil_station_name_view"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:layout_marginLeft="@dimen/dp_10"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
 
                             android:text=""/>
                         <TextView
@@ -334,18 +334,19 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/sp_12"
                             android:textColor="#555555"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:drawableTop="@drawable/navigation_iv"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:drawablePadding="10dp"
+                            android:drawableTop="@drawable/ic_navigation"
                             android:layout_alignParentRight="true"
                             android:text="0.00km"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/sp_12"
+                            android:textSize="12sp"
                             android:textColor="#FE1300"
                             android:layout_below="@+id/oil_station_image_view"
-                            android:layout_marginTop="@dimen/dp_20"
+                            android:layout_marginTop="20dp"
                             android:text="恭喜购买加油券成功，可享受加油优惠哦~"/>
                         <TextView
                             android:id="@+id/use_view"

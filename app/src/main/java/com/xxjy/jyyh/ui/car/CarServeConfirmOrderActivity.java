@@ -280,7 +280,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
         mBinding.productLinePriceView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 
 
-        getUsableCoupon(selectCarServeProductsBean.getCategoryId());
+        getUsableCoupon(selectCarServeProductsBean.getChildCategoryId()==0?selectCarServeProductsBean.getCategoryId():selectCarServeProductsBean.getChildCategoryId());
 
         refreshPrice();
 

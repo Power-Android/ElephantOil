@@ -315,57 +315,57 @@
                     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundRelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:padding="@dimen/dp_16"
+                        android:layout_marginTop="10dp"
+                        android:padding="16dp"
                         app:qmui_backgroundColor="#F3F3F3"
                         app:qmui_radius="10dp">
 
                         <com.qmuiteam.qmui.widget.QMUIRadiusImageView
                             android:id="@+id/car_serve_shop_image_view"
-                            android:layout_width="@dimen/dp_54"
-                            android:layout_height="@dimen/dp_54"
+                            android:layout_width="54dp"
+                            android:layout_height="54dp"
                             android:src="@drawable/default_img_bg"
-                            app:qmui_corner_radius="@dimen/dp_5" />
+                            app:qmui_corner_radius="5dp" />
 
                         <TextView
                             android:id="@+id/car_serve_shop_name_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignTop="@+id/car_serve_shop_image_view"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:layout_marginTop="@dimen/dp_5"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
                             android:layout_toEndOf="@+id/car_serve_shop_image_view"
                             android:text="店铺名称"
                             android:textColor="#1E1E1E"
-
-                            android:textSize="@dimen/sp_15" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/car_serve_shop_address_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/car_serve_shop_name_view"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:layout_marginRight="@dimen/dp_60"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="60dp"
                             android:lines="1"
                             android:ellipsize="end"
                             android:layout_toEndOf="@+id/car_serve_shop_image_view"
                             android:text=""
                             android:textColor="#838190"
-                            android:textSize="@dimen/sp_12" />
+                            android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/car_serve_shop_address_navigation_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:drawableTop="@drawable/navigation_iv"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:drawablePadding="10dp"
+                            android:drawableTop="@drawable/ic_navigation"
                             android:text="0.00km"
                             android:textColor="#555555"
-                            android:textSize="@dimen/sp_12" />
+                            android:textSize="12sp" />
 
                         <TextView
                             android:layout_width="wrap_content"

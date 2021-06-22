@@ -139,7 +139,8 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 addTagView(data.getProductAttribute().getExpires() + "天有效", mBinding.floatLayout);
             }
             mBinding.decView.setText(data.getDescription());
-            getUsableCoupon(selectCarServeProductsBean.getCategoryId());
+            getUsableCoupon(selectCarServeProductsBean.getChildCategoryId()==0?selectCarServeProductsBean.getCategoryId():selectCarServeProductsBean.getChildCategoryId());
+
         });
     }
 
@@ -235,7 +236,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                     if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
                         mBinding.couponLayout.setVisibility(View.GONE);
                     } else {
-                        getUsableCoupon(carServeProjectListAdapter.getSelectData().getCategoryId());
+                        getUsableCoupon(carServeProjectListAdapter.getSelectData().getChildCategoryId()==0?carServeProjectListAdapter.getSelectData().getCategoryId():carServeProjectListAdapter.getSelectData().getChildCategoryId());
                     }
                 }
 
@@ -308,7 +309,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
                     mBinding.couponLayout.setVisibility(View.GONE);
                 } else {
-                    getUsableCoupon(carServeProjectListAdapter.getSelectData().getCategoryId());
+                    getUsableCoupon(carServeProjectListAdapter.getSelectData().getChildCategoryId()==0?carServeProjectListAdapter.getSelectData().getCategoryId():carServeProjectListAdapter.getSelectData().getChildCategoryId());
                 }
 
 
@@ -323,8 +324,8 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
         int textViewPadding2 = QMUIDisplayHelper.dp2px(this, 2);
         textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
-        textView.setBackgroundResource(R.drawable.shape_stroke_station_tag);
+        textView.setTextColor(Color.parseColor("#FF593E"));
+        textView.setBackgroundResource(R.drawable.shape_stroke_station_tag_3);
         textView.setText(content);
         floatLayout.addView(textView);
     }

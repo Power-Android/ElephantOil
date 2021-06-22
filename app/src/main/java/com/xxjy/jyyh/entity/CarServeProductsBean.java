@@ -6,6 +6,7 @@ public class CarServeProductsBean implements Serializable {
     private long id;
     private String name;
     private int categoryId;
+    private int childCategoryId;
     private String storeNo;
     private String productNo;
     private int channel;
@@ -26,6 +27,14 @@ public class CarServeProductsBean implements Serializable {
     private String categoryName;
     private CarServeProductAttributeBean productAttribute;
     private boolean isSelect;
+
+    public int getChildCategoryId() {
+        return childCategoryId;
+    }
+
+    public void setChildCategoryId(int childCategoryId) {
+        this.childCategoryId = childCategoryId;
+    }
 
     public boolean isSelect() {
         return isSelect;
