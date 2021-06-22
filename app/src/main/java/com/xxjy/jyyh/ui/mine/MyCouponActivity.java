@@ -152,7 +152,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
                 indicator.setRoundRadius(UIUtil.dip2px(context, 10));
                 indicator.setStartInterpolator(new AccelerateInterpolator());
                 indicator.setEndInterpolator(new DecelerateInterpolator(2.0f));
-//                indicator.setBackgroundResource(R.drawable.shape_indicator);
+                indicator.setBackgroundResource(R.drawable.shape_indicator);
                 indicator.setColors(getResources().getColor(R.color.colorAccent));
                 return indicator;
             }

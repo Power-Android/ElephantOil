@@ -182,7 +182,7 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
 //        mBinding.tabView.addTab(tabBuilder.setText("待支付").build(this));
 
         int space = QMUIDisplayHelper.dp2px(this, 12);
-        mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 3), false, true));
+        mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
         mBinding.tabView.setItemSpaceInScrollMode(space);
         mBinding.tabView.setPadding(space, 0, space, 0);
         mBinding.tabView.setMode(QMUITabSegment.MODE_FIXED);
