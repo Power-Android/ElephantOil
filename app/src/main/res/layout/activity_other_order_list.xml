@@ -26,7 +26,8 @@
         <com.qmuiteam.qmui.widget.tab.QMUITabSegment
             android:id="@+id/tab_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginTop="@dimen/dp_10"
             app:qmui_tab_has_indicator="false"/>
     </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -40,6 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/color_F5"
-            android:layout_marginTop="5dp"/>
+            />
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </LinearLayout>
