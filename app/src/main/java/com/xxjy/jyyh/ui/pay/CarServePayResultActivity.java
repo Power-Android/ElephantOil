@@ -101,6 +101,7 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
         mBinding.oilStationAddressNavigationView.setOnClickListener(this::onViewClicked);
         mBinding.useView.setOnClickListener(this::onViewClicked);
         mBinding.goMoreOilView.setOnClickListener(this::onViewClicked);
+        mBinding.againView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -156,6 +157,9 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
                 UiUtils.jumpToHome(this, Constants.TYPE_OIL);
                 finish();
                 break;
+            case R.id.again_view:
+                finish();
+                break;
         }
     }
 
@@ -191,9 +195,9 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
                     }
 
                 }
+                mBinding.payingStatusView.setText(""+data.getMsg());
                 switch (data.getResult()) {
                     case 0://处理中
-                        mBinding.payingStatusView.setText("处理中...");
                         mBinding.checkView.setVisibility(View.VISIBLE);
                         break;
                     case 1://支付成功

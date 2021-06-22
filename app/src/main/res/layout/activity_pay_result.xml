@@ -87,6 +87,7 @@
                     android:textStyle="bold" />
 
                 <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                    android:id="@+id/again_view"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_46"
                     android:layout_marginLeft="@dimen/dp_32"
@@ -94,8 +95,9 @@
                     android:layout_marginRight="@dimen/dp_32"
                     android:layout_marginBottom="@dimen/dp_46"
                     android:gravity="center"
-                    android:text="重新支付"
+                    android:text="重新下单"
                     android:textColor="@color/white"
+                    android:visibility="visible"
                     android:textSize="@dimen/sp_16"
                     app:qmui_backgroundColor="@color/colorAccent"
                     app:qmui_radius="@dimen/dp_46" />

@@ -77,12 +77,12 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
                 }
             }
         });
-        carServeOrderListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink());
-            }
-        });
+//        carServeOrderListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink());
+//            }
+//        });
         initTab();
 
 
