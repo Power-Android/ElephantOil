@@ -216,7 +216,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mOilCardBinding.noLocationLayout.setVisibility(View.GONE);
                 mOilCardBinding.recommendStationLayout.setVisibility(View.VISIBLE);
             }
-
+            mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
+            mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
         }
     }
 
@@ -550,6 +551,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //                        mBinding.searchIv.setImageResource(R.drawable.icon_search);
 //                    }
 //                });
+        ClickUtils.applySingleDebouncing(new View[]{mOilCardBinding.goMoreOilView, mCarCardBinding.goMoreCarView}, this::onViewClicked);
         mOilCardBinding.quickOilTv.setOnClickListener(this::onViewClicked);
         mOilCardBinding.oilview.setOnClickListener(this::onViewClicked);
         mOilCardBinding.oilNumTv.setOnClickListener(this::onViewClicked);
