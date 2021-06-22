@@ -192,8 +192,8 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:visibility="visible"
-                                android:paddingTop="@dimen/dp_17"
-                                android:paddingBottom="@dimen/dp_12">
+                                android:paddingTop="@dimen/dp_10"
+                                android:paddingBottom="@dimen/dp_10">
 
                                 <LinearLayout
                                     android:id="@+id/car_city_select_layout"
@@ -212,8 +212,8 @@
 
                                     <ImageView
                                         android:id="@+id/car_image_1"
-                                        android:layout_width="@dimen/dp_6"
-                                        android:layout_height="@dimen/dp_5"
+                                        android:layout_width="@dimen/dp_7"
+                                        android:layout_height="@dimen/dp_6"
                                         android:layout_marginLeft="@dimen/dp_7"
                                         android:src="@drawable/icon_down_arrow_2" />
                                 </LinearLayout>
@@ -235,8 +235,8 @@
 
                                     <ImageView
                                         android:id="@+id/car_image_2"
-                                        android:layout_width="@dimen/dp_6"
-                                        android:layout_height="@dimen/dp_5"
+                                        android:layout_width="@dimen/dp_7"
+                                        android:layout_height="@dimen/dp_6"
                                         android:layout_marginLeft="@dimen/dp_7"
                                         android:src="@drawable/icon_down_arrow_2" />
                                 </LinearLayout>
@@ -280,8 +280,8 @@
 
                                     <ImageView
                                         android:id="@+id/car_image_4"
-                                        android:layout_width="@dimen/dp_6"
-                                        android:layout_height="@dimen/dp_5"
+                                        android:layout_width="@dimen/dp_7"
+                                        android:layout_height="@dimen/dp_6"
                                         android:layout_marginLeft="@dimen/dp_7"
                                         android:src="@drawable/icon_down_arrow_2" />
                                 </LinearLayout>

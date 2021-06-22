@@ -91,8 +91,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="¥0.00起"
-                        android:textColor="@color/color_34"
-                        android:textSize="@dimen/sp_13"
+                        android:textColor="#EA3323"
+                        android:textSize="@dimen/sp_17"
+                        android:textStyle="bold"
                         android:layout_marginTop="@dimen/dp_8"
                         app:layout_constraintTop_toBottomOf="@+id/oil_address_tv"
                         app:layout_constraintStart_toStartOf="parent"
@@ -102,9 +103,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="油站价 ¥0.00"
-                        android:textSize="@dimen/sp_13"
+                        android:textSize="@dimen/sp_12"
                         android:textColor="@color/color_99"
-                        android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginStart="@dimen/dp_7"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/oil_price_tv"
                         app:layout_constraintTop_toTopOf="@id/oil_price_tv"
                         app:layout_constraintStart_toEndOf="@+id/oil_price_tv"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -429,7 +431,6 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/dp_12"
                                         android:layout_marginStart="@dimen/dp_20"
-                                        android:layout_marginEnd="@dimen/dp_20"
                                         android:paddingBottom="@dimen/dp_17"
                                         app:layout_constraintTop_toBottomOf="@+id/redeem_view3"
                                         app:layout_constraintBottom_toTopOf="@+id/redeem_view2"/>

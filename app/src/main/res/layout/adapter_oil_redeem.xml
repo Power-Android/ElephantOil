@@ -48,6 +48,7 @@
             android:textSize="@dimen/sp_16"
             android:textColor="#EA3323"
             android:layout_marginBottom="@dimen/dp_10"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/item_name_tv"/>
         <TextView
