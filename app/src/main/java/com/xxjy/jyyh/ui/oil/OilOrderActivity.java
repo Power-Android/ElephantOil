@@ -644,7 +644,6 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 List<CouponBean> data = adapter.getData();
                 setCouponInfo(data.get(position), isPlat, data.get(position).getExcludeType());
                 mOilCouponDialog.dismiss();
-
             }
 
             @Override

@@ -581,19 +581,25 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 0 && mOftenList.size() > 1){
-                    mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
-                    mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
-                }else {
-                    mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
-                    mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
-                }
-                if (position == 1 && mCarOftenList.size() > 1){
-                    mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
-                    mBinding.oftenCarRecyclerView.setVisibility(View.VISIBLE);
-                }else {
-                    mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
-                    mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
+                switch (position){
+                    case 0:
+                        if (mOftenList.size() > 1){
+                            mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
+                            mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
+                        }else {
+                            mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
+                            mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
+                        }
+                        break;
+                    case 1:
+                        if (mCarOftenList.size() > 1){
+                            mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
+                            mBinding.oftenCarRecyclerView.setVisibility(View.VISIBLE);
+                        }else {
+                            mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
+                            mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
+                        }
+                        break;
                 }
             }
 
@@ -800,8 +806,11 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 } else {
                     mCarCardBinding.floatLayout.setVisibility(View.INVISIBLE);
                 }
-                //常去车服门店
-                mViewModel.getOftenCars();
+
+                if (UserConstants.getIsLogin()) {
+                    //常去车服门店
+                    mViewModel.getOftenCars();
+                }
 
                 mCarCardBinding.carLayout.setVisibility(View.VISIBLE);
                 mCarCardBinding.carNoLocationLayout.setVisibility(View.GONE);
@@ -880,6 +889,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
                 }
             } else {
+                mOftenList.clear();
                 mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
             }
         });
@@ -914,6 +924,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         mBinding.oftenCarRecyclerView.setVisibility(View.VISIBLE);
                     }
                 }else {
+                    mCarOftenList.clear();
                     mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
                 }
             }
@@ -1252,6 +1263,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         getHomeOil();
         mViewModel.getOftenOils();
+        mViewModel.getOftenCars();
 
         if (mStationsBean != null) {
             mViewModel.checkDistance(mStationsBean.getGasId());
