@@ -44,6 +44,7 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
     private int mPosition = -1;
 
     private CustomerServiceDialog customerServiceDialog;
+
     @Override
     protected void initView() {
         BarUtils.addMarginTopEqualStatusBarHeight(mBinding.titleLayout.tbToolbar);
@@ -54,34 +55,34 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
         mBinding.recyclerView.setAdapter(carServeOrderListAdapter);
         carServeOrderListAdapter.setEmptyView(R.layout.empty_layout, mBinding.recyclerView);
         carServeOrderListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-                @Override
-                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                    mPosition = position;
-                    switch (view.getId()) {
-                        case R.id.continue_pay_view:
-                            WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink() + "&showCashier=true");
-                            break;
-                        case R.id.cancel_order_view:
-                            productCancelOrder(((CarServeOrderBean) adapter.getItem(position)).getOrderId());
-                            break;
-                        case R.id.refund_view:
-                            if (customerServiceDialog == null) {
-                                customerServiceDialog = new CustomerServiceDialog(CarServeOrderListActivity.this);
-                            }
-                            customerServiceDialog.show(view);
-                            break;
-                        case R.id.check_coupon_code_view:
-                            WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink());
-                            break;
-                    }
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                mPosition = position;
+                switch (view.getId()) {
+                    case R.id.continue_pay_view:
+                        WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink() + "&showCashier=true");
+                        break;
+                    case R.id.cancel_order_view:
+                        productCancelOrder(((CarServeOrderBean) adapter.getItem(position)).getOrderId());
+                        break;
+                    case R.id.refund_view:
+                        if (customerServiceDialog == null) {
+                            customerServiceDialog = new CustomerServiceDialog(CarServeOrderListActivity.this);
+                        }
+                        customerServiceDialog.show(view);
+                        break;
+                    case R.id.check_coupon_code_view:
+                        WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink());
+                        break;
                 }
-            });
+            }
+        });
         carServeOrderListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink());
-                }
-            });
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                WebViewActivity.openRealUrlWebActivity(CarServeOrderListActivity.this, ((CarServeOrderBean) adapter.getItem(position)).getExDetailLink());
+            }
+        });
         initTab();
 
 
@@ -105,17 +106,35 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
 
             }
         });
+
+        mBinding.allView.setOnClickListener(this::onViewClicked);
+        mBinding.waitView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
     protected void onViewClicked(View view) {
-
+        switch (view.getId()) {
+            case R.id.all_view:
+                changeBt(true);
+                orderStatus = -1;
+                verificationStatus = -1;
+                pageNum = 1;
+                carServeOrderList();
+                break;
+            case R.id.wait_view:
+                changeBt(false);
+                orderStatus = 1;
+                verificationStatus = 1;
+                pageNum = 1;
+                carServeOrderList();
+                break;
+        }
     }
 
     @Override
     protected void dataObservable() {
         mViewModel.carServeOrderListLiveData.observe(this, data -> {
-            if (data != null && data.getList()!=null&&data.getList().size() > 0) {
+            if (data != null && data.getList() != null && data.getList().size() > 0) {
                 if (pageNum == 1) {
                     carServeOrderListAdapter.setNewData(data.getList());
                     mBinding.refreshView.setEnableLoadMore(true);
@@ -175,63 +194,85 @@ public class CarServeOrderListActivity extends BindingActivity<ActivityCarServeO
     }
 
     private void initTab() {
-        QMUITabBuilder tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
-        tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 16), QMUIDisplayHelper.sp2px(this, 16));
-        tabBuilder.setColor(Color.parseColor("#323334"), Color.parseColor("#1676FF"));
-        tabBuilder.setTypeface(Typeface.DEFAULT,Typeface.DEFAULT_BOLD);
-        mBinding.tabView.addTab(tabBuilder.setText("全部").build(this));
-        mBinding.tabView.addTab(tabBuilder.setText("待使用").build(this));
-//        mBinding.tabView.addTab(tabBuilder.setText("待支付").build(this));
+//        QMUITabBuilder tabBuilder = mBinding.tabView.tabBuilder().setGravity(Gravity.CENTER);
+//        tabBuilder.setTextSize(QMUIDisplayHelper.sp2px(this, 16), QMUIDisplayHelper.sp2px(this, 16));
+//        tabBuilder.setColor(Color.parseColor("#323334"), Color.parseColor("#1676FF"));
+//        tabBuilder.setTypeface(Typeface.DEFAULT,Typeface.DEFAULT_BOLD);
+//        mBinding.tabView.addTab(tabBuilder.setText("全部").build(this));
+//        mBinding.tabView.addTab(tabBuilder.setText("待使用").build(this));
+////        mBinding.tabView.addTab(tabBuilder.setText("待支付").build(this));
+//
+//        int space = QMUIDisplayHelper.dp2px(this, 12);
+//        mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
+//        mBinding.tabView.setItemSpaceInScrollMode(space);
+//        mBinding.tabView.setPadding(space, 0, space, 0);
+//        mBinding.tabView.setMode(QMUITabSegment.MODE_FIXED);
+//        mBinding.tabView.selectTab(0);
+//        mBinding.tabView.notifyDataChanged();
+//        mBinding.tabView.addOnTabSelectedListener(new QMUIBasicTabSegment.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(int index) {
+//                switch (index) {
+//                    case 0:
+//                        orderStatus = -1;
+//                        verificationStatus = -1;
+//                        break;
+//                    case 1:
+//                        orderStatus = 1;
+//                        verificationStatus = 1;
+//                        break;
+//                    case 2:
+//                        orderStatus = 0;
+//                        verificationStatus = -1;
+//                        break;
+//                }
+//                pageNum = 1;
+//                carServeOrderList();
+//
+//            }
+//
+//            @Override
+//            public void onTabUnselected(int index) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(int index) {
+//
+//            }
+//
+//            @Override
+//            public void onDoubleTap(int index) {
+//
+//            }
+//        });
 
-        int space = QMUIDisplayHelper.dp2px(this, 12);
-        mBinding.tabView.setIndicator(new QMUITabIndicator(QMUIDisplayHelper.dp2px(this, 2), false, true));
-        mBinding.tabView.setItemSpaceInScrollMode(space);
-        mBinding.tabView.setPadding(space, 0, space, 0);
-        mBinding.tabView.setMode(QMUITabSegment.MODE_FIXED);
-        mBinding.tabView.selectTab(0);
-        mBinding.tabView.notifyDataChanged();
-        mBinding.tabView.addOnTabSelectedListener(new QMUIBasicTabSegment.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(int index) {
-                switch (index) {
-                    case 0:
-                        orderStatus = -1;
-                        verificationStatus = -1;
-                        break;
-                    case 1:
-                        orderStatus = 1;
-                        verificationStatus = 1;
-                        break;
-                    case 2:
-                        orderStatus = 0;
-                        verificationStatus = -1;
-                        break;
-                }
-                pageNum = 1;
-                carServeOrderList();
+        changeBt(true);
+    }
 
-            }
 
-            @Override
-            public void onTabUnselected(int index) {
+    private void changeBt(boolean isAll) {
+        if (isAll) {
+            mBinding.allIndexView.setVisibility(View.VISIBLE);
+            mBinding.allView.setTextColor(Color.parseColor("#323334"));
+            mBinding.allView.setTypeface(Typeface.DEFAULT_BOLD);
+            mBinding.waitIndexView.setVisibility(View.INVISIBLE);
+            mBinding.waitView.setTextColor(Color.parseColor("#3d3d3d"));
+            mBinding.waitView.setTypeface(Typeface.DEFAULT);
+        } else {
+            mBinding.waitIndexView.setVisibility(View.VISIBLE);
+            mBinding.waitView.setTextColor(Color.parseColor("#323334"));
+            mBinding.waitView.setTypeface(Typeface.DEFAULT_BOLD);
+            mBinding.allIndexView.setVisibility(View.INVISIBLE);
+            mBinding.allView.setTextColor(Color.parseColor("#3d3d3d"));
+            mBinding.allView.setTypeface(Typeface.DEFAULT);
+        }
 
-            }
-
-            @Override
-            public void onTabReselected(int index) {
-
-            }
-
-            @Override
-            public void onDoubleTap(int index) {
-
-            }
-        });
     }
 
 
     private void carServeOrderList() {
-        mViewModel.carServeOrderList( orderStatus,verificationStatus, pageNum);
+        mViewModel.carServeOrderList(orderStatus, verificationStatus, pageNum);
     }
 
 

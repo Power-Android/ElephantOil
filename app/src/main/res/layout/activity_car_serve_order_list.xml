@@ -20,14 +20,54 @@
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
         app:qmui_radiusBottomLeft="17dp"
         app:qmui_radiusBottomRight="17dp"
         app:qmui_backgroundColor="@color/color_F5">
-        <com.qmuiteam.qmui.widget.tab.QMUITabSegment
-            android:id="@+id/tab_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
-            app:qmui_tab_has_indicator="false"/>
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/all_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                android:textColor="#323334"
+                android:textStyle="bold"
+                android:text="全部"/>
+
+            <View
+                android:id="@+id/all_index_view"
+                android:layout_width="27dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/shape_indicator" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/wait_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                android:textColor="#3d3d3d"
+                android:text="待使用"/>
+            <View
+                android:id="@+id/wait_index_view"
+                android:layout_width="25dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="6dp"
+                android:visibility="invisible"
+                android:background="@drawable/shape_indicator"/>
+        </LinearLayout>
     </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_view"
