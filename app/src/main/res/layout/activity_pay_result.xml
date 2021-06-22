@@ -311,9 +311,8 @@
                             android:textColor="#1E1E1E"
                             android:layout_toEndOf="@+id/oil_station_image_view"
                             android:layout_alignTop="@+id/oil_station_image_view"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="7dp"
                             android:layout_marginLeft="10dp"
-
                             android:text="店铺名称"/>
                         <TextView
                             android:id="@+id/oil_station_address_view"
@@ -326,9 +325,8 @@
                             android:layout_marginRight="60dp"
                             android:layout_toEndOf="@+id/oil_station_image_view"
                             android:layout_below="@+id/oil_station_name_view"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:layout_marginLeft="10dp"
-
                             android:text=""/>
                         <TextView
                             android:id="@+id/oil_station_address_navigation_view"

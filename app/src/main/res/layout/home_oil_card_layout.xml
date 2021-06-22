@@ -122,13 +122,12 @@
 
         <com.youth.banner.Banner
             android:id="@+id/tag_banner"
-            android:layout_width="0dp"
+            android:layout_width="225dp"
             android:layout_height="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_12"
             android:layout_marginEnd="@dimen/dp_12"
-            android:background="@drawable/shape_oil_tag"
+            android:background="@drawable/shape_stroke_blue_4radius"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/oil_img_iv_1"
             app:layout_constraintTop_toBottomOf="@+id/oil_num_tv"

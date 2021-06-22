@@ -167,7 +167,6 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             Constants.HUNTER_GAS_ID = oilId;
         }
         getHomeOil();
-
     }
 
     public static HomeFragment getInstance() {
@@ -216,6 +215,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mOilCardBinding.noLocationLayout.setVisibility(View.GONE);
                 mOilCardBinding.recommendStationLayout.setVisibility(View.VISIBLE);
             }
+            mOftenList.clear();
+            mCarOftenList.clear();
             mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
             mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
         }
@@ -555,8 +556,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mOilCardBinding.quickOilTv.setOnClickListener(this::onViewClicked);
         mOilCardBinding.oilview.setOnClickListener(this::onViewClicked);
         mOilCardBinding.oilNumTv.setOnClickListener(this::onViewClicked);
-        mCarCardBinding.quickCarTv.setOnClickListener(this::onViewClicked);
-        mCarCardBinding.carview.setOnClickListener(this::onViewClicked);
+        mCarView.findViewById(R.id.quick_car_tv).setOnClickListener(this::onViewClicked);
+        mCarView.findViewById(R.id.carview).setOnClickListener(this::onViewClicked);
 
         mBinding.searchIv.setOnClickListener(this::onViewClicked);
         mBinding.awardTv.setOnClickListener(this::onViewClicked);
@@ -572,9 +573,9 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mBinding.signInIv.setOnClickListener(this::onViewClicked);
         mOilCardBinding.goMoreOilView.setOnClickListener(this::onViewClicked);
         mOilCardBinding.goLocationView.setOnClickListener(this::onViewClicked);
-        mCarCardBinding.goMoreCarView.setOnClickListener(this::onViewClicked);
-        mCarCardBinding.carGoLocationView.setOnClickListener(this::onViewClicked);
-        mCarCardBinding.carNavigationTv.setOnClickListener(this::onViewClicked);
+        mCarView.findViewById(R.id.go_more_car_view).setOnClickListener(this::onViewClicked);
+        mCarView.findViewById(R.id.car_go_location_view).setOnClickListener(this::onViewClicked);
+        mCarView.findViewById(R.id.car_navigation_tv).setOnClickListener(this::onViewClicked);
 
         mBinding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -751,6 +752,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mCarView = View.inflate(mContext, R.layout.home_car_card_layout, null);
                     mCarCardBinding = HomeCarCardLayoutBinding.bind(mCarView);
                     mList.add(mCarView);
+                    mCarView.findViewById(R.id.quick_car_tv).setOnClickListener(this::onViewClicked);
+                    mCarView.findViewById(R.id.carview).setOnClickListener(this::onViewClicked);
+                    mCarView.findViewById(R.id.go_more_car_view).setOnClickListener(this::onViewClicked);
+                    mCarView.findViewById(R.id.car_go_location_view).setOnClickListener(this::onViewClicked);
+                    mCarView.findViewById(R.id.car_navigation_tv).setOnClickListener(this::onViewClicked);
+
                     mBinding.viewPager.setNoScroll(true);
                     mCommonNavigator.setAdjustMode(true);
                     mCommonNavigator.notifyDataSetChanged();
@@ -795,7 +802,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 if (mCardStoreInfoVo.getCategoryNameList() != null && mCardStoreInfoVo.getCategoryNameList().size() > 0) {
                     for (String lab : mCardStoreInfoVo.getCategoryNameList()) {
                         TextView textView = new TextView(mContext);
-                        textView.setMinHeight(QMUIDisplayHelper.dp2px(mContext, 20));
+                        textView.setMinHeight(QMUIDisplayHelper.dp2px(mContext, 19));
                         int textViewPadding = QMUIDisplayHelper.dp2px(mContext, 5);
                         int textViewPadding2 = QMUIDisplayHelper.dp2px(mContext, 3);
                         textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
