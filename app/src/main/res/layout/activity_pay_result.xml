@@ -46,7 +46,7 @@
                     android:textSize="@dimen/sp_18"
                     android:textStyle="bold" />
 
-                <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                <TextView
                     android:id="@+id/check_view"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_46"
@@ -54,12 +54,12 @@
                     android:layout_marginTop="@dimen/dp_48"
                     android:layout_marginRight="@dimen/dp_32"
                     android:layout_marginBottom="@dimen/dp_46"
+                    android:background="@drawable/selector_blue_bt"
                     android:gravity="center"
+                    android:enabled="true"
                     android:text="查询支付结果"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp_16"
-                    app:qmui_backgroundColor="@color/colorAccent"
-                    app:qmui_radius="@dimen/dp_46" />
+                    android:textSize="@dimen/sp_16" />
             </LinearLayout>
 
             <LinearLayout

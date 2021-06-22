@@ -75,6 +75,7 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
 //                mBinding.payingStatusView.setVisibility(View.GONE);
                 mBinding.payingStatusView.setText("支付中，请稍后");
 //                mViewModel.getPayResult(mOrderNo, mOrderPayNo);
+                mBinding.checkView.setEnabled(true);
                 getPayResult();
             }
         });
@@ -108,6 +109,7 @@ public class CarServePayResultActivity extends BindingActivity<ActivityPayResult
             case R.id.check_view:
 //                getPayResult();
                 mCountDownTime.start();
+                mBinding.checkView.setEnabled(false);
                 break;
             case R.id.go_order_view:
                 startActivity(new Intent(this, CarServeOrderListActivity.class));
