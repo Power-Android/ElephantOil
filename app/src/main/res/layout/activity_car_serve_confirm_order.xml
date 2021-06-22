@@ -244,7 +244,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_20"
                         android:layout_marginTop="@dimen/dp_12"
-                        android:layout_marginEnd="@dimen/dp_20"
                         android:paddingBottom="@dimen/dp_17"
                         app:layout_constraintTop_toBottomOf="@+id/redeem_view3" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

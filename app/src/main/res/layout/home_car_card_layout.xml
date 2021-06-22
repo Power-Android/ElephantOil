@@ -32,10 +32,11 @@
             android:textColor="#1D1D1D"
             android:textSize="@dimen/sp_16"
             android:textStyle="bold"
+            android:layout_marginTop="@dimen/dp_18"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/car_img_iv_1"
-            app:layout_constraintTop_toTopOf="@+id/car_img_iv_1" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/car_address_tv"

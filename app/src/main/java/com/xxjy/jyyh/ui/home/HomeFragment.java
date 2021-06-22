@@ -193,6 +193,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             mViewModel.getRefuelJob();
             if (UserConstants.getIsLogin()) {
                 mViewModel.getOftenOils();
+                mViewModel.getOftenCars();
             }
         }
     }
