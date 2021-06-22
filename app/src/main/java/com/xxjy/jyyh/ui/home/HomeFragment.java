@@ -39,6 +39,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
@@ -207,6 +208,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //            mBinding.recommendStationLayout.setVisibility(View.VISIBLE);
 //            mViewModel.getLocation();
             getLocation();
+            if (UserConstants.getIsLogin()) {
+                mViewModel.getOftenOils();
+                mViewModel.getOftenCars();
+            }
         } else {
             if (TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {//是否显示首页卡片
                 mOilCardBinding.noLocationLayout.setVisibility(View.VISIBLE);
