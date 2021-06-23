@@ -210,6 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_8"
                     android:layout_marginEnd="@dimen/dp_8"
+                    android:visibility="gone"
                     android:background="@drawable/home_menu_bg"
                     android:paddingTop="@dimen/dp_2"
                     android:paddingBottom="@dimen/dp_20"

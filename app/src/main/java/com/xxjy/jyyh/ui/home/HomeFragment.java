@@ -949,9 +949,15 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.menuLiveData.observe(this, new Observer<List<HomeMenuEntity>>() {
             @Override
             public void onChanged(List<HomeMenuEntity> menuEntityList) {
-                menuList = menuEntityList;
-                mHomeMenuAdapter.setNewData(menuEntityList);
-                mHomeMenuAdapter.notifyDataSetChanged();
+                if (menuEntityList != null || menuEntityList.size() > 0){
+                    menuList = menuEntityList;
+                    mHomeMenuAdapter.setNewData(menuEntityList);
+                    mHomeMenuAdapter.notifyDataSetChanged();
+                    mBinding.menuRecyclerView.setVisibility(View.VISIBLE);
+                }else {
+                    mBinding.menuRecyclerView.setVisibility(View.GONE);
+                }
+
             }
         });
 
