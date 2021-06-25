@@ -61,12 +61,12 @@ public class ApiService {
     public static final String GET_OIL_NUM = "api/gasPublic/getOilNums";
     //商户优惠券
     public static final String BUSINESS_COUPON = "api/coupon/v1/getBusinessCoupons";
+    public static final String BUSINESS_COUPON_LIST = "api/coupon/v1/getBusinessCouponsList";
     //兑换优惠券
     public static final String EXCHANGE_COUPON = "api/coupon/v1/exchangeCoupon";
     //平台优惠券
     public static final String PLATFORM_COUPON = "api/coupon/v1/getPlatformCouponVOs";
-    public static final String PLATFORM_COUPON_LIST = "api/coupon/v1/getPlatformCouponList";
-    public static final String PLATFORM_COUPON_LIST1 = "api/coupon/v1/getMyCouponList";
+    public static final String PLATFORM_COUPON_LIST = "api/coupon/v1/getMyCouponList";
     //优惠券数量
     public static final String GET_COUPON_NUM = "api/coupon/v1/getMyCouponNumber";
     //油站默认快捷价格

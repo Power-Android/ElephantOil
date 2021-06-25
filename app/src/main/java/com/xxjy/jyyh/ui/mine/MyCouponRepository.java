@@ -20,14 +20,14 @@ public class MyCouponRepository extends BaseRepository {
 
 
     public void getPlatformCouponVOs(MutableLiveData<List<CouponBean>> platformCouponLiveData, int canUse){
-        addDisposable(RxHttp.postForm(ApiService.PLATFORM_COUPON_LIST1)
+        addDisposable(RxHttp.postForm(ApiService.PLATFORM_COUPON_LIST)
                 .add("canUse",canUse)// 0 falae 1 true
                 .asResponseList(CouponBean.class)
                 .subscribe(data -> platformCouponLiveData.postValue(data))
         );
     }
     public void getBusinessCoupons(MutableLiveData<List<CouponBean>> businessCouponLiveData, int canUse){
-        addDisposable(RxHttp.postForm(ApiService.BUSINESS_COUPON)
+        addDisposable(RxHttp.postForm(ApiService.BUSINESS_COUPON_LIST)
                 .add("canUse",canUse)// 0 falae 1 true
                 .asResponseList(CouponBean.class)
                 .subscribe(data -> businessCouponLiveData.postValue(data))

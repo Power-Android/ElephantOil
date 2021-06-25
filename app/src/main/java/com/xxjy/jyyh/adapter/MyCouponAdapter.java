@@ -50,7 +50,6 @@ public class MyCouponAdapter extends BaseMultiItemQuickAdapter<CouponBean, BaseV
                 .setText(R.id.item_coupon_date, String.format("%s - %s", item.getStartTime(), item.getEndTime()));
         helper.addOnClickListener(R.id.use_view);
         switch (item.getStatus()) {
-            //0真正可用 1已用 2过期  3时间未到 4 金额未达到
             //0:待使用,1:可使用,2:已使用，3已过期
             case 0:
                 helper.getView(R.id.mask_view).setVisibility(View.GONE);
