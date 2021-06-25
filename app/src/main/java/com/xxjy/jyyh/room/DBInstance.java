@@ -22,7 +22,7 @@ public class DBInstance {
                             //下面注释表示允许主线程进行数据库操作，但是不推荐这样做。
                             .allowMainThreadQueries()
                             //添加下面这一行,会清空原有数据库数据
-//                            .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration()
                             //正常更新版本
 //                            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_1_3)
                             .build();
