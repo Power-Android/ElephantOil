@@ -87,8 +87,9 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
     private QMUIRoundButton convertBtn;
     private EditText convertEdit;
 
-    private int platformCanUse = 1;
-    private int businessCanUse = 1;
+//    private int platformCanUse = 1;
+//    private int businessCanUse = 1;
+    private int mStatus = 1;
 
     private int viewPosition = 0;
     private CouponNumEntity mCouponNumEntity1;
@@ -184,8 +185,8 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
 
         convertBtn = mExchangeCoupon.findViewById(R.id.convert_btn);
         convertEdit = mExchangeCoupon.findViewById(R.id.convert_edit);
-        getPlatformCouponVOs(platformCanUse);
-        getBusinessCoupons(businessCanUse);
+        getPlatformCouponVOs(mStatus);
+        getBusinessCoupons(mStatus);
         getCarServeCoupons();
     }
 
@@ -197,9 +198,9 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
                 mViewModel.getCouponNum1(1);
                 mViewModel.getCouponNum2(2);
                 if (viewPosition == 0){
-                    getPlatformCouponVOs(platformCanUse);
+                    getPlatformCouponVOs(mStatus);
                 }else if (viewPosition == 1){
-                    getBusinessCoupons(businessCanUse);
+                    getBusinessCoupons(mStatus);
                 }else if (viewPosition == 2){
 
                 }
@@ -209,9 +210,9 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 if (viewPosition == 0){
-                    getPlatformCouponVOs(platformCanUse);
+                    getPlatformCouponVOs(mStatus);
                 }else if (viewPosition == 1){
-                    getBusinessCoupons(businessCanUse);
+                    getBusinessCoupons(mStatus);
                 }else if (viewPosition == 2){
 
                 }
@@ -319,6 +320,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
                         mBinding.statusLayout.setVisibility(View.GONE);
                         break;
                 }
+                setStatusData(mStatus);
             }
 
             @Override
@@ -347,11 +349,11 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
     private void setStatusData(int status){
         switch (viewPosition){
             case 0:
-                platformCanUse = status;
+                mStatus = status;
                 getPlatformCouponVOs(status);
                 break;
             case 1:
-                businessCanUse = status;
+                mStatus = status;
                 getBusinessCoupons(status);
                 break;
             case 2:

@@ -24,7 +24,7 @@ public class CarServeOrderListAdapter extends BaseQuickAdapter<CarServeOrderBean
 
         helper.setText(R.id.item_time_view, item.getExpireTime())
                 .setText(R.id.item_status_view, item.getOrderStatusName())
-                .setText(R.id.item_price_view, item.getProductPrice() + "元")
+                .setText(R.id.item_price_view, item.getRealMoney() + "元")
                 .setText(R.id.item_title_view, item.getProductName())
                 .setText(R.id.item_shop_name_view, item.getStoreName());
         helper.addOnClickListener(R.id.cancel_order_view, R.id.continue_pay_view,R.id.refund_view,R.id.check_coupon_code_view);
