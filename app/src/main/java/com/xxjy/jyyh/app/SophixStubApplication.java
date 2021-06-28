@@ -10,6 +10,7 @@ import com.taobao.sophix.SophixApplication;
 import com.taobao.sophix.SophixEntry;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
+import com.xxjy.jyyh.BuildConfig;
 
 public class SophixStubApplication extends SophixApplication {
     private final String TAG = "SophixStubApplication";
@@ -23,8 +24,8 @@ public class SophixStubApplication extends SophixApplication {
 //         如果需要使用MultiDex，需要在此处调用。
 //         MultiDex.install(this);
         initSophix();
-
     }
+
     private void initSophix() {
         String appVersion = "0.0.0";
         try {
@@ -55,6 +56,8 @@ public class SophixStubApplication extends SophixApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        SophixManager.getInstance().queryAndLoadNewPatch();
+        if (!BuildConfig.DEBUG){
+            SophixManager.getInstance().queryAndLoadNewPatch();
+        }
     }
 }
