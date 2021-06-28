@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.xxjy.jyyh.BuildConfig;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.constants.ApiService;
 import com.xxjy.jyyh.constants.Constants;
@@ -52,7 +53,7 @@ public class HttpManager {
         //RxHttp初始化，自定义OkHttpClient对象，非必须
         RxHttp.init(client);
 
-        RxHttp.setDebug(true);
+        RxHttp.setDebug(BuildConfig.DEBUG);
 
         //设置缓存策略，非必须
         File cacheFile = new File(context.getExternalCacheDir(), "RxHttpCache");
