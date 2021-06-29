@@ -44,7 +44,7 @@ public class ApiService {
     //加油签约油站列表
     public static final String SIGN_OIL_STATIONS = "api/gasPublic/getSignOilStations";
     //油站列表
-    public static final String OIL_AND_SIGN_STATIONS = "api/gasPublic/getOilAndSignStations";
+    public static final String OIL_AND_SIGN_STATIONS = BASE_URL+"api/gasPublic/getOilAndSignStations";
     //加油首页banner
     public static final String OIL_STATIONS_BANNERS = "api/gasPublic/getBanners";
     //获取商品分类列表

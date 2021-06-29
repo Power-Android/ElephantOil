@@ -78,6 +78,7 @@ public class HttpManager {
 
             }
 
+            
             String token = UserConstants.getToken();
             if (!TextUtils.isEmpty(token)) {
                 //添加公共请求头

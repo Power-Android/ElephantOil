@@ -10,7 +10,7 @@ import com.taobao.sophix.SophixApplication;
 import com.taobao.sophix.SophixEntry;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
-import com.xxjy.jyyh.BuildConfig;
+import com.xxjy.jyyh.constants.Constants;
 
 public class SophixStubApplication extends SophixApplication {
     private final String TAG = "SophixStubApplication";
@@ -24,8 +24,8 @@ public class SophixStubApplication extends SophixApplication {
 //         如果需要使用MultiDex，需要在此处调用。
 //         MultiDex.install(this);
         initSophix();
-    }
 
+    }
     private void initSophix() {
         String appVersion = "0.0.0";
         try {
@@ -38,7 +38,7 @@ public class SophixStubApplication extends SophixApplication {
         instance.setContext(this)
                 .setAppVersion(appVersion)
                 .setSecretMetaData(null, null, null)
-                .setEnableDebug(true)
+                .setEnableDebug(false)
                 .setEnableFullLog()
                 .setPatchLoadStatusStub(new PatchLoadStatusListener() {
                     @Override
@@ -56,7 +56,7 @@ public class SophixStubApplication extends SophixApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (!BuildConfig.DEBUG){
+        if(!Constants.IS_DEBUG){
             SophixManager.getInstance().queryAndLoadNewPatch();
         }
     }
