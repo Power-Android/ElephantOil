@@ -27,7 +27,7 @@ import rxhttp.RxHttp;
 public class CarServeRepository extends BaseRepository {
 
     public void getStoreDetails(MutableLiveData<CarServeStoreDetailsBean> liveData, String storeNo) {
-        addDisposable(RxHttp.get(CarServeApiService.GET_STORE_DETAILS + storeNo + "/" + CarServeApiService.APP_ID)
+        addDisposable(RxHttp.get(CarServeApiService.GET_STORE_DETAILS+storeNo+"/"+CarServeApiService.APP_ID + "?gpsType=3")
                 .asCarServeResponse(CarServeStoreDetailsBean.class)
                 .subscribe(data -> liveData.postValue(data))
         );
@@ -117,14 +117,14 @@ public class CarServeRepository extends BaseRepository {
 
     public void getCarServeStoreList(MutableLiveData<CarServeStoreListBean> liveData, int pageIndex, String cityCode, String areaCode, long productCategoryId, int status, String storeName) {
 //        LatLng latLng =  GPSUtil.gcj02_To_Bd09( Double.parseDouble(UserConstants.getLatitude())==0d?39.911205:Double.parseDouble(UserConstants.getLatitude()),Double.parseDouble(UserConstants.getLongitude())==0d?116.470866:Double.parseDouble(UserConstants.getLongitude()));
-        addDisposable(RxHttp.postJson(CarServeApiService.GET_STORE_LIST)
+        addDisposable(RxHttp.postJson(CarServeApiService.GET_STORE_LIST + "?gpsType=3")
                         .add("pageIndex", pageIndex)
                         .add("pageSize", 10)
                         .add("cityCode", cityCode)
                         .add("areaCode", areaCode, !TextUtils.equals("-1", areaCode))
 //                .add("longitude", latLng.longitude )
 //                .add("latitude", latLng.latitude )
-                        .add("gpsType", 3)
+//                        .add("gpsType", 3)
                         .add("longitude", Double.parseDouble(UserConstants.getLongitude()) == 0d ? "116.470866" : UserConstants.getLongitude())
                         .add("latitude", Double.parseDouble(UserConstants.getLatitude()) == 0d ? "39.911205" : UserConstants.getLatitude())
                         .add("productCategoryId", productCategoryId, productCategoryId != -1)

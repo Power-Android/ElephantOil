@@ -4,11 +4,11 @@
     "event_jump_hunter_code": [
       "{ desc: com.xxjy.jyyh.ui.home.HomeFragment#onHunterEvent(java.lang.String oilId), sticky: true }"
     ],
-    "event_change_fragment": [
-      "{ desc: com.xxjy.jyyh.ui.MainActivity#onEvent(com.xxjy.jyyh.entity.EventEntity event), sticky: true }"
-    ],
     "event_jump_pay_query": [
       "{ desc: com.xxjy.jyyh.ui.restaurant.RestaurantActivity#onEvent(com.xxjy.jyyh.entity.PayOrderEntity orderEntity), sticky: true }"
+    ],
+    "event_change_fragment": [
+      "{ desc: com.xxjy.jyyh.ui.MainActivity#onEvent(com.xxjy.jyyh.entity.EventEntity event), sticky: true }"
     ]
   },
   "wrongBus": {}
