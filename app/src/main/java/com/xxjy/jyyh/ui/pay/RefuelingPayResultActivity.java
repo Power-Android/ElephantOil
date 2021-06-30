@@ -247,7 +247,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                 if (MapIntentUtils.isPhoneHasMapNavigation()) {
                     NavigationDialog navigationDialog = new NavigationDialog(this,
                             cardStoreInfoVoBean.getLatitude(), cardStoreInfoVoBean.getLongitude(),
-                            cardStoreInfoVoBean.getStoreName());
+                            cardStoreInfoVoBean.getAddress());
                     navigationDialog.show();
                 } else {
                     showToastWarning("您当前未安装地图软件，请先安装");

@@ -160,7 +160,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 if (MapIntentUtils.isPhoneHasMapNavigation()) {
                     NavigationDialog navigationDialog = new NavigationDialog(this,
                             mCardStoreInfoVo.getLatitude(), mCardStoreInfoVo.getLongitude(),
-                            mCardStoreInfoVo.getStoreName());
+                            mCardStoreInfoVo.getAddress());
                     navigationDialog.show();
                 } else {
                     showToastWarning("您当前未安装地图软件，请先安装");

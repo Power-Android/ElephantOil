@@ -138,7 +138,7 @@
                 android:layout_height="@dimen/dp_52"
                 android:layout_marginEnd="@dimen/dp_14"
                 android:src="@drawable/default_img_bg"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:riv_corner_radius="@dimen/dp_3" />
         </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

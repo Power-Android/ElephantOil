@@ -675,7 +675,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     if (MapIntentUtils.isPhoneHasMapNavigation()) {
                         NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
                                 mStoreRecordVo.getCardStoreInfoVo().getLatitude(), mStoreRecordVo.getCardStoreInfoVo().getLongitude(),
-                                mStoreRecordVo.getCardStoreInfoVo().getStoreName());
+                                mStoreRecordVo.getCardStoreInfoVo().getAddress());
                         navigationDialog.show();
                     } else {
                         showToastWarning("您当前未安装地图软件，请先安装");

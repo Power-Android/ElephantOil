@@ -199,7 +199,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                                 if (MapIntentUtils.isPhoneHasMapNavigation()) {
                                     NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
                                             data.get(position).getCardStoreInfoVo().getLatitude(), data.get(position).getCardStoreInfoVo().getLongitude(),
-                                            data.get(position).getCardStoreInfoVo().getStoreName());
+                                            data.get(position).getCardStoreInfoVo().getAddress());
                                     navigationDialog.show();
                                 } else {
                                     showToastWarning("您当前未安装地图软件，请先安装");
