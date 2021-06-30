@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -18,6 +19,8 @@ import com.amap.api.location.DPoint;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -32,6 +35,7 @@ import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BindingFragment;
 import com.xxjy.jyyh.constants.BannerPositionConstants;
 import com.xxjy.jyyh.constants.Constants;
+import com.xxjy.jyyh.constants.SPConstants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.databinding.FragmentCarServeBinding;
 import com.xxjy.jyyh.databinding.FragmentOilBinding;
@@ -46,6 +50,7 @@ import com.xxjy.jyyh.dialog.SelectSortDialog;
 import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.CarServeStoreBean;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.entity.RedeemEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
 import com.xxjy.jyyh.ui.integral.BannerViewModel;
@@ -53,6 +58,7 @@ import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
 import com.xxjy.jyyh.ui.oil.OilViewModel;
 import com.xxjy.jyyh.ui.search.SearchActivity;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
@@ -97,6 +103,10 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
     private long productCategoryId = -1;
     private int status=0;
     private BannerViewModel bannerViewModel;
+    private OilViewModel oilViewModel;
+    private String mDragLink;
+
+
     //-----------车服end--------------
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -204,6 +214,8 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
 
 
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
+        oilViewModel = new ViewModelProvider(this).get(OilViewModel.class);
+
 
 //        getBanners();
         //110100
@@ -211,6 +223,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
         getAreaList(cityCode);
         getProductCategory();
         loadCarServeData(false);
+        oilViewModel.getDragViewInfo();
     }
 
     @Override
@@ -269,6 +282,9 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
         mBinding.carBusinessStatusLayout.setOnClickListener(this::onViewClicked);
         mBinding.carServeSelectLayout.setOnClickListener(this::onViewClicked);
         mBinding.search2Layout.setOnClickListener(this::onViewClicked);
+
+        mBinding.closeIv.setOnClickListener(this::onViewClicked);
+        mBinding.dragView.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -350,6 +366,16 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     mBinding.refreshview.resetNoMoreData();
                     loadCarServeData(false);
                 });
+                break;
+            case R.id.close_iv:
+                mBinding.dragView.setVisibility(View.GONE);
+                break;
+            case R.id.drag_view:
+                if (!TextUtils.isEmpty(mDragLink)) {
+                    SPUtils.getInstance().put(SPConstants.IS_TODAY, TimeUtils.getNowString());
+                    WebViewActivity.openRealUrlWebActivity(getBaseActivity(), mDragLink);
+//                    mBinding.dragView.setVisibility(View.GONE);
+                }
                 break;
         }
     }
@@ -448,6 +474,29 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
             } else {
                 pageIndex--;
                 mBinding.refreshview.finishLoadMoreWithNoMoreData();
+            }
+        });
+
+        oilViewModel.dragViewLiveData.observe(this, new Observer<RedeemEntity>() {
+            @Override
+            public void onChanged(RedeemEntity redeemEntity) {
+                if (TextUtils.isEmpty(redeemEntity.getImgUrl())) {
+                    mBinding.dragView.setVisibility(View.GONE);
+                } else {
+                    mDragLink = redeemEntity.getLink();
+                    Glide.with(mContext).load(redeemEntity.getImgUrl()).into(mBinding.jumpIntegral);
+                    String nowMills = SPUtils.getInstance().getString(SPConstants.IS_TODAY);
+                    if (!TextUtils.isEmpty(nowMills)) {
+                        boolean today = TimeUtils.isToday(nowMills);
+                        if (!today) {
+                            mBinding.dragView.setVisibility(View.VISIBLE);
+                        } else {
+                            mBinding.dragView.setVisibility(View.GONE);
+                        }
+                    } else {
+                        mBinding.dragView.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         });
     }

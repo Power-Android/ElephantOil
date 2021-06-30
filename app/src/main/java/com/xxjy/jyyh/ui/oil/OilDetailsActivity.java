@@ -288,7 +288,7 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                 if (!TextUtils.isEmpty(mDragLink)) {
                     SPUtils.getInstance().put(SPConstants.IS_TODAY, TimeUtils.getNowString());
                     WebViewActivity.openRealUrlWebActivity(this, mDragLink);
-                    mBinding.dragView.setVisibility(View.GONE);
+//                    mBinding.dragView.setVisibility(View.GONE);
                 }
                 break;
         }
