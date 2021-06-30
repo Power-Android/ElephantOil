@@ -170,6 +170,7 @@ public class HomeRepository extends BaseRepository {
         addDisposable(RxHttp.postForm(ApiService.HOME_CARD_INFO)
                 .add(Constants.LATITUDE, lat, lat != 0)
                 .add(Constants.LONGTIDUE, lng, lng != 0)
+                .add("gpsType",3)
                 .add(Constants.GAS_STATION_ID, gasId, !TextUtils.isEmpty(gasId))
                 .asResponse(OilEntity.class)
                 .subscribe(homeCardEntity -> homeOilLiveData.postValue(homeCardEntity)));

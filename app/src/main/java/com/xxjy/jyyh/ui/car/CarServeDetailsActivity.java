@@ -1,32 +1,21 @@
 package com.xxjy.jyyh.ui.car;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blankj.utilcode.util.BarUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIFloatLayout;
-import com.qmuiteam.qmui.widget.tab.QMUIBasicTabSegment;
-import com.qmuiteam.qmui.widget.tab.QMUITabBuilder;
-import com.qmuiteam.qmui.widget.tab.QMUITabIndicator;
-import com.qmuiteam.qmui.widget.tab.QMUITabSegment;
-import com.qmuiteam.qmui.widget.tab.QMUITabView;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.CarServeProjectListAdapter;
 import com.xxjy.jyyh.adapter.SelectCarServeClassAdapter;
@@ -34,15 +23,10 @@ import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.databinding.ActivityCarServeDetailsBinding;
 import com.xxjy.jyyh.dialog.CarServeCouponDialog;
 import com.xxjy.jyyh.dialog.NavigationDialog;
-import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.CarServeCouponBean;
 import com.xxjy.jyyh.entity.CarServeCouponListBean;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.CardStoreInfoVoBean;
-import com.xxjy.jyyh.ui.MainActivity;
-import com.xxjy.jyyh.ui.web.WebViewActivity;
-import com.xxjy.jyyh.utils.LoginHelper;
-import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
@@ -50,7 +34,6 @@ import com.youth.banner.indicator.RectangleIndicator;
 import com.youth.banner.listener.OnPageChangeListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

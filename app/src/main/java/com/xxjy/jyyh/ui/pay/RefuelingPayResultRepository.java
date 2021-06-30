@@ -23,6 +23,7 @@ public class RefuelingPayResultRepository extends BaseRepository {
                 .add("orderPayNo", orderPayNo)
                 .add("latitude", latitude)
                 .add("longitude", longitude)
+                .add("gpsType",3)
                 .asResponse(PayResultEntity.class)
                 .subscribe(new Consumer<PayResultEntity>() {
                     @Override
