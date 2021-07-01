@@ -154,14 +154,14 @@ public abstract class BindingFragment<V extends ViewBinding, VM extends BaseView
      */
     protected  void onViewClicked(View view){
 
-    };
+    }
 
     /**
      * 处理网络请求回调
      */
     protected  void dataObservable(){
 
-    };
+    }
 
     @Override
     public void onDestroyView() {

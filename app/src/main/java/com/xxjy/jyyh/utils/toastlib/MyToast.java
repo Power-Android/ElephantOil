@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class MyToast {
     private static Toast mToast;
 
-    private static Handler mHandler = new Handler(Looper.getMainLooper());
+    private static final Handler mHandler = new Handler(Looper.getMainLooper());
 
     /**
      * 显示一个普通的toast

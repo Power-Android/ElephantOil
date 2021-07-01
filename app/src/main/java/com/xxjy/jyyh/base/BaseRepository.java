@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public class BaseRepository {
     //管理RxJava，主要针对RxJava异步操作造成的内存泄漏
     private CompositeDisposable mCompositeDisposable;
-    private MutableLiveData<Boolean> loadingLiveData;
+    private final MutableLiveData<Boolean> loadingLiveData;
 
 
     public BaseRepository() {

@@ -492,6 +492,7 @@ public class JsOperation implements JsOperationMethods {
     }
 
     @Override
+    @JavascriptInterface
     public void toNavigation(String longitude, String latitude,String destination) {
         if(mActivity instanceof WebViewActivity){
             mActivity.runOnUiThread(new Runnable() {

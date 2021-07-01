@@ -72,7 +72,7 @@ public class Util {
 			while ((ch = is.read()) != -1) {
 				bytestream.write(ch);
 			}
-			byte imgdata[] = bytestream.toByteArray();
+			byte[] imgdata = bytestream.toByteArray();
 			bytestream.close();
 			return imgdata;
 		}catch(Exception e){

@@ -8,7 +8,7 @@ package com.xxjy.jyyh.jscalljava.jscallback;
  */
 
 public interface OnJsCallListener {
-    public final int CALL_TYPE_SHARE = 1;
+    int CALL_TYPE_SHARE = 1;
 
     void onJsCallListener(int callType, String content);
 }

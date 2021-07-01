@@ -17,7 +17,7 @@ public enum ToastType {
     TYPE_SUCCESS,   //成功
     TYPE_ERROR;     //错误,失败
 
-    private ToastType() {
+    ToastType() {
     }
 
 }

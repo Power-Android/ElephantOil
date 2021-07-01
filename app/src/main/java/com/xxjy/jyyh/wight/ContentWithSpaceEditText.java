@@ -151,7 +151,7 @@ public class ContentWithSpaceEditText extends AppCompatEditText {
                 getCompoundDrawables()[1], right, getCompoundDrawables()[3]);
     }
 
-    private TextWatcher watcher = new TextWatcher() {
+    private final TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -182,7 +182,7 @@ public class ContentWithSpaceEditText extends AppCompatEditText {
                 StringBuilder sb = new StringBuilder();
                 int spaceCount = 0;
                 for (int i = 0; i < newStr.length(); i++) {
-                    sb.append(newStr.substring(i, i+1));
+                    sb.append(newStr.charAt(i));
                     //如果当前输入的字符下一位为空格(i+1+1+spaceCount)，因为i是从0开始计算的，所以一开始的时候需要先加1
                     if(isSpace(i + 2 + spaceCount)){
                         sb.append(" ");

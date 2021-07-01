@@ -15,8 +15,8 @@ public class ForegroundCallbacks implements Application.ActivityLifecycleCallbac
     private static final long CHECK_DELAY = 600;
     private static ForegroundCallbacks instance;
     private boolean foreground = false, paused = true;
-    private Handler handler = new Handler();
-    private List<Listener> listeners = new CopyOnWriteArrayList<>();
+    private final Handler handler = new Handler();
+    private final List<Listener> listeners = new CopyOnWriteArrayList<>();
     private Runnable check;
 
     public static ForegroundCallbacks init(Application application) {
@@ -125,9 +125,9 @@ public class ForegroundCallbacks implements Application.ActivityLifecycleCallbac
     }
 
     public interface Listener {
-        public void onBecameForeground();
+        void onBecameForeground();
 
-        public void onBecameBackground();
+        void onBecameBackground();
     }
 
 }

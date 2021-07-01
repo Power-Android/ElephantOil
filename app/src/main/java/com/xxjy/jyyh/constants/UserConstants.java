@@ -153,11 +153,7 @@ public class UserConstants {
 
     public static boolean getNotificationRemind() {
         String content = SPUtils.getInstance().getString(SPConstants.NOTIFICATION_REMIND);
-        if (TextUtils.equals(content, TimeUtils.date2String(new Date(), "yyyy-MM-dd") + "@_@" + true)) {
-            return true;
-        } else {
-            return false;
-        }
+        return TextUtils.equals(content, TimeUtils.date2String(new Date(), "yyyy-MM-dd") + "@_@" + true);
     }
     public static void setNotificationRemindVersion(boolean b) {
         String str = Util.getVersionName() + "@_@" + b;
@@ -166,11 +162,7 @@ public class UserConstants {
 
     public static boolean getNotificationRemindVersion() {
         String content = SPUtils.getInstance().getString(SPConstants.NOTIFICATION_REMIND_VERSION);
-        if (TextUtils.equals(content, Util.getVersionName() + "@_@" + true)) {
-            return true;
-        } else {
-            return false;
-        }
+        return TextUtils.equals(content, Util.getVersionName() + "@_@" + true);
     }
     public static void setShowNewUserRedPacket() {
         SPUtils.getInstance().put(SPConstants.NEW_USER_RED_PACKET, System.currentTimeMillis());
@@ -178,11 +170,7 @@ public class UserConstants {
 
     public static boolean getShowNewUserRedPacket() {
         long content = SPUtils.getInstance().getLong(SPConstants.NEW_USER_RED_PACKET,0l);
-        if (TimeUtils.isToday(content)) {
-            return true;
-        } else {
-            return false;
-        }
+        return TimeUtils.isToday(content);
     }
 
     public static void setNotificationRemindUserCenter(boolean b) {

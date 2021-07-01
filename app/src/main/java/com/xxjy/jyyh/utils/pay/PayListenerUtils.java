@@ -23,9 +23,7 @@ public class PayListenerUtils {
     }
 
     public void removeListener(IPayListener listener) {
-        if (resultList.contains(listener)) {
-            resultList.remove(listener);
-        }
+        resultList.remove(listener);
     }
 
     public void addSuccess() {
