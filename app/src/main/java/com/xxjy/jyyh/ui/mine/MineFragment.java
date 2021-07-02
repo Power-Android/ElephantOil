@@ -60,8 +60,8 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             if (UserConstants.getIsLogin()) {
                 queryUserInfo();
                 getMonthEquityInfo();
-                getVipInfo();
             }
+            getVipInfo();
         }
     }
 
@@ -69,10 +69,10 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
     protected void onVisible() {
         super.onVisible();
         getBannerOfPostion();
+        getVipInfo();
         if (UserConstants.getIsLogin()) {
             queryUserInfo();
             getMonthEquityInfo();
-            getVipInfo();
         } else {
             mBinding.photoView.setImageResource(R.drawable.default_img_bg);
             mBinding.nameView.setText("登录注册");
@@ -117,7 +117,7 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 //            mBinding.noticeLayout.setAnimation(AnimationUtils.makeOutAnimation(getContext(), true));
 
         }
-        setHeight(false);
+        setHeight(true);
     }
 
     @Override
@@ -157,10 +157,10 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
 
         mBinding.refreshview.setOnRefreshListener(refreshLayout -> {
             getBannerOfPostion();
+            getVipInfo();
             if (UserConstants.getIsLogin()) {
                 queryUserInfo();
                 getMonthEquityInfo();
-                getVipInfo();
             } else {
                 mBinding.refreshview.finishRefresh();
             }
@@ -355,7 +355,11 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
             }else {
                 mUserCardId = s.getUserCardId();
                 mBinding.vipMoneyView2.setVisibility(View.VISIBLE);
-                mBinding.vipMoneyView2.setText("已省" + s.getSaveMoney()+"元");
+                SpanUtils.with(mBinding.vipMoneyView2)
+                        .append("已省")
+                        .append(s.getSaveMoney()+"元")
+                        .setForegroundColor(getResources().getColor(R.color.color_4C28))
+                        .create();
                 mBinding.vipMoneyView.setText("有效期至：" + s.getExpire());
                 mBinding.vipReceiveBt.setImageResource(R.drawable.vip_look_icon);
             }

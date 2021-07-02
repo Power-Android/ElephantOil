@@ -370,7 +370,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_f9f9_4radius"
                     android:maxHeight="@dimen/dp_60"
-                    android:minHeight="@dimen/dp_60"
+                    android:minHeight="@dimen/dp_32"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/price_layout" />
 

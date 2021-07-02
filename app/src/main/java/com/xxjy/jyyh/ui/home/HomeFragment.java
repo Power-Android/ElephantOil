@@ -447,6 +447,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                                 WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
                                             }
                                         });
+                                    } else if (data.getLink().contains("?appId=Orvay1rVsoU9nlpY")){
+                                        BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT, new EventEntity(EventConstants.EVENT_TO_CAR_FRAGMENT));
                                     } else {
                                         TrackingConstant.OIL_MAIN_TYPE = "3";
                                         WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());

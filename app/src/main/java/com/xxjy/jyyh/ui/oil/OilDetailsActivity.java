@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.content.Intent;
@@ -33,6 +34,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.OilGunAdapter;
 import com.xxjy.jyyh.adapter.OilNumAdapter;
 import com.xxjy.jyyh.adapter.OilStationFlexAdapter;
+import com.xxjy.jyyh.adapter.OilTagDescAdapter;
 import com.xxjy.jyyh.adapter.OilTypeAdapter;
 import com.xxjy.jyyh.base.BindingActivity;
 import com.xxjy.jyyh.constants.Constants;
@@ -63,6 +65,7 @@ import java.util.List;
 
 public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBinding, OilViewModel> {
     private List<OilEntity.StationsBean.CzbLabelsBean> mTagList = new ArrayList<>();
+    private List<String> mTagDescList = new ArrayList<>();
     private List<OilEntity.StationsBean.OilPriceListBean> mOilNumList = new ArrayList<>();//油号列表
     private List<OilEntity.StationsBean.OilPriceListBean.GunNosBean> mOilGunList = new ArrayList<>();//油枪列表
     private OilTypeAdapter mOilTypeAdapter;
@@ -89,6 +92,7 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
     private PriceDescriptionDialog priceDescriptionDialog;
     private MineViewModel mineViewModel;
     private String mDragLink;
+    private OilTagDescAdapter mOilTagDescAdapter;
 
     @Override
     protected void initView() {
@@ -104,7 +108,7 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
         if (PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION)) {
             mHomeViewModel.getLocation();
-        }else {
+        } else {
             //首页油站
             mViewModel.getOilDetail(mGasId, Double.parseDouble(UserConstants.getLatitude()),
                     Double.parseDouble(UserConstants.getLongitude()));
@@ -124,6 +128,11 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
         mBinding.oilTagRecyclerView.setLayoutManager(flexboxLayoutManager);
         mFlexAdapter = new OilStationFlexAdapter(R.layout.adapter_oil_detail_tag, mTagList);
         mBinding.oilTagRecyclerView.setAdapter(mFlexAdapter);
+
+        //标签解释字段
+        mBinding.priceDescRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mOilTagDescAdapter = new OilTagDescAdapter(R.layout.adapter_tag_desc, mTagDescList);
+        mBinding.priceDescRecycler.setAdapter(mOilTagDescAdapter);
 
         //油类型列表
         mBinding.oilTypeRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
@@ -182,6 +191,13 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                 for (int j = 0; j < mStationsBean.getOilPriceList().get(i).getGunNos().size(); j++) {
                     mStationsBean.getOilPriceList().get(i).getGunNos().get(j).setSelected(false);
                 }
+            }
+
+            if (data.get(position).getActivityDetailList() != null && data.get(position).getActivityDetailList().size() > 0) {
+                mOilTagDescAdapter.setNewData(data.get(position).getActivityDetailList());
+                mBinding.priceDescRecycler.setVisibility(View.VISIBLE);
+            } else {
+                mBinding.priceDescRecycler.setVisibility(View.GONE);
             }
 
             mBinding.oilLiterTv.setText("" + data.get(position).getPriceYfq());
@@ -392,6 +408,18 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                 mBinding.oilTagRecyclerView.setVisibility(View.INVISIBLE);
                 mBinding.oilTagLayout.setVisibility(View.GONE);
             }
+
+            for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
+                if (TextUtils.equals(mOilNo, String.valueOf(mStationsBean.getOilPriceList().get(i).getOilNo()))) {
+                    if (mStationsBean.getOilPriceList().get(i).getActivityDetailList() != null && mStationsBean.getOilPriceList().get(i).getActivityDetailList().size() > 0) {
+                        mOilTagDescAdapter.setNewData(stationsBean.getOilPriceList().get(i).getActivityDetailList());
+                        mBinding.priceDescRecycler.setVisibility(View.VISIBLE);
+                    } else {
+                        mBinding.priceDescRecycler.setVisibility(View.GONE);
+                    }
+                }
+            }
+
             //分发数据
             dispatchOilData(stationsBean);
 

@@ -80,6 +80,7 @@ public class OilEntity implements Serializable {
         private List<OilPriceListBean> oilPriceList;
         private List<String> topImgList;
 
+
         public String getGasLogoBig() {
             return gasLogoBig;
         }
@@ -400,6 +401,15 @@ public class OilEntity implements Serializable {
             private String priceGun;
             private List<GunNosBean> gunNos;
             private boolean isSelected;
+            private List<String> activityDetailList;
+
+            public List<String> getActivityDetailList() {
+                return activityDetailList;
+            }
+
+            public void setActivityDetailList(List<String> activityDetailList) {
+                this.activityDetailList = activityDetailList;
+            }
 
             public boolean isSelected() {
                 return isSelected;

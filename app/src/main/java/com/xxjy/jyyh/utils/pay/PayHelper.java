@@ -60,9 +60,10 @@ public class PayHelper {
             msgApi.sendReq(req);
         }
     }
-public void unionPay(Context context,String payNo){
-    UPPayAssistEx.startPay(context, null, null, payNo, "00");
-}
+
+    public void unionPay(Context context, String payNo) {
+        UPPayAssistEx.startPay(context, null, null, payNo, "00");
+    }
 
     public void AliPay(Activity activity, final String orderInfo) {
         MyHandler myHandler = new MyHandler(activity);
@@ -87,9 +88,9 @@ public void unionPay(Context context,String payNo){
     }
 
 
-
-    private  class MyHandler extends Handler {
+    private class MyHandler extends Handler {
         WeakReference<Activity> mActivity;
+
         public MyHandler(Activity activity) {
             mActivity = new WeakReference<>(activity);
         }
@@ -112,7 +113,7 @@ public void unionPay(Context context,String payNo){
 //                            mIPayListener.onSuccess();
 //                        }
                         PayListenerUtils.getInstance().addSuccess();
-                    }else if(TextUtils.equals(resultStatus, "6001")){
+                    } else if (TextUtils.equals(resultStatus, "6001")) {
                         PayListenerUtils.getInstance().addCancel();
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
