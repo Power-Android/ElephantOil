@@ -139,7 +139,7 @@
         android:paddingTop="@dimen/dp_8"
         android:paddingRight="@dimen/dp_14"
         android:paddingBottom="@dimen/dp_8"
-        android:visibility="visible"
+        android:visibility="gone"
         app:qmui_backgroundColor="#E9E9E9"
         app:qmui_radiusBottomLeft="@dimen/dp_5"
         app:qmui_radiusBottomRight="@dimen/dp_5">
@@ -149,9 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/down_view"
-            android:text="1.除特例商品外，全场通用
-                          \n2.该优惠券不可与优惠活动同享
-            \n3.使用该优惠券购买商品后，如订单全部取消或退款，优惠券将原路为您退还。有效期任为优惠券原始有效期。如订单部分取消或退款，优惠券不再退还。"
+            android:text=""
             android:textColor="@color/color_65"
             android:textSize="@dimen/sp_10" />
 
@@ -160,9 +158,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/down_view"
-            android:text="1.除特例商品外，全场通用
-                          \n2.该优惠券不可与优惠活动同享
-            \n3.使用该优惠券购买商品后，如订单全部取消或退款，优惠券将原路为您退还。有效期任为优惠券原始有效期。如订单部分取消或退款，优惠券不再退还。"
+            android:text=""
             android:textColor="@color/color_65"
             android:textSize="@dimen/sp_10"
             android:visibility="gone" />

@@ -98,10 +98,12 @@ public class MyCouponAdapter extends BaseMultiItemQuickAdapter<CouponBean, BaseV
         }
 
         if (TextUtils.isEmpty(item.getDescription())) {
+            helper.getView(R.id.desc_ll).setVisibility(View.GONE);
             helper.getView(R.id.down_view).setVisibility(View.INVISIBLE);
             helper.getView(R.id.desc_content).setVisibility(View.INVISIBLE);
             helper.getView(R.id.desc_content2).setVisibility(View.GONE);
         } else {
+            helper.getView(R.id.desc_ll).setVisibility(View.VISIBLE);
             if (item.getDescription().length() > 16) {
                 helper.setText(R.id.desc_content, "使用说明：" + item.getDescription().substring(0, 15));
                 helper.setText(R.id.desc_content2, "使用说明：" + item.getDescription());
