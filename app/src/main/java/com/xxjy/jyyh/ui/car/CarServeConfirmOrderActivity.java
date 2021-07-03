@@ -160,9 +160,26 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                 }
                 mBinding.redeemView6.setOnClickListener(view -> WebViewActivity.openRealUrlWebActivity(CarServeConfirmOrderActivity.this, redeemEntity.getH5url()));
 
+
                 mRedeemList = redeemEntity.getProductOilGasList();
                 mOilRedeemAdapter.setNewData(mRedeemList);
                 mOilRedeemAdapter.notifyDataSetChanged();
+
+                if(mRedeemList!=null&&mRedeemList.size()>0){
+                    if(Double.parseDouble(mRedeemList.get(0).getRedeemPrice())==0d){
+                        mOilRedeemAdapter.setSelected(0);
+                        mProductIdList.clear();
+                        allProductPrice = 0;
+                        for (int i = 0; i < mRedeemList.size(); i++) {
+                            if (mRedeemList.get(i).isSelected()) {
+                                mProductIdList.add(new ProductIdEntity(mRedeemList.get(i).getProductId() + "", "1"));
+                                allProductPrice = allProductPrice + Double.parseDouble(mRedeemList.get(i).getRedeemPrice());
+                            }
+                        }
+                        mJsonStr = GsonUtils.toJson(mProductIdList);
+                        refreshPrice();
+                    }
+                }
             } else {
                 mBinding.redeemCl.setVisibility(View.GONE);
             }
