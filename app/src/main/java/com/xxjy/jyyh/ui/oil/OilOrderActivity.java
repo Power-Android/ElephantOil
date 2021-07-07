@@ -753,7 +753,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 if (s.length() > 0) {
                     mBinding.discountRecyclerView.setVisibility(View.VISIBLE);
                     mBinding.hotIv.setVisibility(View.VISIBLE);
-                    mBinding.redeemCl.setVisibility(View.VISIBLE);
+//                    mBinding.redeemCl.setVisibility(View.VISIBLE);
                     //刷新快捷价格的选中状态
                     List<OilDefaultPriceEntity.DefaultAmountBean> data = mOilAmountAdapter.getData();
                     for (int i = 0; i < data.size(); i++) {
@@ -769,7 +769,7 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     mBinding.discountRecyclerView.setVisibility(View.GONE);
                     mBinding.hotIv.setVisibility(View.GONE);
 
-                    mBinding.redeemCl.setVisibility(View.GONE);
+//                    mBinding.redeemCl.setVisibility(View.GONE);
                 }
             }
         });
@@ -982,12 +982,12 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
             public void onChanged(OilDefaultPriceEntity defaultPriceEntity) {
                 List<OilDefaultPriceEntity.DefaultAmountBean> defaultAmount = defaultPriceEntity.getDefaultAmount();
                 mOilAmountAdapter.setNewData(defaultAmount);
-                if (isFirstIn){
-                    //进来默认200加油金额
-                    mBinding.amountEt.setText("200");
-                    isFirstIn = false;
-                    refreshData();
-                }
+//                if (isFirstIn){
+//                    //进来默认200加油金额
+//                    mBinding.amountEt.setText("200");
+//                    isFirstIn = false;
+//                    refreshData();
+//                }
             }
         });
 

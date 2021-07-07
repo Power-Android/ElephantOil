@@ -223,7 +223,9 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
         getAreaList(cityCode);
         getProductCategory();
         loadCarServeData(false);
-        oilViewModel.getDragViewInfo();
+        if (UserConstants.getIsLogin()){
+            oilViewModel.getDragViewInfo();
+        }
     }
 
     @Override

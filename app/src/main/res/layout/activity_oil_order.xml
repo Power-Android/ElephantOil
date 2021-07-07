@@ -368,7 +368,7 @@
                                     android:id="@+id/redeem_cl"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:visibility="gone"
+                                    android:visibility="visible"
                                     android:layout_marginTop="@dimen/dp_10"
                                     app:layout_constraintTop_toBottomOf="@+id/month_red_cl">
                                     <View

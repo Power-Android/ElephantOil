@@ -144,7 +144,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
         bannerViewModel = new ViewModelProvider(this).get(BannerViewModel.class);
         if(state==-1){
             checkVersion();
-            //新老用户展示tab判断
+            //新老用户展示tab判断 新客户展示油站列表
             mViewModel.getIsNewUser().observe(this, aBoolean -> {
                 if (aBoolean) {
                     isNewUser = 1;

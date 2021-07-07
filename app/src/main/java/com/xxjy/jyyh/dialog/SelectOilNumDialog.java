@@ -68,6 +68,7 @@ public class SelectOilNumDialog {
                     .contentView(mBinding.getRoot())
                     .backgroundDimDefault()
                     .animStyle(DialogLayer.AnimStyle.TOP)
+                    .outsideTouchedToDismiss(false)
                     .gravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
 
         }
