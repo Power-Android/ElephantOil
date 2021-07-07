@@ -261,6 +261,7 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                 Intent intent = new Intent(this, CarServeDetailsActivity.class);
                 intent.putExtra("no", cardStoreInfoVoBean.getStoreNo());
                 intent.putExtra("distance",cardStoreInfoVoBean.getDistance());
+                intent.putExtra("channel",cardStoreInfoVoBean.getChannel());
                 startActivity(intent);
                 finish();
 

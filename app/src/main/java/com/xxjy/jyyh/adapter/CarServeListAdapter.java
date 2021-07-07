@@ -27,6 +27,7 @@ import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.CarServeStoreBean;
 import com.xxjy.jyyh.entity.OilEntity;
+import com.xxjy.jyyh.entity.PosterBean;
 import com.xxjy.jyyh.ui.car.CarServeConfirmOrderActivity;
 import com.xxjy.jyyh.ui.car.CarServeDetailsActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
@@ -38,10 +39,16 @@ import java.util.List;
 
 public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, BaseViewHolder> {
 
+    private PosterBean mPosterBean;
     public CarServeListAdapter(int layoutResId, @Nullable List<CarServeStoreBean> data) {
         super(layoutResId, data);
     }
 
+
+    public void setPoster(PosterBean bean){
+        mPosterBean = bean;
+        notifyDataSetChanged();
+    }
     @Override
     protected void convert(@NonNull BaseViewHolder helper, CarServeStoreBean item) {
 
@@ -95,11 +102,12 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
         }
         helper.addOnClickListener(R.id.navigation_ll);
         if (item.getProducts() != null && item.getProducts().size() > 0) {
-            helper.getView(R.id.line_view).setVisibility(View.VISIBLE);
+//            helper.getView(R.id.line_view).setVisibility(View.VISIBLE);
             helper.getView(R.id.product_recyclerview).setVisibility(View.VISIBLE);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
             ((RecyclerView)helper.getView(R.id.product_recyclerview)).setLayoutManager(linearLayoutManager);
             CarServeHomeProjectListAdapter carServeHomeProjectListAdapter =new CarServeHomeProjectListAdapter(item.getProducts());
+           carServeHomeProjectListAdapter.setPoster(mPosterBean);
             ((RecyclerView)helper.getView(R.id.product_recyclerview)).setAdapter(carServeHomeProjectListAdapter);
             carServeHomeProjectListAdapter.setOnSelectListener(new CarServeHomeProjectListAdapter.OnSelectListener() {
                 @Override
@@ -116,9 +124,15 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
             });
 
         } else {
-            helper.getView(R.id.line_view).setVisibility(View.GONE);
+//            helper.getView(R.id.line_view).setVisibility(View.GONE);
             helper.getView(R.id.product_recyclerview).setVisibility(View.GONE);
         }
+        if(item.getCardStoreInfoVo().getChannel()==101){
+            helper.getView(R.id.type_view).setVisibility(View.VISIBLE);
+        }else{
+            helper.getView(R.id.type_view).setVisibility(View.GONE);
+        }
+
 
     }
 

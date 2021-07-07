@@ -180,6 +180,13 @@ public class UserConstants {
     public static boolean getNotificationRemindUserCenter() {
         return SPUtils.getInstance().getBoolean(SPConstants.NOTIFICATION_REMIND_USER_CENTER,false);
     }
+    public static void setCarType(int carType) {
+        SPUtils.getInstance().put(SPConstants.CAR_TYPE, carType);
+    }
+
+    public static int getCarType() {
+        return SPUtils.getInstance().getInt(SPConstants.CAR_TYPE,-1);
+    }
 
 
     //定位信息

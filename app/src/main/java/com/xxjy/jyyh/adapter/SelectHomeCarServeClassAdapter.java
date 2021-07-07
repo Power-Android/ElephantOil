@@ -1,7 +1,6 @@
 package com.xxjy.jyyh.adapter;
 
 import android.graphics.Color;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.entity.CarServeCategoryBean;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -20,10 +20,10 @@ import java.util.List;
  * @project ElephantOil
  * @description:
  */
-public class SelectCarServeClassAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class SelectHomeCarServeClassAdapter extends BaseQuickAdapter<CarServeCategoryBean, BaseViewHolder> {
 
     private int selectPosition=0;
-    public SelectCarServeClassAdapter(int layoutResId, @Nullable @org.jetbrains.annotations.Nullable List<String> data) {
+    public SelectHomeCarServeClassAdapter(int layoutResId, @Nullable @org.jetbrains.annotations.Nullable List<CarServeCategoryBean> data) {
         super(layoutResId, data);
     }
 
@@ -32,8 +32,8 @@ public class SelectCarServeClassAdapter extends BaseQuickAdapter<String, BaseVie
         notifyDataSetChanged();
     }
     @Override
-    protected void convert(@NonNull @NotNull BaseViewHolder helper, String item) {
-        helper.setText(R.id.title_tv, item);
+    protected void convert(@NonNull @NotNull BaseViewHolder helper, CarServeCategoryBean item) {
+        helper.setText(R.id.title_tv, item.getName());
         if(helper.getAdapterPosition()==selectPosition){
             helper.getView(R.id.title_tv).setBackgroundResource(R.drawable.shape_checked_bt);
             helper.setTextColor(R.id.title_tv, Color.parseColor("#FFFFFF"));

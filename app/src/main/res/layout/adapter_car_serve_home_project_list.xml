@@ -32,12 +32,19 @@
         android:ellipsize="end"
         android:text="--"
         android:layout_weight="1"/>
+    <ImageView
+        android:id="@+id/poster_view"
+        android:layout_width="56dp"
+        android:layout_height="25dp"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="5dp"/>
     <TextView
         android:id="@+id/line_price_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_7"
-        android:textColor="#A1A1A1"
+        android:textColor="#6A6A6A"
         android:textSize="@dimen/sp_13"
         android:text="¥0"
         />

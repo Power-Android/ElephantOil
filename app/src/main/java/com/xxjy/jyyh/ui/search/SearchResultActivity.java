@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.ui.search;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -23,6 +24,7 @@ import com.xxjy.jyyh.databinding.ActivitySearchResultBinding;
 import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.dialog.SelectAreaDialog;
 import com.xxjy.jyyh.dialog.SelectBusinessStatusDialog;
+import com.xxjy.jyyh.dialog.SelectCarTypeDialog;
 import com.xxjy.jyyh.dialog.SelectDistanceDialog;
 import com.xxjy.jyyh.dialog.SelectOilNumDialog;
 import com.xxjy.jyyh.dialog.SelectProductCategoryDialog;
@@ -72,11 +74,13 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
     private String cityCode;
     private String areaCode;
     private long productCategoryId = -1;
-    private int status=0;
-    private String storeName;
+    private int carType = -1;
+    private int status=-1;
+    private int channel = -1;//101 选中优选
     private SelectAreaDialog mSelectAreaDialog;
     private SelectBusinessStatusDialog mSelectBusinessStatusDialog;
     private SelectProductCategoryDialog mSelectProductCategoryDialog;
+    private SelectCarTypeDialog mSelectCarTypeDialog;
     @Override
     protected void initView() {
         setTransparentStatusBar(mBinding.backIv, false);
@@ -167,7 +171,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             });
             carServeAdapter.setOnItemClickListener((adapter, view, position) -> {
 
-                LoginHelper.login(getContext(), new LoginHelper.CallBack() {
+                LoginHelper.login(SearchResultActivity.this, new LoginHelper.CallBack() {
                     @Override
                     public void onLogin() {
                         List<CarServeStoreBean> data = adapter.getData();
@@ -175,6 +179,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                         Intent intent = new Intent(SearchResultActivity.this, CarServeDetailsActivity.class);
                         intent.putExtra("no", data.get(position).getCardStoreInfoVo().getStoreNo());
                         intent.putExtra("distance",data.get(position).getCardStoreInfoVo().getDistance());
+                        intent.putExtra("channel",data.get(position).getCardStoreInfoVo().getChannel());
                         startActivity(intent);
                     }
                 });
@@ -207,6 +212,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             cityCode = UserConstants.getCityCode();
             getAreaList(cityCode);
             getProductCategory();
+            getCarType();
             loadCarServeData(false);
 
 
@@ -234,7 +240,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         mBinding.carBusinessStatusLayout.setOnClickListener(this::onViewClicked);
         mBinding.carServeSelectLayout.setOnClickListener(this::onViewClicked);
 
-
+        mBinding.carOptimizationLayout.setOnClickListener(this::onViewClicked);
+        mBinding.carModelSelectLayout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -365,6 +372,23 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     loadCarServeData(false);
                 });
                 break;
+            case R.id.car_optimization_layout:
+                if(channel==-1){
+                    channel=101;
+                    mBinding.carOptimizationTv.setTextColor(Color.parseColor("#323334"));
+                }else{
+                    channel=-1;
+                    mBinding.carOptimizationTv.setTextColor(Color.parseColor("#FE1530"));
+                }
+                loadCarServeData(false);
+                break;
+            case R.id.car_model_select_layout:
+                if (mSelectCarTypeDialog == null) {
+                    return;
+                }
+                mSelectCarTypeDialog.show();
+
+                break;
         }
     }
 
@@ -486,6 +510,36 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                 mBinding.refreshView.finishLoadMoreWithNoMoreData();
             }
         });
+
+        carServeViewModel.carTypeLiveData.observe(this,data->{
+            int n = -1;
+            if (UserConstants.getCarType() != -1) {
+                for (int i=0;i<data.size();i++) {
+                    if(data.get(i).getValue()==UserConstants.getCarType()){
+                        n=i;
+                        data.get(i).setChecked(true);
+                        mBinding.carModelSelectTv.setText(data.get(i).getName());
+                    }else{
+                        data.get(i).setChecked(false);
+                    }
+                }
+            }
+
+            mSelectCarTypeDialog = new SelectCarTypeDialog(getContext(),mBinding.carTabSelectLayout, mBinding.getRoot(),data);
+            if(n!=-1){
+                mSelectCarTypeDialog.setSelectPosition(n);
+            }else{
+                mSelectCarTypeDialog.show();
+            }
+
+            mSelectCarTypeDialog.setOnItemClickedListener((adapter, view1, position, bean) -> {
+                carType = bean.getValue();
+                mBinding.carModelSelectTv.setText(bean.getName());
+                mSelectCarTypeDialog.setSelectPosition(position);
+                mBinding.refreshView.resetNoMoreData();
+                loadCarServeData(false);
+            });
+        });
     }
 
     @Override
@@ -545,6 +599,11 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
         carServeViewModel.getProductCategory();
     }
     private void getCarServeStoreList(){
-        carServeViewModel.getCarServeStoreList(pageNum, cityCode, areaCode, productCategoryId, status,mContent);
+        carServeViewModel.getCarServeStoreList(pageNum, cityCode, areaCode, productCategoryId, status,channel,carType,mContent);
+    }
+
+    //获取车型
+    private void getCarType(){
+        carServeViewModel.getCarType();
     }
 }

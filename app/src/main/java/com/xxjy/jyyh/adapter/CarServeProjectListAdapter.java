@@ -19,7 +19,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
+import com.xxjy.jyyh.entity.PosterBean;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.Util;
 
 import java.util.List;
@@ -29,9 +33,13 @@ public class CarServeProjectListAdapter extends BaseQuickAdapter<CarServeProduct
 
     private int mSelectPosition = 0;
     private OnSelectListener mOnSelectListener;
-
+    private PosterBean mPosterBean;
     public CarServeProjectListAdapter(int layoutResId, @Nullable List<CarServeProductsBean> data) {
         super(layoutResId, data);
+    }
+    public void setPoster(PosterBean bean) {
+        mPosterBean = bean;
+        notifyDataSetChanged();
     }
 
     public void setSelectPosition(int position) {
@@ -79,6 +87,18 @@ public class CarServeProjectListAdapter extends BaseQuickAdapter<CarServeProduct
 
             }
         });
+
+        if (mPosterBean != null && (item.getChildCategoryId() == 7 || item.getChildCategoryId() == 8)) {
+            helper.getView(R.id.poster_view).setVisibility(View.VISIBLE);
+            GlideUtils.loadImage(mContext,mPosterBean.getPic(),(ImageView) helper.getView(R.id.poster_view));
+            helper.getView(R.id.poster_view).setOnClickListener(v -> {
+                WebViewActivity.openWebActivity((BaseActivity) mContext,mPosterBean.getUrl());
+            });
+        } else {
+            helper.getView(R.id.poster_view).setVisibility(View.GONE);
+
+
+        }
     }
     public void setOnSelectListener(OnSelectListener onSelectListener){
         mOnSelectListener =onSelectListener;

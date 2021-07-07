@@ -101,4 +101,9 @@ public class SPConstants {
      */
     public static final String IS_TODAY = "is_today";
 
+    /**
+     * 车型选择
+     */
+    public static final String CAR_TYPE = "car_type";
+
 }

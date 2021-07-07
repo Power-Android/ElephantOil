@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.adapter;
 
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,9 @@ import com.xxjy.jyyh.entity.DistanceEntity;
 
 import java.util.List;
 
-public class SelecBusinessStatusAdapter extends BaseQuickAdapter<BusinessStatusBean, BaseViewHolder> {
+public class SelectBusinessStatusAdapter extends BaseQuickAdapter<BusinessStatusBean, BaseViewHolder> {
 
-    public SelecBusinessStatusAdapter(int layoutResId, @Nullable List<BusinessStatusBean> data) {
+    public SelectBusinessStatusAdapter(int layoutResId, @Nullable List<BusinessStatusBean> data) {
         super(layoutResId, data);
     }
 
@@ -24,5 +25,10 @@ public class SelecBusinessStatusAdapter extends BaseQuickAdapter<BusinessStatusB
         TextView textView = helper.getView(R.id.item_name);
         textView.setText(item.getName());
         textView.setSelected(item.isChecked());
+        if(item.isChecked()){
+            helper.getView(R.id.check_view).setVisibility(View.VISIBLE);
+        }else{
+            helper.getView(R.id.check_view).setVisibility(View.INVISIBLE);
+        }
     }
 }

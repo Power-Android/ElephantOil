@@ -27,6 +27,8 @@ import com.xxjy.jyyh.entity.CarServeCouponBean;
 import com.xxjy.jyyh.entity.CarServeCouponListBean;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.CardStoreInfoVoBean;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
@@ -52,13 +54,13 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
     private String storeNo;
     private double distance;
+    private int channel;
 
     private CarServeCouponBean selectCarServeCouponBean;
     private CarServeProductsBean selectCarServeProductsBean;
 
     private SelectCarServeClassAdapter selectCarServeClassAdapter;
 
-    private int selectClassPosition = 0;
 
     @Override
     protected void onRestart() {
@@ -73,6 +75,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
         storeNo = getIntent().getStringExtra("no");
         distance = getIntent().getDoubleExtra("distance", 0d);
+        channel = getIntent().getIntExtra("channel", 0);
 
         mBinding.serveDataRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         carServeProjectListAdapter = new CarServeProjectListAdapter(R.layout.adapter_car_serve_project_list, serveData);
@@ -81,9 +84,14 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         mBinding.tabServeClassView.setLayoutManager(linearLayoutManager);
+        if (channel == 101) {
+            mBinding.typeView.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.typeView.setVisibility(View.INVISIBLE);
+        }
 
         getStoreInfo();
-
+        getPoster();
 
     }
 
@@ -122,7 +130,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 addTagView(data.getProductAttribute().getExpires() + "天有效", mBinding.floatLayout);
             }
             mBinding.decView.setText(data.getDescription());
-            getUsableCoupon(selectCarServeProductsBean.getChildCategoryId()==0?selectCarServeProductsBean.getCategoryId():selectCarServeProductsBean.getChildCategoryId());
+            getUsableCoupon(selectCarServeProductsBean.getChildCategoryId() == 0 ? selectCarServeProductsBean.getCategoryId() : selectCarServeProductsBean.getChildCategoryId());
 
         });
     }
@@ -137,10 +145,10 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 if (mCardStoreInfoVo == null || selectCarServeProductsBean == null) {
                     return;
                 }
-                if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
+                if (carServeProjectListAdapter.getSelectData().getCategoryId() != 1) {
                     selectCarServeCouponBean = null;
                 }
-                CarServeConfirmOrderActivity.openPage(this, mCardStoreInfoVo, selectCarServeProductsBean, selectCarServeCouponBean,true);
+                CarServeConfirmOrderActivity.openPage(this, mCardStoreInfoVo, selectCarServeProductsBean, selectCarServeCouponBean, true);
                 break;
             case R.id.phone_view:
                 if (mCardStoreInfoVo == null) {
@@ -167,7 +175,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 }
                 break;
             case R.id.coupon_layout:
-                if (!(mCarServeCouponListBean !=null&&mCarServeCouponListBean.getRecords()!=null&&mCarServeCouponListBean.getRecords().size()>0)) {
+                if (!(mCarServeCouponListBean != null && mCarServeCouponListBean.getRecords() != null && mCarServeCouponListBean.getRecords().size() > 0)) {
                     return;
                 }
 
@@ -203,7 +211,8 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
             if (mCardStoreInfoVo != null) {
                 mBinding.shopNameView.setText(mCardStoreInfoVo.getStoreName());
                 mBinding.shopAddressView.setText(mCardStoreInfoVo.getAddress());
-                mBinding.shopHoursDistanceView.setText(String.format("营业时间：%s - %s | 距离您大约:%.2fKM", mCardStoreInfoVo.getOpenStart(), mCardStoreInfoVo.getEndStart(), distance / 1000d));
+                mBinding.shopHoursView.setText(String.format("营业时间：%s - %s", mCardStoreInfoVo.getOpenStart(), mCardStoreInfoVo.getEndStart()));
+                mBinding.shopDistanceView.setText(String.format("%.2fKM", distance / 1000d));
                 bannerData.clear();
                 bannerData.add(mCardStoreInfoVo.getStorePicture());
                 initBanner();
@@ -211,15 +220,14 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
             productCategory = data.getProductCategory();
             if (data.getProductCategory() != null) {
                 classData = new ArrayList<>(data.getProductCategory().keySet());
-                if(classData.size()>0){
+                if (classData.size() > 0) {
                     initTab();
                     carServeProjectListAdapter.setNewData(data.getProductCategory().get(classData.get(0)));
                     carServeProjectListAdapter.setSelectPosition(0);
-                    selectClassPosition = 0;
-                    if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
+                    if (carServeProjectListAdapter.getSelectData().getCategoryId() != 1) {
                         mBinding.couponLayout.setVisibility(View.GONE);
                     } else {
-                        getUsableCoupon(carServeProjectListAdapter.getSelectData().getChildCategoryId()==0?carServeProjectListAdapter.getSelectData().getCategoryId():carServeProjectListAdapter.getSelectData().getChildCategoryId());
+                        getUsableCoupon(carServeProjectListAdapter.getSelectData().getChildCategoryId() == 0 ? carServeProjectListAdapter.getSelectData().getCategoryId() : carServeProjectListAdapter.getSelectData().getChildCategoryId());
                     }
                 }
 
@@ -231,18 +239,18 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
         mViewModel.usableCouponLiveData.observe(this, data -> {
             mCarServeCouponListBean = data;
             if (data.getRecords() != null && data.getRecords().size() > 0) {
-                if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
+                if (carServeProjectListAdapter.getSelectData().getCategoryId() != 1) {
                     mBinding.couponLayout.setVisibility(View.GONE);
                 } else {
-                        mBinding.couponLayout.setVisibility(View.VISIBLE);
-                        mBinding.couponNameView.setText(data.getRecords().get(0).getTitle());
-                        selectCouponId = data.getRecords().get(0).getId();
-                        selectCarServeCouponBean = data.getRecords().get(0);
+                    mBinding.couponLayout.setVisibility(View.VISIBLE);
+                    mBinding.couponNameView.setText(data.getRecords().get(0).getTitle());
+                    selectCouponId = data.getRecords().get(0).getId();
+                    selectCarServeCouponBean = data.getRecords().get(0);
                 }
             } else {
-                if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
+                if (carServeProjectListAdapter.getSelectData().getCategoryId() != 1) {
                     mBinding.couponLayout.setVisibility(View.GONE);
-                }else{
+                } else {
                     mBinding.couponLayout.setVisibility(View.VISIBLE);
                     mBinding.couponNameView.setText("暂无优惠券");
                 }
@@ -288,11 +296,10 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 selectCarServeClassAdapter.setSelectPosition(position);
                 carServeProjectListAdapter.setNewData(productCategory.get(classData.get(position)));
                 carServeProjectListAdapter.setSelectPosition(0);
-                selectClassPosition = position;
-                if (carServeProjectListAdapter.getSelectData().getCategoryId()!=1) {
+                if (carServeProjectListAdapter.getSelectData().getCategoryId() != 1) {
                     mBinding.couponLayout.setVisibility(View.GONE);
                 } else {
-                    getUsableCoupon(carServeProjectListAdapter.getSelectData().getChildCategoryId()==0?carServeProjectListAdapter.getSelectData().getCategoryId():carServeProjectListAdapter.getSelectData().getChildCategoryId());
+                    getUsableCoupon(carServeProjectListAdapter.getSelectData().getChildCategoryId() == 0 ? carServeProjectListAdapter.getSelectData().getCategoryId() : carServeProjectListAdapter.getSelectData().getChildCategoryId());
                 }
 
 
@@ -307,7 +314,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
         int textViewPadding2 = QMUIDisplayHelper.dp2px(this, 2);
         textView.setPadding(textViewPadding, textViewPadding2, textViewPadding, textViewPadding2);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f);
-        textView.setTextColor(Color.parseColor("#FF593E"));
+        textView.setTextColor(Color.parseColor("#1676FF"));
         textView.setBackgroundResource(R.drawable.shape_stroke_station_tag_3);
         textView.setText(content);
         floatLayout.addView(textView);
@@ -322,4 +329,26 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
         mViewModel.getUsableCoupon(categoryId);
     }
 
+    private void getPoster() {
+        mViewModel.getPoster(2).observe(this, data -> {
+            if (data != null && data.size() > 0) {
+                mBinding.banner.setVisibility(View.VISIBLE);
+                GlideUtils.loadImage(this, data.get(0).getPic(), mBinding.banner);
+                mBinding.banner.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        WebViewActivity.openWebActivity(CarServeDetailsActivity.this, data.get(0).getUrl());
+                    }
+                });
+            } else {
+                mBinding.banner.setVisibility(View.GONE);
+            }
+
+        });
+        mViewModel.getPoster(3).observe(this, data -> {
+            if (data != null && data.size() > 0) {
+                carServeProjectListAdapter.setPoster(data.get(0));
+            }
+        });
+    }
 }

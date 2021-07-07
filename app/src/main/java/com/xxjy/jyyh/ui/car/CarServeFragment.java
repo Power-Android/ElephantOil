@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.amap.api.location.CoordinateConverter;
 import com.amap.api.location.DPoint;
@@ -30,6 +31,8 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.adapter.CarServeListAdapter;
 import com.xxjy.jyyh.adapter.OilStationListAdapter;
+import com.xxjy.jyyh.adapter.SelectCarServeClassAdapter;
+import com.xxjy.jyyh.adapter.SelectHomeCarServeClassAdapter;
 import com.xxjy.jyyh.adapter.TopLineAdapter;
 import com.xxjy.jyyh.app.App;
 import com.xxjy.jyyh.base.BindingFragment;
@@ -43,11 +46,13 @@ import com.xxjy.jyyh.dialog.CustomerServiceDialog;
 import com.xxjy.jyyh.dialog.NavigationDialog;
 import com.xxjy.jyyh.dialog.SelectAreaDialog;
 import com.xxjy.jyyh.dialog.SelectBusinessStatusDialog;
+import com.xxjy.jyyh.dialog.SelectCarTypeDialog;
 import com.xxjy.jyyh.dialog.SelectDistanceDialog;
 import com.xxjy.jyyh.dialog.SelectOilNumDialog;
 import com.xxjy.jyyh.dialog.SelectProductCategoryDialog;
 import com.xxjy.jyyh.dialog.SelectSortDialog;
 import com.xxjy.jyyh.entity.BannerBean;
+import com.xxjy.jyyh.entity.CarServeCategoryBean;
 import com.xxjy.jyyh.entity.CarServeStoreBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.RedeemEntity;
@@ -59,6 +64,7 @@ import com.xxjy.jyyh.ui.oil.OilDetailsActivity;
 import com.xxjy.jyyh.ui.oil.OilViewModel;
 import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
@@ -89,24 +95,27 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
     private CarServeListAdapter carServeAdapter;
     private List<CarServeStoreBean> carServeData = new ArrayList<>();
     private double mLng, mLat;
-    private boolean isScrollTop = false;
     private CustomerServiceDialog customerServiceDialog;
 
     //-------------车服start----------------
     private SelectAreaDialog mSelectAreaDialog;
     private SelectBusinessStatusDialog mSelectBusinessStatusDialog;
     private SelectProductCategoryDialog mSelectProductCategoryDialog;
+    private SelectCarTypeDialog mSelectCarTypeDialog;
 
     private int pageIndex=1;
     private String cityCode;
     private String areaCode;
     private long productCategoryId = -1;
-    private int status=0;
+    private int carType = -1;
+    private int status=-1;
+    private int channel = -1;//101 选中优选
     private BannerViewModel bannerViewModel;
     private OilViewModel oilViewModel;
     private String mDragLink;
 
 
+    private SelectHomeCarServeClassAdapter selectCarServeClassAdapter;
     //-----------车服end--------------
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -170,6 +179,10 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
         carServeAdapter = new CarServeListAdapter(R.layout.adapter_car_serve_list, carServeData);
         mBinding.recyclerView.setAdapter(carServeAdapter);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        mBinding.tabServeClassView.setLayoutManager(linearLayoutManager);
+
         mHomeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         carServeAdapter.setOnItemClickListener((adapter, view, position) -> {
@@ -182,6 +195,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     Intent intent = new Intent(mContext, CarServeDetailsActivity.class);
                     intent.putExtra("no", data.get(position).getCardStoreInfoVo().getStoreNo());
                     intent.putExtra("distance",data.get(position).getCardStoreInfoVo().getDistance());
+                    intent.putExtra("channel",data.get(position).getCardStoreInfoVo().getChannel());
                     startActivity(intent);
                 }
             });
@@ -220,8 +234,11 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
 //        getBanners();
         //110100
         cityCode = UserConstants.getCityCode();
+        carType = UserConstants.getCarType();
         getAreaList(cityCode);
         getProductCategory();
+        getCarType();
+        getPoster();
         loadCarServeData(false);
         if (UserConstants.getIsLogin()){
             oilViewModel.getDragViewInfo();
@@ -237,22 +254,35 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     mBinding.search2Layout.setVisibility(View.VISIBLE);
                     mBinding.popupLayout.setBackgroundColor(Color.parseColor("#00000000"));
                     mBinding.carCitySelectTv.setTextColor(Color.parseColor("#FFFFFF"));
-                    mBinding.carServeSelectTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    mBinding.carModelSelectTv.setTextColor(Color.parseColor("#FFFFFF"));
 //                    mBinding.carSelectDistanceFirstTv.setTextColor(Color.parseColor("#FFFFFF"));
                     mBinding.carBusinessStatusTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    if(channel==-1){
+                        mBinding.carOptimizationTv.setTextColor(Color.parseColor("#FE1530"));
+                    }else{
+                        mBinding.carOptimizationTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    }
+
+
                     mBinding.carImage1.setImageResource(R.drawable.icon_down_arrow_white);
-                    mBinding.carImage2.setImageResource(R.drawable.icon_down_arrow_white);
+                    mBinding.carImage5.setImageResource(R.drawable.icon_down_arrow_white);
 //                    mBinding.carImage3.setImageResource(R.drawable.icon_down_arrow_white);
                     mBinding.carImage4.setImageResource(R.drawable.icon_down_arrow_white);
+
                 } else {
                     mBinding.search2Layout.setVisibility(View.GONE);
                     mBinding.popupLayout.setBackgroundColor(Color.parseColor("#F5F5F5"));
                     mBinding.carCitySelectTv.setTextColor(Color.parseColor("#323334"));
-                    mBinding.carServeSelectTv.setTextColor(Color.parseColor("#323334"));
+                    mBinding.carModelSelectTv.setTextColor(Color.parseColor("#323334"));
 //                    mBinding.carSelectDistanceFirstTv.setTextColor(Color.parseColor("#323334"));
                     mBinding.carBusinessStatusTv.setTextColor(Color.parseColor("#323334"));
+                    if(channel==-1){
+                        mBinding.carOptimizationTv.setTextColor(Color.parseColor("#FE1530"));
+                    }else{
+                        mBinding.carOptimizationTv.setTextColor(Color.parseColor("#323334"));
+                    }
                     mBinding.carImage1.setImageResource(R.drawable.icon_down_arrow);
-                    mBinding.carImage2.setImageResource(R.drawable.icon_down_arrow);
+                    mBinding.carImage5.setImageResource(R.drawable.icon_down_arrow);
 //                    mBinding.carImage3.setImageResource(R.drawable.icon_down_arrow);
                     mBinding.carImage4.setImageResource(R.drawable.icon_down_arrow);
                 }
@@ -282,11 +312,14 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
 
         mBinding.carCitySelectLayout.setOnClickListener(this::onViewClicked);
         mBinding.carBusinessStatusLayout.setOnClickListener(this::onViewClicked);
-        mBinding.carServeSelectLayout.setOnClickListener(this::onViewClicked);
+        mBinding.carModelSelectLayout.setOnClickListener(this::onViewClicked);
         mBinding.search2Layout.setOnClickListener(this::onViewClicked);
 
         mBinding.closeIv.setOnClickListener(this::onViewClicked);
         mBinding.dragView.setOnClickListener(this::onViewClicked);
+
+        mBinding.carOptimizationLayout.setOnClickListener(this::onViewClicked);
+        mBinding.carModelSelectLayout.setOnClickListener(this::onViewClicked);
     }
 
     @Override
@@ -343,18 +376,25 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     loadCarServeData(false);
                 });
                 break;
-            case R.id.car_serve_select_layout:
-                if (mSelectProductCategoryDialog == null) {
+//            case R.id.car_serve_select_layout:
+//                if (mSelectProductCategoryDialog == null) {
+//                   return;
+//                }
+//                mSelectProductCategoryDialog.show();
+//                mSelectProductCategoryDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
+//                    productCategoryId = data.getId();
+//                    mBinding.carServeSelectTv.setText(data.getName());
+//                    mSelectProductCategoryDialog.setSelectPosition(position);
+//                    mBinding.refreshview.resetNoMoreData();
+//                    loadCarServeData(false);
+//                });
+//                break;
+            case R.id.car_model_select_layout:
+                if (mSelectCarTypeDialog == null) {
                    return;
                 }
-                mSelectProductCategoryDialog.show();
-                mSelectProductCategoryDialog.setOnItemClickedListener((adapter, view1, position, data) -> {
-                    productCategoryId = data.getId();
-                    mBinding.carServeSelectTv.setText(data.getName());
-                    mSelectProductCategoryDialog.setSelectPosition(position);
-                    mBinding.refreshview.resetNoMoreData();
-                    loadCarServeData(false);
-                });
+                mSelectCarTypeDialog.show();
+
                 break;
             case R.id.car_business_status_layout:
                 if (mSelectBusinessStatusDialog == null) {
@@ -369,6 +409,17 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     loadCarServeData(false);
                 });
                 break;
+            case R.id.car_optimization_layout:
+                if(channel==-1){
+                    channel=101;
+                    mBinding.carOptimizationTv.setTextColor(Color.parseColor("#323334"));
+                }else{
+                    channel=-1;
+                    mBinding.carOptimizationTv.setTextColor(Color.parseColor("#FE1530"));
+                }
+                loadCarServeData(false);
+                break;
+
             case R.id.close_iv:
                 mBinding.dragView.setVisibility(View.GONE);
                 break;
@@ -456,8 +507,9 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
 
         });
         mViewModel.productCategoryLiveData.observe(this,data->{
-            mSelectProductCategoryDialog = new SelectProductCategoryDialog(getContext(),mBinding.carTabSelectLayout, mBinding.getRoot(),data.getRecords());
+//            mSelectProductCategoryDialog = new SelectProductCategoryDialog(getContext(),mBinding.carTabSelectLayout, mBinding.getRoot(),data.getRecords());
 
+        initTab(data.getRecords());
         });
         mViewModel.storeListLiveData.observe(this, dataStations -> {
             if (dataStations != null && dataStations.getRecords() != null && dataStations.getRecords().size() > 0) {
@@ -501,6 +553,36 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                 }
             }
         });
+
+        mViewModel.carTypeLiveData.observe(this,data->{
+            int n = -1;
+            if (UserConstants.getCarType() != -1) {
+                for (int i=0;i<data.size();i++) {
+                    if(data.get(i).getValue()==UserConstants.getCarType()){
+                        n=i;
+                        data.get(i).setChecked(true);
+                        mBinding.carModelSelectTv.setText(data.get(i).getName());
+                    }else{
+                        data.get(i).setChecked(false);
+                    }
+                }
+            }
+
+            mSelectCarTypeDialog = new SelectCarTypeDialog(getContext(),mBinding.carTabSelectLayout, mBinding.getRoot(),data);
+           if(n!=-1){
+               mSelectCarTypeDialog.setSelectPosition(n);
+           }else{
+               mSelectCarTypeDialog.show();
+           }
+
+            mSelectCarTypeDialog.setOnItemClickedListener((adapter, view1, position, bean) -> {
+                carType = bean.getValue();
+                mBinding.carModelSelectTv.setText(bean.getName());
+                mSelectCarTypeDialog.setSelectPosition(position);
+                mBinding.refreshview.resetNoMoreData();
+                loadCarServeData(false);
+            });
+        });
     }
 
 
@@ -518,7 +600,22 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
 
     }
 
+    private void initTab(List<CarServeCategoryBean> records) {
+        records.add(0,new CarServeCategoryBean(-1,"全部服务",true));
 
+        selectCarServeClassAdapter = new SelectHomeCarServeClassAdapter(R.layout.adapter_select_car_serve_class, records);
+        selectCarServeClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                selectCarServeClassAdapter.setSelectPosition(position);
+                productCategoryId = records.get(position).getId();
+                loadCarServeData(false);
+
+            }
+        });
+        selectCarServeClassAdapter.setSelectPosition(0);
+        mBinding.tabServeClassView.setAdapter(selectCarServeClassAdapter);
+    }
 
 //    private void getBanners() {
 //        mViewModel.getBanners();
@@ -531,7 +628,35 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
     private void getProductCategory(){
         mViewModel.getProductCategory();
     }
+    //获取车型
+    private void getCarType(){
+        mViewModel.getCarType();
+    }
+    private void getPoster(){
+        mViewModel.getPoster(1).observe(this,data->{
+            if(data!=null&&data.size()>0){
+                mBinding.banner2.setVisibility(View.VISIBLE);
+                GlideUtils.loadImage(getContext(),data.get(0).getPic(),mBinding.banner2);
+                mBinding.banner2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        WebViewActivity.openWebActivity(getBaseActivity(),data.get(0).getUrl());
+                    }
+                });
+            }else{
+                mBinding.banner2.setVisibility(View.GONE);
+            }
+
+        });
+        mViewModel.getPoster(3).observe(this,data->{
+            if(data!=null&&data.size()>0) {
+                carServeAdapter.setPoster(data.get(0));
+            }
+        });
+    }
+
+
     private void getCarServeStoreList(){
-        mViewModel.getCarServeStoreList(pageIndex, TextUtils.isEmpty(cityCode)?"110100":cityCode, areaCode, productCategoryId, status,"");
+        mViewModel.getCarServeStoreList(pageIndex, TextUtils.isEmpty(cityCode)?"110100":cityCode, areaCode, productCategoryId, status,channel,carType,"");
     }
 }

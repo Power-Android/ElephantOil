@@ -718,6 +718,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     Intent intent1 = new Intent(mContext, CarServeDetailsActivity.class);
                     intent1.putExtra("no", mStoreRecordVo.getCardStoreInfoVo().getStoreNo());
                     intent1.putExtra("distance", mStoreRecordVo.getCardStoreInfoVo().getDistance());
+                    intent1.putExtra("channel",mStoreRecordVo.getCardStoreInfoVo().getChannel());
                     startActivity(intent1);
                 });
                 break;
@@ -935,6 +936,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         Intent intent1 = new Intent(mContext, CarServeDetailsActivity.class);
                         intent1.putExtra("no", mCarOftenList.get(position).getCardStoreInfoVo().getStoreNo());
                         intent1.putExtra("distance", mCarOftenList.get(position).getCardStoreInfoVo().getDistance());
+                        intent1.putExtra("channel",mCarOftenList.get(position).getCardStoreInfoVo().getChannel());
                         startActivity(intent1);
                     });
                     if (mBinding.viewPager.getCurrentItem() == 1){

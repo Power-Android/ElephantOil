@@ -31,24 +31,42 @@
     app:riv_border_width="0.5dp"
     app:riv_border_color="#94d1d1d1"
     />
-    <TextView
-        android:id="@+id/name_view"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_7"
-        android:textColor="@color/color_34"
-        android:textSize="@dimen/sp_15"
-        android:lines="1"
-        android:ellipsize="end"
-        android:text="--"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/name_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_7"
+            android:textColor="#1E1E1E"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp_16"
+            android:lines="1"
+            android:ellipsize="end"
+            android:text="--"
+            />
+        <ImageView
+            android:id="@+id/poster_view"
+            android:layout_width="56dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="7dp"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:src="@drawable/default_img_bg"
+            android:layout_marginLeft="@dimen/dp_7"/>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/line_price_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_7"
-        android:textColor="#979797"
-        android:textSize="@dimen/sp_19"
+        android:textColor="#6A6A6A"
+        android:textSize="@dimen/sp_13"
         android:text="¥0"
         />
     <TextView
@@ -57,7 +75,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
         android:textColor="#FE1300"
-        android:textSize="@dimen/sp_19"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp_18"
         android:text="¥0"
         />
     <ImageView

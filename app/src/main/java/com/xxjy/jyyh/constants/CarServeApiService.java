@@ -54,5 +54,9 @@ public interface CarServeApiService {
     String ORDER_INFO = BASE_URL + "oil/api/v1/customer/car/order/detail/";
     //首页常去车服门店
     String OFENT_CAR_SERVE = BASE_URL + "cs/api/v1/customer/channel/store/use/list";
+//车型
+    String GET_CAR_TYPE = BASE_URL+"cs/api/v1/customer/channel/store/cartype/list";
+    //海报
+    String GET_POSTER = BASE_URL+"cs/api/v1/admin/customer/channel/poster/list";
 
 }

@@ -13,6 +13,7 @@ import com.xxjy.jyyh.entity.CarServeCommitOrderBean;
 import com.xxjy.jyyh.entity.CarServeCouponListBean;
 import com.xxjy.jyyh.entity.CarServeStoreDetailsBean;
 import com.xxjy.jyyh.entity.CarServeStoreListBean;
+import com.xxjy.jyyh.entity.CarTypeBean;
 import com.xxjy.jyyh.entity.CouponBean;
 import com.xxjy.jyyh.entity.MonthCouponEntity;
 import com.xxjy.jyyh.entity.MultiplePriceBean;
@@ -21,6 +22,7 @@ import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
 import com.xxjy.jyyh.entity.PayOrderEntity;
+import com.xxjy.jyyh.entity.PosterBean;
 import com.xxjy.jyyh.entity.RedeemEntity;
 import com.xxjy.jyyh.http.Response;
 import com.xxjy.jyyh.jscalljava.jsbean.OrderBean;
@@ -43,6 +45,8 @@ public class CarServeViewModel extends BaseViewModel<CarServeRepository> {
     public MutableLiveData<CarServeCategoryListBean> productCategoryLiveData = new MutableLiveData<>();
     public MutableLiveData<CarServeStoreListBean> storeListLiveData = new MutableLiveData<>();
     public MutableLiveData<Response> cancelOrderLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<CarTypeBean>> carTypeLiveData = new MutableLiveData<>();
+
 
     public void getStoreDetails(String storeNo) {
         mRespository.getStoreDetails(storeLiveData,storeNo);
@@ -62,6 +66,7 @@ public class CarServeViewModel extends BaseViewModel<CarServeRepository> {
     public void tyingProduct() {
         mRespository.tyingProduct(tyingProductLiveData);
     }
+
     public void payOrder(String payType, String orderId, String payAmount) {
         mRespository.payOrder(payType, orderId, payAmount, payOrderLiveData);
     }
@@ -72,7 +77,15 @@ public class CarServeViewModel extends BaseViewModel<CarServeRepository> {
     public void getProductCategory() {
         mRespository.getProductCategory(productCategoryLiveData);
     }
-    public void getCarServeStoreList(int pageIndex,String cityCode,String areaCode,long productCategoryId,int status,String storeName) {
-        mRespository.getCarServeStoreList(storeListLiveData, pageIndex, cityCode, areaCode, productCategoryId, status,storeName);
+    public void getCarServeStoreList(int pageIndex,String cityCode,String areaCode,long productCategoryId,int status,int channel,int carType,String storeName) {
+        mRespository.getCarServeStoreList(storeListLiveData, pageIndex, cityCode, areaCode, productCategoryId, status,channel,carType,storeName);
+    }
+    public void getCarType() {
+        mRespository.getCarType(carTypeLiveData);
+    }
+    public MutableLiveData<List<PosterBean>> getPoster(int position) {
+         MutableLiveData<List<PosterBean>> posterLiveData = new MutableLiveData<>();
+        mRespository.getPoster(posterLiveData,position);
+        return posterLiveData;
     }
 }

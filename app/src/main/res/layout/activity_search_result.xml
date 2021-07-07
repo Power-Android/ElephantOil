@@ -201,7 +201,28 @@
         android:visibility="gone"
         android:paddingTop="@dimen/dp_17"
         android:paddingBottom="@dimen/dp_12">
+        <LinearLayout
+            android:id="@+id/car_model_select_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
 
+            <TextView
+                android:id="@+id/car_model_select_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="车型"
+                android:textColor="@color/color_34"
+                android:textSize="@dimen/sp_13" />
+
+            <ImageView
+                android:id="@+id/car_image_5"
+                android:layout_width="@dimen/dp_7"
+                android:layout_height="@dimen/dp_6"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:src="@drawable/icon_down_arrow_2" />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/car_city_select_layout"
             android:layout_width="0dp"
@@ -281,7 +302,7 @@
                 android:id="@+id/car_business_status_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="营业中"
+                android:text="营业状态"
                 android:textColor="@color/color_34"
                 android:textSize="@dimen/sp_13" />
 
@@ -292,7 +313,29 @@
                 android:layout_marginLeft="@dimen/dp_7"
                 android:src="@drawable/icon_down_arrow_2" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/car_optimization_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
 
+            <ImageView
+                android:layout_width="@dimen/dp_15"
+                android:layout_height="@dimen/dp_17"
+                android:src="@drawable/ic_car_serve_hot" />
+
+            <TextView
+                android:id="@+id/car_optimization_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:text="品质优选"
+                android:textColor="@color/color_30"
+                android:textSize="@dimen/sp_13" />
+
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

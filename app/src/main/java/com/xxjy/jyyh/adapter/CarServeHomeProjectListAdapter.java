@@ -15,7 +15,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
+import com.xxjy.jyyh.entity.PosterBean;
+import com.xxjy.jyyh.ui.web.WebViewActivity;
+import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.Util;
 
 import java.util.List;
@@ -24,11 +28,16 @@ import java.util.List;
 public class CarServeHomeProjectListAdapter extends BaseQuickAdapter<CarServeProductsBean, BaseViewHolder> {
 
     private OnSelectListener mOnSelectListener;
+    private PosterBean mPosterBean;
 
-    public CarServeHomeProjectListAdapter( @Nullable List<CarServeProductsBean> data) {
+    public CarServeHomeProjectListAdapter(@Nullable List<CarServeProductsBean> data) {
         super(R.layout.adapter_car_serve_home_project_list, data);
     }
 
+    public void setPoster(PosterBean bean) {
+        mPosterBean = bean;
+        notifyDataSetChanged();
+    }
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, CarServeProductsBean item) {
@@ -40,19 +49,32 @@ public class CarServeHomeProjectListAdapter extends BaseQuickAdapter<CarServePro
         helper.getView(R.id.buy_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mOnSelectListener!=null){
+                if (mOnSelectListener != null) {
                     mOnSelectListener.onSelect(item);
                 }
 
             }
         });
+        if (mPosterBean != null && (item.getChildCategoryId() == 7 || item.getChildCategoryId() == 8)) {
+            helper.getView(R.id.poster_view).setVisibility(View.VISIBLE);
+            GlideUtils.loadImage(mContext,mPosterBean.getPic(),(ImageView) helper.getView(R.id.poster_view));
+            helper.getView(R.id.poster_view).setOnClickListener(v -> {
+                WebViewActivity.openWebActivity((BaseActivity) mContext,mPosterBean.getUrl());
+
+            });
+        } else {
+            helper.getView(R.id.poster_view).setVisibility(View.GONE);
+
+
+        }
     }
-    public void setOnSelectListener(OnSelectListener onSelectListener){
-        mOnSelectListener =onSelectListener;
+
+    public void setOnSelectListener(OnSelectListener onSelectListener) {
+        mOnSelectListener = onSelectListener;
     }
-    
-    public interface OnSelectListener{
-       void onSelect(CarServeProductsBean data);
+
+    public interface OnSelectListener {
+        void onSelect(CarServeProductsBean data);
     }
 
 }

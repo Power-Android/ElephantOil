@@ -16,10 +16,14 @@ import com.xxjy.jyyh.entity.CarServeCommitOrderBean;
 import com.xxjy.jyyh.entity.CarServeCouponListBean;
 import com.xxjy.jyyh.entity.CarServeStoreDetailsBean;
 import com.xxjy.jyyh.entity.CarServeStoreListBean;
+import com.xxjy.jyyh.entity.CarTypeBean;
 import com.xxjy.jyyh.entity.PayOrderEntity;
+import com.xxjy.jyyh.entity.PosterBean;
 import com.xxjy.jyyh.entity.RedeemEntity;
 import com.xxjy.jyyh.http.Response;
 import com.xxjy.jyyh.utils.locationmanger.GPSUtil;
+
+import java.util.List;
 
 import rxhttp.RxHttp;
 
@@ -27,7 +31,7 @@ import rxhttp.RxHttp;
 public class CarServeRepository extends BaseRepository {
 
     public void getStoreDetails(MutableLiveData<CarServeStoreDetailsBean> liveData, String storeNo) {
-        addDisposable(RxHttp.get(CarServeApiService.GET_STORE_DETAILS+storeNo+"/"+CarServeApiService.APP_ID + "?gpsType=3")
+        addDisposable(RxHttp.get(CarServeApiService.GET_STORE_DETAILS + storeNo + "/" + CarServeApiService.APP_ID + "?gpsType=3")
                 .asCarServeResponse(CarServeStoreDetailsBean.class)
                 .subscribe(data -> liveData.postValue(data))
         );
@@ -115,9 +119,9 @@ public class CarServeRepository extends BaseRepository {
         );
     }
 
-    public void getCarServeStoreList(MutableLiveData<CarServeStoreListBean> liveData, int pageIndex, String cityCode, String areaCode, long productCategoryId, int status, String storeName) {
+    public void getCarServeStoreList(MutableLiveData<CarServeStoreListBean> liveData, int pageIndex, String cityCode, String areaCode, long productCategoryId, int status, int channel, int carType, String storeName) {
 //        LatLng latLng =  GPSUtil.gcj02_To_Bd09( Double.parseDouble(UserConstants.getLatitude())==0d?39.911205:Double.parseDouble(UserConstants.getLatitude()),Double.parseDouble(UserConstants.getLongitude())==0d?116.470866:Double.parseDouble(UserConstants.getLongitude()));
-        addDisposable(RxHttp.postJson(CarServeApiService.GET_STORE_LIST )
+        addDisposable(RxHttp.postJson(CarServeApiService.GET_STORE_LIST)
                         .add("pageIndex", pageIndex)
                         .add("pageSize", 10)
                         .add("cityCode", cityCode)
@@ -129,9 +133,26 @@ public class CarServeRepository extends BaseRepository {
                         .add("latitude", Double.parseDouble(UserConstants.getLatitude()) == 0d ? "39.911205" : UserConstants.getLatitude())
                         .add("productCategoryId", productCategoryId, productCategoryId != -1)
                         .add("status", status, status != -1)
+                        .add("channel", channel, channel != -1)
+                        .add("carType", carType, carType != -1)
                         .add("storeName", storeName, !TextUtils.isEmpty(storeName))
                         .asCarServeResponse(CarServeStoreListBean.class)
                         .subscribe(s -> liveData.postValue(s))
+        );
+    }
+
+    public void getCarType(MutableLiveData<List<CarTypeBean>> liveData) {
+        addDisposable(RxHttp.postJson(CarServeApiService.GET_CAR_TYPE)
+                .asCarServeResponseList(CarTypeBean.class)
+                .subscribe(s -> liveData.postValue(s))
+        );
+    }
+
+    public void getPoster(MutableLiveData<List<PosterBean>> liveData, int position) {
+        addDisposable(RxHttp.postJson(CarServeApiService.GET_POSTER)
+                .add("position", position)
+                .asCarServeResponseList(PosterBean.class)
+                .subscribe(s -> liveData.postValue(s))
         );
     }
 

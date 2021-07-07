@@ -5,19 +5,18 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xxjy.jyyh.R;
-import com.xxjy.jyyh.adapter.OilDistanceAdapter;
-import com.xxjy.jyyh.adapter.SelecBusinessStatusAdapter;
+import com.xxjy.jyyh.adapter.SelectBusinessStatusAdapter;
 import com.xxjy.jyyh.databinding.DialogBusinessStatusCheckedBinding;
-import com.xxjy.jyyh.databinding.DialogOilDistanceCheckedBinding;
 import com.xxjy.jyyh.entity.BusinessStatusBean;
-import com.xxjy.jyyh.entity.DistanceEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class SelectBusinessStatusDialog {
     private DialogLayer mOilNumDialog;
     private DialogBusinessStatusCheckedBinding mBinding;
     private List<BusinessStatusBean> mList = new ArrayList<>();
-    private SelecBusinessStatusAdapter selecBusinessStatusAdapter;
+    private SelectBusinessStatusAdapter selecBusinessStatusAdapter;
     private int lastPosition = 1;
     private View mView;
 
@@ -80,8 +79,8 @@ public class SelectBusinessStatusDialog {
 
     private void initData() {
 //    5km内、10km内、15km内、20km内、50km内、不限距离
-        mList.add(new BusinessStatusBean("全部", -1, false));
-        mList.add(new BusinessStatusBean("营业中", 0, true));
+        mList.add(new BusinessStatusBean("全部", -1, true));
+        mList.add(new BusinessStatusBean("营业中", 0, false));
         mList.add(new BusinessStatusBean("休息中", 1, false));
         initView();
     }
@@ -89,11 +88,11 @@ public class SelectBusinessStatusDialog {
     private void initView() {
         //Pop
         RecyclerView recyclerView = mBinding.recyclerView;
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 4);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        selecBusinessStatusAdapter = new SelecBusinessStatusAdapter(R.layout.adapter_condition_screening, mList);
+        selecBusinessStatusAdapter = new SelectBusinessStatusAdapter(R.layout.adapter_condition_screening_2, mList);
         recyclerView.setAdapter(selecBusinessStatusAdapter);
 
         selecBusinessStatusAdapter.setOnItemClickListener((adapter, view, position) -> {
