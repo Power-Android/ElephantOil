@@ -419,6 +419,7 @@
                                 android:layout_marginRight="20dp"
                                 android:layout_marginBottom="10dp"
                                 android:scaleType="fitXY"
+                                android:visibility="gone"
                                 android:src="@drawable/bg_banner_loading" />
 
                             <androidx.recyclerview.widget.RecyclerView
