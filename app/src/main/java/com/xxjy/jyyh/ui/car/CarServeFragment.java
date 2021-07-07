@@ -113,6 +113,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
     private BannerViewModel bannerViewModel;
     private OilViewModel oilViewModel;
     private String mDragLink;
+    private boolean isTop = false;
 
 
     private SelectHomeCarServeClassAdapter selectCarServeClassAdapter;
@@ -268,6 +269,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     mBinding.carImage5.setImageResource(R.drawable.icon_down_arrow_white);
 //                    mBinding.carImage3.setImageResource(R.drawable.icon_down_arrow_white);
                     mBinding.carImage4.setImageResource(R.drawable.icon_down_arrow_white);
+                    isTop = true;
 
                 } else {
                     mBinding.search2Layout.setVisibility(View.GONE);
@@ -285,6 +287,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     mBinding.carImage5.setImageResource(R.drawable.icon_down_arrow);
 //                    mBinding.carImage3.setImageResource(R.drawable.icon_down_arrow);
                     mBinding.carImage4.setImageResource(R.drawable.icon_down_arrow);
+                    isTop=false;
                 }
             }
         });
@@ -412,7 +415,12 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
             case R.id.car_optimization_layout:
                 if(channel==-1){
                     channel=101;
-                    mBinding.carOptimizationTv.setTextColor(Color.parseColor("#323334"));
+                    if(isTop){
+                        mBinding.carOptimizationTv.setTextColor(Color.parseColor("#FFFFFF"));
+                    }else{
+                        mBinding.carOptimizationTv.setTextColor(Color.parseColor("#323334"));
+                    }
+
                 }else{
                     channel=-1;
                     mBinding.carOptimizationTv.setTextColor(Color.parseColor("#FE1530"));
