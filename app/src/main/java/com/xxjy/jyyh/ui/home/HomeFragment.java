@@ -467,7 +467,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                     } else if (data.getLink().contains("/luckyDraw")) {//抽奖
 
                                         WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
-                                        EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MAIN, TrackingEventConstant.EVENT_HOME_MAIN_VIPCARD_BANNER);
+                                        EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MAIN, TrackingEventConstant.EVENT_HOME_MAIN_LOTTERYBANNER);
 
                                     } else {
 
