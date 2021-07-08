@@ -436,22 +436,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                     }
                                     if (data.getLink().contains("/monthCard")) {//月卡
 
-                                        LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                                            @Override
-                                            public void onLogin() {
-                                                queryUserInfo();
-                                            }
-                                        });
+                                        LoginHelper.login(getContext(), () -> queryUserInfo());
                                         EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MAIN, TrackingEventConstant.EVENT_HOME_MAIN_MOUTHCARDBANNER);
 
                                     } else if (data.getLink().contains("/inviteFriends")) {//邀请好友
 
-                                        LoginHelper.login(getContext(), new LoginHelper.CallBack() {
-                                            @Override
-                                            public void onLogin() {
-                                                WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
-                                            }
-                                        });
+                                        LoginHelper.login(getContext(), () -> WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink()));
                                         EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MAIN, TrackingEventConstant.EVENT_HOME_MAIN_INVITEFRIENDBANNER);
 
                                     } else if (data.getLink().contains("?appId=Orvay1rVsoU9nlpY")) {//洗车
