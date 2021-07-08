@@ -97,6 +97,7 @@ import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
 import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingEventConstant;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.xxjy.jyyh.wight.SettingLayout;
 import com.youth.banner.Banner;
@@ -187,7 +188,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
             if (mStationsBean != null) {
                 EventTrackingManager.getInstance().tracking(getBaseActivity(),
-                        TrackingConstant.HOME_MAIN,  "gas_id=" + mStationsBean.getGasId());
+                        TrackingConstant.HOME_MAIN, "gas_id=" + mStationsBean.getGasId());
             }
 
             mViewModel.getRefuelJob();
@@ -399,7 +400,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             if (TextUtils.isEmpty(Constants.HUNTER_GAS_ID)) {
                 mOilCardBinding.recommendStationLayout.setVisibility(View.GONE);
                 mOilCardBinding.noLocationLayout.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 mViewModel.getHomeCard(mLat, mLng, Constants.HUNTER_GAS_ID);
             }
             mCarCardBinding.carNoLocationLayout.setVisibility(View.VISIBLE);
@@ -433,25 +434,46 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                                     if (TextUtils.isEmpty(data.getLink())) {
                                         return;
                                     }
-                                    if (data.getLink().contains("/monthCard")) {
+                                    if (data.getLink().contains("/monthCard")) {//月卡
+
                                         LoginHelper.login(getContext(), new LoginHelper.CallBack() {
                                             @Override
                                             public void onLogin() {
                                                 queryUserInfo();
                                             }
                                         });
-                                    } else if (data.getLink().contains("/inviteFriends")) {
+                                        EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MAIN, TrackingEventConstant.EVENT_HOME_MAIN_MOUTHCARDBANNER);
+
+                                    } else if (data.getLink().contains("/inviteFriends")) {//邀请好友
+
                                         LoginHelper.login(getContext(), new LoginHelper.CallBack() {
                                             @Override
                                             public void onLogin() {
                                                 WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
                                             }
                                         });
-                                    } else if (data.getLink().contains("?appId=Orvay1rVsoU9nlpY")){
+                                        EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MAIN, TrackingEventConstant.EVENT_HOME_MAIN_INVITEFRIENDBANNER);
+
+                                    } else if (data.getLink().contains("?appId=Orvay1rVsoU9nlpY")) {//洗车
+
                                         BusUtils.postSticky(EventConstants.EVENT_CHANGE_FRAGMENT, new EventEntity(EventConstants.EVENT_TO_CAR_FRAGMENT));
+                                        EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MAIN, TrackingEventConstant.EVENT_HOME_MIAN_WASHCARBANNER);
+
+                                    } else if (data.getLink().contains("/membership")) {//会员
+
+                                        WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
+                                        EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MAIN, TrackingEventConstant.EVENT_HOME_MAIN_VIPCARD_BANNER);
+
+                                    } else if (data.getLink().contains("/luckyDraw")) {//抽奖
+
+                                        WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
+                                        EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MAIN, TrackingEventConstant.EVENT_HOME_MAIN_VIPCARD_BANNER);
+
                                     } else {
+
                                         TrackingConstant.OIL_MAIN_TYPE = "3";
                                         WebViewActivity.openWebActivity((MainActivity) getActivity(), data.getLink());
+
                                     }
                                 });
                             }
@@ -592,21 +614,21 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
             @Override
             public void onPageSelected(int position) {
-                switch (position){
+                switch (position) {
                     case 0:
-                        if (mOftenList.size() > 1){
+                        if (mOftenList.size() > 1) {
                             mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
                             mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
                             mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
                         }
                         break;
                     case 1:
-                        if (mCarOftenList.size() > 1){
+                        if (mCarOftenList.size() > 1) {
                             mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
                             mBinding.oftenCarRecyclerView.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             mBinding.oftenOilRecyclerView.setVisibility(View.GONE);
                             mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
                         }
@@ -633,7 +655,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         showToastWarning("暂无加油信息~");
                     }
                 });
-
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MAIN, TrackingEventConstant.EVENT_HOME_GASBOXONE);
                 break;
             case R.id.oilview:
                 LoginHelper.login(mContext, () -> {
@@ -718,7 +740,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     Intent intent1 = new Intent(mContext, CarServeDetailsActivity.class);
                     intent1.putExtra("no", mStoreRecordVo.getCardStoreInfoVo().getStoreNo());
                     intent1.putExtra("distance", mStoreRecordVo.getCardStoreInfoVo().getDistance());
-                    intent1.putExtra("channel",mStoreRecordVo.getCardStoreInfoVo().getChannel());
+                    intent1.putExtra("channel", mStoreRecordVo.getCardStoreInfoVo().getChannel());
                     startActivity(intent1);
                 });
                 break;
@@ -779,10 +801,10 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 }
             } else {
                 if (!PermissionUtils.isGranted(Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION)){
+                        Manifest.permission.ACCESS_COARSE_LOCATION)) {
                     mCarCardBinding.carNoLocationLayout.setVisibility(View.VISIBLE);
                     mCarCardBinding.carLayout.setVisibility(View.GONE);
-                }else {
+                } else {
                     titles = new String[]{"油站"};
                     if (mList.size() > 1) {
                         mList.remove(1);
@@ -838,7 +860,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             }
 
             if (oilEntity.getStations() != null && oilEntity.getStations().get(0) != null &&
-                    oilEntity.getStations().get(0).getOilPriceList() != null ){
+                    oilEntity.getStations().get(0).getOilPriceList() != null) {
                 //油站卡片
                 mOilCardBinding.noLocationLayout.setVisibility(View.GONE);
                 mOilCardBinding.recommendStationLayout.setVisibility(View.VISIBLE);
@@ -853,35 +875,35 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                     mOilCardBinding.oilNumTv.setText(mStationsBean.getOilName());
 
 
-                for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
-                    if (mStationsBean.getOilNo().equals(String.valueOf(mStationsBean.getOilPriceList().get(i).getOilNo()))) {
-                        mStationsBean.getOilPriceList().get(i).setSelected(true);
-                        mOilNo = mStationsBean.getOilPriceList().get(i).getOilNo();
+                    for (int i = 0; i < mStationsBean.getOilPriceList().size(); i++) {
+                        if (mStationsBean.getOilNo().equals(String.valueOf(mStationsBean.getOilPriceList().get(i).getOilNo()))) {
+                            mStationsBean.getOilPriceList().get(i).setSelected(true);
+                            mOilNo = mStationsBean.getOilPriceList().get(i).getOilNo();
+                        }
                     }
-                }
 
-                mOilCardBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
-                mOilCardBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-                if (mStationsBean.getCzbLabels() != null && mStationsBean.getCzbLabels().size() > 0) {
-                    mOilTagList = mStationsBean.getCzbLabels();
-                    mFlexAdapter.setNewData(mOilTagList);
-                    mOilCardBinding.tagRecyclerView.setVisibility(View.VISIBLE);
-                    mOilCardBinding.tagBanner.setVisibility(View.GONE);
-                } else {
-                    LogUtils.e(mStationsBean.toString());
-                    mOilCardBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
-                    orderMsg();
-                }
-                //常去油站
-                if (UserConstants.getIsLogin()) {
-                    mViewModel.getOftenOils();
-                }
-                //加油任务
-                mViewModel.getRefuelJob();
-                mViewModel.checkDistance(mStationsBean.getGasId());
+                    mOilCardBinding.oilNavigationTv.setText(mStationsBean.getDistance() + "km");
+                    mOilCardBinding.oilOriginalPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+                    if (mStationsBean.getCzbLabels() != null && mStationsBean.getCzbLabels().size() > 0) {
+                        mOilTagList = mStationsBean.getCzbLabels();
+                        mFlexAdapter.setNewData(mOilTagList);
+                        mOilCardBinding.tagRecyclerView.setVisibility(View.VISIBLE);
+                        mOilCardBinding.tagBanner.setVisibility(View.GONE);
+                    } else {
+                        LogUtils.e(mStationsBean.toString());
+                        mOilCardBinding.tagRecyclerView.setVisibility(View.INVISIBLE);
+                        orderMsg();
+                    }
+                    //常去油站
+                    if (UserConstants.getIsLogin()) {
+                        mViewModel.getOftenOils();
+                    }
+                    //加油任务
+                    mViewModel.getRefuelJob();
+                    mViewModel.checkDistance(mStationsBean.getGasId());
 
-                EventTrackingManager.getInstance().tracking(getBaseActivity(),
-                        TrackingConstant.HOME_MAIN,  "gas_id=" + mStationsBean.getGasId());
+                    EventTrackingManager.getInstance().tracking(getBaseActivity(),
+                            TrackingConstant.HOME_MAIN, "gas_id=" + mStationsBean.getGasId());
                 }
             }
         });
@@ -903,7 +925,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 oftenAdapter.setOnItemClickListener((adapter, view, position) ->
                         startActivity(new Intent(getContext(), OilDetailsActivity.class)
                                 .putExtra(Constants.GAS_STATION_ID, ((OfentEntity) adapter.getItem(position)).getGasId())));
-                if (mBinding.viewPager.getCurrentItem() == 0){
+                if (mBinding.viewPager.getCurrentItem() == 0) {
                     mBinding.oftenOilRecyclerView.setVisibility(View.VISIBLE);
                 }
             } else {
@@ -916,7 +938,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.oftenCarsLiveData.observe(this, new Observer<List<OftenCarsEntity>>() {
             @Override
             public void onChanged(List<OftenCarsEntity> oftenCarsList) {
-                if (oftenCarsList != null && oftenCarsList.size() > 0){
+                if (oftenCarsList != null && oftenCarsList.size() > 0) {
                     mCarOftenList.clear();
                     mCarOftenList = oftenCarsList;
                     OftenCarsEntity oftenCarsEntity = new OftenCarsEntity();
@@ -936,13 +958,13 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         Intent intent1 = new Intent(mContext, CarServeDetailsActivity.class);
                         intent1.putExtra("no", mCarOftenList.get(position).getCardStoreInfoVo().getStoreNo());
                         intent1.putExtra("distance", mCarOftenList.get(position).getCardStoreInfoVo().getDistance());
-                        intent1.putExtra("channel",mCarOftenList.get(position).getCardStoreInfoVo().getChannel());
+                        intent1.putExtra("channel", mCarOftenList.get(position).getCardStoreInfoVo().getChannel());
                         startActivity(intent1);
                     });
-                    if (mBinding.viewPager.getCurrentItem() == 1){
+                    if (mBinding.viewPager.getCurrentItem() == 1) {
                         mBinding.oftenCarRecyclerView.setVisibility(View.VISIBLE);
                     }
-                }else {
+                } else {
                     mCarOftenList.clear();
                     mBinding.oftenCarRecyclerView.setVisibility(View.GONE);
                 }
@@ -953,12 +975,12 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mViewModel.menuLiveData.observe(this, new Observer<List<HomeMenuEntity>>() {
             @Override
             public void onChanged(List<HomeMenuEntity> menuEntityList) {
-                if (menuEntityList != null || menuEntityList.size() > 0){
+                if (menuEntityList != null || menuEntityList.size() > 0) {
                     menuList = menuEntityList;
                     mHomeMenuAdapter.setNewData(menuEntityList);
                     mHomeMenuAdapter.notifyDataSetChanged();
                     mBinding.menuRecyclerView.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     mBinding.menuRecyclerView.setVisibility(View.GONE);
                 }
 
@@ -1238,7 +1260,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             switch (view1.getId()) {
                 case R.id.select_agin://重新选择
                     EventTrackingManager.getInstance().tracking(getBaseActivity(),
-                            TrackingConstant.GAS_FENCE,  "type=1");
+                            TrackingConstant.GAS_FENCE, "type=1");
                     closeDialog();
                     break;
                 case R.id.navigation_tv://导航过去
@@ -1259,8 +1281,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
 //                            showAmountDialog(mStationsBean, oilNumAdapter.getData(),
 //                                    mOilNoPosition, mOilGunPosition);
-                    EventTrackingManager.getInstance().tracking( getBaseActivity(),
-                            TrackingConstant.GAS_FENCE,  "type=3");
+                    EventTrackingManager.getInstance().tracking(getBaseActivity(),
+                            TrackingConstant.GAS_FENCE, "type=3");
 
                     Intent intent = new Intent(getContext(), OilOrderActivity.class);
                     intent.putExtra("stationsBean", (Serializable) mStationsBean);

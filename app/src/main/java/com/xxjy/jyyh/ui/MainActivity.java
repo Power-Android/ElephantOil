@@ -41,7 +41,9 @@ import com.xxjy.jyyh.utils.JPushManager;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.NotificationsUtils;
 import com.xxjy.jyyh.utils.Util;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
 import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingEventConstant;
 import com.xxjy.jyyh.utils.pay.PayListenerUtils;
 import com.xxjy.jyyh.utils.shumeimanager.SmAntiFraudManager;
 import com.xxjy.jyyh.utils.symanager.ShanYanManager;
@@ -208,12 +210,14 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
                     break;
                 case R.id.navigation_car_serve:
                     showFragment(Constants.TYPE_CAR_SERVE);
+                    EventTrackingManager.getInstance().trackingEvent(this,TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_ICON);
                     break;
                 case R.id.navigation_integral:
                     showFragment(Constants.TYPE_INTEGRAL);
                     break;
                 case R.id.navigation_mine:
                     showFragment(Constants.TYPE_MINE);
+                    EventTrackingManager.getInstance().trackingEvent(this,TrackingConstant.HOME_MINE, TrackingEventConstant.EVENT_HOME_MINE);
                     break;
             }
             return true;

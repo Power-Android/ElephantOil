@@ -20,7 +20,11 @@ import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.PosterBean;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
+import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.Util;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingEventConstant;
 
 import java.util.List;
 
@@ -59,7 +63,8 @@ public class CarServeHomeProjectListAdapter extends BaseQuickAdapter<CarServePro
             helper.getView(R.id.poster_view).setVisibility(View.VISIBLE);
             GlideUtils.loadImage(mContext,mPosterBean.getPic(),(ImageView) helper.getView(R.id.poster_view));
             helper.getView(R.id.poster_view).setOnClickListener(v -> {
-                WebViewActivity.openWebActivity((BaseActivity) mContext,mPosterBean.getUrl());
+                NaviActivityInfo.disPathIntentFromUrl((BaseActivity) mContext,mPosterBean.getUrl());
+                EventTrackingManager.getInstance().trackingEvent((BaseActivity)mContext, TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_SERVICE_BANNER);
 
             });
         } else {

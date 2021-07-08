@@ -69,6 +69,7 @@ import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
 import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingEventConstant;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.adapter.BannerImageAdapter;
@@ -244,6 +245,8 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
         if (UserConstants.getIsLogin()){
             oilViewModel.getDragViewInfo();
         }
+
+        EventTrackingManager.getInstance().tracking(getBaseActivity(),TrackingConstant.CF_PAGE_HOME,"");
     }
 
     @Override
@@ -331,7 +334,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
             case R.id.search_2_layout:
             case R.id.top_search_layout:
                 startActivity(new Intent(getContext(), SearchActivity.class).putExtra("type","carserve"));
-
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_SEARCH);
                 break;
             case R.id.customer_service_view:
                 LoginHelper.login(getContext(), new LoginHelper.CallBack() {
@@ -343,7 +346,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                         customerServiceDialog.show(view);
                     }
                 });
-
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_CUSTOMER);
                 break;
             case R.id.message_center_view:
                 LoginHelper.login(getContext(), new LoginHelper.CallBack() {
@@ -352,7 +355,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                         getActivity().startActivity(new Intent(getContext(), MessageCenterActivity.class));
                     }
                 });
-
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_MESSAGE);
                 break;
             case R.id.close_view:
                 mBinding.locationView.setVisibility(View.GONE);
@@ -367,6 +370,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                 break;
 
             case R.id.car_city_select_layout:
+
                 if (mSelectAreaDialog == null) {
                    return;
                 }
@@ -378,6 +382,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     mBinding.refreshview.resetNoMoreData();
                     loadCarServeData(false);
                 });
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_DISTRICT_CHOOSE);
                 break;
 //            case R.id.car_serve_select_layout:
 //                if (mSelectProductCategoryDialog == null) {
@@ -397,7 +402,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                    return;
                 }
                 mSelectCarTypeDialog.show();
-
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_CARTYPE);
                 break;
             case R.id.car_business_status_layout:
                 if (mSelectBusinessStatusDialog == null) {
@@ -411,6 +416,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     mBinding.refreshview.resetNoMoreData();
                     loadCarServeData(false);
                 });
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_ONLINE_CHOOSE);
                 break;
             case R.id.car_optimization_layout:
                 if(channel==-1){
@@ -426,6 +432,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                     mBinding.carOptimizationTv.setTextColor(Color.parseColor("#FE1530"));
                 }
                 loadCarServeData(false);
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_SELECT);
                 break;
 
             case R.id.close_iv:
@@ -589,6 +596,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                 mSelectCarTypeDialog.setSelectPosition(position);
                 mBinding.refreshview.resetNoMoreData();
                 loadCarServeData(false);
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_SERVICE_CHOOSE+bean.getName());
             });
         });
     }
@@ -648,7 +656,8 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                 mBinding.banner2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        WebViewActivity.openWebActivity(getBaseActivity(),data.get(0).getUrl());
+                        NaviActivityInfo.disPathIntentFromUrl(getBaseActivity(),data.get(0).getUrl());
+                        EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_BANNER);
                     }
                 });
             }else{

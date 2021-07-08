@@ -24,6 +24,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIFloatLayout;
 import com.xxjy.jyyh.R;
+import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.CarServeStoreBean;
 import com.xxjy.jyyh.entity.OilEntity;
@@ -31,7 +32,11 @@ import com.xxjy.jyyh.entity.PosterBean;
 import com.xxjy.jyyh.ui.car.CarServeConfirmOrderActivity;
 import com.xxjy.jyyh.ui.car.CarServeDetailsActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
+import com.xxjy.jyyh.utils.NaviActivityInfo;
 import com.xxjy.jyyh.utils.Util;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingEventConstant;
 
 import java.util.List;
 
@@ -112,6 +117,7 @@ public class CarServeListAdapter extends BaseQuickAdapter<CarServeStoreBean, Bas
             carServeHomeProjectListAdapter.setOnSelectListener(new CarServeHomeProjectListAdapter.OnSelectListener() {
                 @Override
                 public void onSelect(CarServeProductsBean data) {
+                    EventTrackingManager.getInstance().trackingEvent((BaseActivity)mContext, TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_BUY);
                     LoginHelper.login(mContext, new LoginHelper.CallBack() {
                         @Override
                         public void onLogin() {

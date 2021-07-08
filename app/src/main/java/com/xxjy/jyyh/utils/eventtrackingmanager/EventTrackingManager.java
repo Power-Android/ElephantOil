@@ -65,7 +65,7 @@ public class EventTrackingManager {
         tracking( activity, String.valueOf(++Constants.PV_ID), pageId, "", pageParam, null, null);
     }
     public void trackingEvent(BaseActivity activity, String pageId, String pageParam){
-        tracking( activity, String.valueOf(Constants.PV_ID), pageId, "", pageParam, null, null);
+        tracking( activity, String.valueOf(++Constants.PV_ID), pageId, "", pageParam, null, null);
     }
 
     /**

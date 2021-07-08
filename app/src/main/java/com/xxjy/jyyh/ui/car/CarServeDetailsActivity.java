@@ -29,6 +29,10 @@ import com.xxjy.jyyh.entity.CarServeProductsBean;
 import com.xxjy.jyyh.entity.CardStoreInfoVoBean;
 import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
+import com.xxjy.jyyh.utils.NaviActivityInfo;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingEventConstant;
 import com.xxjy.jyyh.utils.locationmanger.MapIntentUtils;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
@@ -92,7 +96,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
 
         getStoreInfo();
         getPoster();
-
+        EventTrackingManager.getInstance().tracking(this, TrackingConstant.CF_PAGE_STORE_DETAIL,"store_no="+storeNo);
     }
 
     @Override
@@ -144,11 +148,13 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
             case R.id.buy_view:
                 if (mCardStoreInfoVo == null || selectCarServeProductsBean == null) {
                     return;
+
                 }
                 if (carServeProjectListAdapter.getSelectData().getCategoryId() != 1) {
                     selectCarServeCouponBean = null;
                 }
                 CarServeConfirmOrderActivity.openPage(this, mCardStoreInfoVo, selectCarServeProductsBean, selectCarServeCouponBean, true);
+                EventTrackingManager.getInstance().trackingEvent(this,TrackingConstant.CF_PAGE_STORE_DETAIL, TrackingEventConstant.CF_EVENT_STORE_DETAIL_BUY);
                 break;
             case R.id.phone_view:
                 if (mCardStoreInfoVo == null) {
@@ -159,6 +165,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 if (intent2.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent2);
                 }
+                EventTrackingManager.getInstance().trackingEvent(this,TrackingConstant.CF_PAGE_STORE_DETAIL, TrackingEventConstant.CF_EVENT_STORE_DETAIL_TEL);
                 break;
             case R.id.navigation_view:
                 if (mCardStoreInfoVo == null) {
@@ -173,6 +180,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 } else {
                     showToastWarning("您当前未安装地图软件，请先安装");
                 }
+                EventTrackingManager.getInstance().trackingEvent(this,TrackingConstant.CF_PAGE_STORE_DETAIL, TrackingEventConstant.CF_EVENT_STORE_DETAIL_NAVIGATION);
                 break;
             case R.id.coupon_layout:
                 if (!(mCarServeCouponListBean != null && mCarServeCouponListBean.getRecords() != null && mCarServeCouponListBean.getRecords().size() > 0)) {
@@ -337,7 +345,8 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 mBinding.banner.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        WebViewActivity.openWebActivity(CarServeDetailsActivity.this, data.get(0).getUrl());
+                        NaviActivityInfo.disPathIntentFromUrl(CarServeDetailsActivity.this, data.get(0).getUrl());
+                        EventTrackingManager.getInstance().trackingEvent(CarServeDetailsActivity.this,TrackingConstant.CF_PAGE_STORE_DETAIL, TrackingEventConstant.CF_EVENT_STORE_DETAIL_BANNER);
                     }
                 });
             } else {

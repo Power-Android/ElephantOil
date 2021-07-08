@@ -1,5 +1,7 @@
 package com.xxjy.jyyh.utils.eventtrackingmanager;
 
+import java.net.PortUnreachableException;
+
 /**
  * @author power
  * @date 5/7/21 4:04 PM
@@ -35,4 +37,16 @@ public class TrackingConstant {
     public static final String SEARCH_LIST = "Search_list";
     //首页跳转来源的type
     public static String OIL_MAIN_TYPE = "";
+    //我的
+    public static final String HOME_MINE = "Home_mine";
+
+
+    //特惠洗车_首页
+    public static String CF_PAGE_HOME = "cfwash_home";
+    //特惠洗车_门店详情
+    public static String CF_PAGE_STORE_DETAIL = "cfwash_storedetail";
+    //特惠洗车_确认订单
+    public static String CF_PAGE_ORDER_CONFIRM = "cfwash_orderconfirm";
+
+
 }

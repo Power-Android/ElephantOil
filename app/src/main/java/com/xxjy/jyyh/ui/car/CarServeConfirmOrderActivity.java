@@ -35,6 +35,9 @@ import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.UiUtils;
 import com.xxjy.jyyh.utils.Util;
 import com.xxjy.jyyh.utils.WXSdkManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingEventConstant;
 import com.xxjy.jyyh.utils.pay.IPayListener;
 import com.xxjy.jyyh.utils.pay.PayHelper;
 import com.xxjy.jyyh.utils.pay.PayListenerUtils;
@@ -84,6 +87,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
         refreshPrice();
         initData();
         tyingProduct();
+        EventTrackingManager.getInstance().tracking(this, TrackingConstant.CF_PAGE_ORDER_CONFIRM,"store_no="+mCardStoreInfoVo.getStoreNo()+"&product_id="+selectCarServeProductsBean.getId());
     }
 
     @Override
@@ -109,6 +113,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                             selectCarServeCouponBean == null ? "" : selectCarServeCouponBean.getCouponType(), selectCarServeCouponBean == null ? -1 : selectCarServeCouponBean.getId(),
                             selectCarServeCouponBean == null ? "" : selectCarServeCouponBean.getCouponValue() + "", mJsonStr);
                 }
+                EventTrackingManager.getInstance().trackingEvent(this,TrackingConstant.CF_PAGE_ORDER_CONFIRM, TrackingEventConstant.CF_EVENT_ORDER_CONFIRM_BUY);
                 break;
             case R.id.coupon_layout:
                 if (!(mCarServeCouponListBean !=null&&mCarServeCouponListBean.getRecords()!=null&&mCarServeCouponListBean.getRecords().size()>0)) {
@@ -307,6 +312,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
         mBinding.redeemRecycler.setAdapter(mOilRedeemAdapter);
         mOilRedeemAdapter.setOnItemClickListener((adapter, view, position) -> {
             List<RedeemEntity.ProductOilGasListBean> data = adapter.getData();
+
             if (data.get(position).isSelected()) {
                 if (mQueryDialog == null) {
                     mQueryDialog = new QueryDialog(this);
@@ -352,6 +358,7 @@ public class CarServeConfirmOrderActivity extends BindingActivity<ActivityCarSer
                 mJsonStr = GsonUtils.toJson(mProductIdList);
                 refreshPrice();
             }
+            EventTrackingManager.getInstance().trackingEvent(this,TrackingConstant.CF_PAGE_ORDER_CONFIRM, TrackingEventConstant.CF_EVENT_SELLSTH+data.get(position).getName());
         });
     }
 

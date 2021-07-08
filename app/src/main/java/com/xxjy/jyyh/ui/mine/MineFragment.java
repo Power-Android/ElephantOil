@@ -34,6 +34,9 @@ import com.xxjy.jyyh.ui.web.WebViewActivity;
 import com.xxjy.jyyh.utils.GlideUtils;
 import com.xxjy.jyyh.utils.LoginHelper;
 import com.xxjy.jyyh.utils.NotificationsUtils;
+import com.xxjy.jyyh.utils.eventtrackingmanager.EventTrackingManager;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingConstant;
+import com.xxjy.jyyh.utils.eventtrackingmanager.TrackingEventConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,8 +187,21 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
         mBinding.closeNoticeView.setOnClickListener(this::onViewClicked);
         mBinding.openView.setOnClickListener(this::onViewClicked);
         mBinding.receiveBt.setOnClickListener(this::onViewClicked);
-        mBinding.vipReceiveBt.setOnClickListener(this::onViewClicked);
-        mBinding.vipLayout.setOnClickListener(this::onViewClicked);
+//        mBinding.vipReceiveBt.setOnClickListener(this::onViewClicked);
+        mBinding.vipLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.VIP_URL);
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MINE, TrackingEventConstant.EVENT_HOME_MINE_VIPCARD);
+            }
+        });
+//        mBinding.vipReceiveBt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.VIP_URL);
+//                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MINE, TrackingEventConstant.EVENT_HOME_MINE);
+//            }
+//        });
     }
 
     @Override
@@ -255,10 +271,12 @@ public class MineFragment extends BindingFragment<FragmentMineBinding, MineViewM
                         }
                         WebViewActivity.openRealUrlWebActivity(getBaseActivity(), userBean.getMonthCardBuyUrl());
                         break;
-                    case R.id.vip_receive_bt:
-                    case R.id.vip_layout:
-                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.VIP_URL);
-                        break;
+//                    case R.id.vip_receive_bt:
+//                    case R.id.vip_layout:
+//
+//                        WebViewActivity.openRealUrlWebActivity(getBaseActivity(), Constants.VIP_URL);
+//                        EventTrackingManager.getInstance().trackingEvent(getBaseActivity(), TrackingConstant.HOME_MINE, TrackingEventConstant.EVENT_HOME_MINE);
+//                        break;
                 }
             }
         });
