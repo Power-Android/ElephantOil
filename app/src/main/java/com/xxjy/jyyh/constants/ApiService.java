@@ -176,7 +176,10 @@ public class ApiService {
     public static final String HOME_MENU_INFO = "api/tiein/v1/queryHomeKingKongDistrict";
     //浮窗接口
     public static final String DRAG_INFO = "api/v1/member/floatingWindow";
-
+    //挽留活动
+    public static final String OIL_USER_DISCOUNT = "api/activeCommon/queryOilUserDiscount";
+    //挽留查询减免金额
+    public static final String QUERY_AMOUNT_UPRIGHT = "api/activeCommon/queryAmountUpright";
 
 
 

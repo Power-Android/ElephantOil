@@ -3,10 +3,13 @@ package com.xxjy.jyyh.adapter;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.blankj.utilcode.util.NumberUtils;
 import com.blankj.utilcode.util.SizeUtils;
@@ -95,7 +98,27 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                 }
                 setDrawable(discountTv, R.drawable.arrow_right_icon);
                 break;
-            case 3://余额
+            case 3://优惠立减
+                ConstraintLayout view = helper.getView(R.id.item_view);
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                if (!TextUtils.equals("0", item.getDiscount())){
+                    layoutParams.height = SizeUtils.dp2px(32f); // 根据具体需求场景设置
+                    layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
+                    view.setVisibility(View.VISIBLE);
+                    helper.setText(R.id.item_title_tv, "优惠立减")
+                            .setImageResource(R.id.item_img_iv, R.drawable.icon_elephant_discount)
+                            .setText(R.id.item_discount_tv, "-￥" + item.getDiscount())
+                            .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27))
+                            .setGone(R.id.item_balance_tv, false);
+                    discountTv.setCompoundDrawables(null, null, null, null);
+                }else {
+                    view.setVisibility(View.GONE);
+                    layoutParams.height = 0;
+                    layoutParams.width = 0;
+                }
+                view.setLayoutParams(layoutParams);
+                break;
+            case 4://余额
                 if (item.getBalance() > 0) {
                     helper.setImageResource(R.id.item_img_iv, R.drawable.icon_balance)
                             .setText(R.id.item_balance_tv, "¥" + NumberUtils.format(item.getBalance(), 2))
@@ -125,7 +148,7 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 5;
     }
 
     private void setDrawable(TextView textView, int drawableId) {

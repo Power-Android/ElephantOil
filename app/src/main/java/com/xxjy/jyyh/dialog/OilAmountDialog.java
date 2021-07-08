@@ -207,7 +207,7 @@ public class OilAmountDialog extends BottomSheetDialog {
         //优惠列表
         for (int i = 0; i < 4; i++) {
             mDiscountList.add(new OilDiscountEntity(0, "请选择加油金额", "请选择加油金额",
-                    "请选择加油金额", 0, false, false));
+                    "请选择加油金额", 0, false, false, ""));
         }
         mBinding.discountRecyclerView.setLayoutManager(
                 new LinearLayoutManager(mContext));

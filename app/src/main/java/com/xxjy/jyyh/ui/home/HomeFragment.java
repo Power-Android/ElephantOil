@@ -308,7 +308,7 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 //        mBinding.otherOilTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         mViewModel.getHomeProduct();
-        mOilCardBinding.tagBanner.setAdapter(new HomeTopLineAdapter(new ArrayList<>(), true))
+        mOilCardBinding.tagBanner.setAdapter(new HomeTopLineAdapter(new ArrayList<>(), false))
                 .setOrientation(Banner.VERTICAL)
                 .setUserInputEnabled(false);
         mineViewModel = new ViewModelProvider(this).get(MineViewModel.class);

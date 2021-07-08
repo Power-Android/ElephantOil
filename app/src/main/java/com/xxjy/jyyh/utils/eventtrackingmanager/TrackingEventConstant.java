@@ -47,7 +47,15 @@ public class TrackingEventConstant {
     public static final String CF_EVENT_SELLSTH = "event_id=cfwash_sellsth_";
     //特惠洗车_icon
     public static final String CF_EVENT_ICON = "event_id=cfwash_icon";
-
+    public static final String EVENT__HOME_GAS_BOX_ONE= "event_id=Home_GasBoxOne";
+//    public static final String EVENT__HOME_GAS_BOX_ONE= "event_id=Home_GasBoxOne";
+//    public static final String EVENT__HOME_GAS_BOX_ONE= "event_id=Home_GasBoxOne";
+//    public static final String EVENT__HOME_GAS_BOX_ONE= "event_id=Home_GasBoxOne";
+//    public static final String EVENT__HOME_GAS_BOX_ONE= "event_id=Home_GasBoxOne";
+//    public static final String EVENT__HOME_GAS_BOX_ONE= "event_id=Home_GasBoxOne";
+//    public static final String EVENT__HOME_GAS_BOX_ONE= "event_id=Home_GasBoxOne";
+//    public static final String EVENT__HOME_GAS_BOX_ONE= "event_id=Home_GasBoxOne";
+//    public static final String EVENT__HOME_GAS_BOX_ONE= "event_id=Home_GasBoxOne";
 
     //加油事件统计
     //油站卡片-一键加油

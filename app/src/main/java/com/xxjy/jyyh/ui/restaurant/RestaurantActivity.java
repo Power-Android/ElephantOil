@@ -133,7 +133,7 @@ public class RestaurantActivity extends BindingActivity<ActivityRestaurantBindin
         //优惠列表
         for (int i = 0; i < 4; i++) {
             mDiscountList.add(new OilDiscountEntity(0, "请输入消费金额", "请输入消费金额",
-                    "请输入消费金额", 0, false, false));
+                    "请输入消费金额", 0, false, false, ""));
         }
         mBinding.discountRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDiscountAdapter = new LifeDiscountAdapter(R.layout.adapter_oil_discount, mDiscountList);

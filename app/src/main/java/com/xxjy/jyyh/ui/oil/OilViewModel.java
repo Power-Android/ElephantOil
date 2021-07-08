@@ -1,6 +1,7 @@
 package com.xxjy.jyyh.ui.oil;
 
 import android.app.Application;
+import android.text.Editable;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -16,6 +17,7 @@ import com.xxjy.jyyh.entity.MultiplePriceBean;
 import com.xxjy.jyyh.entity.OilDefaultPriceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
+import com.xxjy.jyyh.entity.OilUserDiscountEntity;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
 import com.xxjy.jyyh.entity.RedeemEntity;
 
@@ -51,6 +53,8 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public MutableLiveData<CarServeCategoryListBean> productCategoryLiveData = new MutableLiveData<>();
     public MutableLiveData<CarServeStoreListBean> storeListLiveData = new MutableLiveData<>();
     public MutableLiveData<RedeemEntity> dragViewLiveData = new MutableLiveData<>();
+    public MutableLiveData<OilUserDiscountEntity> discountLiveData = new MutableLiveData<>();
+    public MutableLiveData<OilUserDiscountEntity> discountMoneyLiveData = new MutableLiveData<>();
 
 
     public void getOrderNews() {
@@ -136,5 +140,13 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
 
     public void getDragViewInfo() {
         mRespository.getDragViewInfo(dragViewLiveData);
+    }
+
+    public void queryOilUserDiscount(String gasId, String oilAmount) {
+        mRespository.queryOilUserDiscount(gasId, oilAmount, discountLiveData);
+    }
+
+    public void getDiscountMoney(String gasId, String oilAmount) {
+        mRespository.getDiscountMoney(gasId, oilAmount, discountMoneyLiveData);
     }
 }

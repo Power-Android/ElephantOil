@@ -28,6 +28,7 @@ import com.xxjy.jyyh.entity.MultiplePriceBean;
 import com.xxjy.jyyh.entity.OilDefaultPriceEntity;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.entity.OilNumBean;
+import com.xxjy.jyyh.entity.OilUserDiscountEntity;
 import com.xxjy.jyyh.entity.OrderNewsEntity;
 import com.xxjy.jyyh.entity.RedeemEntity;
 import com.xxjy.jyyh.utils.UiUtils;
@@ -248,38 +249,69 @@ public class OilRepository extends BaseRepository {
                 })
         );
     }
+
     public void getAreaList(String cityCode, MutableLiveData<AreaListBean> areaListLiveData) {
-        addDisposable(RxHttp.get(CarServeApiService.GET_AREA+cityCode)
+        addDisposable(RxHttp.get(CarServeApiService.GET_AREA + cityCode)
                 .asCarServeResponse(AreaListBean.class)
-                .subscribe( s -> areaListLiveData.postValue(s))
+                .subscribe(s -> areaListLiveData.postValue(s))
         );
     }
+
     public void getProductCategory(MutableLiveData<CarServeCategoryListBean> productCategoryLiveData) {
         addDisposable(RxHttp.postJson(CarServeApiService.GET_PRODUCT_CATEGORY)
 //                .add("pageIndex",1)
-                .asCarServeResponse(CarServeCategoryListBean.class)
-                .subscribe( s -> productCategoryLiveData.postValue(s))
+                        .asCarServeResponse(CarServeCategoryListBean.class)
+                        .subscribe(s -> productCategoryLiveData.postValue(s))
         );
     }
+
     public void getCarServeStoreList(MutableLiveData<CarServeStoreListBean> liveData, int pageIndex, String cityCode, String areaCode, long productCategoryId, int status) {
         addDisposable(RxHttp.postJson(CarServeApiService.GET_STORE_LIST)
-                .add("pageIndex",pageIndex)
-                .add("pageSize",10)
-                .add("cityCode",cityCode)
-                .add("areaCode",areaCode,!TextUtils.equals("-1",areaCode))
+                .add("pageIndex", pageIndex)
+                .add("pageSize", 10)
+                .add("cityCode", cityCode)
+                .add("areaCode", areaCode, !TextUtils.equals("-1", areaCode))
                 .add("longitude", UserConstants.getLongitude())
                 .add("latitude", UserConstants.getLatitude())
-                .add("productCategoryId",productCategoryId,productCategoryId!=-1)
-                .add("status",status,status!=-1)
+                .add("productCategoryId", productCategoryId, productCategoryId != -1)
+                .add("status", status, status != -1)
                 .asCarServeResponse(CarServeStoreListBean.class)
-                .subscribe( s -> liveData.postValue(s))
+                .subscribe(s -> liveData.postValue(s))
         );
     }
 
     public void getDragViewInfo(MutableLiveData<RedeemEntity> dragViewLiveData) {
         addDisposable(RxHttp.postForm(ApiService.DRAG_INFO)
-                        .asResponse(RedeemEntity.class)
-                        .subscribe( s -> dragViewLiveData.postValue(s))
+                .asResponse(RedeemEntity.class)
+                .subscribe(s -> dragViewLiveData.postValue(s))
+        );
+    }
+
+    public void queryOilUserDiscount(String gasId, String oilAmount, MutableLiveData<OilUserDiscountEntity> discountLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.OIL_USER_DISCOUNT)
+                .add(Constants.GAS_STATION_ID, gasId)
+                .add("oilAmount", oilAmount)
+                .asResponse(OilUserDiscountEntity.class)
+                .subscribe(new Consumer<OilUserDiscountEntity>() {
+                    @Override
+                    public void accept(OilUserDiscountEntity s) throws Throwable {
+                        discountLiveData.postValue(s);
+                    }
+                })
+        );
+    }
+
+    public void getDiscountMoney(String gasId, String oilAmount, MutableLiveData<OilUserDiscountEntity> discountMoneyLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.QUERY_AMOUNT_UPRIGHT)
+                .add(Constants.GAS_STATION_ID, gasId)
+                .add("oilAmount", oilAmount)
+                .asResponse(OilUserDiscountEntity.class)
+                .subscribe(new Consumer<OilUserDiscountEntity>() {
+                    @Override
+                    public void accept(OilUserDiscountEntity oilUserDiscountEntity) throws Throwable {
+                        discountMoneyLiveData.postValue(oilUserDiscountEntity);
+                    }
+                })
         );
     }
 }

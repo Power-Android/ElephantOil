@@ -23,7 +23,7 @@ public class TrackingEntity implements Serializable {
     private String lon;                     //是，经度
     private String lat;                     //是，纬度
     private String createTime;              //是，数据生成时间
-    private String requestUriToken;          //是，用户token
+    private String requestUriToken;         //是，用户token
 
 
     private String requestUriIdfa;          //否，用户设备信息，设备唯一标识

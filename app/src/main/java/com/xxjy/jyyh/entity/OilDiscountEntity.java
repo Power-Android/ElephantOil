@@ -15,6 +15,15 @@ public class OilDiscountEntity {
     private float balanceDiscount;//余额抵扣金额
     private boolean isUseBill;//是否使用余额
     private boolean isService;//是否有服务费
+    private String discount;//是否显示优惠立减
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
 
     public boolean isService() {
         return isService;
@@ -82,7 +91,7 @@ public class OilDiscountEntity {
 
     public OilDiscountEntity(float fallAmount, String fallDesc, String platformDesc,
                              String businessDesc, float balance, boolean isUseBill,
-                             boolean isService) {
+                             boolean isService, String discount) {
         this.fallAmount = fallAmount;
         this.fallDesc = fallDesc;
         this.platformDesc = platformDesc;
@@ -90,5 +99,6 @@ public class OilDiscountEntity {
         this.balance = balance;
         this.isUseBill = isUseBill;
         this.isService = isService;
+        this.discount = discount;
     }
 }
