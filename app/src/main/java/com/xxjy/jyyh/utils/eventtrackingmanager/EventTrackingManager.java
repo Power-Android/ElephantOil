@@ -13,6 +13,7 @@ import com.xxjy.jyyh.BuildConfig;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BaseRepository;
 import com.xxjy.jyyh.constants.ApiService;
+import com.xxjy.jyyh.constants.Constants;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.entity.TrackingEntity;
 import com.xxjy.jyyh.utils.locationmanger.MapLocationHelper;
@@ -54,21 +55,29 @@ public class EventTrackingManager {
      * @param pageId 页面的唯一id，用来区分不同的页面
      * @param path 路径
      */
-    public void tracking(Context context, BaseActivity activity, String pvId, String pageId, String path, String pageParam){
-        tracking(context, activity, pvId, pageId, path, pageParam, null, null);
+//    public void tracking(Context context, BaseActivity activity, String pvId, String pageId, String path, String pageParam){
+//        tracking( activity, pvId, pageId, path, pageParam, null, null);
+//    }
+    /**
+     * @param pageId 页面的唯一id，用来区分不同的页面
+     */
+    public void tracking(BaseActivity activity, String pageId, String pageParam){
+        tracking( activity, String.valueOf(++Constants.PV_ID), pageId, "", pageParam, null, null);
+    }
+    public void trackingEvent(BaseActivity activity, String pageId, String pageParam){
+        tracking( activity, String.valueOf(Constants.PV_ID), pageId, "", pageParam, null, null);
     }
 
     /**
-     * @param context
      * @param pvId
      * @param pageId
      * @param path
      * @param fromPageId    上级页面id
      * @param fromPageParam 上级页面参数
      */
-    public void tracking(Context context, BaseActivity activity, String pvId, String pageId, String path, String pageParam,
+    public void tracking( BaseActivity activity,String pvId, String pageId, String path, String pageParam,
                          String fromPageId, String fromPageParam){
-        setParams(context);
+        setParams(activity);
         if (!TextUtils.isEmpty(pvId)){
             mTrackingEntity.setPvId(pvId);
         }
@@ -90,7 +99,7 @@ public class EventTrackingManager {
         request(activity);
     }
 
-    private void setParams(Context context) {
+    private void setParams(BaseActivity activity) {
         mTrackingEntity = new TrackingEntity();
         mTrackingEntity.setRequestUriCaPlatform("1");
         mTrackingEntity.setRequestUriCity(MapLocationHelper.getAdCode());
@@ -102,7 +111,7 @@ public class EventTrackingManager {
         mTrackingEntity.setCreateTime(TimeUtils.getNowString());
         mTrackingEntity.setRequestUriToken(UserConstants.getToken());
         mTrackingEntity.setRequestUriIdfa(DeviceUtils.getUniqueDeviceId());
-        mTrackingEntity.setRequestUriCaSource(UMengManager.getChannelName(context));
+        mTrackingEntity.setRequestUriCaSource(UMengManager.getChannelName(activity));
         mTrackingEntity.setRequestUriDeviceMac(DeviceUtils.getMacAddress());
         mTrackingEntity.setRequestUriDeviceManufacturer(DeviceUtils.getManufacturer());
         mTrackingEntity.setRequestUriDeviceModel(DeviceUtils.getModel());
@@ -120,7 +129,7 @@ public class EventTrackingManager {
         map.put("createTime", TimeUtils.getNowString());
         map.put("requestUriToken", UserConstants.getToken());
         map.put("requestUriIdfa", DeviceUtils.getUniqueDeviceId());
-        map.put("requestUriCaSource", UMengManager.getChannelName((Context) activity));
+        map.put("requestUriCaSource", UMengManager.getChannelName(activity));
         map.put("requestUriDeviceMac", DeviceUtils.getMacAddress());
         map.put("requestUriDeviceManufacturer", DeviceUtils.getManufacturer());
         map.put("requestUriDeviceModel", DeviceUtils.getModel());

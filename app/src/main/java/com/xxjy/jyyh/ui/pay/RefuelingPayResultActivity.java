@@ -131,9 +131,9 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
 
         mHomeViewModel.getHomeProduct();
 
-        EventTrackingManager.getInstance().tracking(RefuelingPayResultActivity.this,
-                RefuelingPayResultActivity.this, String.valueOf(++Constants.PV_ID),
-                TrackingConstant.GAS_PAY_RESULT, "", "gas_id=;type=1");
+        EventTrackingManager.getInstance().tracking(
+                RefuelingPayResultActivity.this,
+                TrackingConstant.GAS_PAY_RESULT,  "gas_id=;type=1");
 
         mCountDownTime.setOnTimeCountDownListener(new MyCountDownTime.OnTimeCountDownListener() {
             @Override
@@ -357,8 +357,8 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     if (resultEntity.getGasParams() != null) {
                         mGasId = resultEntity.getGasParams().getGasId();
                     }
-                    EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.GAS_PAY_RESULT, "", "gas_id=" + mGasId + ";type=3");
+                    EventTrackingManager.getInstance().tracking(this,
+                            TrackingConstant.GAS_PAY_RESULT,  "gas_id=" + mGasId + ";type=3");
 
                     break;
                 case 0://处理中
@@ -374,8 +374,8 @@ public class RefuelingPayResultActivity extends BindingActivity<ActivityRefuelin
                     if (resultEntity.getGasParams() != null) {
                         mGasId = resultEntity.getGasParams().getGasId();
                     }
-                    EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.GAS_PAY_RESULT, "", "gas_id=" + mGasId + ";type=2");
+                    EventTrackingManager.getInstance().tracking(this,
+                            TrackingConstant.GAS_PAY_RESULT, "gas_id=" + mGasId + ";type=2");
 //                    mBinding.decView.setText("请和加油员确认您的油机金额");
 //                    mBinding.tagView.setText("预计下单可获得");
 //                    mBinding.integralTv.setText(resultEntity.getIntegral() + "");

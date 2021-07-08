@@ -57,8 +57,8 @@ public class GasStationLocationTipsDialog {
         mBinding.closeIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventTrackingManager.getInstance().tracking(mContext, mActivity , String.valueOf(++Constants.PV_ID),
-                        TrackingConstant.GAS_FENCE, "", "type=4");
+                EventTrackingManager.getInstance().tracking(mActivity ,
+                        TrackingConstant.GAS_FENCE, "type=4");
                 mPopup.dismiss();
             }
         });

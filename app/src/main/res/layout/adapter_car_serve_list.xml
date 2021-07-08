@@ -74,7 +74,7 @@
                 android:singleLine="true"
                 android:text="油站名称"
                 android:textColor="@color/color_34"
-                android:textSize="@dimen/sp_16"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_oil_img_layout"
@@ -91,7 +91,7 @@
                 android:singleLine="true"
                 android:text="油站地址"
                 android:textColor="#637280"
-                android:textSize="@dimen/sp_11"
+                android:textSize="11sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/navigation_ll"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -126,7 +126,7 @@
                     android:text="营业时间：每天09:00-22:00"
                     android:layout_weight="1"
                     android:textColor="#828282"
-                    android:textSize="@dimen/sp_11"
+                    android:textSize="11sp"
                     android:includeFontPadding="false"
                     />
 

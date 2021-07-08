@@ -282,16 +282,16 @@ public class SearchActivity extends BindingActivity<ActivitySearchBinding, Searc
             public void onPageSelected(int position) {
                 if (position == 0) {
                     mBinding.searchEt.setHint("搜索油站名称");
-                    EventTrackingManager.getInstance().tracking(SearchActivity.this, SearchActivity.this, String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.SEARCH_BOX, "", "type=1");
+                    EventTrackingManager.getInstance().tracking(SearchActivity.this,
+                            TrackingConstant.SEARCH_BOX,  "type=1");
                 } else if(position ==1){
                     mBinding.searchEt.setHint("搜索权益名称");
-                    EventTrackingManager.getInstance().tracking(SearchActivity.this, SearchActivity.this, String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.SEARCH_BOX, "", "type=2");
+                    EventTrackingManager.getInstance().tracking(SearchActivity.this,
+                            TrackingConstant.SEARCH_BOX, "type=2");
                 }else{
                     mBinding.searchEt.setHint("搜索车服名称");
-                    EventTrackingManager.getInstance().tracking(SearchActivity.this, SearchActivity.this, String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.SEARCH_BOX, "", "type=3");
+                    EventTrackingManager.getInstance().tracking(SearchActivity.this,
+                            TrackingConstant.SEARCH_BOX,  "type=3");
 
                 }
             }

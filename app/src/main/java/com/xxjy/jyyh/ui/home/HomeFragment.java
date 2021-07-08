@@ -186,8 +186,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
             getLocation();
 
             if (mStationsBean != null) {
-                EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
-                        TrackingConstant.HOME_MAIN, "", "gas_id=" + mStationsBean.getGasId());
+                EventTrackingManager.getInstance().tracking(getBaseActivity(),
+                        TrackingConstant.HOME_MAIN,  "gas_id=" + mStationsBean.getGasId());
             }
 
             mViewModel.getRefuelJob();
@@ -880,8 +880,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 mViewModel.getRefuelJob();
                 mViewModel.checkDistance(mStationsBean.getGasId());
 
-                EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
-                        TrackingConstant.HOME_MAIN, "", "gas_id=" + mStationsBean.getGasId());
+                EventTrackingManager.getInstance().tracking(getBaseActivity(),
+                        TrackingConstant.HOME_MAIN,  "gas_id=" + mStationsBean.getGasId());
                 }
             }
         });
@@ -1191,8 +1191,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                         if (isFar) {
                             showChoiceOil(oilNumAdapter, oilGunAdapter, mStationsBean.getGasName(), view);
                         } else {
-                            EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
-                                    TrackingConstant.GAS_GUN_NO, "", "type=1");
+                            EventTrackingManager.getInstance().tracking(getBaseActivity(),
+                                    TrackingConstant.GAS_GUN_NO, "type=1");
                             Intent intent = new Intent(getContext(), OilOrderActivity.class);
                             intent.putExtra("stationsBean", (Serializable) mStationsBean);
                             intent.putExtra("oilNo", mOilNo);
@@ -1237,14 +1237,14 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
         mGasStationTipsDialog.setOnClickListener(view1 -> {
             switch (view1.getId()) {
                 case R.id.select_agin://重新选择
-                    EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.GAS_FENCE, "", "type=1");
+                    EventTrackingManager.getInstance().tracking(getBaseActivity(),
+                            TrackingConstant.GAS_FENCE,  "type=1");
                     closeDialog();
                     break;
                 case R.id.navigation_tv://导航过去
                     if (MapIntentUtils.isPhoneHasMapNavigation()) {
-                        EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
-                                TrackingConstant.GAS_FENCE, "", "type=2");
+                        EventTrackingManager.getInstance().tracking(getBaseActivity(),
+                                TrackingConstant.GAS_FENCE, "type=2");
                         NavigationDialog navigationDialog = new NavigationDialog(getBaseActivity(),
                                 mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
                                 mStationsBean.getGasName());
@@ -1259,8 +1259,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
 
 //                            showAmountDialog(mStationsBean, oilNumAdapter.getData(),
 //                                    mOilNoPosition, mOilGunPosition);
-                    EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.GAS_FENCE, "", "type=3");
+                    EventTrackingManager.getInstance().tracking( getBaseActivity(),
+                            TrackingConstant.GAS_FENCE,  "type=3");
 
                     Intent intent = new Intent(getContext(), OilOrderActivity.class);
                     intent.putExtra("stationsBean", (Serializable) mStationsBean);

@@ -41,6 +41,16 @@ public class TrackingEntity implements Serializable {
     private String secondUtmSource;         //否，二级来源 建议增加，预留字段
     private String thirdUtmSource;          //否，三级来源 建议增加，预留字段
 
+    private String eventId;                 //事件ID
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
     public String getRequestUriToken() {
         return requestUriToken;
     }

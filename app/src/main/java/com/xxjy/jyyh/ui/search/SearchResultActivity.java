@@ -125,8 +125,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
 
             selectOilNumDialog = new SelectOilNumDialog(getContext(), mCheckOilGasId, mBinding.tabLayout, mBinding.getRoot());
 
-            EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                    TrackingConstant.SEARCH_LIST, "", "type=1");
+            EventTrackingManager.getInstance().tracking( this,
+                    TrackingConstant.SEARCH_LIST,  "type=1");
 
         } else if(TextUtils.equals("2", mType)){
             mBinding.tab1Tv.setText("综合");
@@ -150,8 +150,8 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
             });
 
             getIntegrals(mContent, integralType, String.valueOf(pageNum), String.valueOf(pageSize));
-            EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                    TrackingConstant.SEARCH_LIST, "", "type=2");
+            EventTrackingManager.getInstance().tracking(this,
+                    TrackingConstant.SEARCH_LIST,  "type=2");
         }else{
 
             mBinding.searchEt.setHint("搜索车服门店名称");

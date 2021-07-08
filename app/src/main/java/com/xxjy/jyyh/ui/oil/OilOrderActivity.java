@@ -612,8 +612,8 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
 
                     mViewModel.getDefaultPrice(mStationsBean.getGasId(), String.valueOf(mStationsBean.getOilPriceList()
                             .get(mOilNoPosition).getOilNo()));//获取快捷价格
-                    EventTrackingManager.getInstance().tracking(OilOrderActivity.this, OilOrderActivity.this, String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.GAS_GUN_NO, "", "type=4");
+                    EventTrackingManager.getInstance().tracking(OilOrderActivity.this,
+                            TrackingConstant.GAS_GUN_NO,  "type=4");
                     closeDialog();
                 }
             }

@@ -101,8 +101,8 @@ public class IntegralFragment extends BindingFragment<FragmentIntegralBinding, I
 //            getIntegralInfo();
             if (UserConstants.getIsLogin()) {
                 queryIntegralBalance();
-                EventTrackingManager.getInstance().tracking(mContext, getBaseActivity(), String.valueOf(++Constants.PV_ID),
-                        TrackingConstant.INTEGRAL_MAIN, "", "");
+                EventTrackingManager.getInstance().tracking(getBaseActivity(),
+                        TrackingConstant.INTEGRAL_MAIN, "");
             } else {
                 mBinding.integralView.setText("0");
             }

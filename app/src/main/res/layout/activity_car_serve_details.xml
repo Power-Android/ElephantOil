@@ -95,7 +95,7 @@
                             android:text="营业时间：08:00-19:00"
                             android:layout_marginLeft="@dimen/dp_3"
                             android:textColor="#424242"
-                            android:textSize="@dimen/sp_12" />
+                            android:textSize="12sp" />
 
                         <ImageView
                             android:layout_width="@dimen/dp_12"
@@ -110,7 +110,7 @@
                             android:layout_marginLeft="@dimen/dp_3"
                             android:text="0.0km"
                             android:textColor="#424242"
-                            android:textSize="@dimen/sp_12" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <TextView

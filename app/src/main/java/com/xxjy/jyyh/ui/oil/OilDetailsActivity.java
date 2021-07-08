@@ -117,8 +117,8 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
 
 //        requestPermission();
 
-        EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                TrackingConstant.GAS_DETAIL, "", "gas_id=" + mGasId);
+        EventTrackingManager.getInstance().tracking(this,
+                TrackingConstant.GAS_DETAIL,  "gas_id=" + mGasId);
 
         //标签列表
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(this);
@@ -281,8 +281,8 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                     if (isFar) {
                         showChoiceOil(mStationsBean.getGasName(), view);
                     } else {
-                        EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                                TrackingConstant.GAS_GUN_NO, "", "type=3");
+                        EventTrackingManager.getInstance().tracking(this,
+                                TrackingConstant.GAS_GUN_NO, "type=3");
                         Intent intent = new Intent(this, OilOrderActivity.class);
                         intent.putExtra("stationsBean", (Serializable) mStationsBean);
                         intent.putExtra("oilNo", mOilNumAdapter.getData().get(mOilNoPosition).getOilNo());
@@ -316,16 +316,16 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
         mGasStationTipsDialog.setOnClickListener(view1 -> {
             switch (view1.getId()) {
                 case R.id.select_agin://重新选择
-                    EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.GAS_FENCE, "", "type=1");
+                    EventTrackingManager.getInstance().tracking(this,
+                            TrackingConstant.GAS_FENCE,  "type=1");
                     closeDialog();
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
                     break;
                 case R.id.navigation_tv://导航过去
                     if (MapIntentUtils.isPhoneHasMapNavigation()) {
-                        EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                                TrackingConstant.GAS_FENCE, "", "type=2");
+                        EventTrackingManager.getInstance().tracking( this,
+                                TrackingConstant.GAS_FENCE,  "type=2");
                         NavigationDialog navigationDialog = new NavigationDialog(this,
                                 mStationsBean.getStationLatitude(), mStationsBean.getStationLongitude(),
                                 mStationsBean.getGasName());
@@ -336,8 +336,8 @@ public class OilDetailsActivity extends BindingActivity<ActivityOilDetailsBindin
                     }
                     break;
                 case R.id.continue_view://继续支付
-                    EventTrackingManager.getInstance().tracking(this, this, String.valueOf(++Constants.PV_ID),
-                            TrackingConstant.GAS_FENCE, "", "type=3");
+                    EventTrackingManager.getInstance().tracking(this,
+                            TrackingConstant.GAS_FENCE, "type=3");
                     isFar = false;
                     Intent intent = new Intent(this, OilOrderActivity.class);
                     intent.putExtra("stationsBean", (Serializable) mStationsBean);
