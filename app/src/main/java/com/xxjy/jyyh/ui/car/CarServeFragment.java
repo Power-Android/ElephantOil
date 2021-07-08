@@ -596,7 +596,6 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                 mSelectCarTypeDialog.setSelectPosition(position);
                 mBinding.refreshview.resetNoMoreData();
                 loadCarServeData(false);
-                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME, TrackingEventConstant.CF_EVENT_HOME_SERVICE_CHOOSE+bean.getName());
             });
         });
     }
@@ -626,6 +625,8 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
                 selectCarServeClassAdapter.setSelectPosition(position);
                 productCategoryId = records.get(position).getId();
                 loadCarServeData(false);
+                EventTrackingManager.getInstance().trackingEvent(getBaseActivity(),TrackingConstant.CF_PAGE_HOME,
+                        TrackingEventConstant.CF_EVENT_HOME_SERVICE_CHOOSE+selectCarServeClassAdapter.getItem(position).getName());
 
             }
         });

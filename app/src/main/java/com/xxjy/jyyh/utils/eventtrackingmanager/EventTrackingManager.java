@@ -158,7 +158,7 @@ public class EventTrackingManager {
 
     private void request(BaseActivity activity) {
         //http://39.106.218.38:11000
-        RxHttp.postJson("https://click.xiaoxiangjiayou.com/v1/clickData/add")
+        RxHttp.postJson(Constants.URL_IS_DEBUG?"http://39.106.218.38:11000/v1/clickData/add":"https://click.xiaoxiangjiayou.com/v1/clickData/add")
                 .add("requestUriCaPlatform", mTrackingEntity.getRequestUriCaPlatform())
                 .add("requestUriCity", mTrackingEntity.getRequestUriCity())
                 .add("requestUriSid", mTrackingEntity.getRequestUriSid())
