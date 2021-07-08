@@ -227,7 +227,7 @@ public class MyCouponActivity extends BindingActivity<ActivityMyCouponBinding, M
                     if (couponBean.getRangeType() == 1) {
 
                         if (TextUtils.isEmpty(couponBean.getLinkUrl())) {
-                            MainActivity.openMainActAndClearTaskJump(MyCouponActivity.this, 2);
+                            MainActivity.openMainActAndClearTaskJump(MyCouponActivity.this, 3);
                             finish();
                         } else {
                             WebViewActivity.openRealUrlWebActivity(MyCouponActivity.this, couponBean.getLinkUrl());
