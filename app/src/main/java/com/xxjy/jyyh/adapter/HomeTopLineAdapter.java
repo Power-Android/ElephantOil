@@ -32,7 +32,7 @@ public class HomeTopLineAdapter extends BannerAdapter<OrderNewsEntity, HomeTopLi
     @Override
     public void onBindView(TopLineHolder holder, OrderNewsEntity data, int position, int size) {
         holder.message.setTextColor(App.getContext().getResources().getColor(
-                mIsWhite ? R.color.white : R.color.color_34));
+                mIsWhite ? R.color.white : R.color.colorAccent));
         SpanUtils.with(holder.message)
                 .append("车主")
                 .append(data.getAccount() + "")
