@@ -198,12 +198,14 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                         selectCarServeCouponBean = mCarServeCouponListBean.getRecords().get(position);
                         selectCouponId = mCarServeCouponListBean.getRecords().get(position).getId();
                         mBinding.couponNameView.setText(mCarServeCouponListBean.getRecords().get(position).getTitle());
+                        mBinding.couponNameView.setTextColor(Color.parseColor("#FE1530"));
                     }
 
                     @Override
                     public void onNoCouponClick() {
                         selectCouponId = 0;
                         mBinding.couponNameView.setText("选择优惠券");
+                        mBinding.couponNameView.setTextColor(Color.parseColor("#444444"));
                         selectCarServeCouponBean = null;
                     }
                 });
@@ -254,6 +256,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                     mBinding.couponNameView.setText(data.getRecords().get(0).getTitle());
                     selectCouponId = data.getRecords().get(0).getId();
                     selectCarServeCouponBean = data.getRecords().get(0);
+                    mBinding.couponNameView.setTextColor(Color.parseColor("#FE1530"));
                 }
             } else {
                 if (carServeProjectListAdapter.getSelectData().getCategoryId() != 1) {
@@ -261,6 +264,7 @@ public class CarServeDetailsActivity extends BindingActivity<ActivityCarServeDet
                 } else {
                     mBinding.couponLayout.setVisibility(View.VISIBLE);
                     mBinding.couponNameView.setText("暂无优惠券");
+                    mBinding.couponNameView.setTextColor(Color.parseColor("#444444"));
                 }
 
             }

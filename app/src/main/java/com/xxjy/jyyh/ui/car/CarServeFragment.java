@@ -616,7 +616,7 @@ public class CarServeFragment extends BindingFragment<FragmentCarServeBinding, C
     }
 
     private void initTab(List<CarServeCategoryBean> records) {
-        records.add(0,new CarServeCategoryBean(-1,"全部服务",true));
+        records.add(0,new CarServeCategoryBean(-1,"全部",true));
 
         selectCarServeClassAdapter = new SelectHomeCarServeClassAdapter(R.layout.adapter_select_car_serve_class, records);
         selectCarServeClassAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

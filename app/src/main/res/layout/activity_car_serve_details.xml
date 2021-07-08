@@ -235,7 +235,7 @@ android:visibility="invisible"
                         android:drawableRight="@drawable/ic_arrow_right_black"
                         android:drawablePadding="@dimen/dp_5"
                         android:text="选择优惠券"
-                        android:textColor="@color/color_30"
+                        android:textColor="@color/color_44"
                         android:textSize="@dimen/sp_13" />
                 </RelativeLayout>
 
