@@ -233,6 +233,15 @@ public class OrderDetailsActivity extends BindingActivity<ActivityOrderDetailsBi
                     mBinding.payAmountLayout.setVisibility(View.GONE);
                     mBinding.serviceChargeLayout.setVisibility(View.VISIBLE);
                     mBinding.amountUprightLayout.setVisibility(View.GONE);
+                    if (TextUtils.isEmpty(data.getAmountUpright())) {
+                        mBinding.amountUprightLayout.setVisibility(View.GONE);
+                    } else {
+                        if (Double.parseDouble(data.getAmountUpright()) == 0d) {
+                            mBinding.amountUprightLayout.setVisibility(View.GONE);
+                        } else {
+                            mBinding.amountUprightLayout.setVisibility(View.VISIBLE);
+                        }
+                    }
                     break;
                 case 1:
                     mBinding.orderManageLayout.setVisibility(View.VISIBLE);

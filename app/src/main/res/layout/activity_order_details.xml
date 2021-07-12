@@ -608,7 +608,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="支付立减"
+                        android:text="立减优惠"
                         android:textColor="@color/color_34"
                         android:textSize="@dimen/sp_14" />
 
