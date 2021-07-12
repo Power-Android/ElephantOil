@@ -146,8 +146,8 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["qmui_arch_compiler"]
 
     //umeng分享 核心jar包, 分享面板 , 微信分享渠道
-    implementation 'com.umeng.umsdk:common:9.3.0' // (必选)
-    implementation 'com.umeng.umsdk:asms:1.1.3' // asms包依赖(必选)
+    implementation  'com.umeng.umsdk:common:9.4.0'//必选
+    implementation  'com.umeng.umsdk:asms:1.2.3'//必选
     implementation 'com.umeng.umsdk:crash:0.0.5' // native crash包依赖(必选)
     implementation 'com.umeng.umsdk:oaid_mi:1.0.0' // (可选)
     implementation fileTree(include: ['*.jar'], dir: 'libs/umeng')
