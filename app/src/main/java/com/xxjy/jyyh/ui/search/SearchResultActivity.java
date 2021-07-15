@@ -154,7 +154,7 @@ public class SearchResultActivity extends BindingActivity<ActivitySearchResultBi
                     TrackingConstant.SEARCH_LIST,  "type=2");
         }else{
 
-            mBinding.searchEt.setHint("搜索车服门店名称");
+            mBinding.searchEt.setHint("搜索店铺名称");
             mBinding.carTabSelectLayout.setVisibility(View.VISIBLE);
             mBinding.tabLayout.setVisibility(View.GONE);
 

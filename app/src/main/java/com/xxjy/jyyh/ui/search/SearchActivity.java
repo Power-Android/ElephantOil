@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends BindingActivity<ActivitySearchBinding, SearchViewModel> {
-    private final String[] titles = new String[]{"搜油站", "搜权益","搜车服"};
+    private final String[] titles = new String[]{"搜油站", "搜权益","搜店铺"};
     private final List<View> mList = new ArrayList<>(2);
     private View mOilView;
     private View mInterestView;

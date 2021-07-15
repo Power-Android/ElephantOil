@@ -13,7 +13,8 @@ import com.blankj.utilcode.util.LogUtils;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.constants.UserConstants;
 import com.xxjy.jyyh.ui.MainActivity;
-import com.xxjy.jyyh.ui.WelcomeActivity;
+//import com.xxjy.jyyh.ui.WelcomeActivity;
+//import com.xxjy.jyyh.ui.WelcomeActivity;
 import com.xxjy.jyyh.utils.GsonTool;
 import com.xxjy.jyyh.utils.NaviActivityInfo;
 
@@ -85,9 +86,9 @@ public class JpushReceiver extends BroadcastReceiver {
                                     i.putExtra(MainActivity.TAG_FLAG_INTENT_VALUE_INFO, link);
                                     ActivityUtils.startActivity(i);
                                 } else {
-                                    Intent i = new Intent(context, WelcomeActivity.class);  //自定义打开的界面
-                                    i.putExtra(WelcomeActivity.TYPE_ACT_LINK, link);
-                                    ActivityUtils.startActivity(i);
+//                                    Intent i = new Intent(context, WelcomeActivity.class);  //自定义打开的界面
+//                                    i.putExtra(WelcomeActivity.TYPE_ACT_LINK, link);
+//                                    ActivityUtils.startActivity(i);
                                 }
                             }
                         } else {
@@ -133,10 +134,10 @@ public class JpushReceiver extends BroadcastReceiver {
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }else{
-            Intent i = new Intent(context, WelcomeActivity.class);  //自定义打开的界面
-            i.putExtra("startFrom", 1);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
+//            Intent i = new Intent(context, WelcomeActivity.class);  //自定义打开的界面
+//            i.putExtra("startFrom", 1);
+//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context.startActivity(i);
         }
     }
 

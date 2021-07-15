@@ -33,6 +33,13 @@ public class UserConstants {
     public static void setToken(String token) {
         SPUtils.getInstance().put(SPConstants.APP_TOKEN, token);
     }
+    public static String getSplashScreenAd() {
+        return SPUtils.getInstance().getString(SPConstants.SPLASH_SCREEN_AD, "");
+    }
+
+    public static void setSplashScreenAd(String json) {
+        SPUtils.getInstance().put(SPConstants.SPLASH_SCREEN_AD, json);
+    }
 
     public static Integer getUserType() {
         return SPUtils.getInstance().getInt(SPConstants.USER_TYPE, -1);
