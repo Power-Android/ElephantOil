@@ -42,6 +42,15 @@ public class TrackingEntity implements Serializable {
     private String thirdUtmSource;          //否，三级来源 建议增加，预留字段
 
     private String eventId;                 //事件ID
+    private String clickType;               //事件类型
+
+    public String getClickType() {
+        return clickType;
+    }
+
+    public void setClickType(String clickType) {
+        this.clickType = clickType;
+    }
 
     public String getEventId() {
         return eventId;

@@ -14,7 +14,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.blankj.utilcode.util.BusUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.TimeUtils;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.xxjy.jyyh.R;
 import com.xxjy.jyyh.base.BaseActivity;
 import com.xxjy.jyyh.base.BindingActivity;
@@ -29,6 +34,7 @@ import com.xxjy.jyyh.dialog.NoticeTipsDialog;
 import com.xxjy.jyyh.dialog.VersionUpDialog;
 import com.xxjy.jyyh.entity.EventEntity;
 import com.xxjy.jyyh.dialog.HomeAdDialog;
+import com.xxjy.jyyh.http.HttpManager;
 import com.xxjy.jyyh.ui.car.CarServeFragment;
 import com.xxjy.jyyh.ui.home.HomeFragment;
 import com.xxjy.jyyh.ui.integral.BannerViewModel;
@@ -85,6 +91,7 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
     }
 
     private void initSdk() {
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -111,6 +118,8 @@ public class MainActivity extends BindingActivity<ActivityMainBinding, MainViewM
 
     @Override
     protected void initView() {
+
+        LogUtils.e("main", TimeUtils.getNowDate());
         initSdk();
         BusUtils.register(this);
         mHomeFragment = null;

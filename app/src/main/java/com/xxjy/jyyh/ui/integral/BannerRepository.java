@@ -22,7 +22,9 @@ public class BannerRepository extends BaseRepository {
         addDisposable(RxHttp.postForm(ApiService.GET_BANNER_OF_POSITION)
                 .add("position",position)
                 .asResponseList(BannerBean.class)
-                .subscribe(data -> bannersLiveData.postValue(data))
+                .subscribe(data -> bannersLiveData.postValue(data),throwable -> bannersLiveData.postValue(null))
+
+
         );
     }
 }

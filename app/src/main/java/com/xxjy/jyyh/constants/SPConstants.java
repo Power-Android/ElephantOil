@@ -17,6 +17,11 @@ public class SPConstants {
     public static final String FIRST_OPEN = "first_open";
 
     /**
+     * 闪屏广告
+     */
+    public static final String SPLASH_SCREEN_AD = "splash_screen_ad";
+
+    /**
      * 是否同意隐私协议
      */
     public static final  String AGREE_PRIVACY = "agree_privacy";

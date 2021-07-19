@@ -4,59 +4,59 @@
     android:layout_height="match_parent"
    >
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--    <FrameLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center_horizontal"-->
+<!--            android:orientation="vertical">-->
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"/>
+<!--            <Space-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="2"/>-->
 
-            <ImageView
-                android:id="@+id/splash_img_header"
-                android:layout_width="@dimen/dp_254"
-                android:layout_height="@dimen/dp_228"
-                android:layout_marginTop="@dimen/dp_0"
-                android:scaleType="centerCrop"
-                android:visibility="gone"
-                android:src="@drawable/splash_window_content_bg" />
+<!--            <ImageView-->
+<!--                android:id="@+id/splash_img_header"-->
+<!--                android:layout_width="@dimen/dp_254"-->
+<!--                android:layout_height="@dimen/dp_228"-->
+<!--                android:layout_marginTop="@dimen/dp_0"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:visibility="gone"-->
+<!--                android:src="@drawable/splash_window_content_bg" />-->
 
 
-            <ImageView
-                android:layout_width="@dimen/dp_247"
-                android:layout_height="@dimen/dp_17"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dp_70"
-                android:visibility="gone"
-                android:src="@drawable/splash_window_title_bg" />
+<!--            <ImageView-->
+<!--                android:layout_width="@dimen/dp_247"-->
+<!--                android:layout_height="@dimen/dp_17"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_marginTop="@dimen/dp_70"-->
+<!--                android:visibility="gone"-->
+<!--                android:src="@drawable/splash_window_title_bg" />-->
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"/>
-        </LinearLayout>
+<!--            <Space-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="5"/>-->
+<!--        </LinearLayout>-->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_28"
-            android:layout_gravity="center_horizontal|bottom"
-            android:gravity="center">
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="@dimen/dp_28"-->
+<!--            android:layout_gravity="center_horizontal|bottom"-->
+<!--            android:gravity="center">-->
 
-            <ImageView
-                android:layout_width="@dimen/dp_128"
-                android:layout_height="@dimen/dp_43"
-                android:visibility="gone"
-                android:src="@drawable/splash_window_img_bg" />
-        </LinearLayout>
-    </FrameLayout>
+<!--            <ImageView-->
+<!--                android:layout_width="@dimen/dp_128"-->
+<!--                android:layout_height="@dimen/dp_43"-->
+<!--                android:visibility="gone"-->
+<!--                android:src="@drawable/splash_window_img_bg" />-->
+<!--        </LinearLayout>-->
+<!--    </FrameLayout>-->
 
     <!--    <ImageView-->
     <!--        android:layout_width="match_parent"-->

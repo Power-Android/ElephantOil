@@ -42,6 +42,7 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
+import com.google.gson.Gson;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIFloatLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -312,6 +313,8 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
                 .setOrientation(Banner.VERTICAL)
                 .setUserInputEnabled(false);
         mineViewModel = new ViewModelProvider(this).get(MineViewModel.class);
+
+        getAdInfo();
     }
 
     private void initMagicIndicator() {
@@ -1121,6 +1124,20 @@ public class HomeFragment extends BindingFragment<FragmentHomeBinding, HomeViewM
     private void getLocation() {
         mViewModel.getLocation();
     }
+
+    //闪屏广告页面
+    private void getAdInfo() {
+        bannerViewModel.getBannerOfPostion(BannerPositionConstants.APP_START_AD).observe(this, data -> {
+            if (data != null && data.size() > 0) {
+                Gson gson = new Gson();
+                String bannerStr = gson.toJson(data.get(0));
+                UserConstants.setSplashScreenAd(bannerStr);
+            }else{
+                UserConstants.setSplashScreenAd("");
+            }
+        });
+    }
+
 
     private void showNumDialog(OilEntity.StationsBean stationsBean) {
         mOilGunPosition = -1;

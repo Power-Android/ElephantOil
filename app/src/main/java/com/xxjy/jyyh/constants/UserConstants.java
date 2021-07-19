@@ -33,6 +33,13 @@ public class UserConstants {
     public static void setToken(String token) {
         SPUtils.getInstance().put(SPConstants.APP_TOKEN, token);
     }
+    public static String getSplashScreenAd() {
+        return SPUtils.getInstance().getString(SPConstants.SPLASH_SCREEN_AD, "");
+    }
+
+    public static void setSplashScreenAd(String json) {
+        SPUtils.getInstance().put(SPConstants.SPLASH_SCREEN_AD, json);
+    }
 
     public static Integer getUserType() {
         return SPUtils.getInstance().getInt(SPConstants.USER_TYPE, -1);
@@ -202,8 +209,8 @@ public class UserConstants {
      * @return 城市编码
      */
     public static String getCityCode() {
-        if (MapLocationHelper.getAdCode() != null) {
-            return MapLocationHelper.getAdCode().replace(MapLocationHelper.getAdCode().substring(MapLocationHelper.getAdCode().length()-2),"00");
+        if (MapLocationHelper.getAdCode() != null&&MapLocationHelper.getAdCode().length()>0) {
+            return MapLocationHelper.getAdCode().substring(0,MapLocationHelper.getAdCode().length()-2)+"00";
         } else {
             return "";
         }

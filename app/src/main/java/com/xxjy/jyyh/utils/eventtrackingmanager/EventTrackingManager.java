@@ -62,10 +62,10 @@ public class EventTrackingManager {
      * @param pageId 页面的唯一id，用来区分不同的页面
      */
     public void tracking(BaseActivity activity, String pageId, String pageParam){
-        tracking( activity, String.valueOf(++Constants.PV_ID), pageId, "", pageParam, null, null);
+        tracking( activity, String.valueOf(++Constants.PV_ID), pageId, "", pageParam, null, null,null);
     }
     public void trackingEvent(BaseActivity activity, String pageId, String pageParam){
-        tracking( activity, String.valueOf(++Constants.PV_ID), pageId, "", pageParam, null, null);
+        tracking( activity, String.valueOf(++Constants.PV_ID), pageId, "", pageParam, null, null,"click");
     }
 
     /**
@@ -76,7 +76,7 @@ public class EventTrackingManager {
      * @param fromPageParam 上级页面参数
      */
     public void tracking( BaseActivity activity,String pvId, String pageId, String path, String pageParam,
-                         String fromPageId, String fromPageParam){
+                         String fromPageId, String fromPageParam,String clickType){
         setParams(activity);
         if (!TextUtils.isEmpty(pvId)){
             mTrackingEntity.setPvId(pvId);
@@ -95,6 +95,9 @@ public class EventTrackingManager {
         }
         if (!TextUtils.isEmpty(fromPageParam)){
             mTrackingEntity.setFromPageParam(fromPageParam);
+        }
+        if (!TextUtils.isEmpty(clickType)){
+            mTrackingEntity.setClickType(clickType);
         }
         request(activity);
     }
@@ -185,6 +188,8 @@ public class EventTrackingManager {
                         !TextUtils.isEmpty(mTrackingEntity.getFromPageId()))
                 .add("fromPageParam", mTrackingEntity.getFromPageParam(),
                         !TextUtils.isEmpty(mTrackingEntity.getFromPageParam()))
+                .add("clickType", mTrackingEntity.getClickType(),
+                        !TextUtils.isEmpty(mTrackingEntity.getClickType()))
                 .asString()
                 .to(RxLife.toMain(activity))
                 .subscribe(new Consumer<String>() {

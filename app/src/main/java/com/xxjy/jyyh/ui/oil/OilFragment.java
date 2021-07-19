@@ -125,7 +125,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         }
         mHomeViewModel.getLocation();
         EventTrackingManager.getInstance().tracking(getBaseActivity(), String.valueOf(++Constants.PV_ID),
-                TrackingConstant.GAS_LIST, "", "", "", TrackingConstant.OIL_MAIN_TYPE);
+                TrackingConstant.GAS_LIST, "", "", "", TrackingConstant.OIL_MAIN_TYPE,null);
     }
 
     @Override
