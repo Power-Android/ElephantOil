@@ -176,7 +176,8 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider" />
-        </provider> <!-- 微信支付结果回调 -->
+        </provider>
+        <!-- 微信支付结果回调 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
