@@ -342,6 +342,10 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     }
                 });
             } else {
+                if (TextUtils.isEmpty(mBinding.amountEt.getText().toString())){
+                    showToastInfo("满100元加油金额可勾选洗车服务下单");
+                    return;
+                }
                 if (Float.parseFloat(mBinding.amountEt.getText().toString()) < 100 && data.get(position).getTrialType() == 2) {
                     showToastInfo("满100元加油金额可勾选洗车服务下单");
                     return;
