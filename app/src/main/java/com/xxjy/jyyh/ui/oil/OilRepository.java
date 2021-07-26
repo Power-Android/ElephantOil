@@ -314,4 +314,30 @@ public class OilRepository extends BaseRepository {
                 })
         );
     }
+
+    public void updateCoupon(String id, String gasId, String mapId, MutableLiveData<String> updateCouponLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.COUPON_UPDATE)
+                .add("id", id)
+                .add("gasId", gasId)
+                .add("mapId", mapId)
+                .asResponse(String.class)
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Throwable {
+                        updateCouponLiveData.postValue(s);
+                    }
+                })
+        );
+    }
+
+    public void getUpdateOils(MutableLiveData<List<String>> updateOilsLiveData) {
+        addDisposable(RxHttp.postForm(ApiService.QUERY_COUPON_UPDATE_OIL)
+                .asResponseList(String.class)
+                .subscribe(new Consumer<List<String>>() {
+                    @Override
+                    public void accept(List<String> s) throws Throwable {
+                        updateOilsLiveData.postValue(s);
+                    }
+                }));
+    }
 }

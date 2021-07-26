@@ -4,10 +4,15 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
+import android.view.DragEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -16,6 +21,7 @@ import com.amap.api.location.DPoint;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -39,6 +45,7 @@ import com.xxjy.jyyh.entity.BannerBean;
 import com.xxjy.jyyh.entity.OilEntity;
 import com.xxjy.jyyh.ui.MainActivity;
 import com.xxjy.jyyh.ui.home.HomeViewModel;
+import com.xxjy.jyyh.ui.mine.MyCouponActivity;
 import com.xxjy.jyyh.ui.msg.MessageCenterActivity;
 import com.xxjy.jyyh.ui.search.SearchActivity;
 import com.xxjy.jyyh.utils.LoginHelper;
@@ -81,6 +88,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
     private double mLng, mLat;
     private boolean isOilServe = true;
     private boolean isScrollTop = false;
+    private List<String> updateOilList = new ArrayList<>();
 
     private CustomerServiceDialog customerServiceDialog;
 
@@ -197,6 +205,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         loadData(false);
 
         getBanners();
+        mViewModel.getUpdateOils();
     }
 
     @Override
@@ -251,6 +260,7 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
         mBinding.searchLayout.setOnClickListener(this::onViewClicked);
         mBinding.closeView.setOnClickListener(this::onViewClicked);
         mBinding.openView.setOnClickListener(this::onViewClicked);
+        mBinding.dragView.setOnClickListener(this::onViewClicked);
 
     }
 
@@ -321,6 +331,20 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
                 Uri uri = Uri.fromParts("package", App.getContext().getPackageName(), null);
                 intent.setData(uri);
                 startActivity(intent);
+                break;
+            case R.id.drag_view:
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < updateOilList.size(); i++) {
+                    if (i == updateOilList.size() - 1){
+                        stringBuilder.append(updateOilList.get(i));
+                    }else {
+                        stringBuilder.append(updateOilList.get(i)).append(",");
+                    }
+                }
+                String strs = stringBuilder.toString();
+                startActivity(new Intent(mContext, CouponOilStationsActivity.class)
+                        .putExtra("gasIds", strs));
+                LogUtils.e(strs);
                 break;
 
         }
@@ -452,6 +476,13 @@ public class OilFragment extends BindingFragment<FragmentOilBinding, OilViewMode
             }
         });
 
+        mViewModel.updateOilsLiveData.observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                updateOilList.clear();
+                updateOilList = strings;
+            }
+        });
     }
 
     private void loadData(boolean isLoadMore) {

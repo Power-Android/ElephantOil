@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.ui.oil;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +14,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.blankj.utilcode.util.BusUtils;
 import com.blankj.utilcode.util.ClickUtils;
@@ -78,12 +80,16 @@ import com.xxjy.jyyh.utils.pay.PayListenerUtils;
 import com.xxjy.jyyh.utils.toastlib.MyToast;
 import com.xxjy.jyyh.utils.toastlib.Toasty;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import per.goweii.anylayer.AnyLayer;
+import per.goweii.anylayer.Layer;
+import per.goweii.anylayer.dialog.DialogLayer;
 import rxhttp.RxHttp;
 
 public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, OilViewModel> implements IPayListener {
@@ -654,6 +660,48 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     mIsUseBusinessCoupon = true;
                 }
                 List<CouponBean> data = adapter.getData();
+                if (data.get(position).getCouponMapCzbVo() != null){
+                    mOilCouponDialog.dismiss();
+                    AnyLayer.dialog(OilOrderActivity.this)
+                            .contentView(R.layout.dialog_exchange_coupon)
+                            .gravity(Gravity.CENTER)
+                            .backgroundDimDefault()
+                            .animStyle(DialogLayer.AnimStyle.ALPHA)
+                            .cancelableOnTouchOutside(false)
+                            .outsideTouchedToDismiss(false)
+                            .bindData(layer -> {
+                                TextView titleTv = layer.getView(R.id.item_title_tv);
+                                TextView descTv = layer.getView(R.id.item_desc_tv);
+                                TextView oldMoneyTv = layer.getView(R.id.item_old_money_tv);
+                                TextView newMoneyTv = layer.getView(R.id.item_new_money_tv);
+                                titleTv.setText(String.format("兑换%s红包", mStationsBean.getGasName()));
+                                SpanUtils.with(descTv)
+                                        .append("小象会员专享，将兑换为")
+                                        .append("¥" + NumberUtils.format(Double.parseDouble(
+                                                data.get(position).getCouponMapCzbVo().getAmountReduce()),0))
+                                        .setForegroundColor(getResources().getColor(R.color.color_27))
+                                        .append("元加油红包")
+                                        .create();
+                                oldMoneyTv.setText(NumberUtils.format(Double.parseDouble(data.get(position).getAmountReduce()), 0));
+                                newMoneyTv.setText(NumberUtils.format(Double.parseDouble(data.get(position).getCouponMapCzbVo().getAmountReduce()), 0));
+                            })
+                            .onClick((layer, view1) -> {
+                                switch (view1.getId()){
+                                    case R.id.item_exchange_tv:
+                                        mViewModel.updateCoupon(
+                                                data.get(position).getId(),
+                                                mStationsBean.getGasId(),
+                                                data.get(position).getCouponMapCzbVo().getId());
+                                        layer.dismiss();
+                                        break;
+                                    case R.id.close_iv:
+                                        layer.dismiss();
+                                        break;
+                                }
+                            }, R.id.item_exchange_tv,R.id.close_iv)
+                            .show();
+                    return;
+                }
                 setCouponInfo(data.get(position), isPlat, data.get(position).getExcludeType());
                 mOilCouponDialog.dismiss();
             }
@@ -955,6 +1003,12 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                     platId = multiplePriceBean.getBestuserCoupon().getId();
                     mDiscountAdapter.getData().get(1).setPlatformDesc("-¥" + multiplePriceBean.getBestuserCoupon().getAmountReduce());
                 }
+
+                if (multiplePriceBean.getBestuserCoupon()!= null
+                        && multiplePriceBean.getBestuserCoupon().getCouponMapCzbVo() != null){
+                    mDiscountAdapter.getData().get(1).setSwell(multiplePriceBean.getBestuserCoupon()
+                            .getCouponMapCzbVo().getAmountReduce());
+                }
 //                else {
 //                    if (platformCoupons != null){
 //                        mDiscountAdapter.getData().get(1).setPlatformDesc("请选择优惠券");
@@ -1232,6 +1286,22 @@ public class OilOrderActivity extends BindingActivity<ActivityOilOrderBinding, O
                 }
                 mDiscountAdapter.notifyDataSetChanged();
             }
+        });
+
+        mViewModel.updateCouponLiveData.observe(this, s -> {
+            ToastUtils.showShort("兑换成功");
+            showCouponDialog(
+                    mStationsBean,
+                    mBinding.amountEt.getText().toString().trim(),
+                    mOilNoPosition,
+                    mGunNoPosition,
+                    String.valueOf(mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()),
+                    false,
+                    "");
+            //刷新最优价格
+            refreshMultiplePrice(mBinding.amountEt.getText().toString(), mStationsBean.getGasId(), String.valueOf(
+                    mStationsBean.getOilPriceList().get(mOilNoPosition).getOilNo()), mDiscountAdapter.getData().get(4).isUseBill() ? "1" : "0",
+                    "", businessAmount, monthCouponId, mIsUseCoupon, mIsUseBusinessCoupon, mJsonStr);
         });
 
     }

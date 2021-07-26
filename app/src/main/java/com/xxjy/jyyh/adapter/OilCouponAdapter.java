@@ -1,5 +1,6 @@
 package com.xxjy.jyyh.adapter;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,8 +39,14 @@ public class OilCouponAdapter extends BaseQuickAdapter<CouponBean, BaseViewHolde
                         Double.parseDouble(item.getAmount()) == 0 ? "无门槛" : String.format("满%s元可用", Util.formatDouble(Double.parseDouble(item.getAmount()))))
                 .setText(R.id.item_title_tv, item.getName())
                 .setText(R.id.item_coupon_date, String.format("%s - %s", item.getStartTime(), item.getEndTime()))
+                .setText(R.id.item_use_tv, item.getCouponMapCzbVo() != null ?
+                        "立即兑换" : "立即使用")
+                .setTextColor(R.id.item_use_tv, item.getCouponMapCzbVo() != null ?
+                        Color.parseColor("#775420") : mContext.getResources().getColor(R.color.white))
+                .setBackgroundRes(R.id.item_use_tv, item.getCouponMapCzbVo() != null ?
+                        R.drawable.shape_coupon_use_bg : R.drawable.shape_coupon_use_red_bg)
                 .addOnClickListener(R.id.rootView);
-        GlideUtils.loadImage(mContext, item.getImgUrl(), helper.getView(R.id.image_view));
+//        GlideUtils.loadImage(mContext, item.getImgUrl(), helper.getView(R.id.image_view));
         if (item.isSelected()) {
             helper.getView(R.id.line_layout).setVisibility(View.VISIBLE);
             helper.getView(R.id.separate).setBackground(mContext.getResources().getDrawable(R.drawable.ic_coupon_line_sel));

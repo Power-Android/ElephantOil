@@ -55,6 +55,8 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
     public MutableLiveData<RedeemEntity> dragViewLiveData = new MutableLiveData<>();
     public MutableLiveData<OilUserDiscountEntity> discountLiveData = new MutableLiveData<>();
     public MutableLiveData<OilUserDiscountEntity> discountMoneyLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> updateCouponLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<String>> updateOilsLiveData = new MutableLiveData<>();
 
 
     public void getOrderNews() {
@@ -148,5 +150,13 @@ public class OilViewModel extends BaseViewModel<OilRepository> {
 
     public void getDiscountMoney(String gasId, String oilAmount) {
         mRespository.getDiscountMoney(gasId, oilAmount, discountMoneyLiveData);
+    }
+
+    public void updateCoupon(String id, String gasId, String mapId) {
+        mRespository.updateCoupon(id, gasId, mapId, updateCouponLiveData);
+    }
+
+    public void getUpdateOils() {
+        mRespository.getUpdateOils(updateOilsLiveData);
     }
 }

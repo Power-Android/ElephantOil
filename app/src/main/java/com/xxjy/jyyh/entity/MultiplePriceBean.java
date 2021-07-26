@@ -222,6 +222,15 @@ public class MultiplePriceBean {
         private String startTime;
         private Integer status;
         private String validTime;
+        private CouponMapCzbVoBean couponMapCzbVo;
+
+        public CouponMapCzbVoBean getCouponMapCzbVo() {
+            return couponMapCzbVo;
+        }
+
+        public void setCouponMapCzbVo(CouponMapCzbVoBean couponMapCzbVo) {
+            this.couponMapCzbVo = couponMapCzbVo;
+        }
 
         public String getAmountX() {
             return amountX;

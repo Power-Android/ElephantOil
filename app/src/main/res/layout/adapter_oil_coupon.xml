@@ -125,13 +125,16 @@
                     android:textSize="@dimen/sp_11" />
             </LinearLayout>
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/image_view"
-                android:layout_width="@dimen/dp_52"
-                android:layout_height="@dimen/dp_52"
-                android:layout_marginEnd="@dimen/dp_14"
-                android:src="@drawable/default_img_bg"
-                app:riv_corner_radius="@dimen/dp_3" />
+            <TextView
+                android:id="@+id/item_use_tv"
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="@dimen/dp_30"
+                android:text="立即使用"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                android:gravity="center"
+                android:background="@drawable/shape_coupon_use_red_bg"
+                android:layout_marginEnd="@dimen/dp_10" />
         </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

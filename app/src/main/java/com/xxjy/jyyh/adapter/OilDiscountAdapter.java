@@ -73,7 +73,14 @@ public class OilDiscountAdapter extends BaseQuickAdapter<OilDiscountEntity, Base
                             .setEnabled(R.id.item_view, true)
                             .setTextColor(R.id.item_discount_tv, mContext.getResources().getColor(R.color.color_27));
                 }
-                setDrawable(discountTv, R.drawable.arrow_right_icon);
+                if (!TextUtils.isEmpty(item.getSwell())){//有膨胀券
+                    helper.setText(R.id.item_swell_tv, "可兑换此油站" + item.getSwell() + "元券")
+                            .setGone(R.id.item_swell_tv, true);
+                    discountTv.setCompoundDrawables(null, null, null, null);
+                }else {
+                    helper.setGone(R.id.item_swell_tv, false);
+                    setDrawable(discountTv, R.drawable.arrow_right_icon);
+                }
                 break;
             case 2://商家优惠券
                 helper.setImageResource(R.id.item_img_iv, R.drawable.icon_elephant_coupon)

@@ -180,6 +180,10 @@ public class ApiService {
     public static final String OIL_USER_DISCOUNT = "api/activeCommon/queryOilUserDiscount";
     //挽留查询减免金额
     public static final String QUERY_AMOUNT_UPRIGHT = "api/activeCommon/queryAmountUpright";
+    //优惠券升级——膨胀券
+    public static final String COUPON_UPDATE = "api/v1/member/couponUpdate";
+    //支持升级券的油站列表
+    public static final String QUERY_COUPON_UPDATE_OIL = "api/v1/member/qryCouponCanUpdateOilStations";
 
 
 

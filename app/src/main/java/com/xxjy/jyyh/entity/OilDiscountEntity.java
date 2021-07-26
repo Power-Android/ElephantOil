@@ -16,6 +16,15 @@ public class OilDiscountEntity {
     private boolean isUseBill;//是否使用余额
     private boolean isService;//是否有服务费
     private String discount;//是否显示优惠立减
+    private String swell;//膨胀券
+
+    public String getSwell() {
+        return swell;
+    }
+
+    public void setSwell(String swell) {
+        this.swell = swell;
+    }
 
     public String getDiscount() {
         return discount;

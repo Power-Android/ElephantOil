@@ -39,6 +39,15 @@ public class CouponBean implements MultiItemEntity {
     private int rangeType;
     private String linkUrl;
     private boolean isSelected;
+    private CouponMapCzbVoBean couponMapCzbVo;
+
+    public CouponMapCzbVoBean getCouponMapCzbVo() {
+        return couponMapCzbVo;
+    }
+
+    public void setCouponMapCzbVo(CouponMapCzbVoBean couponMapCzbVo) {
+        this.couponMapCzbVo = couponMapCzbVo;
+    }
 
     public boolean isSelected() {
         return isSelected;
